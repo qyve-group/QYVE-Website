@@ -1,14 +1,14 @@
-import React from 'react';
-import { LuFilter } from 'react-icons/lu';
-import { MdOutlineFilterList, MdSearch } from 'react-icons/md';
+import React from "react";
+import { LuFilter } from "react-icons/lu";
+import { MdOutlineFilterList, MdSearch } from "react-icons/md";
 
-import ProductCard from '@/components/ProductCard';
-import SidebarFilters from '@/components/SideBarFilter';
-import { shoes } from '@/data/content';
-import ButtonSecondary from '@/shared/Button/ButtonSecondary';
-import Input from '@/shared/Input/Input';
+import ProductCard from "@/components/ProductCard";
+import SidebarFilters from "@/components/SideBarFilter";
+import { shoes } from "@/data/content";
+import ButtonSecondary from "@/shared/Button/ButtonSecondary";
+import Input from "@/shared/Input/Input";
 
-import SectionBrands from '../home/SectionBrands';
+import SectionBrands from "../home/SectionBrands";
 
 const page = () => {
   return (

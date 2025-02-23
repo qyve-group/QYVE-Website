@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import Filter from '@/components/Filter';
-import ProductCard from '@/components/ProductCard';
-import { productsSection, shoes } from '@/data/content';
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
-import Heading from '@/shared/Heading/Heading';
+import Filter from "@/components/Filter";
+import ProductCard from "@/components/ProductCard";
+import { productsSection, shoes } from "@/data/content";
+import ButtonPrimary from "@/shared/Button/ButtonPrimary";
+import Heading from "@/shared/Heading/Heading";
 
 const SectionProducts = () => {
   return (

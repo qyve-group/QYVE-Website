@@ -1,11 +1,11 @@
-import Link from 'next/link';
-import React from 'react';
-import { FaGoogle } from 'react-icons/fa6';
+import Link from "next/link";
+import React from "react";
+import { FaGoogle } from "react-icons/fa6";
 
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
-import ButtonSecondary from '@/shared/Button/ButtonSecondary';
-import FormItem from '@/shared/FormItem';
-import Input from '@/shared/Input/Input';
+import ButtonPrimary from "@/shared/Button/ButtonPrimary";
+import ButtonSecondary from "@/shared/Button/ButtonSecondary";
+import FormItem from "@/shared/FormItem";
+import Input from "@/shared/Input/Input";
 
 const PageLogin = () => {
   return (

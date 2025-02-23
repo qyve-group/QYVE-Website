@@ -1,10 +1,10 @@
-import Image from 'next/image';
-import React from 'react';
+import Image from "next/image";
+import React from "react";
 
-import PromoTag from '@/components/PromoTag';
-import { headerSection } from '@/data/content';
-import shoe_box from '@/images/shoe_box.png';
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
+import PromoTag from "@/components/PromoTag";
+import { headerSection } from "@/data/content";
+import shoe_box from "@/images/shoe_box.png";
+import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 
 const SectionHeader = () => {
   return (
@@ -16,7 +16,7 @@ const SectionHeader = () => {
           </h4>
           <h1
             className="text-[50px] font-medium tracking-tight"
-            style={{ lineHeight: '1em' }}
+            style={{ lineHeight: "1em" }}
           >
             {headerSection.heading}
           </h1>

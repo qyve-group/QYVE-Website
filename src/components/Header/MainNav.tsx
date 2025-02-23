@@ -1,16 +1,16 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
-import { FaRegBell } from 'react-icons/fa6';
-import { RiSearch2Line } from 'react-icons/ri';
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import { FaRegBell } from "react-icons/fa6";
+import { RiSearch2Line } from "react-icons/ri";
 
-import avatar from '@/images/avatar.png';
-import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
-import Input from '@/shared/Input/Input';
-import Logo from '@/shared/Logo/Logo';
+import avatar from "@/images/avatar.png";
+import ButtonCircle3 from "@/shared/Button/ButtonCircle3";
+import Input from "@/shared/Input/Input";
+import Logo from "@/shared/Logo/Logo";
 
-import CartSideBar from '../CartSideBar';
-import MenuBar from './MenuBar';
+import CartSideBar from "../CartSideBar";
+import MenuBar from "./MenuBar";
 
 const MainNav = () => {
   return (

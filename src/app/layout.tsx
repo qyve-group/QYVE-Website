@@ -1,35 +1,35 @@
-import '@/styles/global.css';
+import "@/styles/global.css";
 
-import type { Metadata } from 'next';
-import React, { Suspense } from 'react';
+import type { Metadata } from "next";
+import React, { Suspense } from "react";
 
-import Header from '@/components/Header/Header';
-import Footer from '@/shared/Footer/Footer';
+import Header from "@/components/Header/Header";
+import Footer from "@/shared/Footer/Footer";
 
-import Loading from './loading';
+import Loading from "./loading";
 
 export const metadata: Metadata = {
-  title: 'Hotkicks Ecommerce Template',
+  title: "Hotkicks Ecommerce Template",
   icons: [
     {
-      rel: 'apple-touch-icon',
-      url: '/apple-touch-icon.png',
+      rel: "apple-touch-icon",
+      url: "/apple-touch-icon.png",
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '32x32',
-      url: '/favicon.png',
+      rel: "icon",
+      type: "image/png",
+      sizes: "32x32",
+      url: "/favicon.png",
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '16x16',
-      url: '/favicon.png',
+      rel: "icon",
+      type: "image/png",
+      sizes: "16x16",
+      url: "/favicon.png",
     },
     {
-      rel: 'icon',
-      url: '/favicon.ico',
+      rel: "icon",
+      url: "/favicon.ico",
     },
   ],
 };
