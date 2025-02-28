@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
-import React from 'react';
+import type { ReactNode } from "react";
+import React from "react";
 
-import type { NextPrevProps } from '../NextPrev/NextPrev';
-import NextPrev from '../NextPrev/NextPrev';
+import type { NextPrevProps } from "../NextPrev/NextPrev";
+import NextPrev from "../NextPrev/NextPrev";
 
 export interface HeadingProps extends NextPrevProps {
   fontClass?: string;
@@ -16,9 +16,9 @@ export interface HeadingProps extends NextPrevProps {
 
 const Heading: React.FC<HeadingProps> = ({
   children,
-  desc = '',
-  title = '',
-  className = 'mb-10',
+  desc = "",
+  title = "",
+  className = "mb-10",
   isCenter = false,
   isMain,
   hasNextPrev,
@@ -30,16 +30,16 @@ const Heading: React.FC<HeadingProps> = ({
     >
       <div
         className={
-          isCenter ? 'mx-auto mb-2 w-full max-w-3xl text-center' : 'max-w-4xl'
+          isCenter ? "mx-auto mb-2 w-full max-w-3xl text-center" : "max-w-4xl"
         }
       >
         {title && (
           <p className="text-2xl font-medium uppercase text-primary">{title}</p>
         )}
         <h2
-          style={{ lineHeight: '1.2em' }}
+          style={{ lineHeight: "1.2em" }}
           className={`${
-            isMain ? 'lineHeight text-3xl lg:text-[55px]' : 'text-3xl'
+            isMain ? "lineHeight text-3xl lg:text-[55px]" : "text-3xl"
           } mb-5 font-medium`}
           {...args}
         >
