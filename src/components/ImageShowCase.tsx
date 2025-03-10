@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import type { StaticImageData } from 'next/image';
-import Image from 'next/image';
-import { pathOr } from 'ramda';
-import type { FC } from 'react';
-import React, { useState } from 'react';
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
+import { pathOr } from "ramda";
+import type { FC } from "react";
+import React, { useState } from "react";
 
-import LikeButton from './LikeButton';
+import LikeButton from "./LikeButton";
 
 interface ImageShowCaseProps {
   shots: StaticImageData[];
@@ -20,7 +20,7 @@ const ImageShowCase: FC<ImageShowCaseProps> = ({ shots }) => {
       <div className="relative overflow-hidden rounded-2xl md:h-[520px]">
         <LikeButton className="absolute right-5 top-5" />
         <Image
-          src={pathOr('', [activeImageIndex], shots)}
+          src={pathOr("", [activeImageIndex], shots)}
           alt="shoe image"
           className="h-full w-full object-cover object-center"
         />
@@ -30,7 +30,7 @@ const ImageShowCase: FC<ImageShowCaseProps> = ({ shots }) => {
           <div
             key={shot.src}
             className={`${
-              activeImageIndex === index ? 'border-2 border-primary' : ''
+              activeImageIndex === index ? "border-2 border-primary" : ""
             } h-[100px] overflow-hidden rounded-lg`}
           >
             <button

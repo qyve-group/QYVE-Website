@@ -1,31 +1,31 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState } from 'react';
-import { AiOutlineDelete } from 'react-icons/ai';
-import { MdStar } from 'react-icons/md';
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
+import { MdStar } from "react-icons/md";
 
-import LikeButton from '@/components/LikeButton';
-import { shoes } from '@/data/content';
-import type { ProductType } from '@/data/types';
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
-import Input from '@/shared/Input/Input';
-import InputNumber from '@/shared/InputNumber/InputNumber';
+import LikeButton from "@/components/LikeButton";
+import { shoes } from "@/data/content";
+import type { ProductType } from "@/data/types";
+import ButtonPrimary from "@/shared/Button/ButtonPrimary";
+import Input from "@/shared/Input/Input";
+import InputNumber from "@/shared/InputNumber/InputNumber";
 
-import ContactInfo from './ContactInfo';
-import PaymentMethod from './PaymentMethod';
-import ShippingAddress from './ShippingAddress';
+import ContactInfo from "./ContactInfo";
+import PaymentMethod from "./PaymentMethod";
+import ShippingAddress from "./ShippingAddress";
 
 const CheckoutPage = () => {
   const [tabActive, setTabActive] = useState<
-    'ContactInfo' | 'ShippingAddress' | 'PaymentMethod'
-  >('ShippingAddress');
+    "ContactInfo" | "ShippingAddress" | "PaymentMethod"
+  >("ShippingAddress");
 
   const handleScrollToEl = (id: string) => {
     const element = document.getElementById(id);
     setTimeout(() => {
-      element?.scrollIntoView({ behavior: 'smooth' });
+      element?.scrollIntoView({ behavior: "smooth" });
     }, 80);
   };
 
@@ -82,40 +82,40 @@ const CheckoutPage = () => {
       <div className="space-y-8">
         <div id="ContactInfo" className="scroll-mt-24">
           <ContactInfo
-            isActive={tabActive === 'ContactInfo'}
+            isActive={tabActive === "ContactInfo"}
             onOpenActive={() => {
-              setTabActive('ContactInfo');
-              handleScrollToEl('ContactInfo');
+              setTabActive("ContactInfo");
+              handleScrollToEl("ContactInfo");
             }}
             onCloseActive={() => {
-              setTabActive('ShippingAddress');
-              handleScrollToEl('ShippingAddress');
+              setTabActive("ShippingAddress");
+              handleScrollToEl("ShippingAddress");
             }}
           />
         </div>
 
         <div id="ShippingAddress" className="scroll-mt-24">
           <ShippingAddress
-            isActive={tabActive === 'ShippingAddress'}
+            isActive={tabActive === "ShippingAddress"}
             onOpenActive={() => {
-              setTabActive('ShippingAddress');
-              handleScrollToEl('ShippingAddress');
+              setTabActive("ShippingAddress");
+              handleScrollToEl("ShippingAddress");
             }}
             onCloseActive={() => {
-              setTabActive('PaymentMethod');
-              handleScrollToEl('PaymentMethod');
+              setTabActive("PaymentMethod");
+              handleScrollToEl("PaymentMethod");
             }}
           />
         </div>
 
         <div id="PaymentMethod" className="scroll-mt-24">
           <PaymentMethod
-            isActive={tabActive === 'PaymentMethod'}
+            isActive={tabActive === "PaymentMethod"}
             onOpenActive={() => {
-              setTabActive('PaymentMethod');
-              handleScrollToEl('PaymentMethod');
+              setTabActive("PaymentMethod");
+              handleScrollToEl("PaymentMethod");
             }}
-            onCloseActive={() => setTabActive('PaymentMethod')}
+            onCloseActive={() => setTabActive("PaymentMethod")}
           />
         </div>
       </div>

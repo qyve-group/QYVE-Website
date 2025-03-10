@@ -1,15 +1,26 @@
-import type { StaticImageData } from 'next/image';
+import type { StaticImageData } from "next/image";
 
 export type ProductType = {
+  // slug: string;
+  // shoeName: string;
+  // shoeCategory: string;
+  // coverImage: StaticImageData | string;
+  // currentPrice: number;
+  // previousPrice: number;
+  // rating: number;
+  // pieces_sold: number;
+  // justIn: boolean;
+
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  category_id: number;
+  created_at: Date;
   slug: string;
-  shoeName: string;
-  shoeCategory: string;
-  coverImage: StaticImageData | string;
-  currentPrice: number;
-  previousPrice: number;
-  rating: number;
-  pieces_sold: number;
-  justIn: boolean;
+  previous_price: number;
+  image_cover: string;
 };
 
 export type BlogData = {
@@ -46,6 +57,6 @@ export type BlogType = {
   date: string;
   coverImage: string;
   blogData: BlogData;
-  tag: 'Style' | 'Fitting' | 'General';
+  tag: "Style" | "Fitting" | "General";
   slug: string;
 };

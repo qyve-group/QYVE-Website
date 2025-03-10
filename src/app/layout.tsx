@@ -8,6 +8,9 @@ import Footer from "@/shared/Footer/Footer";
 
 import Loading from "./loading";
 
+// import { store } from "@/store/store";
+import Providers from "@/components/Providers";
+
 export const metadata: Metadata = {
   title: "Hotkicks Ecommerce Template",
   icons: [
@@ -44,9 +47,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="">
-        <Header />
-        <Suspense fallback={<Loading />}>{children}</Suspense>
-        <Footer />
+        <Providers>
+          {/* {children} */}
+          <Header />
+          <Suspense fallback={<Loading />}>{children}</Suspense>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { FC } from 'react';
-import React, { useState } from 'react';
+import type { FC } from "react";
+import React, { useState } from "react";
 
-import { note } from '@/data/content';
-import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
-import Heading from '@/shared/Heading/Heading';
+import { note } from "@/data/content";
+import ButtonCircle3 from "@/shared/Button/ButtonCircle3";
+import Heading from "@/shared/Heading/Heading";
 
 interface ProductInfoTabProps {
   overview: string;
@@ -16,13 +16,13 @@ interface ProductInfoTabProps {
   }[];
 }
 
-const tabs = ['Overview', 'Shipment details'];
+const tabs = ["Overview", "Shipment details"];
 
 const ProductInfoTab: FC<ProductInfoTabProps> = ({
   overview,
   shipment_details,
 }) => {
-  const [activeTab, setActiveTab] = useState('Shipment details');
+  const [activeTab, setActiveTab] = useState("Shipment details");
 
   return (
     <div>
@@ -36,8 +36,8 @@ const ProductInfoTab: FC<ProductInfoTabProps> = ({
             onClick={() => setActiveTab(tab)}
             className={`py-4 ${
               activeTab === tab
-                ? 'border-b-2 border-primary'
-                : 'text-neutral-500'
+                ? "border-b-2 border-primary"
+                : "text-neutral-500"
             }`}
           >
             {tab}
@@ -48,9 +48,9 @@ const ProductInfoTab: FC<ProductInfoTabProps> = ({
       {tabs.map((tab) => (
         <div
           key={tab}
-          className={`mb-10 ${activeTab === tab ? 'block' : 'hidden'}`}
+          className={`mb-10 ${activeTab === tab ? "block" : "hidden"}`}
         >
-          {activeTab === 'Overview' ? (
+          {activeTab === "Overview" ? (
             <p>{overview}</p>
           ) : (
             <div className="grid gap-5 md:grid-cols-2">
