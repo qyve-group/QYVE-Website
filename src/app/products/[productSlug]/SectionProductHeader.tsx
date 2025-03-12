@@ -1,6 +1,6 @@
 "use client";
 
-import type { StaticImageData } from "next/image";
+// import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC } from "react";
 import React from "react";
@@ -9,10 +9,11 @@ import { GoDotFill } from "react-icons/go";
 import { LuInfo } from "react-icons/lu";
 import { MdStar } from "react-icons/md";
 import { PiSealCheckFill } from "react-icons/pi";
+import {  useState, useEffect } from "react"; 
 
-import ImageShowCase from "@/components/ImageShowCase";
+// import ImageShowCase from "@/components/ImageShowCase";
 import ShoeSizeButton from "@/components/ShoeSizeButton";
-import { shoeSizes } from "@/data/content";
+// import { shoeSizes } from "@/data/content";
 import nike_profile from "@/images/nike_profile.jpg";
 import ButtonCircle3 from "@/shared/Button/ButtonCircle3";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
@@ -21,15 +22,19 @@ import Heading from "@/shared/Heading/Heading";
 
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/store/cartSlice";
+import { useSelector } from "react-redux";
+import {store, RootState} from "@/store/store";
+// import { supabase } from "@/libs/supabaseClient";
 
 interface SectionProductHeaderProps {
   // shots: StaticImageData[];
+  id: number;
   name: string;
   price: number;
   previous_price: number;
   image_cover: string;
   sizes: string[];
-  id: number;
+  products_sizes: {size: string; stock: number}[];
   // currentPrice: number;
   // rating: number;
   // pieces_sold: number;
@@ -38,31 +43,52 @@ interface SectionProductHeaderProps {
 
 const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   // shots,
+  id,
   name,
   price,
   previous_price,
   image_cover,
-  sizes,
-  id,
+  products_sizes,
   // currentPrice,
   // rating,
   // pieces_sold,
   // reviews,
   // image_cover,
 }) => {
+  const cart = useSelector((state: RootState) => state.cart); // Get latest cart state
   const dispatch = useDispatch();
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   const handleAddToCart = () => {
+    if (!selectedSize) {
+      alert("Please select a size before adding to cart!");
+      return;
+    }
+
     dispatch(
       addToCart({
-        id: name, // Assuming `shoeName` is unique; use a proper unique `id` if available
+        id: id,
         name: name,
         price: price,
+        product_size: selectedSize,
         // image: shots[0], // Assuming first image is the main product image
         quantity: 1,
       })
     );
+    
   };
+
+  const handleSelectSize = (product_size: string) => {
+    // setSelectedSize(product_size);
+    setSelectedSize(product_size);
+    console.log("selected size: ", selectedSize);
+
+  }
+
+  useEffect(() => {
+    console.log("Latest Cart State:", cart);
+  }, [cart]);
+
   // console.log("price:", price);
   return (
     <div className="items-stretch justify-between space-y-10 lg:flex lg:space-y-0">
@@ -120,30 +146,17 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
             Size guide <LuInfo />
           </p>
         </div>
-        {/* !!!!!!!!!!!!!!!!!!!!!!! */}
-        {/* !!!!!!!!!!!!!!!!!!!!!!! */}
-        {/* !!!!!!!!!!!!!!!!!!!!!!! */}
-        {/* !!!!!!!!!!!!!!!!!!!!!!! */}
-
-        {/* DO THE CONDITION FOR AVAILABLE SIZES HERE */}
-
-        {/* !!!!!!!!!!!!!!!!!!!!!!! */}
-        {/* !!!!!!!!!!!!!!!!!!!!!!! */}
-        {/* !!!!!!!!!!!!!!!!!!!!!!! */}
-        {/* !!!!!!!!!!!!!!!!!!!!!!! */}
         <div className="grid grid-cols-3 gap-3">
-          {sizes.map((size) => (
-            <ShoeSizeButton key={size} size={size} id={id} />
+          {products_sizes.map((product) => (
+            <ShoeSizeButton key={product.size} product={product} onSelect={handleSelectSize} isSelected={selectedSize === product.size} // Check if this button is selected
+            />
           ))}
-          {/* {shoeSizes.map((size) => (
-            <ShoeSizeButton key={size} size={size} />
-          ))} */}
         </div>
 
         <div className="mt-5 flex items-center gap-5">
           <ButtonPrimary className="w-full">Buy Now</ButtonPrimary>
           <ButtonSecondary
-            className="flex w-full items-center gap-1 border-2 border-primary text-primary"
+            className="flex w-full items-center gap-1 border-2 border-primary text-primary hover:bg-primary hover:text-white active:text-white active:scale-95 transition-all"
             onClick={handleAddToCart}
           >
             <BsBag /> Add to cart

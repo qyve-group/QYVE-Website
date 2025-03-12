@@ -2,10 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define product type for cart items
 interface CartItem {
-  id: string;
+  id: number;
   name: string;
   price: number;
   // image: string;
+  product_size: string | null;
   quantity: number;
 }
 
@@ -22,12 +23,12 @@ const initialState: CartState = {
 };
 
 const cartSlice = createSlice({
-  name: "cart",
-  initialState,
-  reducers: {
+  name: "cart", // The slice name (used for actions)
+  initialState, // Initial state for the cart
+  reducers: { // Reducer functions to modify state
     // Add item to cart
     addToCart: (state, action: PayloadAction<CartItem>) => {
-      const existingItem = state.items.find(
+      const existingItem = state.items.find( // Reducer logic
         (item) => item.id === action.payload.id
       );
       if (existingItem) {
@@ -40,7 +41,7 @@ const cartSlice = createSlice({
     },
 
     // Remove item from cart
-    removeFromCart: (state, action: PayloadAction<string>) => {
+    removeFromCart: (state, action: PayloadAction<number>) => {
       const itemIndex = state.items.findIndex(
         (item) => item.id === action.payload
       );
@@ -56,7 +57,7 @@ const cartSlice = createSlice({
     // Update quantity of an item
     updateQuantity: (
       state,
-      action: PayloadAction<{ id: string; quantity: number }>
+      action: PayloadAction<{ id: number; quantity: number }>
     ) => {
       const item = state.items.find((item) => item.id === action.payload.id);
       if (item && action.payload.quantity > 0) {
