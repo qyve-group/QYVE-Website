@@ -3,21 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 // import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 import cartReducer from "./cartSlice";
-import createWebStorage from "redux-persist/lib/storage/createWebStorage";
-
-
-// // Function to handle SSR (avoids undefined storage errors)
-// const createNoopStorage = () => ({
-//   getItem: async () => null,
-//   setItem: async () => {},
-//   removeItem: async () => {},
-// });
-
-// // Ensure we always assign a valid storage object
-// const storage =
-//   typeof window !== "undefined"
-//     ? createWebStorage("session") // Use sessionStorage
-//     : createNoopStorage(); // Fallback for SSR
+import authReducer from "@/store/authSlice";
 
 const persistConfig = {
   key: "cart",
@@ -27,15 +13,10 @@ const persistConfig = {
 
 const persistedCartReducer = persistReducer(persistConfig, cartReducer);
 
-// export const store = configureStore({
-//   reducer: {
-//     cart: persistedCartReducer,
-//   },
-
-// });
 
 export const store = configureStore({
-  reducer: {cart: persistedCartReducer},
+  reducer: {cart: persistedCartReducer, 
+    auth: authReducer},
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
