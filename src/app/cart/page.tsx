@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdStar } from "react-icons/md";
 import { TbBrandPaypal } from "react-icons/tb";
@@ -17,7 +18,11 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
-  const handleRemove = (id: string) => {
+  useEffect(() => {
+    console.log("Cart updated:", cartItems);
+  }, [cartItems]);
+
+  const handleRemove = (id: number) => {
     dispatch(removeFromCart(id));
   };
 
@@ -28,6 +33,8 @@ const CartPage = () => {
   );
   const estimatedTaxes = subtotal * 0.1; // Example 10% tax
   const total = subtotal + estimatedTaxes;
+
+  console.log("CartItems in Cart: ", cartItems);
 
   return (
     <div className="nc-CartPage">
@@ -89,7 +96,7 @@ const CartPage = () => {
                       />
                     </div>
                     <div>
-                      <InputNumber />
+                      <InputNumber defaultValue={item.quantity} id={item.id}/>
                     </div>
                   </div>
                 </div>

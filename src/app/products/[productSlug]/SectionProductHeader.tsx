@@ -73,8 +73,10 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         product_size: selectedSize,
         // image: shots[0], // Assuming first image is the main product image
         quantity: 1,
+        image: image_cover,
       })
     );
+    console.log("Adding to Cart:", id, selectedSize);
     
   };
 

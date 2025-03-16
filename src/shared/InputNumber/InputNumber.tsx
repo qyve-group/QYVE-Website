@@ -1,7 +1,10 @@
 'use client';
 
+import { updateQuantity } from '@/store/cartSlice';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+
 
 export interface InputNumberProps {
   className?: string;
@@ -11,6 +14,7 @@ export interface InputNumberProps {
   onChange?: (value: number) => void;
   label?: string;
   desc?: string;
+  id: number;
 }
 
 const InputNumber: FC<InputNumberProps> = ({
@@ -21,8 +25,10 @@ const InputNumber: FC<InputNumberProps> = ({
   onChange,
   label,
   desc,
+  id,
 }) => {
   const [value, setValue] = useState(defaultValue);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setValue(defaultValue);
@@ -33,6 +39,9 @@ const InputNumber: FC<InputNumberProps> = ({
     setValue((state) => {
       return state - 1;
     });
+
+    dispatch(updateQuantity({id: id, quantity: (value-1)}));
+
     onChange && onChange(value - 1);
   };
   const handleClickIncrement = () => {
@@ -40,6 +49,8 @@ const InputNumber: FC<InputNumberProps> = ({
     setValue((state) => {
       return state + 1;
     });
+
+    dispatch(updateQuantity({id: id, quantity: (value+1)}));
     onChange && onChange(value + 1);
   };
 

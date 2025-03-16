@@ -11,6 +11,7 @@ import Loading from "./loading";
 // import { store } from "@/store/store";
 import Providers from "@/components/Providers";
 
+
 export const metadata: Metadata = {
   title: "Hotkicks Ecommerce Template",
   icons: [
@@ -47,12 +48,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="">
-        <Providers>
-          {/* {children} */}
-          <Header />
-          <Suspense fallback={<Loading />}>{children}</Suspense>
-          <Footer />
-        </Providers>
+        
+          <Providers>
+
+            {/* {children} */}
+            <Header />
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+            <Footer />
+ 
+          </Providers>
+        
       </body>
     </html>
   );
