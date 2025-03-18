@@ -9,18 +9,22 @@ import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import FormItem from "@/shared/FormItem";
 import Input from "@/shared/Input/Input";
 import { submitLogin } from "@/services/authService";
-import { useState, useEffect} from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const router = useRouter();
 
     const submitForm = async () => {
         try{
             const {user, session} = await submitLogin(email, password);
             console.log("Logged in user: ", user);
             console.log("Logged in session: ", session);
+
+            router.push("/home");
         }
         catch(error){
             console.error("Error logging in: ", error);
@@ -69,7 +73,7 @@ const LoginForm = () => {
                   onChange={(e) => {setPassword(e.target.value)}}
                 />
               </FormItem>
-              <ButtonPrimary>Continue</ButtonPrimary>
+              <ButtonPrimary onClick={submitForm}>Login</ButtonPrimary>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
               <Link href="/forgot-pass" className="text-sm text-primary">

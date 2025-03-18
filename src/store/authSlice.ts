@@ -1,8 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { supabase } from "@/libs/supabaseClient";
 
+interface Profile {
+    id: string;
+    email: string;
+    name?: string; // Optional
+  }
+
 export interface AuthState {
-    user: null;
+    user: Profile | null;
     session: any;
     loading: boolean;
 }
@@ -12,6 +18,11 @@ const initialState: AuthState = {
     session: null,
     loading: true,
 }
+
+export const logoutUser = () => async (dispatch: any) => {
+    await supabase.auth.signOut();  // ✅ Clears session from Supabase
+    dispatch(logout());  // ✅ Clears user from Redux state
+};
 
 const authSlice = createSlice({
     name: "auth",
