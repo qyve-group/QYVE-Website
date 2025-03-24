@@ -8,14 +8,21 @@ import { MdStar } from "react-icons/md";
 import { TbBrandPaypal } from "react-icons/tb";
 
 import LikeButton from "@/components/LikeButton";
-import { RootState } from "@/store/store";
+import { RootState, AppDispatch} from "@/store/store";
 import { removeFromCart } from "@/store/cartSlice";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import InputNumber from "@/shared/InputNumber/InputNumber";
+import { fetchCartFromSupabase, saveCartToSupabase } from "@/services/cartService";
 
 const CartPage = () => {
+
+  const auth = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch();
+
+  // const userCart = fetchCartFromSupabase(auth.user?.id ?? null, dispatch);
+
+  
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
   useEffect(() => {

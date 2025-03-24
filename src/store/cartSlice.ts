@@ -1,8 +1,9 @@
+import FormItem from "@/shared/FormItem";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define product type for cart items
 export interface CartItem {
-  id: number;
+  id: number; //product_id
   name: string;
   price: number;
   // image: string;
@@ -27,11 +28,43 @@ const cartSlice = createSlice({
   name: "cart", // The slice name (used for actions)
   initialState, // Initial state for the cart
   reducers: { // Reducer functions to modify state
+    setCart: (state, action: PayloadAction<CartItem[]>) => {
+      state.items = action.payload;
+      
+      if (action.payload.length == 0){
+        state.totalPrice = 0;
+        state.totalQuantity = 0;
+      }
+      else {
+
+        let totalPrice = 0;
+        let totalQuantity = 0;
+
+        for (const item of state.items){
+          totalQuantity += item.quantity;
+          totalPrice += item.price;
+        }
+
+        state.totalQuantity = totalQuantity;
+        state.totalPrice = totalPrice;
+      }
+
+      console.log("Setting cart:", action.payload);
+
+    },
+
+
+
     // Add item to cart
     addToCart: (state, action: PayloadAction<CartItem>) => {
+      
       const existingItem = state.items.find( // Reducer logic
-        (item) => item.id === action.payload.id
+        (item) => item === action.payload
       );
+
+      console.log("Before adding item:", JSON.parse(JSON.stringify(state))); // Log before update
+
+
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
@@ -39,6 +72,9 @@ const cartSlice = createSlice({
       }
       state.totalQuantity += 1;
       state.totalPrice += action.payload.price;
+
+      console.log("After adding item:", JSON.parse(JSON.stringify(state))); // Log after update
+
     },
 
     // Remove item from cart
@@ -78,6 +114,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } =
+export const { setCart, addToCart, removeFromCart, updateQuantity, clearCart } =
   cartSlice.actions;
 export default cartSlice.reducer;

@@ -88,7 +88,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   }
 
   useEffect(() => {
-    console.log("Latest Cart State:", cart);
+    // console.log("Latest Cart State:", cart);
   }, [cart]);
 
   // console.log("price:", price);

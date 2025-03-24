@@ -10,7 +10,6 @@ import Loading from "./loading";
 
 // import { store } from "@/store/store";
 import Providers from "@/components/Providers";
-import { listenForAuthChanges } from "@/store/authListener";
 
 
 export const metadata: Metadata = {
@@ -39,8 +38,6 @@ export const metadata: Metadata = {
   ],
 };
 
-
-listenForAuthChanges(); 
 
 export default function RootLayout({
   // Layouts must accept a children prop.

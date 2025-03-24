@@ -7,12 +7,11 @@ import React, { Fragment, useState } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { FaBagShopping } from 'react-icons/fa6';
 import { MdClose, MdStar } from 'react-icons/md';
-
+import { useEffect } from "react";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart } from "@/store/cartSlice"; // Make sure this action exists in cartSlice
 
-import type { ProductType } from '@/data/types';
 import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
@@ -23,6 +22,9 @@ import { CartItem } from "@/store/cartSlice";
 const CartSideBar: React.FC = () => {
   const [isVisable, setIsVisable] = useState(false);
   const dispatch = useDispatch();
+
+  const initialCart = useSelector((state: RootState) => state.cart);
+  console.log("CartSideBar.tsx----- Initial cart state: ", initialCart);
   
   // Open & Close Sidebar
   const handleOpenMenu = () => setIsVisable(true);
@@ -30,6 +32,12 @@ const CartSideBar: React.FC = () => {
   
   // Get cart items from Redux store
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
 
   // Function to render a single cart item
   const renderProduct = (item: CartItem) => {
@@ -173,7 +181,13 @@ const CartSideBar: React.FC = () => {
         className="mx-5 flex items-center gap-1 rounded-full bg-neutral-100 p-2 text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
       >
         <FaBagShopping className="text-2xl" />
-        <span className="hidden text-sm lg:block">{cartItems.length} items</span>
+        {/* <span className="hidden text-sm lg:block">{cartItems.length} items</span> */}
+        {/* Prevent hydration mismatch */}
+        {hydrated ? (
+          <span className="hidden text-sm lg:block">{cartItems.length} items</span>
+        ) : (
+          <span className="hidden text-sm lg:block">Loading...</span>
+        )}
       </button>
 
       {renderContent()}

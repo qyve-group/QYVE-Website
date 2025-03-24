@@ -5,18 +5,25 @@ import storage from "redux-persist/lib/storage";
 import cartReducer from "./cartSlice";
 import authReducer from "@/store/authSlice";
 
-const persistConfig = {
+const persistCartConfig = {
   key: "cart",
-  // storage,
   storage,
+  whitelist: ["cart"],
 };
 
-const persistedCartReducer = persistReducer(persistConfig, cartReducer);
+const persistAuthConfig = {
+  key: "auth",
+  storage,
+  whitelist: ["user"], // Persist user data only
+};
+
+const persistedCartReducer = persistReducer(persistCartConfig, cartReducer);
+const persistedAuthReducer = persistReducer(persistAuthConfig, authReducer);
 
 
 export const store = configureStore({
   reducer: {cart: persistedCartReducer, 
-    auth: authReducer},
+    auth: persistedAuthReducer},
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
