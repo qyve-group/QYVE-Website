@@ -15,6 +15,7 @@ export interface InputNumberProps {
   label?: string;
   desc?: string;
   id: number;
+  product_size: string | null;
 }
 
 const InputNumber: FC<InputNumberProps> = ({
@@ -26,6 +27,7 @@ const InputNumber: FC<InputNumberProps> = ({
   label,
   desc,
   id,
+  product_size,
 }) => {
   const [value, setValue] = useState(defaultValue);
   const dispatch = useDispatch();
@@ -40,7 +42,7 @@ const InputNumber: FC<InputNumberProps> = ({
       return state - 1;
     });
 
-    dispatch(updateQuantity({id: id, quantity: (value-1)}));
+    dispatch(updateQuantity({id: id, quantity: (value-1), product_size}));
 
     onChange && onChange(value - 1);
   };
@@ -50,7 +52,7 @@ const InputNumber: FC<InputNumberProps> = ({
       return state + 1;
     });
 
-    dispatch(updateQuantity({id: id, quantity: (value+1)}));
+    dispatch(updateQuantity({id: id, quantity: (value+1), product_size}));
     onChange && onChange(value + 1);
   };
 

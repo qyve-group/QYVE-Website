@@ -22,13 +22,6 @@ const CartSync = () => {
        
         if (!auth.user || cart.items.length === 0) return;
 
-        // const latestCart = [...cart];
-
-        // console.log("cartProvider.tsx: current redux cart: ", cart);
-        // console.log("cartProvider.tsx: current redux cart items: ", cart.items.length);
-        // console.log("cartProvider.tsx: current redux cart total price: ", cart.totalPrice);
-        // console.log("cartProvider.tsx: current redux cart total quantity: ", cart.totalQuantity);
-        // saveCartToSupabase(auth.user.id, cart);
         console.log("cartProvider.tsx ----- Syncing redux cart to supabase...");
         console.log("cart items: ", cart.items);
         debouncedSaveCart(auth.user.id, cart.items);

@@ -1,7 +1,7 @@
 import { store } from "@/store/store";
 import { setUser, logout} from "@/store/authSlice";
 import { supabase } from "@/libs/supabaseClient";
-import { fetchCartFromSupabase } from "@/services/cartService";
+import { fetchCartFromSupabase, saveCartToSupabase } from "@/services/cartService";
 import { clearCart } from "@/store/cartSlice";
 
 export const listenForAuthChanges = () => {
