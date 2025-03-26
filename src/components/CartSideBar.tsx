@@ -10,7 +10,7 @@ import { MdClose, MdStar } from 'react-icons/md';
 import { useEffect } from "react";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart } from "@/store/cartSlice"; // Make sure this action exists in cartSlice
+import { removeFromCart, updateQuantity } from "@/store/cartSlice"; // Make sure this action exists in cartSlice
 
 import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
@@ -18,10 +18,18 @@ import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import InputNumber from '@/shared/InputNumber/InputNumber';
 import LikeButton from './LikeButton';
 import { CartItem } from "@/store/cartSlice";
+import { saveCartToSupabase, saveCartAfterRemove } from "@/services/cartService";
+import { debounce } from "@/utils/debounce";
+import { store } from '@/store/store';
+
+const debouncedSaveCartAfterRemove = debounce(saveCartAfterRemove, 1000); // 1-second delay
+
 
 const CartSideBar: React.FC = () => {
   const [isVisable, setIsVisable] = useState(false);
   const dispatch = useDispatch();
+
+  const auth = useSelector((state:RootState) => state.auth);
 
   const initialCart = useSelector((state: RootState) => state.cart);
   console.log("CartSideBar.tsx----- Initial cart state: ", initialCart);
@@ -44,7 +52,8 @@ const CartSideBar: React.FC = () => {
     const { id, name, price, product_size, quantity, image } = item;
 
     return (
-      <div key={id} className="flex py-5 last:pb-0">
+      // <div key={id} className="flex py-5 last:pb-0">
+      <div key={`${id}-${product_size}`} className="flex py-5 last:pb-0">
         {/* Product Image */}
         <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
           <Image
@@ -81,10 +90,22 @@ const CartSideBar: React.FC = () => {
               <LikeButton />
               <AiOutlineDelete
                 className="text-2xl cursor-pointer"
-                onClick={() => dispatch(removeFromCart(id))}
+                onClick={() => {
+                  // console.log("eleting item");
+                  console.log("Deleting item");
+                  dispatch(removeFromCart({id, product_size}))
+                  // debouncedSaveCart(auth.user?.id ?? "", store.getState().cart.items);
+
+                  setTimeout(() => {
+                    debouncedSaveCartAfterRemove(auth.user?.id ?? "", store.getState().cart.items, item);
+                  }, 300);
+                
+                  // dispatch(updateQuantity({id: id, quantity: (quantity), product_size}));
+
+                }}
               />
             </div>
-            <InputNumber defaultValue={quantity} id={id}/>
+            <InputNumber defaultValue={quantity} id={id} product_size={product_size}/>
           </div>
         </div>
       </div>
