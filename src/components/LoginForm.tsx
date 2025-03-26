@@ -11,6 +11,7 @@ import Input from "@/shared/Input/Input";
 import { submitLogin } from "@/services/authService";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/libs/supabaseClient";
 
 const LoginForm = () => {
 
@@ -31,6 +32,16 @@ const LoginForm = () => {
         }
     }
 
+    const handleGoogleSignIn = async () => {
+      const {data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `http://localhost:3000/home`,
+        },
+      })
+      if(error)console.error("Gogole Sign-In error: ", error);
+    }
+
 
   return (
     <div className="nc-PageLogin" data-nc-id="PageLogin">
@@ -41,7 +52,9 @@ const LoginForm = () => {
         <div className="mx-auto max-w-md">
           <div className="space-y-6">
             <div className="">
-              <ButtonSecondary className="flex w-full items-center gap-3 border-2 border-primary text-primary">
+              <ButtonSecondary 
+              className="flex w-full items-center gap-3 border-2 border-primary text-primary"
+              onClick={handleGoogleSignIn}>
                 <FaGoogle className="text-2xl" /> Continue with Google
               </ButtonSecondary>
             </div>
