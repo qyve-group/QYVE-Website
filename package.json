@@ -37,6 +37,7 @@
     "@splidejs/react-splide": "^0.7.12",
     "@splidejs/splide": "^4.1.4",
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
+    "@stripe/stripe-js": "^6.1.0",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.3",
     "@t3-oss/env-nextjs": "^0.6.1",
@@ -60,6 +61,7 @@
     "react-use": "^17.4.0",
     "redux-persist": "^6.0.0",
     "sharp": "^0.32.6",
+    "stripe": "^17.7.0",
     "zod": "^3.22.2"
   },
   "devDependencies": {

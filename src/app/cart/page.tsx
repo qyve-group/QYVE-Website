@@ -14,6 +14,7 @@ import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import InputNumber from "@/shared/InputNumber/InputNumber";
 import { fetchCartFromSupabase, saveCartToSupabase } from "@/services/cartService";
+import CheckOutButton from "@/components/CheckoutButton";
 
 const CartPage = () => {
 
@@ -29,8 +30,8 @@ const CartPage = () => {
     console.log("Cart updated:", cartItems);
   }, [cartItems]);
 
-  const handleRemove = (id: number) => {
-    dispatch(removeFromCart(id));
+  const handleRemove = (id: number, product_size: string | null) => {
+    dispatch(removeFromCart({id, product_size}));
   };
 
   // Calculate subtotal dynamically
@@ -60,7 +61,7 @@ const CartPage = () => {
           <div className="flex flex-col lg:flex-row">
             <div className="w-full divide-y divide-neutral-300 lg:w-[60%] xl:w-[55%]">
               {cartItems.map((item) => (
-                <div key={item.id} className="flex py-5 last:pb-0">
+                <div key={`${item.id}-${item.product_size}`} className="flex py-5 last:pb-0">
                   <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl md:h-40 md:w-40">
                     <Image
                       fill
@@ -99,11 +100,11 @@ const CartPage = () => {
                       <LikeButton />
                       <AiOutlineDelete
                         className="text-2xl cursor-pointer"
-                        onClick={() => handleRemove(item.id)}
+                        onClick={() => handleRemove(item.id, item.product_size)}
                       />
                     </div>
                     <div>
-                      <InputNumber defaultValue={item.quantity} id={item.id}/>
+                      <InputNumber defaultValue={item.quantity} id={item.id} product_size={item.product_size}/>
                     </div>
                   </div>
                 </div>
@@ -136,9 +137,10 @@ const CartPage = () => {
                     <span>${total.toFixed(2)}</span>
                   </div>
                 </div>
-                <ButtonPrimary href="/checkout" className="mt-8 w-full">
+                <CheckOutButton cartItems={cartItems}/>
+                {/* <ButtonPrimary href="/checkout" className="mt-8 w-full">
                   Checkout Now
-                </ButtonPrimary>
+                </ButtonPrimary> */}
                 <ButtonSecondary
                   className="mt-3 inline-flex w-full items-center gap-1 border-2 border-primary text-primary"
                   href="/checkout"
