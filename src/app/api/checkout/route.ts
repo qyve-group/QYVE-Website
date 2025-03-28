@@ -1,14 +1,18 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { store } from "@/store/store";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
 
-  const userId = store.getState().auth.user;
   try {
-    const { cartItems } = await req.json(); // Get items from the request
+    const { userId, cartItems } = await req.json(); // Get items from the request
+    
+  if (!userId) {
+    throw new Error("User ID is missing before creating Stripe session");
+  }
+
+  console.log("userId in checkout route.ts: ", userId);
 
     const lineItems = cartItems.map((item: any) => ({
       price_data: {

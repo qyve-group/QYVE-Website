@@ -4,10 +4,15 @@ import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import { loadStripe } from "@stripe/stripe-js";
 import { CartItem } from "@/store/cartSlice";
 import { useState } from "react";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux"; 
+
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
 
 export default function CheckoutButton({ cartItems }: { cartItems: CartItem[] }) {
+
+    const userId = useSelector((state: RootState) => state.auth.user?.id);
 
     const [loading, setLoading] = useState(false);
 
@@ -26,7 +31,7 @@ export default function CheckoutButton({ cartItems }: { cartItems: CartItem[] })
             const res = await fetch("/api/checkout", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ cartItems }),
+                body: JSON.stringify({ userId, cartItems }),
             });
 
             if (!res.ok) throw new Error("Failed to create checkout session");
