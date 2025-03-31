@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       line_items: lineItems,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/home`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cart`,
-      metadata: { user_id: userId?.id ?? "unknown user"},
+      metadata: { user_id: userId ?? "unknown user"},
     });
 
     return NextResponse.json({ url: session.url });

@@ -39,8 +39,8 @@ export async function POST(req: Request) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
-    const userId = "1c2e85d0-410f-4019-88f3-c380ec3abc24";
-    // const userId = session.metadata?.user_id || "";
+    // const userId = "1c2e85d0-410f-4019-88f3-c380ec3abc24";
+    const userId = session.metadata?.user_id || "";
     console.log("✅ Checkout Session Object:", session);
     console.log("userid: ", userId);
 
@@ -90,7 +90,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Order creation failed" }, { status: 500 });
     }
 
-    console.log("order created: ", order);
+    console.log("Order created: ", order);
 
     // Reduce stock in `product_sizes`
     for (const item of cartItems) {
@@ -132,21 +132,18 @@ export async function POST(req: Request) {
       } else {
         console.log(`✅ Stock updated for product ${item.product_id}, size_id ${item.size_id}`);
       }
+
+      // Adding ordered items into order_items
+      const orderItems_Id = uuidv4();
+
+      const {error: orderItemsError} = await supabaseAdmin.from("order_items").insert({id: orderItems_Id, order_id: orderId, product_id: item.product_id, quantity: item.quantity, price: item.price});
+
+      if (orderItemsError) {
+        console.log("Error adding to order_items: ", orderItemsError);
+      }
+
     }
-    
-    // Mark cart as completed
-    // console.log("Marking cart as completed...");
-    // const { error: cartError } = await supabase
-    //   .from("carts")
-    //   .update({ status: "completed" })
-    //   .eq("id", cartId);
-    
-    // if (cartError) {
-    //   console.error("❌ Error marking cart as completed:", cartError);
-    // } else {
-    //   console.log(`✅ Cart ${cartId} marked as completed`);
-    // }
-    
+
     // Clear the cart after payment
     console.log("Clearing cart items for cart ID:", cartId);
     const { error: clearCartError } = await supabaseAdmin
@@ -160,34 +157,7 @@ export async function POST(req: Request) {
       console.log(`✅ Cart items cleared for cart ID: ${cartId}`);
     }
 
-    // for (const item of cartItems) {
-    //   console.log("item: ", item);
-    //   await supabase
-    //     .from("product_sizes")
-    //     .update({ stock: item.stock - item.quantity })
-    //     .eq("product_id", item.product_id)
-    //     .eq("size", item.size);
-    // }
-
-    // // // Mark cart as completed
-    // // await supabase.from("carts").update({ status: "completed" }).eq("id", cartId);
-
-    // // Clear the cart after payment
-    // await supabase.from("cart_items").delete().eq("cart_id", cartId);
-
     console.log("✅ Payment Successful:", session);
-    // TODO: Store order details in Supabase
-
-    // const orderId = session.metadata?.orderId;
-
-    // if (orderId){
-    //   const {data, error} = await supabase.from("orders").update({status: "paid"}).eq("id", orderId);
-
-    //   if (error) {
-    //     console.error("Error updating order:", error);
-    //     return NextResponse.json({ error: "Database update failed" }, { status: 500 });
-    //   }
-    // }
     
   }
 
