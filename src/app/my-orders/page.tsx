@@ -16,60 +16,42 @@ const ShippingProgress = ({ currentStep = 0 }) => {
     return (
         <div>
             <section className="p-6">
-                <div className="bg-yellow-100 p-6 rounded-xl shadow-lg flex justify-between items-center relative overflow-hidden">
-                    {/* Connecting lines */}
+                <div className="bg-yellow-100 p-6 rounded-xl shadow-lg flex flex-col md:flex-row justify-between items-center relative overflow-hidden w-full max-w-md md:max-w-full mx-auto">
+                    {/* Connecting lines for horizontal layout */}
+                    <div className="absolute hidden md:flex top-1/2 left-0 w-full h-1">
                     {steps.map((_, index) => (
-                    index < steps.length - 1 && (
+                        index < steps.length - 1 && (
                         <div
-                        key={index}
-                        className={`absolute top-1/2 left-[${(index + 1) * 20}%] w-[20%] h-1 transition-all duration-300 ${index < currentStep ? 'bg-green-500' : 'bg-yellow-400'}`}
+                            key={index}
+                            className={`absolute left-[calc(${index + 0.5}*20%)] w-[18%] h-1 transition-all duration-300 ${index < currentStep ? 'bg-green-500' : 'bg-yellow-400'}`}
                         ></div>
-                    )
+                        )
                     ))}
+                    </div>
+
+                    {/* Connecting lines for vertical layout */}
+                    <div className="absolute flex md:hidden left-1/2 top-0 h-full w-1">
+                    {steps.map((_, index) => (
+                        index < steps.length - 1 && (
+                        <div
+                            key={index}
+                            className={`absolute top-[calc(${index + 0.5}*20%)] h-[18%] w-1 transition-all duration-300 ${index < currentStep ? 'bg-green-500' : 'bg-yellow-400'}`}
+                        ></div>
+                        )
+                    ))}
+                    </div>
                     
                     {steps.map((step, index) => (
-                    <div key={index} className="flex flex-col items-center relative bg-white p-4 rounded-lg shadow-md z-10">
-                        <div className={`p-3 rounded-full flex items-center justify-center transition-all duration-300 ${index <= currentStep ? 'bg-green-500 text-white' : 'bg-yellow-300'}`}>{step.icon}</div>
-                        <div className="mt-2 text-sm font-semibold">{step.label}</div>
-                        {step.date && <div className="text-xs text-gray-600">{step.date}</div>}
+                    <div key={index} className="relative flex flex-col items-center bg-white p-1 md:p-2 rounded-lg shadow-md z-10 w-16 md:w-20">
+                        <div className={`p-1.5 md:p-2 rounded-full flex items-center justify-center transition-all duration-300 ${index <= currentStep ? 'bg-green-500 text-white' : 'bg-yellow-300'}`}>{step.icon}</div>
+                        <div className="mt-1 text-[10px] md:text-xs font-semibold text-center">{step.label}</div>
+                        {step.date && <div className="text-[8px] md:text-[10px] text-gray-600 text-center">{step.date}</div>}
                     </div>
                     ))}
                 </div>
-                
-
-                {/* <div className="bg-yellow-200 h-64 rounded-xl m-8 mx-8 flex justify-between">
-
-                    <div className="m-5 flex flex-col items-center">
-                        <div>Icon</div>
-                        <div>Order placed</div>
-                        <div>Order date</div>
-                    </div>
-
-                    <div className="m-5 flex flex-col items-center">
-                        <div>Icon</div>
-                        <div>Order paid</div>
-                        <div>Order paid date</div>
-                    </div>
-
-                    <div className="m-5 flex flex-col items-center">
-                        <div>Icon</div>
-                        <div>Order shipped out</div>
-                        <div>Order shipped out date</div>
-                    </div>
-
-                    <div className="m-5 flex flex-col items-center">
-                        <div>Icon</div>
-                        <div>Order received</div>
-                        <div>Order received date</div>
-                    </div>
-
-                    <div className="m-5 flex flex-col items-center">
-                        <div>Icon</div>
-                        <div>To rate</div>
-                    </div>
-                </div> */}
-
             </section>
+
+
 
             <section>
                 <div className="bg-blue-500">Delivery Address</div>
