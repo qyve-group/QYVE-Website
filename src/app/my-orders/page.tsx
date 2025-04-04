@@ -12,9 +12,9 @@ import Loading from "../loading";
 // export default function MyOrders() {
 const ShippingProgress = () => {
     const steps = [
-        // { icon: <Package size={32} />, label: "Order Placed", date: "Mar 25, 2025" },
+        { icon: <Package size={32} />, label: "Order Placed", date: "Mar 25, 2025" },
         { icon: <CreditCard size={32} />, label: "Paid", date: "Mar 26, 2025" },
-        { icon: <Truck size={32} />, label: "Shipped", date: "Mar 27, 2025" },
+        { icon: <Truck size={32} />, label: "Shipped Out", date: "Mar 27, 2025" },
         { icon: <CheckCircle size={32} />, label: "Order Received", date: "Mar 30, 2025" },
         // { icon: <Star size={32} />, label: "To Rate", date: null },
       ];
@@ -178,33 +178,53 @@ const ShippingProgress = () => {
         <div className="space-y-6">
             {/* Shipping Progress */}
             <section className="p-6">
-                {/* <div className="bg-yellow-100 p-6 rounded-xl shadow-lg flex flex-col md:flex-row justify-between items-center relative overflow-hidden w-full max-w-md md:max-w-full mx-auto">
-                    <div className="absolute hidden md:flex top-1/2 left-0 w-full h-1">
-                        {steps.map((_, index) => (
-                            index < steps.length - 1 && (
-                                <div key={index} className={`absolute left-[calc(${index + 0.5}*25%)] w-[22%] h-1 transition-all duration-300 ${index < currentStep ? 'bg-green-500' : 'bg-yellow-400'}`}></div>
-                            )
-                        ))}
+                {/* <div className="bg-white p-6 rounded-xl shadow-lg flex flex-col md:flex-row justify-between items-center w-full max-w-md md:max-w-full mx-auto relative"> */}
+                <div className="bg-white p-6 rounded-xl shadow-lg flex flex-col sm:flex-row justify-between items-center w-full max-w-md md:max-w-full mx-auto relative">
+
+
+                    {/* Base gray connecting line */}
+                    {/* <div className="absolute top-1/2 left-0 w-full h-[5px] bg-gray-300 -translate-y-[200%]"></div> */}
+                    {/* <div className="absolute top-1/2 left-0 w-full sm:h-[5px] h-[5px] bg-gray-300 -translate-y-[200%] sm:translate-y-0 sm:w-[5px] sm:h-full"></div> */}
+                    <div className="absolute top-1/2 left-0 w-full sm:h-[5px] h-[3px] bg-gray-300 -translate-y-[200%] sm:translate-y-0 sm:w-[5px] sm:h-full"></div>
+
+
+
+                    {/* Progress line that turns green */}
+                    <div 
+                        // className="absolute top-1/2 left-0 h-[5px] bg-green-500 transition-all duration-300 -translate-y-[200%]" 
+                        // className="absolute top-1/2 left-0 h-[5px] sm:w-[5px] sm:h-full bg-green-500 transition-all duration-300 -translate-y-[200%] sm:translate-y-0"
+                        className="absolute top-1/2 left-0 h-[3px] sm:h-[5px] bg-green-500 transition-all duration-300 -translate-y-[200%] sm:translate-y-0" 
+
+                        style={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }}>
                     </div>
-                    {steps.map((step, index) => (
-                        <div key={index} className="relative flex flex-col items-center bg-white p-2 rounded-lg shadow-md z-10 w-20">
-                            <div className={`p-2 rounded-full flex items-center justify-center transition-all duration-300 ${index <= currentStep ? 'bg-green-500 text-white' : 'bg-yellow-300'}`}>{step.icon}</div>
-                            <div className="mt-1 text-xs font-semibold text-center">{step.label}</div>
-                            {step.date && <div className="text-xs text-gray-600 text-center">{step.date}</div>}
-                        </div>
-                    ))}
-                </div> */}
-                <div className="bg-yellow-100 p-6 rounded-xl shadow-lg flex flex-col md:flex-row justify-between items-center w-full max-w-md md:max-w-full mx-auto">
-                    {steps.map((step, index) => (
-                        <div key={index} className="relative flex flex-col items-center bg-white p-2 rounded-lg shadow-md w-20">
-                            {/* Icon changes color based on highest order status */}
-                            <div className={`p-2 rounded-full flex items-center justify-center transition-all duration-300 
-                                ${index <= currentStep ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-600'}`}>
-                                {step.icon}
+
+                        {steps.map((step, index) => (
+                            // <div key={index} className="relative flex flex-col items-center w-20">
+                            // <div key={index} className="relative flex flex-col sm:w-20 w-16 min-w-[80px] sm:items-center items-start">
+                            <div key={index} className="relative flex flex-col sm:w-20 w-16 min-w-[80px] sm:items-center items-start">
+
+
+                                {/* Icon with dynamic color */}
+                                {/* <div className={`p-2 rounded-full flex items-center justify-center transition-all duration-300 */}
+                                {/* <div className={`p-2 rounded-full flex items-center justify-center transition-all duration-300 */}
+                                <div className={`p-2 rounded-full flex items-center justify-center transition-all duration-300
+
+
+                                    ${index <= currentStep ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-500'}`}>
+                                    {step.icon}
+                                </div>
+
+                                {/* Label */}
+                                {/* <div className={`mt-1 text-xs font-semibold text-center */}
+                                {/* <div className={`mt-1 text-xs font-semibold text-center */}
+                                <div className={`mt-1 text-xs font-semibold text-center
+
+
+                                    ${index <= currentStep ? 'text-green-500' : 'text-gray-500'}`}>
+                                    {step.label}
+                                </div>
                             </div>
-                            <div className="mt-1 text-xs font-semibold text-center">{step.label}</div>
-                        </div>
-                    ))}
+                        ))}
                 </div>
             </section>
 
