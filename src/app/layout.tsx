@@ -8,8 +8,8 @@ import Footer from "@/shared/Footer/Footer";
 
 import Loading from "./loading";
 
-// import { store } from "@/store/store";
 import Providers from "@/components/Providers";
+import LayoutClient from "./layoutClient";
 
 
 export const metadata: Metadata = {
@@ -42,22 +42,25 @@ export const metadata: Metadata = {
 export default function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
+
   children,
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <html lang="en">
       <body className="">
-        
-          <Providers>
 
-            {/* {children} */}
+      <LayoutClient>{children}</LayoutClient>
+        
+          {/* <Providers>
+
             <Header />
             <Suspense fallback={<Loading />}>{children}</Suspense>
             <Footer />
  
-          </Providers>
+          </Providers> */}
         
       </body>
     </html>

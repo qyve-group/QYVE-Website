@@ -8,6 +8,7 @@ import { CartItem } from "@/store/cartSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import Loading from "../loading";
+import { useRouter } from "next/navigation";
 
 // export default function MyOrders() {
 const ShippingProgress = () => {
@@ -65,6 +66,8 @@ const ShippingProgress = () => {
     const userId = useSelector( (state: RootState) => state.auth.user);
     const [orderItems, setOrderItems] = useState<CartItem[]>([]);
     const [loading, setLoading] = useState(true);
+    const [showFull, setShowFull] = useState(false);
+
     
     useEffect( () => {
         console.log("userId: ", userId?.id);
@@ -174,153 +177,180 @@ const ShippingProgress = () => {
         fetchOrderItems();
     }, [orderIds])
 
-    return (
-        <div className="space-y-6">
-            {/* Shipping Progress */}
-            <section className="p-6">
-                {/* <div className="bg-white p-6 rounded-xl shadow-lg flex flex-col md:flex-row justify-between items-center w-full max-w-md md:max-w-full mx-auto relative"> */}
-                <div className="bg-white p-6 rounded-xl shadow-lg flex flex-col sm:flex-row justify-between items-center w-full max-w-md md:max-w-full mx-auto relative">
+    const [copied, setCopied] = useState(false);
+    const trackingCode = 'M213ASD4S';
+    const handleCopy = async () => {
+        try {
+          await navigator.clipboard.writeText(trackingCode);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1500);
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      };
 
+    const router = useRouter();
+
+    return (
+        
+        <div className="space-y-3 bg-gray overflow-y-auto max-h-900">
+            <div className="px-6 pt-4">
+                <button
+                    onClick={() => router.back()}
+                    className="flex items-center text-sm text-blue-600 hover:underline"
+                >
+                    ← Back
+                </button>
+            </div>
+            {/* Shipping Progress */}
+            <section className="px-6 pt-3">
+                <div className="relative bg-white p-6 rounded-xl shadow-lg flex flex-row justify-between items-center max-w-md max-w-full mx-auto max-h-[120px]">
 
                     {/* Base gray connecting line */}
-                    {/* <div className="absolute top-1/2 left-0 w-full h-[5px] bg-gray-300 -translate-y-[200%]"></div> */}
-                    {/* <div className="absolute top-1/2 left-0 w-full sm:h-[5px] h-[5px] bg-gray-300 -translate-y-[200%] sm:translate-y-0 sm:w-[5px] sm:h-full"></div> */}
-                    <div className="absolute top-1/2 left-0 w-full sm:h-[5px] h-[3px] bg-gray-300 -translate-y-[200%] sm:translate-y-0 sm:w-[5px] sm:h-full"></div>
-
-
+                    <div className="absolute top-[45px] left-0 w-full sm:h-[5px] h-[3px] border-2 bg-gray-400 -translate-y-[200%] sm:translate-y-0 sm:w-[5px] sm:h-full z-0"></div>
 
                     {/* Progress line that turns green */}
                     <div 
-                        // className="absolute top-1/2 left-0 h-[5px] bg-green-500 transition-all duration-300 -translate-y-[200%]" 
-                        // className="absolute top-1/2 left-0 h-[5px] sm:w-[5px] sm:h-full bg-green-500 transition-all duration-300 -translate-y-[200%] sm:translate-y-0"
-                        className="absolute top-1/2 left-0 h-[3px] sm:h-[5px] bg-green-500 transition-all duration-300 -translate-y-[200%] sm:translate-y-0" 
-
-                        style={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }}>
+                        className="absolute top-[45px] left-0 h-[3px] sm:h-[5px] bg-green-300 transition-all duration-300 -translate-y-[200%] sm:translate-y-0" 
+                        style={{ width: `${((currentStep / (steps.length - 1)) * 100)+1}%`}}>
+                        {/* // className="absolute top-[45px] w-full left-0 h-[3px] sm:h-[5px] bg-green-500 transition-all duration-300 -translate-y-[200%] sm:translate-y-0 z-10" 
+                        > */}
                     </div>
 
-                        {steps.map((step, index) => (
-                            // <div key={index} className="relative flex flex-col items-center w-20">
-                            // <div key={index} className="relative flex flex-col sm:w-20 w-16 min-w-[80px] sm:items-center items-start">
-                            <div key={index} className="relative flex flex-col sm:w-20 w-16 min-w-[80px] sm:items-center items-start">
+                    {steps.map((step, index) => (
+                    <div key={index} className="relative flex flex-col w-[50px] min-h-[70px] items-center">
+
+                        {/* Icon with dynamic color */}
+                        <div className={`p-2 rounded-full flex items-center justify-center transition-all duration-300 w-8 h-8 md:w-13 md:h-13
 
 
-                                {/* Icon with dynamic color */}
-                                {/* <div className={`p-2 rounded-full flex items-center justify-center transition-all duration-300 */}
-                                {/* <div className={`p-2 rounded-full flex items-center justify-center transition-all duration-300 */}
-                                <div className={`p-2 rounded-full flex items-center justify-center transition-all duration-300
+                            ${index <= currentStep ? 'bg-green-600 text-white' : 'bg-white text-customGray-400 border-2 border-gray-400'}`}>
+                            {step.icon}
+                        </div>
 
-
-                                    ${index <= currentStep ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-500'}`}>
-                                    {step.icon}
-                                </div>
-
-                                {/* Label */}
-                                {/* <div className={`mt-1 text-xs font-semibold text-center */}
-                                {/* <div className={`mt-1 text-xs font-semibold text-center */}
-                                <div className={`mt-1 text-xs font-semibold text-center
-
-
-                                    ${index <= currentStep ? 'text-green-500' : 'text-gray-500'}`}>
-                                    {step.label}
-                                </div>
-                            </div>
-                        ))}
+                        {/* Label */}
+                        <div className={`mt-1 text-xs font-semibold text-center
+                            ${index <= currentStep ? 'text-green-500' : 'text-customGray-400'}`}>
+                            {step.label}
+                        </div>
+                    </div>
+                    ))}
                 </div>
             </section>
 
-            {/* Delivery Info */}
-            <section className="bg-blue-500 p-6 rounded-lg text-white">
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="flex flex-col space-y-1">
-                        <h1 className="text-lg font-bold">Delivery Address</h1>
-                        <h2>{info.name}</h2>
-                        <h2>{info.phone}</h2>
-                        <h2>{info.street}</h2>
-                        <h2>{info.city}, {info.pcode}</h2>
-                        <h2>{info.state}</h2>
+            {/*Shipping more details */}
+            <section className="px-6 text-black">
+                <div className="bg-white flex flex-row px-6 py-2 shadow-lg w-full rounded-lg max-w-md max-w-full mx-auto gap-20">
+                    <div className="text-sm flex flex-col">
+                        <p className="font-bold">Flash Express</p>
+                        {/* <p>M213ASD4S</p> */}
+                        <div className="mt-2 flex items-center gap-2">
+                            <p>{trackingCode}</p>
+                            <button
+                            onClick={handleCopy}
+                            className="text-gray-500 hover:text-black text-xs"
+                            title="Copy tracking code"
+                            >
+                            📋
+                            </button>
+                            {copied && <span className="text-green-500 text-xs">Copied!</span>}
+                        </div>
                     </div>
-                    <div className="flex flex-col items-center justify-center bg-blue-700 p-4 rounded-lg">
-                        <h2 className="text-black bg-blue-200 p-2 rounded-lg">*Shipping Code</h2>
-                        <Button>
-                            <p>Click to see shipping details</p>
-                        </Button>
+
+                    {/* Right Side */}
+                    <div className="flex flex-col justify-end">
+                            <p className="text-sm text-blue-600 cursor-pointer">See shipping details</p>
                     </div>
+                </div>
+            </section>
+
+            <section className="px-6 text-black">
+                <div className="bg-white grid grid-cols-2 gap-6 rounded-xl shadow-md w-full p-6 max-w-md mx-auto border border-gray-200">
+                    
+                    {/* Left column */}
+                    <div className="flex flex-col justify-start">
+                    <p className="text-sm font-semibold mb-2">Recipient Info</p>
+                    <p className="text-sm text-gray-800">{info.name}</p>
+                    <p className="text-sm text-gray-800 mt-2">{info.phone}</p>
+                    </div>
+
+                    {/* Right column */}
+                    <div className="flex flex-col justify-start">
+                    <p className="text-sm font-semibold mb-2">Delivery Address</p>
+                    <p className="text-sm text-gray-800">{info.street}</p>
+                    <p className="text-sm text-gray-800">{info.city}, {info.pcode}</p>
+                    <p className="text-sm text-gray-800">{info.state}</p>
+                    </div>
+
                 </div>
             </section>
 
             {/* Order Items */}
-            <section className="p-6 bg-gray-100 rounded-lg shadow-md">
-                {loading ? (
-                        <Loading/>
-                    ): (
-                        <>
-                            {/* <h2 className="text-lg font-bold">Order ID:</h2> */}
-                            {/* <div className="p-2 space-y-4"> */}
-                                {orderIds.map((orderId, idx) => (
-                                    <div key={idx}>
-                                    <h2 className="text-lg font-bold">Order ID: {orderId}</h2>
-                                    <div key={idx} className="p-2 space-y-4">
-                                    {orderItems.map((item, index) => (
-                                        <div key={index} className="flex justify-between bg-white p-3 rounded-lg shadow">
-                                            {/* Image */}
-                                            <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-lg" />
-    
-                                            {/* Product Name */}
-                                            <div className="flex-1 ml-4">
-                                                <p className="font-medium">{item.name}</p>
-                                            </div>
-    
-                                            <div className="flex">
-    
-                                                {/* Quantity */}
-                                                <div className="text-gray-600 p-3">Qty: {item.quantity}</div>
-    
-                                                {/* Price */}
-                                                <div className="font-bold text-gray-800 p-3">RM {item.price}</div>                                           
-    
-                                            </div>
-                                            
-                                        </div>
-                                    ))}
-                                    </div>
-                                    </div>
-                                ))}
+            <section className="px-6">
+                <div className="bg-white rounded-lg shadow-lg p-6 space-y-6">
+
+                    {loading ? (
+                    <Loading />
+                    ) : (
+                    <>
+                        {orderIds.map((orderId, idx) => (
+                        <div key={idx} className={`${idx !== 0 ? 'border-t pt-4' : ''}`}>
+                            <p className="text-sm font-bold mb-2">Order ID: {orderId}</p>
+
+                            <div className="space-y-4">
+                            {orderItems.map((item, index) => (
+                                <div key={index} className="flex justify-between items-center w-full">
                                 
-                            {/* </div> */}
-                            {totalPrice.map( (price, idx) => (
-                                 
-                                <div key={idx} className="mt-4 border-t pt-4 space-y-2 text-gray-700">
-                                    <div className="flex justify-between font-semibold">
-                                        <div>Merchandise Subtotal</div>
-                                        <div>RM {price}</div>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <div>Shipping Fee + SST</div>
-                                        <div>RM 5</div>
-                                    </div>
-                                    <div className="flex justify-between text-lg font-bold">
-                                        <div>Order Total</div>
-                                        <div>RM {price+5}</div>
-                                    </div>
-                                    <div className="flex justify-between mt-2">
-                                        <div>Payment Method</div>
-                                        <div>Credit / Debit Card</div>
-                                    </div>
+                                {/* Image */}
+                                <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-md" />
+
+                                {/* Product Info */}
+                                <div className="flex-1 ml-4">
+                                    <p className="font-medium">{item.name}</p>
                                 </div>
-                                            
-                                 
-                            )
-                        )}
-                            
-                        </>
-                    )
 
-                }
+                                {/* Qty & Price */}
+                                <div className="flex flex-col items-end text-sm">
+                                    <div className="text-gray-600">Qty: {item.quantity}</div>
+                                    <div className="font-bold text-gray-800">RM {item.price}</div>
+                                </div>
+                                </div>
+                            ))}
+                            </div>
+                        </div>
+                        ))}
 
+                        {/* Totals */}
+                        {totalPrice.map((price, idx) => (
+                        <div key={idx} className="border-t pt-6 space-y-2 text-gray-700">
+                            <div className="flex justify-between font-semibold">
+                            <div>Merchandise Subtotal</div>
+                            <div>RM {price}</div>
+                            </div>
+                            <div className="flex justify-between">
+                            <div>Shipping Fee + SST</div>
+                            <div>RM 5</div>
+                            </div>
+                            <div className="flex justify-between text-lg font-bold">
+                            <div>Order Total</div>
+                            <div>RM {price + 5}</div>
+                            </div>
+                            <div className="flex justify-between mt-2 text-sm">
+                            <div>Payment Method</div>
+                            <div>Credit / Debit Card</div>
+                            </div>
+                        </div>
+                        ))}
+                    </>
+                    )}
+                </div>
             </section>
+
         </div>
     );
 }
+
+ShippingProgress.hideFooter = true
 
 export default ShippingProgress;
 

@@ -82,7 +82,7 @@ const MainNav = () => {
                 className="h-full w-full object-cover object-center"
               />
             </ButtonCircle3>
-              <p>Welcome, {auth.user?.email}</p>
+              {/* <p>Welcome, {auth.user?.email}</p> */}
               </div>
               ): (
                 <div className="flex items-center gap-2 pl-5">

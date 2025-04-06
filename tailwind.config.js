@@ -25,7 +25,20 @@ module.exports = {
   				DEFAULT: 'hsl(var(--secondary))',
   				foreground: 'hsl(var(--secondary-foreground))'
   			},
-  			gray: '#eeeeee',
+  			// gray: colors.gray,
+			gray: '#eeeeee',
+			customGray: {
+				50: '#f9f9f9',
+				100: '#f0f0f0',
+				200: '#e0e0e0',
+				300: '#cfcfcf',
+				400: '#bfbfbf',
+				500: '#a0a0a0',
+				600: '#808080',
+				700: '#606060',
+				800: '#404040',
+				900: '#202020',
+			  },
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
