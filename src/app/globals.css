@@ -1,0 +1,8 @@
+/* app/globals.css */
+@import 'swiper/css';
+@import 'swiper/css/pagination';
+
+/* You can also put your Tailwind base styles here if not already */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

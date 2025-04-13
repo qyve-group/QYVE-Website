@@ -117,12 +117,22 @@ export const NavLinks: NavItemType[] = [
   },
 ];
 
-export const headerSection = {
-  title: "NEW ARRIVAL!",
-  heading: "AIR JORDAN 6 GX EASTSIDE",
-  description:
-    "Feel unbeatable from the tee box to the final putt in a design that's pure early MJ: speed, class",
-};
+export const headerSection = [
+  {
+    title: "NEW ARRIVAL!",
+    heading: "QYVE ProGrip Socks",
+    description:
+      "Stay locked in. No slips, just goals",
+  },
+  {
+    title: "Coming soon",
+    heading: "QYVE Recovery Slides",
+    description:
+      "Give your feet a break after a futsal session—slip into recovery slides for ultimate comfort and faster recovery",
+  },
+
+
+];
 
 export const promotionTag = {
   heading: "DISC UP TO 50% FOR SNEAKERS FEST ID 2023",
@@ -642,7 +652,7 @@ export const footerBannerData = {
 
 export const footerData = {
   description:
-    "HotKicks was designed and founded in 2023 by Person. The theme is about sneakers ecommerce thet use for shoes selling around the world.",
+    "Founded in 2024, QYVE exists to elevate the standards of futsal by prioritizing performance, innovation, and community—bringing players together through a shared passion for the game",
   footerLinks: [
     {
       title: "Main Pages",

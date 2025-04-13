@@ -6,6 +6,7 @@ import Footer from "@/shared/Footer/Footer";
 import Providers from "@/components/Providers";
 import Loading from "./loading";
 import { Suspense } from "react";
+import "@/styles/global.css";
 
 export default function LayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

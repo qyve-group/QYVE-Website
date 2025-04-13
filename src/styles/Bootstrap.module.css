@@ -1,0 +1,19 @@
+/* src/styles/Bootstrap.module.css */
+
+.itemP {
+    max-height: 500px;
+    overflow: hidden;
+  }
+  
+  .itemP img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  
+  .caption {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  

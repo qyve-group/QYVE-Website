@@ -10,6 +10,7 @@ import Loading from "./loading";
 
 import Providers from "@/components/Providers";
 import LayoutClient from "./layoutClient";
+import "@/styles/global.css";
 
 
 export const metadata: Metadata = {
