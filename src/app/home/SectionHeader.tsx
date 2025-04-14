@@ -76,15 +76,30 @@ const SectionHeader = () => {
 
   }, [])
 
+  const getPositionClasses = (position: string) => {
+    switch (position) {
+      case "center":
+        return "absolute inset-0 flex flex-col items-center justify-center text-center";
+      case "bottom-left":
+        return "absolute bottom-10 left-10 text-left";
+      case "top-right":
+        return "absolute top-10 right-10 text-right";
+      case "left":
+        return "absolute left-10 top-1/2 -translate-y-1/2 text-left";       
+      default:
+        return "absolute inset-0 flex items-center justify-center"; // fallback
+    }
+  };
   
-
   return (
-    <div className="container items-stretch gap-y-5 lg:flex lg:gap-5 lg:gap-y-0">
+    <div className="relative container items-stretch gap-y-5 lg:flex lg:gap-5 lg:gap-y-0">
       <Carousel className="w-3/4 px-6 text-center">
         <CarouselContent style={{ transform: `translateX(-${current * 100}%)`, transition: "transform 0.5s ease-in-out" }}>
           {slides?.map((slide) => (
             <CarouselItem key={slide.id} className="min-w-full">
-              <div className="basis-[68%] items-center space-y-10 rounded-2xl bg-gray p-5 md:flex md:space-y-0">
+
+
+              <div className="basis-[68%] items-center space-y-10 rounded-2xl bg-gray p-5 md:flex md:space-y-0 h-full">
                 {/* Left content */}
                 <div className="basis-[63%] flex flex-col justify-between">
                   <div>
@@ -103,84 +118,49 @@ const SectionHeader = () => {
                   {/* Arrows & Pagination */}
                   <div className="mt-10 flex flex-col items-center space-y-3">
                     <div className="flex items-center justify-center space-x-4">
-                      {/* <button onClick={() => setCurrent((current - 1 + slides.length) % slides.length)}>
-                        <CarouselPrevious />
-                      </button> */}
-
-                      <div className="flex space-x-2">
-                        {slides.map((_, idx) => (
-                          <div
-                            key={idx}
-                            className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                              idx === current ? "bg-primary scale-125" : "bg-gray-400"
-                            }`}
-                          />
-                        ))}
-                      </div>
-
-                      {/* <button onClick={() => setCurrent((current + 1) % slides.length)}>
-                        <CarouselNext />
-                      </button> */}
                     </div>
                   </div>
                 </div>
 
                 {/* Right image */}
                 <div className="basis-[37%]">
-                  <Image src={slide.image_url} alt={slide.heading} width={500} height={500} className="w-full h-[400px]" />
+                  <Image src={slide.image_url} alt={slide.heading} width={500} height={500} className="w-full" />
                 </div>
               </div>
+
+              {/*  ---------------------------------------- Fix this ---------------------------------------------- */}
+
+              {/* <div className="relative h-[500px] rounded-2xl overflow-hidden"> 
+                
+                {slide.media_type === "video" ? ( 
+                  <video ... />
+                ) : (
+                  <img src={slide.media_url} className="absolute inset-0 w-full h-full object-cover" />
+                )}
+
+                
+                <div className={`${getPositionClasses(slide.content_position)} ${slide.content_bg} p-6 z-10`}>
+                  <h1 className={`text-4xl font-bold ${slide.text_color}`}>{slide.heading}</h1>
+                  <p className={`mt-4 ${slide.text_color}`}>{slide.description}</p>
+                  <ButtonPrimary className="mt-6">{slide.button_text}</ButtonPrimary>
+                </div>
+              </div> */}
+              {/*  ---------------------------------------- Fix this ---------------------------------------------- */}
+
             </CarouselItem>
           ))}
         </CarouselContent>
+        <div className="absolute bottom-0 left-1/2 z-10 flex space-x-2 justify-center -translate-x-1/2 -translate-y-3">
+          {slides?.map((_, idx) => (
+            <div
+              key={idx}
+              className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                idx === current ? "bg-primary scale-125" : "bg-blue-800"
+              }`}
+            />
+          ))}
+        </div>
       </Carousel>
-
-        {/* <Carousel className="w-3/4 px-6 text-center">
-          <CarouselContent>
-            <CarouselItem>
-              <div className="basis-[68%] items-center space-y-10 rounded-2xl bg-gray p-5 md:flex md:space-y-0">
-                <div className="basis-[63%] flex flex-col justify-between">
-                  <div>
-                    <h4 className="mb-5 text-xl font-medium text-primary">
-                      {headerSection.title}
-                    </h4>
-                    <h1
-                      className="text-[50px] font-medium tracking-tight"
-                      style={{ lineHeight: "1em" }}
-                    >
-                      {headerSection.heading}
-                    </h1>
-                    <p className="my-10 w-[80%] text-neutral-500">
-                      {headerSection.description}
-                    </p>
-                    <ButtonPrimary sizeClass="px-5 py-4">View Product</ButtonPrimary>
-                  </div>
-
-                  <div className="mt-10 flex flex-col items-center space-y-3">
-                    <div className="flex items-center justify-center space-x-4">
-
-                      <div className="flex space-x-2">
-                        {[0, 1, 2].map((i) => (
-                          <div
-                            key={i}
-                            className={`h-2 w-2 rounded-full ${
-                              i === 0 ? 'bg-primary' : 'bg-gray-400'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="basis-[37%]">
-                  <Image src={shoe_box} alt="shoe box" className="w-full" />
-                </div>
-              </div>
-            </CarouselItem>
-          </CarouselContent>
-        </Carousel> */}
-
       <div className="mt-5 basis-[30%] lg:mt-0">
         <PromoTag />
       </div>
