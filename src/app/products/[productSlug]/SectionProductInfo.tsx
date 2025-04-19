@@ -11,20 +11,20 @@ interface SectionProductInfoProps {
     title: string;
     description: string;
   }[];
-  ratings: number;
-  reviews: number;
+  // ratings: number;
+  // reviews: number;
 }
 
 const SectionProductInfo: FC<SectionProductInfoProps> = ({
   overview,
   shipment_details,
-  ratings,
-  reviews,
+  // ratings,
+  // reviews,
 }) => {
   return (
     <div className="grid gap-16 lg:grid-cols-2">
       <ProductInfoTab overview={overview} shipment_details={shipment_details} />
-      <Ratings rating={ratings} reviews={reviews} />
+      {/* <Ratings rating={ratings} reviews={reviews} /> */}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-// import type { StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC } from "react";
 import React from "react";
@@ -11,7 +11,7 @@ import { MdStar } from "react-icons/md";
 import { PiSealCheckFill } from "react-icons/pi";
 import {  useState, useEffect } from "react"; 
 
-// import ImageShowCase from "@/components/ImageShowCase";
+import ImageShowCase from "@/components/ImageShowCase";
 import ShoeSizeButton from "@/components/ShoeSizeButton";
 // import { shoeSizes } from "@/data/content";
 import nike_profile from "@/images/nike_profile.jpg";
@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "@/store/cartSlice";
 import { useSelector } from "react-redux";
 import {store, RootState} from "@/store/store";
+import { supabase } from "@/libs/supabaseClient";
 // import { supabase } from "@/libs/supabaseClient";
 
 interface SectionProductHeaderProps {
@@ -58,6 +59,63 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const cart = useSelector((state: RootState) => state.cart); // Get latest cart state
   const dispatch = useDispatch();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [shots, setShots] = useState<string[]>([]);
+  // const prod_id = 6;
+
+  useEffect( () => {
+    const fetchShots = async() => {
+      const {data: shotsData, error} = await supabase.from("product_shots").select("images").eq("product_id", id);
+      console.log("Shots array: ", shotsData)
+      console.log("Shots array length: ", shotsData?.length)
+      console.log("Shots arra [0] length: ", shotsData?.[0]?.images || [])
+
+    //   if (error) {
+    //     console.error("Error fetching shots:", error);
+    //   } else {
+    //     setShots(shotsData?.[0]?.images || []);
+    //   }
+
+    // };
+
+    if (error) {
+      console.error("Error fetching shots:", error);
+      return;
+    }
+
+    // Set shots if data is available, otherwise fallback to empty array
+    if (shotsData && shotsData.length > 0) {
+      setShots(shotsData?.[0]?.images || []);  // safely access images
+    } else {
+      setShots([]);  // No images found, set empty array
+    }
+  };
+
+    fetchShots();
+  }, [])
+
+  // useEffect(() => {
+  //   const fetchShots = async () => {
+  //     const { data: shotsData, error } = await supabase
+  //       .from("product_shots")
+  //       .select("images")
+  //       .eq("product_id", id);
+
+  //     if (error) {
+  //       console.error("Error fetching shots:", error);
+  //       return;
+  //     }
+
+  //     console.log("Shots array: ", shotsData)
+
+  //     if (shotsData && shotsData.length > 0) {
+  //       setShots(shotsData?.images || []); // Safely access images
+  //     } else {
+  //       setShots([]); // No images found, set empty array
+  //     }
+  //   };
+
+  //   fetchShots();
+  // }, [id]); // Re-run when `id` changes
 
   const handleAddToCart = () => {
     if (!selectedSize) {
@@ -94,7 +152,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   // console.log("price:", price);
   return (
     <div className="items-stretch justify-between space-y-10 lg:flex lg:space-y-0">
-      {/* <div className="basis-[50%]"><ImageShowCase shots={shots} /></div> */}
+      <div className="basis-[50%]"><ImageShowCase shots={shots} /></div>
       <div className="basis-[50%]">
         <Image
           src={image_cover}

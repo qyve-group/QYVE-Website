@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import LikeButton from "./LikeButton";
 
 interface ImageShowCaseProps {
-  shots: StaticImageData[];
+  shots: string[];
 }
 
 const ImageShowCase: FC<ImageShowCaseProps> = ({ shots }) => {
@@ -17,18 +17,22 @@ const ImageShowCase: FC<ImageShowCaseProps> = ({ shots }) => {
 
   return (
     <div className="space-y-3 rounded-2xl border border-neutral-300 p-2">
-      <div className="relative overflow-hidden rounded-2xl md:h-[520px]">
+      <div className="relative aspect-square overflow-hidden rounded-2xl md:h-[520px]">
         <LikeButton className="absolute right-5 top-5" />
         <Image
-          src={pathOr("", [activeImageIndex], shots)}
+          // src={pathOr("", [activeImageIndex], shots)}
+          src={shots[activeImageIndex] || ""}
           alt="shoe image"
-          className="h-full w-full object-cover object-center"
+          fill
+          // className="h-full w-full object-cover object-center"
+          className="object-cover object-center"
         />
       </div>
       <div className="grid grid-cols-4 gap-3">
         {shots.map((shot, index) => (
           <div
-            key={shot.src}
+            // key={shot.src}
+            key={shot}
             className={`${
               activeImageIndex === index ? "border-2 border-primary" : ""
             } h-[100px] overflow-hidden rounded-lg`}
@@ -41,6 +45,8 @@ const ImageShowCase: FC<ImageShowCaseProps> = ({ shots }) => {
               <Image
                 src={shot}
                 alt="shoe image"
+                width={100}
+                height={100}
                 className="h-full w-full object-cover object-center"
               />
             </button>
