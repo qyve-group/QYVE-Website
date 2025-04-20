@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { CartItem } from "@/store/cartSlice";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -7,8 +8,9 @@ const supabase = createClient(
 );
 
 export async function POST(req: NextRequest) {
+
   try {
-    const { userId, cartItems } = await req.json();
+    const { userId, cartItems }: { userId: string; cartItems: CartItem[] } = await req.json();
 
     if (!userId || !cartItems || cartItems.length === 0) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
@@ -19,6 +21,11 @@ export async function POST(req: NextRequest) {
       (sum, item) => sum + item.price * item.quantity,
       0
     );
+
+    // const totalPrice = cartItems.reduce<number>(
+    //   (sum, item) => sum + item.price * item.quantity,
+    //   0
+    // );
 
     // Create order
     const { data: order, error: orderError } = await supabase
