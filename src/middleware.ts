@@ -18,7 +18,7 @@ export function config() {
   };
 }
 
-export function middleware(req: NextRequest) {
+export function middleware(_req: NextRequest) {
   return NextResponse.next();
 }
 

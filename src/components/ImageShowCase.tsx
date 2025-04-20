@@ -1,8 +1,8 @@
 "use client";
 
-import type { StaticImageData } from "next/image";
+// import type { StaticImageData } from "next/image";
 import Image from "next/image";
-import { pathOr } from "ramda";
+// import { pathOr } from "ramda";
 import type { FC } from "react";
 import React, { useState } from "react";
 

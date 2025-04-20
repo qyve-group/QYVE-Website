@@ -3,7 +3,7 @@
 import { updateQuantity } from '@/store/cartSlice';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 
 export interface InputNumberProps {

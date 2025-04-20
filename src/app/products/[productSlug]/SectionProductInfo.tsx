@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import React from 'react';
 
 import ProductInfoTab from './ProductInfoTab';
-import Ratings from './Ratings';
+// import Ratings from './Ratings';
 
 interface SectionProductInfoProps {
   overview: string;

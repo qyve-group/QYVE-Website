@@ -33,7 +33,7 @@ const LoginForm = () => {
     }
 
     const handleGoogleSignIn = async () => {
-      const {data, error } = await supabase.auth.signInWithOAuth({
+      const {error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `http://localhost:3000/home`,

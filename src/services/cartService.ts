@@ -1,10 +1,10 @@
 import { supabase } from "@/libs/supabaseClient";
 import { setCart } from "@/store/cartSlice";
-import { AppDispatch, RootState } from "@/store/store";
+import { AppDispatch} from "@/store/store";
 import { UUID } from "crypto";
 import { store } from "@/store/store";
-import CartSync from "./cartProvider"; 
-import { debounce } from "@/utils/debounce";
+// import CartSync from "./cartProvider"; 
+// import { debounce } from "@/utils/debounce";
 import { CartItem } from "@/store/cartSlice";
 
 
@@ -40,14 +40,14 @@ type supabaseCartItem = {
     //     "created_at": "2025-03-21T23:10:04.873857",
     //     "updated_at": "2025-03-21T23:10:04.873857"
 
-type reduxCartItem = {
-  id: number; //product_id
-  name: string;
-  price: number;
-  product_size: string | null;
-  quantity: number;
-  image: string;
-}
+// type reduxCartItem = {
+//   id: number; //product_id
+//   name: string;
+//   price: number;
+//   product_size: string | null;
+//   quantity: number;
+//   image: string;
+// }
   //example reduxCartItems
     //   {
     //     "id": "1", ------------------------> this is product_id
@@ -67,93 +67,93 @@ type reduxCartItem = {
     // }
 
 
-const mergeCarts = async (reduxCart: reduxCartItem[], supabaseCart: supabaseCartItem[]): Promise<reduxCartItem[]> => {
-  const mergedCart: reduxCartItem[] = [];
+// const mergeCarts = async (reduxCart: reduxCartItem[], supabaseCart: supabaseCartItem[]): Promise<reduxCartItem[]> => {
+//   const mergedCart: reduxCartItem[] = [];
 
   
-  // Convert Supabase cart items to a Map for quick lookup
-  const formattedSupabaseCart = new Map(
-    supabaseCart.map((item) => [
-      `${item.product_id}-${item.size_id}`,
-      { ...item, quantity: item.quantity, price: item.price }
-    ])
-  );
-  console.log("formattedSupabaseCart: ", formattedSupabaseCart);
+//   // Convert Supabase cart items to a Map for quick lookup
+//   const formattedSupabaseCart = new Map(
+//     supabaseCart.map((item) => [
+//       `${item.product_id}-${item.size_id}`,
+//       { ...item, quantity: item.quantity, price: item.price }
+//     ])
+//   );
+//   console.log("formattedSupabaseCart: ", formattedSupabaseCart);
 
-  // Create a Map for merged cart items
-  const cartMap = new Map<string, any>();
+//   // Create a Map for merged cart items
+//   const cartMap = new Map<string, any>();
 
-  console.log("Initial supabaseCart:", supabaseCart);
-  console.log("Initial reduxCart:", reduxCart);
+//   console.log("Initial supabaseCart:", supabaseCart);
+//   console.log("Initial reduxCart:", reduxCart);
 
-  // Process Redux cart items and fetch their corresponding size_id
-  await Promise.all(
-    reduxCart.map(async (item) => {
-      // Fetch size_id from Supabase
-      const { data: products_sizesTable, error } = await supabase
-        .from("products_sizes")
-        .select("id")
-        .eq("size", item.product_size)
-        .eq("product_id", item.id)
-        .maybeSingle();
+//   // Process Redux cart items and fetch their corresponding size_id
+//   await Promise.all(
+//     reduxCart.map(async (item) => {
+//       // Fetch size_id from Supabase
+//       const { data: products_sizesTable, error } = await supabase
+//         .from("products_sizes")
+//         .select("id")
+//         .eq("size", item.product_size)
+//         .eq("product_id", item.id)
+//         .maybeSingle();
 
-      if (error) {
-        console.error("Error fetching size_id from Supabase:", error);
-        return;
-      }
+//       if (error) {
+//         console.error("Error fetching size_id from Supabase:", error);
+//         return;
+//       }
 
-      const sizeId = products_sizesTable?.id; // Get the size_id
+//       const sizeId = products_sizesTable?.id; // Get the size_id
 
-      if (!sizeId) {
-        console.warn(`No size_id found for product_id: ${item.id}, size: ${item.product_size}`);
-        return;
-      }
+//       if (!sizeId) {
+//         console.warn(`No size_id found for product_id: ${item.id}, size: ${item.product_size}`);
+//         return;
+//       }
 
-      // Unique key using product_id and size_id
-      const key = `${item.id}-${sizeId}`;
+//       // Unique key using product_id and size_id
+//       const key = `${item.id}-${sizeId}`;
 
-      if (cartMap.has(key)) {
-        console.log(`Duplicate item detected in Redux: ${key}, merging...`);
-        // Merge quantities and prices properly
-        const existingItem = cartMap.get(key);
-        cartMap.set(key, {
-          ...existingItem,
-          quantity: existingItem.quantity + item.quantity, // Sum quantity
-          price: existingItem.price + item.price, // Sum price
-        });
-      } else {
-        // Add new Redux item
-        cartMap.set(key, { ...item, size_id: sizeId });
-      }
-    })
-  );
+//       if (cartMap.has(key)) {
+//         console.log(`Duplicate item detected in Redux: ${key}, merging...`);
+//         // Merge quantities and prices properly
+//         const existingItem = cartMap.get(key);
+//         cartMap.set(key, {
+//           ...existingItem,
+//           quantity: existingItem.quantity + item.quantity, // Sum quantity
+//           price: existingItem.price + item.price, // Sum price
+//         });
+//       } else {
+//         // Add new Redux item
+//         cartMap.set(key, { ...item, size_id: sizeId });
+//       }
+//     })
+//   );
 
-  console.log("Redux cart after merging:", Array.from(cartMap.values()));
+//   console.log("Redux cart after merging:", Array.from(cartMap.values()));
 
-  // Merge Supabase items into the map (without overriding existing Redux items)
-  formattedSupabaseCart.forEach((supabaseItem, key) => {
-    if (cartMap.has(key)) {
-      console.log(`Merging Supabase item with Redux item: ${key}`);
-      // Merge quantities & price
-      const existingItem = cartMap.get(key);
-      cartMap.set(key, {
-        ...existingItem,
-        quantity: existingItem.quantity + supabaseItem.quantity, // Sum quantity
-        price: existingItem.price + supabaseItem.price, // Sum price
-      });
-    } else {
-      // If item is only in Supabase, add it
-      cartMap.set(key, supabaseItem);
-    }
-  });
+//   // Merge Supabase items into the map (without overriding existing Redux items)
+//   formattedSupabaseCart.forEach((supabaseItem, key) => {
+//     if (cartMap.has(key)) {
+//       console.log(`Merging Supabase item with Redux item: ${key}`);
+//       // Merge quantities & price
+//       const existingItem = cartMap.get(key);
+//       cartMap.set(key, {
+//         ...existingItem,
+//         quantity: existingItem.quantity + supabaseItem.quantity, // Sum quantity
+//         price: existingItem.price + supabaseItem.price, // Sum price
+//       });
+//     } else {
+//       // If item is only in Supabase, add it
+//       cartMap.set(key, supabaseItem);
+//     }
+//   });
 
-  // Convert map values back to an array
-  mergedCart.push(...Array.from(cartMap.values()));
+//   // Convert map values back to an array
+//   mergedCart.push(...Array.from(cartMap.values()));
 
-  console.log("Final mergedCart:", mergedCart);
+//   console.log("Final mergedCart:", mergedCart);
 
-  return mergedCart;
-};
+//   return mergedCart;
+// };
 
   // // Convert Supabase cart items to the Redux format
   // const formattedSupabaseCart = supabaseCart.map((item) => ({
@@ -499,7 +499,7 @@ export const saveCartToSupabase = async (userId: string, reduxCartItems: any[]) 
   }
 };
 
-export const saveCartAfterRemove = async (userId: string, reduxCartItems: any[], removedCartItem: CartItem) => {
+export const saveCartAfterRemove = async (userId: string, removedCartItem: CartItem) => {
   try {
 
     //------------------------- fetching cartid and retrieving items from supabase to put into map   ------------------------------------------------------------

@@ -1,7 +1,9 @@
 "use client";
 
-import { CheckCircle, Truck, Package, Star, CreditCard } from "lucide-react";
-import Button from "@/shared/Button/Button";
+import { CheckCircle, Truck, Package, CreditCard } from "lucide-react";
+// import { CheckCircle, Truck, Package, Star, CreditCard } from "lucide-react";
+
+// import Button from "@/shared/Button/Button";
 import { useEffect, useState } from "react";
 import { supabase } from "@/libs/supabaseClient";
 import { CartItem } from "@/store/cartSlice";
@@ -66,7 +68,7 @@ const ShippingProgress = () => {
     const userId = useSelector( (state: RootState) => state.auth.user);
     const [orderItems, setOrderItems] = useState<CartItem[]>([]);
     const [loading, setLoading] = useState(true);
-    const [showFull, setShowFull] = useState(false);
+    // const [showFull, setShowFull] = useState(false);
 
     
     useEffect( () => {

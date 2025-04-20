@@ -10,7 +10,7 @@ import { MdClose, MdStar } from 'react-icons/md';
 import { useEffect } from "react";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart, updateQuantity } from "@/store/cartSlice"; // Make sure this action exists in cartSlice
+import { removeFromCart} from "@/store/cartSlice"; // Make sure this action exists in cartSlice
 
 import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
@@ -18,7 +18,7 @@ import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import InputNumber from '@/shared/InputNumber/InputNumber';
 import LikeButton from './LikeButton';
 import { CartItem } from "@/store/cartSlice";
-import { saveCartToSupabase, saveCartAfterRemove } from "@/services/cartService";
+import { saveCartAfterRemove } from "@/services/cartService";
 import { debounce } from "@/utils/debounce";
 import { store } from '@/store/store';
 

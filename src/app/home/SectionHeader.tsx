@@ -3,8 +3,8 @@ import Image from "next/image";
 import React from "react";
 
 import PromoTag from "@/components/PromoTag";
-import { headerSection } from "@/data/content";
-import shoe_box from "@/images/shoe_box.png";
+// import { headerSection } from "@/data/content";
+// import shoe_box from "@/images/shoe_box.png";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import { supabase } from "@/libs/supabaseClient";
 // import BootstrapCarousel from "@/components/Carousel";
@@ -12,8 +12,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  // CarouselNext,
+  // CarouselPrevious,
 } from "@/components/ui/carousel"
 import { useEffect, useState } from "react";
 import { UUID } from "crypto";
@@ -28,20 +28,20 @@ type Slide = {
   is_active: boolean;
 }
 
-const banners = [
-  {
-    image: '/banner1.jpg',
-    title: '🔥 Summer Drop Just Landed',
-    subtitle: 'Explore the latest fits for the season.',
-    cta: 'Shop Now',
-  },
-  {
-    image: '/banner2.jpg',
-    title: '⚡ Flash Sale - 20% Off',
-    subtitle: 'Limited time offer, ends midnight!',
-    cta: 'Grab Deals',
-  },
-];
+// const banners = [
+//   {
+//     image: '/banner1.jpg',
+//     title: '🔥 Summer Drop Just Landed',
+//     subtitle: 'Explore the latest fits for the season.',
+//     cta: 'Shop Now',
+//   },
+//   {
+//     image: '/banner2.jpg',
+//     title: '⚡ Flash Sale - 20% Off',
+//     subtitle: 'Limited time offer, ends midnight!',
+//     cta: 'Grab Deals',
+//   },
+// ];
 
 
 const SectionHeader = () => {
@@ -76,20 +76,20 @@ const SectionHeader = () => {
 
   }, [])
 
-  const getPositionClasses = (position: string) => {
-    switch (position) {
-      case "center":
-        return "absolute inset-0 flex flex-col items-center justify-center text-center";
-      case "bottom-left":
-        return "absolute bottom-10 left-10 text-left";
-      case "top-right":
-        return "absolute top-10 right-10 text-right";
-      case "left":
-        return "absolute left-10 top-1/2 -translate-y-1/2 text-left";       
-      default:
-        return "absolute inset-0 flex items-center justify-center"; // fallback
-    }
-  };
+  // const getPositionClasses = (position: string) => {
+  //   switch (position) {
+  //     case "center":
+  //       return "absolute inset-0 flex flex-col items-center justify-center text-center";
+  //     case "bottom-left":
+  //       return "absolute bottom-10 left-10 text-left";
+  //     case "top-right":
+  //       return "absolute top-10 right-10 text-right";
+  //     case "left":
+  //       return "absolute left-10 top-1/2 -translate-y-1/2 text-left";       
+  //     default:
+  //       return "absolute inset-0 flex items-center justify-center"; // fallback
+  //   }
+  // };
   
   return (
     <div className="relative container items-stretch gap-y-5 lg:flex lg:gap-5 lg:gap-y-0">
