@@ -186,3 +186,9 @@
 // };
 
 // export default CheckoutPage;
+
+// /src/app/checkout/page.tsx
+export default function CheckoutPage() {
+    return <div>Checkout Page</div>;
+  }
+  
