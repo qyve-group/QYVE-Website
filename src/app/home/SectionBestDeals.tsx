@@ -1,7 +1,7 @@
 import React from 'react';
 
 import CountDownTimer from '@/components/CountDownTimer';
-import ProductSlider from '@/components/ProductSlider';
+// import ProductSlider from '@/components/ProductSlider';
 
 const SectionBestDeals = () => {
   return (
@@ -12,7 +12,7 @@ const SectionBestDeals = () => {
           <CountDownTimer />
         </div>
         <div className="pb-2">
-          <ProductSlider />
+          {/* <ProductSlider /> */}
         </div>
       </div>
     </div>
