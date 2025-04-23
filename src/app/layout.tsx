@@ -1,14 +1,14 @@
 import "@/styles/global.css";
 
 import type { Metadata } from "next";
-import React, { Suspense } from "react";
+import React from "react";
 
-import Header from "@/components/Header/Header";
-import Footer from "@/shared/Footer/Footer";
+// import Header from "@/components/Header/Header";
+// import Footer from "@/shared/Footer/Footer";
 
-import Loading from "./loading";
+// import Loading from "./loading";
 
-import Providers from "@/components/Providers";
+// import Providers from "@/components/Providers";
 import LayoutClient from "./layoutClient";
 import "@/styles/global.css";
 
