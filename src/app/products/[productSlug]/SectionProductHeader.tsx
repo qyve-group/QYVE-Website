@@ -1,6 +1,6 @@
 "use client";
 
-import type { StaticImageData } from "next/image";
+// import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import type { FC } from "react";
 import React from "react";
@@ -23,7 +23,7 @@ import Heading from "@/shared/Heading/Heading";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/store/cartSlice";
 import { useSelector } from "react-redux";
-import {store, RootState} from "@/store/store";
+import { RootState} from "@/store/store";
 import { supabase } from "@/libs/supabaseClient";
 // import { supabase } from "@/libs/supabaseClient";
 
