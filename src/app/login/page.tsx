@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import LoginForm from "@/components/LoginForm";
-import { RootState } from "@/store/store";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react"; 
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
+import LoginForm from '@/components/LoginForm';
+import type { RootState } from '@/store/store';
 
 const LoginPage = () => {
-
   const auth = useSelector((state: RootState) => state.auth);
   const router = useRouter();
 
   useEffect(() => {
     if (!auth.loading) {
-      router.push("/home");  // Redirect to home if logged in
+      router.push('/home'); // Redirect to home if logged in
     }
   }, [auth.loading, router]);
 
@@ -21,7 +21,6 @@ const LoginPage = () => {
   if (!auth.loading) return null;
 
   return <LoginForm />;
-}
+};
 
 export default LoginPage;
-

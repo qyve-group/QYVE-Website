@@ -1,14 +1,13 @@
-"use client";
+'use client';
 
-import { supabase } from "@/libs/supabaseClient";
+import React, { useEffect, useState } from 'react';
 
-import React, { useEffect, useState } from "react";
-
-import Filter from "@/components/Filter";
-import ProductCard from "@/components/ProductCard";
-import { productsSection } from "@/data/content";
-import ButtonPrimary from "@/shared/Button/ButtonPrimary";
-import Heading from "@/shared/Heading/Heading";
+import Filter from '@/components/Filter';
+import ProductCard from '@/components/ProductCard';
+import { productsSection } from '@/data/content';
+import { supabase } from '@/libs/supabaseClient';
+import ButtonPrimary from '@/shared/Button/ButtonPrimary';
+import Heading from '@/shared/Heading/Heading';
 
 interface Product {
   id: number;
@@ -38,19 +37,19 @@ interface Product {
 // }, []);
 
 const SectionProducts = () => {
-  console.log("Supabase client initialized:", supabase);
+  console.log('Supabase client initialized:', supabase);
 
   const [products, setProducts] = useState<Product[]>();
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data, error } = await supabase.from("products").select();
+      const { data, error } = await supabase.from('products').select();
 
-      console.log("Fetched products:", data);
-      console.log("Supabase error:", error);
+      console.log('Fetched products:', data);
+      console.log('Supabase error:', error);
 
       if (error) {
-        console.error("Error fetching products: ", error);
+        console.error('Error fetching products: ', error);
       } else {
         setProducts(data);
       }

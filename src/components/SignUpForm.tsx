@@ -1,34 +1,27 @@
-"use client";
+'use client';
 
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { FaGoogle } from 'react-icons/fa6';
 
+import { submitSignUp } from '@/services/authService';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import FormItem from '@/shared/FormItem';
 import Input from '@/shared/Input/Input';
-import { useState} from "react";
-import { submitSignUp } from "@/services/authService";
 
 const SignUpForm = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-
-
-const submitForm = async () => {
-
-    try{
-        const data = await submitSignUp(email, password);
-        console.log("Registration successfull: ", data);
-        
+  const submitForm = async () => {
+    try {
+      const data = await submitSignUp(email, password);
+      console.log('Registration successfull: ', data);
+    } catch (error) {
+      console.error('Error in registering user: ', error);
     }
-    catch (error){
-        console.error("Error in registering user: ", error);
-    }
-    
-}
+  };
 
   return (
     <div className={`nc-PageSignUp `} data-nc-id="PageSignUp">

@@ -1,30 +1,27 @@
-"use client";
+'use client';
 
 // import type { StaticImageData } from "next/image";
-import Image from "next/image";
-import type { FC } from "react";
-import React from "react";
-import { BsBag } from "react-icons/bs";
-import { GoDotFill } from "react-icons/go";
-import { LuInfo } from "react-icons/lu";
-import { MdStar } from "react-icons/md";
-import { PiSealCheckFill } from "react-icons/pi";
-import {  useState, useEffect } from "react"; 
+import Image from 'next/image';
+import type { FC } from 'react';
+import React, { useEffect, useState } from 'react';
+import { BsBag } from 'react-icons/bs';
+import { GoDotFill } from 'react-icons/go';
+import { LuInfo } from 'react-icons/lu';
+import { MdStar } from 'react-icons/md';
+import { PiSealCheckFill } from 'react-icons/pi';
+import { useDispatch, useSelector } from 'react-redux';
 
-import ImageShowCase from "@/components/ImageShowCase";
-import ShoeSizeButton from "@/components/ShoeSizeButton";
+import ImageShowCase from '@/components/ImageShowCase';
+import ShoeSizeButton from '@/components/ShoeSizeButton';
 // import { shoeSizes } from "@/data/content";
-import nike_profile from "@/images/nike_profile.jpg";
-import ButtonCircle3 from "@/shared/Button/ButtonCircle3";
-import ButtonPrimary from "@/shared/Button/ButtonPrimary";
-import ButtonSecondary from "@/shared/Button/ButtonSecondary";
-import Heading from "@/shared/Heading/Heading";
-
-import { useDispatch } from "react-redux";
-import { addToCart } from "@/store/cartSlice";
-import { useSelector } from "react-redux";
-import { RootState} from "@/store/store";
-import { supabase } from "@/libs/supabaseClient";
+import nike_profile from '@/images/nike_profile.jpg';
+import { supabase } from '@/libs/supabaseClient';
+import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
+import ButtonPrimary from '@/shared/Button/ButtonPrimary';
+import ButtonSecondary from '@/shared/Button/ButtonSecondary';
+import Heading from '@/shared/Heading/Heading';
+import { addToCart } from '@/store/cartSlice';
+import type { RootState } from '@/store/store';
 // import { supabase } from "@/libs/supabaseClient";
 
 interface SectionProductHeaderProps {
@@ -35,7 +32,7 @@ interface SectionProductHeaderProps {
   previous_price: number;
   image_cover: string;
   sizes: string[];
-  products_sizes: {size: string; stock: number}[];
+  products_sizes: { size: string; stock: number }[];
   // currentPrice: number;
   // rating: number;
   // pieces_sold: number;
@@ -62,36 +59,39 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const [shots, setShots] = useState<string[]>([]);
   // const prod_id = 6;
 
-  useEffect( () => {
-    const fetchShots = async() => {
-      const {data: shotsData, error} = await supabase.from("product_shots").select("images").eq("product_id", id);
-      console.log("Shots array: ", shotsData)
-      console.log("Shots array length: ", shotsData?.length)
-      console.log("Shots arra [0] length: ", shotsData?.[0]?.images || [])
+  useEffect(() => {
+    const fetchShots = async () => {
+      const { data: shotsData, error } = await supabase
+        .from('product_shots')
+        .select('images')
+        .eq('product_id', id);
+      console.log('Shots array: ', shotsData);
+      console.log('Shots array length: ', shotsData?.length);
+      console.log('Shots arra [0] length: ', shotsData?.[0]?.images || []);
 
-    //   if (error) {
-    //     console.error("Error fetching shots:", error);
-    //   } else {
-    //     setShots(shotsData?.[0]?.images || []);
-    //   }
+      //   if (error) {
+      //     console.error("Error fetching shots:", error);
+      //   } else {
+      //     setShots(shotsData?.[0]?.images || []);
+      //   }
 
-    // };
+      // };
 
-    if (error) {
-      console.error("Error fetching shots:", error);
-      return;
-    }
+      if (error) {
+        console.error('Error fetching shots:', error);
+        return;
+      }
 
-    // Set shots if data is available, otherwise fallback to empty array
-    if (shotsData && shotsData.length > 0) {
-      setShots(shotsData?.[0]?.images || []);  // safely access images
-    } else {
-      setShots([]);  // No images found, set empty array
-    }
-  };
+      // Set shots if data is available, otherwise fallback to empty array
+      if (shotsData && shotsData.length > 0) {
+        setShots(shotsData?.[0]?.images || []); // safely access images
+      } else {
+        setShots([]); // No images found, set empty array
+      }
+    };
 
     fetchShots();
-  }, [])
+  }, []);
 
   // useEffect(() => {
   //   const fetchShots = async () => {
@@ -119,31 +119,29 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
   const handleAddToCart = () => {
     if (!selectedSize) {
-      alert("Please select a size before adding to cart!");
+      alert('Please select a size before adding to cart!');
       return;
     }
 
     dispatch(
       addToCart({
-        id: id,
-        name: name,
-        price: price,
+        id,
+        name,
+        price,
         product_size: selectedSize,
         // image: shots[0], // Assuming first image is the main product image
         quantity: 1,
         image: image_cover,
-      })
+      }),
     );
-    console.log("Adding to Cart:", id, selectedSize);
-    
+    console.log('Adding to Cart:', id, selectedSize);
   };
 
   const handleSelectSize = (product_size: string) => {
     // setSelectedSize(product_size);
     setSelectedSize(product_size);
-    console.log("selected size: ", selectedSize);
-
-  }
+    console.log('selected size: ', selectedSize);
+  };
 
   useEffect(() => {
     // console.log("Latest Cart State:", cart);
@@ -152,7 +150,9 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   // console.log("price:", price);
   return (
     <div className="items-stretch justify-between space-y-10 lg:flex lg:space-y-0">
-      <div className="basis-[50%]"><ImageShowCase shots={shots} /></div>
+      <div className="basis-[50%]">
+        <ImageShowCase shots={shots} />
+      </div>
       <div className="basis-[50%]">
         <Image
           src={image_cover}
@@ -177,7 +177,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
               <Image
                 src={nike_profile}
                 alt="nike_profile"
-                className="h-full w-full object-cover"
+                className="size-full object-cover"
               />
             </ButtonCircle3>
             <span className="font-medium">Nike</span>
@@ -208,7 +208,11 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         </div>
         <div className="grid grid-cols-3 gap-3">
           {products_sizes.map((product) => (
-            <ShoeSizeButton key={product.size} product={product} onSelect={handleSelectSize} isSelected={selectedSize === product.size} // Check if this button is selected
+            <ShoeSizeButton
+              key={product.size}
+              product={product}
+              onSelect={handleSelectSize}
+              isSelected={selectedSize === product.size} // Check if this button is selected
             />
           ))}
         </div>
@@ -216,7 +220,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         <div className="mt-5 flex items-center gap-5">
           <ButtonPrimary className="w-full">Buy Now</ButtonPrimary>
           <ButtonSecondary
-            className="flex w-full items-center gap-1 border-2 border-primary text-primary hover:bg-primary hover:text-white active:text-white active:scale-95 transition-all"
+            className="flex w-full items-center gap-1 border-2 border-primary text-primary transition-all hover:bg-primary hover:text-white active:scale-95 active:text-white"
             onClick={handleAddToCart}
           >
             <BsBag /> Add to cart

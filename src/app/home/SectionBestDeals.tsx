@@ -11,9 +11,7 @@ const SectionBestDeals = () => {
           <h3 className="text-3xl font-medium">Top Best Deals!</h3>
           <CountDownTimer />
         </div>
-        <div className="pb-2">
-          {/* <ProductSlider /> */}
-        </div>
+        <div className="pb-2">{/* <ProductSlider /> */}</div>
       </div>
     </div>
   );

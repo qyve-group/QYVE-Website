@@ -3,23 +3,23 @@
 import { Dialog, Transition } from '@headlessui/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { FaBagShopping } from 'react-icons/fa6';
 import { MdClose, MdStar } from 'react-icons/md';
-import { useEffect } from "react";
-import { RootState } from "@/store/store";
-import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart} from "@/store/cartSlice"; // Make sure this action exists in cartSlice
+import { useDispatch, useSelector } from 'react-redux';
 
+import { saveCartAfterRemove } from '@/services/cartService';
 import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import InputNumber from '@/shared/InputNumber/InputNumber';
+import type { CartItem } from '@/store/cartSlice';
+import { removeFromCart } from '@/store/cartSlice'; // Make sure this action exists in cartSlice
+import type { RootState } from '@/store/store';
+import { debounce } from '@/utils/debounce';
+
 import LikeButton from './LikeButton';
-import { CartItem } from "@/store/cartSlice";
-import { saveCartAfterRemove } from "@/services/cartService";
-import { debounce } from "@/utils/debounce";
 // import { store } from '@/store/store';
 
 const debouncedSaveCartAfterRemove = debounce(saveCartAfterRemove, 1000); // 1-second delay
@@ -28,15 +28,15 @@ const CartSideBar: React.FC = () => {
   const [isVisable, setIsVisable] = useState(false);
   const dispatch = useDispatch();
 
-  const auth = useSelector((state:RootState) => state.auth);
+  const auth = useSelector((state: RootState) => state.auth);
 
   const initialCart = useSelector((state: RootState) => state.cart);
-  console.log("CartSideBar.tsx----- Initial cart state: ", initialCart);
-  
+  console.log('CartSideBar.tsx----- Initial cart state: ', initialCart);
+
   // Open & Close Sidebar
   const handleOpenMenu = () => setIsVisable(true);
   const handleCloseMenu = () => setIsVisable(false);
-  
+
   // Get cart items from Redux store
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [hydrated, setHydrated] = useState(false);
@@ -44,7 +44,6 @@ const CartSideBar: React.FC = () => {
   useEffect(() => {
     setHydrated(true);
   }, []);
-
 
   // Function to render a single cart item
   const renderProduct = (item: CartItem) => {
@@ -54,14 +53,18 @@ const CartSideBar: React.FC = () => {
       // <div key={id} className="flex py-5 last:pb-0">
       <div key={`${id}-${product_size}`} className="flex py-5 last:pb-0">
         {/* Product Image */}
-        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
+        <div className="relative size-24 shrink-0 overflow-hidden rounded-xl">
           <Image
             fill
             src={image}
             alt={name}
-            className="h-full w-full object-contain object-center"
+            className="size-full object-contain object-center"
           />
-          <Link onClick={handleCloseMenu} className="absolute inset-0" href={`/products/${id}`} />
+          <Link
+            onClick={handleCloseMenu}
+            className="absolute inset-0"
+            href={`/products/${id}`}
+          />
         </div>
 
         {/* Product Details */}
@@ -74,7 +77,9 @@ const CartSideBar: React.FC = () => {
                     {name}
                   </Link>
                 </h3>
-                <span className="text-sm text-neutral-500">Size: {product_size}</span>
+                <span className="text-sm text-neutral-500">
+                  Size: {product_size}
+                </span>
                 <div className="flex items-center gap-1">
                   <MdStar className="text-yellow-400" />
                 </div>
@@ -88,26 +93,29 @@ const CartSideBar: React.FC = () => {
             <div className="flex items-center gap-3">
               <LikeButton />
               <AiOutlineDelete
-                className="text-2xl cursor-pointer"
+                className="cursor-pointer text-2xl"
                 onClick={() => {
                   // console.log("eleting item");
-                  console.log("Deleting item");
-                  dispatch(removeFromCart({id, product_size}))
+                  console.log('Deleting item');
+                  dispatch(removeFromCart({ id, product_size }));
                   // debouncedSaveCart(auth.user?.id ?? "", store.getState().cart.items);
 
                   setTimeout(() => {
-                    debouncedSaveCartAfterRemove(auth.user?.id ?? "", item);
+                    debouncedSaveCartAfterRemove(auth.user?.id ?? '', item);
                   }, 300);
                   // setTimeout(() => {
                   //   debouncedSaveCartAfterRemove(auth.user?.id ?? "", store.getState().cart.items, item);
                   // }, 300);
-                
-                  // dispatch(updateQuantity({id: id, quantity: (quantity), product_size}));
 
+                  // dispatch(updateQuantity({id: id, quantity: (quantity), product_size}));
                 }}
               />
             </div>
-            <InputNumber defaultValue={quantity} id={id} product_size={product_size}/>
+            <InputNumber
+              defaultValue={quantity}
+              id={id}
+              product_size={product_size}
+            />
           </div>
         </div>
       </div>
@@ -118,7 +126,11 @@ const CartSideBar: React.FC = () => {
   const renderContent = () => {
     return (
       <Transition appear show={isVisable} as={Fragment}>
-        <Dialog as="div" className="fixed inset-0 z-50 overflow-y-auto" onClose={handleCloseMenu}>
+        <Dialog
+          as="div"
+          className="fixed inset-0 z-50 overflow-y-auto"
+          onClose={handleCloseMenu}
+        >
           <div className="z-max fixed inset-y-0 right-0 w-full max-w-md outline-none focus:outline-none">
             {/* Sidebar Animation */}
             <Transition.Child
@@ -146,7 +158,9 @@ const CartSideBar: React.FC = () => {
                       {cartItems.length > 0 ? (
                         cartItems.map((item) => renderProduct(item))
                       ) : (
-                        <p className="text-center text-neutral-500">Your cart is empty.</p>
+                        <p className="text-center text-neutral-500">
+                          Your cart is empty.
+                        </p>
                       )}
                     </div>
                   </div>
@@ -160,15 +174,29 @@ const CartSideBar: React.FC = () => {
                           Shipping and taxes calculated at checkout.
                         </span>
                       </span>
-                      <span className="text-xl font-medium">RM {cartItems.reduce((total, item) => total + item.price * item.quantity, 0)}</span>
+                      <span className="text-xl font-medium">
+                        RM{' '}
+                        {cartItems.reduce(
+                          (total, item) => total + item.price * item.quantity,
+                          0,
+                        )}
+                      </span>
                     </p>
 
                     {/* Checkout & View Cart Buttons */}
                     <div className="mt-5 flex items-center gap-5">
-                      <ButtonPrimary href="/checkout" onClick={handleCloseMenu} className="w-full flex-1">
+                      <ButtonPrimary
+                        href="/checkout"
+                        onClick={handleCloseMenu}
+                        className="w-full flex-1"
+                      >
                         Checkout
                       </ButtonPrimary>
-                      <ButtonSecondary href="/cart" onClick={handleCloseMenu} className="w-full flex-1 border-2 border-primary text-primary">
+                      <ButtonSecondary
+                        href="/cart"
+                        onClick={handleCloseMenu}
+                        className="w-full flex-1 border-2 border-primary text-primary"
+                      >
                         View cart
                       </ButtonSecondary>
                     </div>
@@ -207,7 +235,9 @@ const CartSideBar: React.FC = () => {
         {/* <span className="hidden text-sm lg:block">{cartItems.length} items</span> */}
         {/* Prevent hydration mismatch */}
         {hydrated ? (
-          <span className="hidden text-sm lg:block">{cartItems.length} items</span>
+          <span className="hidden text-sm lg:block">
+            {cartItems.length} items
+          </span>
         ) : (
           <span className="hidden text-sm lg:block">Loading...</span>
         )}
@@ -219,9 +249,6 @@ const CartSideBar: React.FC = () => {
 };
 
 export default CartSideBar;
-
-
-
 
 // 'use client';
 
@@ -235,7 +262,6 @@ export default CartSideBar;
 
 // import { RootState } from "@/store/store";
 // import { useDispatch, useSelector } from "react-redux";
-
 
 // import { shoes } from '@/data/content';
 // import type { ProductType } from '@/data/types';
@@ -253,7 +279,6 @@ export default CartSideBar;
 //   const handleOpenMenu = () => setIsVisable(true);
 //   const handleCloseMenu = () => setIsVisable(false);
 //   const cartItems = useSelector((state: RootState) => state.cart.items);
-  
 
 //   // const renderProduct = (item: ProductType) => {
 //     const renderProduct = ({ id, name, price, product_size, quantity, image }) => {

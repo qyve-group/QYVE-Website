@@ -1,22 +1,21 @@
-import { NextResponse } from "next/server";
-import Stripe from "stripe";
+import { NextResponse } from 'next/server';
+import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
-
   try {
     const { userId, cartItems } = await req.json(); // Get items from the request
-    
-  if (!userId) {
-    throw new Error("User ID is missing before creating Stripe session");
-  }
 
-  console.log("userId in checkout route.ts: ", userId);
+    if (!userId) {
+      throw new Error('User ID is missing before creating Stripe session');
+    }
+
+    console.log('userId in checkout route.ts: ', userId);
 
     const lineItems = cartItems.map((item: any) => ({
       price_data: {
-        currency: "myr",
+        currency: 'myr',
         product_data: {
           name: item.name,
           images: [item.image],
@@ -26,50 +25,25 @@ export async function POST(req: Request) {
       quantity: item.quantity,
     }));
 
-    console.log("Line items: ", lineItems);
+    console.log('Line items: ', lineItems);
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "payment",
+      payment_method_types: ['card'],
+      mode: 'payment',
       line_items: lineItems,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/home`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cart`,
-      metadata: { user_id: userId ?? "unknown user"},
+      metadata: { user_id: userId ?? 'unknown user' },
     });
 
     return NextResponse.json({ url: session.url });
   } catch (error) {
-    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+    return NextResponse.json(
+      { error: (error as Error).message },
+      { status: 500 },
+    );
   }
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import { NextRequest, NextResponse } from "next/server";
 // import { createClient } from "@supabase/supabase-js";

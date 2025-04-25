@@ -1,8 +1,8 @@
-import type { FC } from "react";
-import React from "react";
+import type { FC } from 'react';
+import React from 'react';
 
-import MainNav from "./MainNav";
-import TopNav from "./TopNav";
+import MainNav from './MainNav';
+import TopNav from './TopNav';
 
 export interface HeaderProps {}
 

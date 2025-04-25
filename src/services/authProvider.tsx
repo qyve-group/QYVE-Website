@@ -1,16 +1,21 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { listenForAuthChanges } from "@/store/authListener"; // Import function
+import { useEffect } from 'react';
 
-export default function AuthProvider({ children }: { children: React.ReactNode }) {
-    useEffect(() => {
-        const unsubscribe = listenForAuthChanges(); // Start listening for auth changes
+import { listenForAuthChanges } from '@/store/authListener'; // Import function
 
-        return () => {
-            unsubscribe(); // Unsubscribe on component unmount
-        };
-    }, []);
+export default function AuthProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  useEffect(() => {
+    const unsubscribe = listenForAuthChanges(); // Start listening for auth changes
 
-    return <>{children}</>;
+    return () => {
+      unsubscribe(); // Unsubscribe on component unmount
+    };
+  }, []);
+
+  return <>{children}</>;
 }

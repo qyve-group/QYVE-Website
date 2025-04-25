@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useState } from "react";
+import { Dialog, Transition } from '@headlessui/react';
+import React, { Fragment, useState } from 'react';
 
-import NavMobile from "./NavMobile";
+import NavMobile from './NavMobile';
 
 export interface MenuBarProps {}
 const MenuBar: React.FC<MenuBarProps> = () => {
@@ -61,7 +61,7 @@ const MenuBar: React.FC<MenuBarProps> = () => {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-7 w-7"
+          className="size-7"
           viewBox="0 0 20 20"
           fill="currentColor"
         >

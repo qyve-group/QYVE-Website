@@ -1,12 +1,10 @@
-"use client";
-import Image from "next/image";
-import React from "react";
+'use client';
 
-import PromoTag from "@/components/PromoTag";
-// import { headerSection } from "@/data/content";
-// import shoe_box from "@/images/shoe_box.png";
-import ButtonPrimary from "@/shared/Button/ButtonPrimary";
-import { supabase } from "@/libs/supabaseClient";
+import type { UUID } from 'crypto';
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+
+import PromoTag from '@/components/PromoTag';
 // import BootstrapCarousel from "@/components/Carousel";
 import {
   Carousel,
@@ -14,9 +12,11 @@ import {
   CarouselItem,
   // CarouselNext,
   // CarouselPrevious,
-} from "@/components/ui/carousel"
-import { useEffect, useState } from "react";
-import { UUID } from "crypto";
+} from '@/components/ui/carousel';
+import { supabase } from '@/libs/supabaseClient';
+// import { headerSection } from "@/data/content";
+// import shoe_box from "@/images/shoe_box.png";
+import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 
 type Slide = {
   id: UUID;
@@ -26,7 +26,7 @@ type Slide = {
   image_url: string;
   cta_text: string;
   is_active: boolean;
-}
+};
 
 // const banners = [
 //   {
@@ -43,14 +43,12 @@ type Slide = {
 //   },
 // ];
 
-
 const SectionHeader = () => {
   const [current, setCurrent] = useState(0);
   const intervalTime = 5000; // 5 seconds
   // const slides = [0, 1, 2]; // Can be objects if dynamic
   const [slides, setSlides] = useState<Slide[] | null>([]);
-  
-  
+
   // Auto-advance every few seconds
   useEffect(() => {
     const interval = setInterval(() => {
@@ -59,22 +57,22 @@ const SectionHeader = () => {
         return (prev + 1) % total;
       });
     }, intervalTime);
-  
+
     return () => clearInterval(interval); // Cleanup on unmount
   }, [slides, intervalTime]);
 
   useEffect(() => {
+    const fetchCarousel = async () => {
+      const { data: slides } = await supabase
+        .from('carousel_banner')
+        .select('*')
+        .eq('is_active', true);
 
-    const fetchCarousel = async() => {
-      const {data: slides } = await supabase.from("carousel_banner").select("*").eq("is_active", true);
-
-      console.log("slides: ", slides);
+      console.log('slides: ', slides);
       setSlides(slides);
-    }
+    };
     fetchCarousel();
-    
-
-  }, [])
+  }, []);
 
   // const getPositionClasses = (position: string) => {
   //   switch (position) {
@@ -85,46 +83,59 @@ const SectionHeader = () => {
   //     case "top-right":
   //       return "absolute top-10 right-10 text-right";
   //     case "left":
-  //       return "absolute left-10 top-1/2 -translate-y-1/2 text-left";       
+  //       return "absolute left-10 top-1/2 -translate-y-1/2 text-left";
   //     default:
   //       return "absolute inset-0 flex items-center justify-center"; // fallback
   //   }
   // };
-  
+
   return (
-    <div className="relative container items-stretch gap-y-5 lg:flex lg:gap-5 lg:gap-y-0">
+    <div className="container relative items-stretch gap-y-5 lg:flex lg:gap-5 lg:gap-y-0">
       <Carousel className="w-3/4 px-6 text-center">
-        <CarouselContent style={{ transform: `translateX(-${current * 100}%)`, transition: "transform 0.5s ease-in-out" }}>
+        <CarouselContent
+          style={{
+            transform: `translateX(-${current * 100}%)`,
+            transition: 'transform 0.5s ease-in-out',
+          }}
+        >
           {slides?.map((slide) => (
             <CarouselItem key={slide.id} className="min-w-full">
-
-
-              <div className="basis-[68%] items-center space-y-10 rounded-2xl bg-gray p-5 md:flex md:space-y-0 h-full">
+              <div className="h-full basis-[68%] items-center space-y-10 rounded-2xl bg-gray p-5 md:flex md:space-y-0">
                 {/* Left content */}
-                <div className="basis-[63%] flex flex-col justify-between">
+                <div className="flex basis-[63%] flex-col justify-between">
                   <div>
                     <h4 className="mb-5 text-xl font-medium text-primary">
                       {slide.title}
                     </h4>
-                    <h1 className="text-[50px] font-medium tracking-tight" style={{ lineHeight: "1em" }}>
+                    <h1
+                      className="text-[50px] font-medium tracking-tight"
+                      style={{ lineHeight: '1em' }}
+                    >
                       {slide.heading}
                     </h1>
-                    <p className="my-10 w-[80%] text-neutral-500">
+                    <p className="my-10 w-4/5 text-neutral-500">
                       {slide.description}
                     </p>
-                    <ButtonPrimary sizeClass="px-5 py-4">View Product</ButtonPrimary>
+                    <ButtonPrimary sizeClass="px-5 py-4">
+                      View Product
+                    </ButtonPrimary>
                   </div>
 
                   {/* Arrows & Pagination */}
                   <div className="mt-10 flex flex-col items-center space-y-3">
-                    <div className="flex items-center justify-center space-x-4">
-                    </div>
+                    <div className="flex items-center justify-center space-x-4" />
                   </div>
                 </div>
 
                 {/* Right image */}
                 <div className="basis-[37%]">
-                  <Image src={slide.image_url} alt={slide.heading} width={500} height={500} className="w-full" />
+                  <Image
+                    src={slide.image_url}
+                    alt={slide.heading}
+                    width={500}
+                    height={500}
+                    className="w-full"
+                  />
                 </div>
               </div>
 
@@ -146,16 +157,15 @@ const SectionHeader = () => {
                 </div>
               </div> */}
               {/*  ---------------------------------------- Fix this ---------------------------------------------- */}
-
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="absolute bottom-0 left-1/2 z-10 flex space-x-2 justify-center -translate-x-1/2 -translate-y-3">
+        <div className="absolute bottom-0 left-1/2 z-10 flex -translate-x-1/2 -translate-y-3 justify-center space-x-2">
           {slides?.map((_, idx) => (
             <div
               key={idx}
-              className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                idx === current ? "bg-primary scale-125" : "bg-blue-800"
+              className={`size-2 rounded-full transition-all duration-300 ${
+                idx === current ? 'scale-125 bg-primary' : 'bg-blue-800'
               }`}
             />
           ))}

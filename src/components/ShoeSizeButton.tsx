@@ -1,8 +1,8 @@
 // "use client";
 
-import type { FC } from "react";
+import type { FC } from 'react';
 // import React, { useEffect, useState } from "react";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle } from 'react-icons/fa';
 
 interface ShoeSizeButtonProps {
   product: {
@@ -13,8 +13,11 @@ interface ShoeSizeButtonProps {
   isSelected: boolean;
 }
 
-const ShoeSizeButton: FC<ShoeSizeButtonProps> = ({ product, onSelect, isSelected} ) => {
-
+const ShoeSizeButton: FC<ShoeSizeButtonProps> = ({
+  product,
+  onSelect,
+  isSelected,
+}) => {
   return (
     <button
       type="button"
@@ -23,12 +26,12 @@ const ShoeSizeButton: FC<ShoeSizeButtonProps> = ({ product, onSelect, isSelected
         onSelect(product.size);
       }}
       className={`relative w-full rounded-xl py-10 font-medium disabled:bg-gray disabled:text-neutral-500 ${
-        isSelected ? "bg-primary text-white" : "bg-gray text-black"
+        isSelected ? 'bg-primary text-white' : 'bg-gray text-black'
       }`}
     >
       <FaCheckCircle
         className={`absolute right-2 top-2 text-white ${
-          isSelected ? "block" : "hidden"
+          isSelected ? 'block' : 'hidden'
         }`}
       />
       {product.size.toUpperCase()}

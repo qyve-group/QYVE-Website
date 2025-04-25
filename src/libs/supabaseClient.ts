@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from '@supabase/supabase-js';
 
 // Load environment variables (replace with your actual values)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;

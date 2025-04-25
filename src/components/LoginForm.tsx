@@ -1,47 +1,43 @@
-"use client"
+'use client';
 
-import Link from "next/link";
-import React from "react";
-import { FaGoogle } from "react-icons/fa6";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { FaGoogle } from 'react-icons/fa6';
 
-import ButtonPrimary from "@/shared/Button/ButtonPrimary";
-import ButtonSecondary from "@/shared/Button/ButtonSecondary";
-import FormItem from "@/shared/FormItem";
-import Input from "@/shared/Input/Input";
-import { submitLogin } from "@/services/authService";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { supabase } from "@/libs/supabaseClient";
+import { supabase } from '@/libs/supabaseClient';
+import { submitLogin } from '@/services/authService';
+import ButtonPrimary from '@/shared/Button/ButtonPrimary';
+import ButtonSecondary from '@/shared/Button/ButtonSecondary';
+import FormItem from '@/shared/FormItem';
+import Input from '@/shared/Input/Input';
 
 const LoginForm = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const router = useRouter();
 
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const router = useRouter();
+  const submitForm = async () => {
+    try {
+      const { user, session } = await submitLogin(email, password);
+      console.log('Logged in user: ', user);
+      console.log('Logged in session: ', session);
 
-    const submitForm = async () => {
-        try{
-            const {user, session} = await submitLogin(email, password);
-            console.log("Logged in user: ", user);
-            console.log("Logged in session: ", session);
-
-            router.push("/home");
-        }
-        catch(error){
-            console.error("Error logging in: ", error);
-        }
+      router.push('/home');
+    } catch (error) {
+      console.error('Error logging in: ', error);
     }
+  };
 
-    const handleGoogleSignIn = async () => {
-      const {error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `http://localhost:3000/home`,
-        },
-      })
-      if(error)console.error("Gogole Sign-In error: ", error);
-    }
-
+  const handleGoogleSignIn = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `http://localhost:3000/home`,
+      },
+    });
+    if (error) console.error('Gogole Sign-In error: ', error);
+  };
 
   return (
     <div className="nc-PageLogin" data-nc-id="PageLogin">
@@ -52,9 +48,10 @@ const LoginForm = () => {
         <div className="mx-auto max-w-md">
           <div className="space-y-6">
             <div className="">
-              <ButtonSecondary 
-              className="flex w-full items-center gap-3 border-2 border-primary text-primary"
-              onClick={handleGoogleSignIn}>
+              <ButtonSecondary
+                className="flex w-full items-center gap-3 border-2 border-primary text-primary"
+                onClick={handleGoogleSignIn}
+              >
                 <FaGoogle className="text-2xl" /> Continue with Google
               </ButtonSecondary>
             </div>
@@ -83,7 +80,9 @@ const LoginForm = () => {
                   sizeClass="h-12 px-4 py-3"
                   className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
                   value={password}
-                  onChange={(e) => {setPassword(e.target.value)}}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                 />
               </FormItem>
               <ButtonPrimary onClick={submitForm}>Login</ButtonPrimary>

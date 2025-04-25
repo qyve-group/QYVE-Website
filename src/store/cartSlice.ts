@@ -1,11 +1,12 @@
 // import FormItem from "@/shared/FormItem";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 // import { saveCartToSupabase } from "@/services/cartService";
 // import { debounce } from "@/utils/debounce";
 
 // Define product type for cart items
 export interface CartItem {
-  id: number; //product_id
+  id: number; // product_id
   name: string;
   price: number;
   // image: string;
@@ -27,22 +28,21 @@ const initialState: CartState = {
 };
 
 const cartSlice = createSlice({
-  name: "cart", // The slice name (used for actions)
+  name: 'cart', // The slice name (used for actions)
   initialState, // Initial state for the cart
-  reducers: { // Reducer functions to modify state
+  reducers: {
+    // Reducer functions to modify state
     setCart: (state, action: PayloadAction<CartItem[]>) => {
       state.items = action.payload;
-      
-      if (action.payload.length == 0){
+
+      if (action.payload.length == 0) {
         state.totalPrice = 0;
         state.totalQuantity = 0;
-      }
-      else {
-
+      } else {
         let totalPrice = 0;
         let totalQuantity = 0;
 
-        for (const item of state.items){
+        for (const item of state.items) {
           totalQuantity += item.quantity;
           totalPrice += item.price;
         }
@@ -51,21 +51,19 @@ const cartSlice = createSlice({
         state.totalPrice = totalPrice;
       }
 
-      console.log("Setting cart:", action.payload);
-
+      console.log('Setting cart:', action.payload);
     },
-
-
 
     // Add item to cart
     addToCart: (state, action: PayloadAction<CartItem>) => {
-      
-      const existingItem = state.items.find( // Reducer logic
-        (item) => item.id === action.payload.id && item.product_size === action.payload.product_size);
-  
+      const existingItem = state.items.find(
+        // Reducer logic
+        (item) =>
+          item.id === action.payload.id &&
+          item.product_size === action.payload.product_size,
+      );
 
-      console.log("Before adding item:", JSON.parse(JSON.stringify(state))); // Log before update
-
+      console.log('Before adding item:', JSON.parse(JSON.stringify(state))); // Log before update
 
       if (existingItem) {
         existingItem.quantity += 1;
@@ -75,14 +73,18 @@ const cartSlice = createSlice({
       state.totalQuantity += 1;
       state.totalPrice += action.payload.price;
 
-      console.log("After adding item:", JSON.parse(JSON.stringify(state))); // Log after update
-
+      console.log('After adding item:', JSON.parse(JSON.stringify(state))); // Log after update
     },
 
     // Remove item from cart
-    removeFromCart: (state, action: PayloadAction<{id: number, product_size: string | null}>) => {
+    removeFromCart: (
+      state,
+      action: PayloadAction<{ id: number; product_size: string | null }>,
+    ) => {
       const itemIndex = state.items.findIndex(
-        (item) => item.id === action.payload.id && item.product_size === action.payload.product_size
+        (item) =>
+          item.id === action.payload.id &&
+          item.product_size === action.payload.product_size,
       );
       if (itemIndex !== -1) {
         state.totalQuantity -= state.items[itemIndex]?.quantity || 0;
@@ -91,16 +93,23 @@ const cartSlice = createSlice({
           (state.items[itemIndex]?.quantity || 0);
         state.items.splice(itemIndex, 1); // splice(startingIndex, 1) 1 is how far away to delete
       }
-      
     },
 
     // Update quantity of an item
     updateQuantity: (
       state,
       // action: PayloadAction<{ id: number; quantity: number;}>
-      action: PayloadAction<{ id: number; quantity: number; product_size: string | null}>
+      action: PayloadAction<{
+        id: number;
+        quantity: number;
+        product_size: string | null;
+      }>,
     ) => {
-      const item = state.items.find((item) => item.id === action.payload.id && item.product_size === action.payload.product_size);
+      const item = state.items.find(
+        (item) =>
+          item.id === action.payload.id &&
+          item.product_size === action.payload.product_size,
+      );
       if (item && action.payload.quantity > 0) {
         const quantityDiff = action.payload.quantity - item.quantity;
         state.totalQuantity += quantityDiff;

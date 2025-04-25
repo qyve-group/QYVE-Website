@@ -1,48 +1,47 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
-import { MdStar } from "react-icons/md";
-import { TbBrandPaypal } from "react-icons/tb";
+'use client';
 
-import LikeButton from "@/components/LikeButton";
-import { RootState} from "@/store/store";
-import { removeFromCart } from "@/store/cartSlice";
-// import ButtonPrimary from "@/shared/Button/ButtonPrimary";
-import ButtonSecondary from "@/shared/Button/ButtonSecondary";
-import InputNumber from "@/shared/InputNumber/InputNumber";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect } from 'react';
+import { AiOutlineDelete } from 'react-icons/ai';
+import { MdStar } from 'react-icons/md';
+import { TbBrandPaypal } from 'react-icons/tb';
+import { useDispatch, useSelector } from 'react-redux';
+
 // import { fetchCartFromSupabase, saveCartToSupabase } from "@/services/cartService";
-import CheckOutButton from "@/components/CheckoutButton";
+import CheckOutButton from '@/components/CheckoutButton';
+import LikeButton from '@/components/LikeButton';
+// import ButtonPrimary from "@/shared/Button/ButtonPrimary";
+import ButtonSecondary from '@/shared/Button/ButtonSecondary';
+import InputNumber from '@/shared/InputNumber/InputNumber';
+import { removeFromCart } from '@/store/cartSlice';
+import type { RootState } from '@/store/store';
 
 const CartPage = () => {
-
   // const auth = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch();
 
   // const userCart = fetchCartFromSupabase(auth.user?.id ?? null, dispatch);
 
-  
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
   useEffect(() => {
-    console.log("Cart updated:", cartItems);
+    console.log('Cart updated:', cartItems);
   }, [cartItems]);
 
   const handleRemove = (id: number, product_size: string | null) => {
-    dispatch(removeFromCart({id, product_size}));
+    dispatch(removeFromCart({ id, product_size }));
   };
 
   // Calculate subtotal dynamically
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
-    0
+    0,
   );
   const estimatedTaxes = subtotal * 0.1; // Example 10% tax
   const total = subtotal + estimatedTaxes;
 
-  console.log("CartItems in Cart: ", cartItems);
+  console.log('CartItems in Cart: ', cartItems);
 
   return (
     <div className="nc-CartPage">
@@ -59,15 +58,18 @@ const CartPage = () => {
           <p className="text-center text-lg">Your cart is empty.</p>
         ) : (
           <div className="flex flex-col lg:flex-row">
-            <div className="w-full divide-y divide-neutral-300 lg:w-[60%] xl:w-[55%]">
+            <div className="w-full divide-y divide-neutral-300 lg:w-3/5 xl:w-[55%]">
               {cartItems.map((item) => (
-                <div key={`${item.id}-${item.product_size}`} className="flex py-5 last:pb-0">
-                  <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl md:h-40 md:w-40">
+                <div
+                  key={`${item.id}-${item.product_size}`}
+                  className="flex py-5 last:pb-0"
+                >
+                  <div className="relative size-24 shrink-0 overflow-hidden rounded-xl md:size-40">
                     <Image
                       fill
                       src={item.image} // Ensure your cart items have an image property
                       alt={item.name}
-                      className="h-full w-full object-contain object-center"
+                      className="size-full object-contain object-center"
                     />
                     <Link
                       className="absolute inset-0"
@@ -99,12 +101,16 @@ const CartPage = () => {
                     <div className="flex items-center gap-3">
                       <LikeButton />
                       <AiOutlineDelete
-                        className="text-2xl cursor-pointer"
+                        className="cursor-pointer text-2xl"
                         onClick={() => handleRemove(item.id, item.product_size)}
                       />
                     </div>
                     <div>
-                      <InputNumber defaultValue={item.quantity} id={item.id} product_size={item.product_size}/>
+                      <InputNumber
+                        defaultValue={item.quantity}
+                        id={item.id}
+                        product_size={item.product_size}
+                      />
                     </div>
                   </div>
                 </div>
@@ -137,7 +143,7 @@ const CartPage = () => {
                     <span>${total.toFixed(2)}</span>
                   </div>
                 </div>
-                <CheckOutButton cartItems={cartItems}/>
+                <CheckOutButton cartItems={cartItems} />
                 {/* <ButtonPrimary href="/checkout" className="mt-8 w-full">
                   Checkout Now
                 </ButtonPrimary> */}

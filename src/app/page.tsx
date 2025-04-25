@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import SectionBuyOrExplore from "./preview-page-sections/BuyOrExplore";
-import SectionHeader from "./preview-page-sections/Header";
-import SectionIncludes from "./preview-page-sections/Includes";
-import SectionMainPages from "./preview-page-sections/MainPages";
-import SectionMid from "./preview-page-sections/MidSection";
-import SectionUtilityPages from "./preview-page-sections/UtilityPages";
+import SectionBuyOrExplore from './preview-page-sections/BuyOrExplore';
+import SectionHeader from './preview-page-sections/Header';
+import SectionIncludes from './preview-page-sections/Includes';
+import SectionMainPages from './preview-page-sections/MainPages';
+import SectionMid from './preview-page-sections/MidSection';
+import SectionUtilityPages from './preview-page-sections/UtilityPages';
 // import Home from "./home/page";
 
 const page = () => {

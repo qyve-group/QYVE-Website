@@ -1,11 +1,12 @@
-import Link from "next/link";
-import type { FC } from "react";
-import React from "react";
+import Link from 'next/link';
+import type { FC } from 'react';
+import React from 'react';
+
 interface LogoProps {
   className?: string;
 }
 
-const Logo: FC<LogoProps> = ({ className = "hidden" }) => {
+const Logo: FC<LogoProps> = ({ className = 'hidden' }) => {
   return (
     <Link className="flex cursor-pointer items-center gap-2" href="/">
       <svg

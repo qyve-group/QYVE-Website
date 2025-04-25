@@ -1,9 +1,9 @@
-import Link from "next/link";
-import React from "react";
-import { MdClose } from "react-icons/md";
+import Link from 'next/link';
+import React from 'react';
+import { MdClose } from 'react-icons/md';
 
-import { NavLinks } from "@/data/content";
-import Logo from "@/shared/Logo/Logo";
+import { NavLinks } from '@/data/content';
+import Logo from '@/shared/Logo/Logo';
 
 export interface NavMobileProps {
   onClickClose?: () => void;

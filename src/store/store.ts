@@ -1,34 +1,34 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { configureStore } from '@reduxjs/toolkit';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+import authReducer from '@/store/authSlice';
+
 // import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
-import cartReducer from "./cartSlice";
-import authReducer from "@/store/authSlice";
+import cartReducer from './cartSlice';
 
 const persistCartConfig = {
-  key: "cart",
+  key: 'cart',
   storage,
-  whitelist: ["cart"],
+  whitelist: ['cart'],
 };
 
 const persistAuthConfig = {
-  key: "auth",
+  key: 'auth',
   storage,
-  whitelist: ["user"], // Persist user data only
+  whitelist: ['user'], // Persist user data only
 };
 
 const persistedCartReducer = persistReducer(persistCartConfig, cartReducer);
 const persistedAuthReducer = persistReducer(persistAuthConfig, authReducer);
 
-
 export const store = configureStore({
-  reducer: {cart: persistedCartReducer, 
-    auth: persistedAuthReducer},
+  reducer: { cart: persistedCartReducer, auth: persistedAuthReducer },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         // Ignore Redux Persist actions
-        ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
       },
     }),
 });
@@ -37,9 +37,6 @@ export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-
-
 
 // import { configureStore } from "@reduxjs/toolkit";
 // import cartReducer from "./cartSlice";
@@ -74,7 +71,6 @@ export type AppDispatch = typeof store.dispatch;
 //       },
 //     }),
 // });
-
 
 // export const persistor = persistStore(store);
 // export type RootState = ReturnType<typeof store.getState>;

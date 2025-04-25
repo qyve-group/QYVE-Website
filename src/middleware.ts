@@ -6,9 +6,8 @@
 // // Passing the refreshed Auth token to Server Components, so they don't attempt to refresh the same token themselves. This is accomplished with request.cookies.set.
 // // Passing the refreshed Auth token to the browser, so it replaces the old token. This is accomplished with response.cookies.set.
 
-
-
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export function config() {
   return {
@@ -21,8 +20,6 @@ export function config() {
 export function middleware(_req: NextRequest) {
   return NextResponse.next();
 }
-
-
 
 // import { type NextRequest } from 'next/server'
 // import { updateSession } from '@/libs/middleware'

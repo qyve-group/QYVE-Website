@@ -14,8 +14,7 @@ const ButtonClose: React.FC<ButtonCloseProps> = ({
 }) => {
   return (
     <button
-      className={`flex h-8 w-8 items-center  justify-center rounded-full
-      hover:bg-neutral-700 ${className}`}
+      className={`flex size-8 items-center justify-center  rounded-full hover:bg-neutral-700 ${className}`}
       onClick={onClick}
       type="button"
     >

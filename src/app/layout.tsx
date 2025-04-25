@@ -1,44 +1,39 @@
-import "@/styles/global.css";
+import '@/styles/global.css';
 
-import type { Metadata } from "next";
-import React from "react";
+import type { Metadata } from 'next';
+import React from 'react';
 
 // import Header from "@/components/Header/Header";
 // import Footer from "@/shared/Footer/Footer";
-
 // import Loading from "./loading";
-
 // import Providers from "@/components/Providers";
-import LayoutClient from "./layoutClient";
-import "@/styles/global.css";
-
+import LayoutClient from './layoutClient';
 
 export const metadata: Metadata = {
-  title: "Hotkicks Ecommerce Template",
+  title: 'Hotkicks Ecommerce Template',
   icons: [
     {
-      rel: "apple-touch-icon",
-      url: "/apple-touch-icon.png",
+      rel: 'apple-touch-icon',
+      url: '/apple-touch-icon.png',
     },
     {
-      rel: "icon",
-      type: "image/png",
-      sizes: "32x32",
-      url: "/favicon.png",
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '32x32',
+      url: '/favicon.png',
     },
     {
-      rel: "icon",
-      type: "image/png",
-      sizes: "16x16",
-      url: "/favicon.png",
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '16x16',
+      url: '/favicon.png',
     },
     {
-      rel: "icon",
-      url: "/favicon.ico",
+      rel: 'icon',
+      url: '/favicon.ico',
     },
   ],
 };
-
 
 export default function RootLayout({
   // Layouts must accept a children prop.
@@ -48,21 +43,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html lang="en">
       <body className="">
+        <LayoutClient>{children}</LayoutClient>
 
-      <LayoutClient>{children}</LayoutClient>
-        
-          {/* <Providers>
+        {/* <Providers>
 
             <Header />
             <Suspense fallback={<Loading />}>{children}</Suspense>
             <Footer />
  
           </Providers> */}
-        
       </body>
     </html>
   );

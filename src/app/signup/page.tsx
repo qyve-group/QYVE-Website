@@ -1,12 +1,8 @@
-import SignUpForm from "@/components/SignUpForm";
-
+import SignUpForm from '@/components/SignUpForm';
 
 const SignUpPage = () => {
-
-  return(
-    <SignUpForm />
-  )
-}
+  return <SignUpForm />;
+};
 
 export default SignUpPage;
 
@@ -23,7 +19,6 @@ export default SignUpPage;
 
 // const PageSignUp = () => {
 
- 
 //   return (
 //     <div className={`nc-PageSignUp `} data-nc-id="PageSignUp">
 //       <div className="container mb-24 lg:mb-32">

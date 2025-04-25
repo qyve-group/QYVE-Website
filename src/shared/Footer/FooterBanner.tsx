@@ -11,7 +11,7 @@ const FooterBanner = () => {
     <div className="relative overflow-hidden rounded-2xl py-16 text-white">
       {/* Video Background */}
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 size-full object-cover"
         src="/videos/Footer_video.mp4"
         autoPlay
         loop
@@ -20,23 +20,20 @@ const FooterBanner = () => {
       />
 
       {/* Overlay to darken the video if needed */}
-      <div className="absolute inset-0 bg-black/40"></div>
+      <div className="absolute inset-0 bg-black/40" />
 
       {/* Foreground content */}
       <div className="relative z-10">
-
         <Heading className="mb-0" isMain isCenter>
           {footerBannerData.heading}
         </Heading>
-        <p className="mx-auto w-[80%] text-center md:w-[50%]">
+        <p className="mx-auto w-4/5 text-center md:w-[50%]">
           {footerBannerData.description}
         </p>
         <div className="mt-10 flex items-center justify-center">
           <ButtonPrimary sizeClass="px-6 py-4">More about us</ButtonPrimary>
         </div>
-
       </div>
-
     </div>
   );
 };
