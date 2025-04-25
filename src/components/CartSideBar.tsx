@@ -20,7 +20,7 @@ import LikeButton from './LikeButton';
 import { CartItem } from "@/store/cartSlice";
 import { saveCartAfterRemove } from "@/services/cartService";
 import { debounce } from "@/utils/debounce";
-import { store } from '@/store/store';
+// import { store } from '@/store/store';
 
 const debouncedSaveCartAfterRemove = debounce(saveCartAfterRemove, 1000); // 1-second delay
 
@@ -97,8 +97,11 @@ const CartSideBar: React.FC = () => {
                   // debouncedSaveCart(auth.user?.id ?? "", store.getState().cart.items);
 
                   setTimeout(() => {
-                    debouncedSaveCartAfterRemove(auth.user?.id ?? "", store.getState().cart.items, item);
+                    debouncedSaveCartAfterRemove(auth.user?.id ?? "", item);
                   }, 300);
+                  // setTimeout(() => {
+                  //   debouncedSaveCartAfterRemove(auth.user?.id ?? "", store.getState().cart.items, item);
+                  // }, 300);
                 
                   // dispatch(updateQuantity({id: id, quantity: (quantity), product_size}));
 
