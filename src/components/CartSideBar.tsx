@@ -24,7 +24,6 @@ import { debounce } from "@/utils/debounce";
 
 const debouncedSaveCartAfterRemove = debounce(saveCartAfterRemove, 1000); // 1-second delay
 
-
 const CartSideBar: React.FC = () => {
   const [isVisable, setIsVisable] = useState(false);
   const dispatch = useDispatch();

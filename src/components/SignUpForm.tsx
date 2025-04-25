@@ -8,7 +8,7 @@ import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import FormItem from '@/shared/FormItem';
 import Input from '@/shared/Input/Input';
-import { useState, useEffect} from "react";
+import { useState} from "react";
 import { submitSignUp } from "@/services/authService";
 
 const SignUpForm = () => {
