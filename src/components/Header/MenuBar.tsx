@@ -60,7 +60,7 @@ const MenuBar: React.FC<MenuBarProps> = () => {
         className="flex items-center justify-center rounded-lg p-2.5 focus:outline-none"
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns="http:// www.w3.org/2000/svg"
           className="size-7"
           viewBox="0 0 20 20"
           fill="currentColor"

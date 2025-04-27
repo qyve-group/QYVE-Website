@@ -25,11 +25,11 @@ const getProductData = async (productSlug: string) => {
     .single();
 
   if (productError || !product) {
-    //console.error*('Failed to fetch product:', productError);
+    // console.error*('Failed to fetch product:', productError);
     return null;
   }
 
-  // //console.log*("Fetched Product:", product);
+  // // console.log*("Fetched Product:", product);
 
   // Fetch sizes using the product ID
   const { data: sizes, error: sizesError } = await supabase
@@ -39,7 +39,7 @@ const getProductData = async (productSlug: string) => {
     .throwOnError();
 
   if (sizesError) {
-    //console.error*('Failed to fetch sizes:', sizesError);
+    // console.error*('Failed to fetch sizes:', sizesError);
   }
 
   return { ...product, products_sizes: sizes || [] }; // This spreads all properties of product and adds products_sizes as a new field.

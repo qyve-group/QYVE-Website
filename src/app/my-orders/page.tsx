@@ -32,7 +32,7 @@ const ShippingProgress = () => {
   ];
 
   //   export interface CartItem {
-  //     id: number; //product_id
+  //     id: number; // product_id
   //     name: string;
   //     price: number;
   //     // image: string;
@@ -79,7 +79,7 @@ const ShippingProgress = () => {
   // const [showFull, setShowFull] = useState(false);
 
   useEffect(() => {
-    //console.log*('userId: ', userId?.id);
+    // console.log*('userId: ', userId?.id);
     const fetchOrderIds = async () => {
       const { data, error } = await supabase
         .from('orders')
@@ -87,12 +87,12 @@ const ShippingProgress = () => {
         .eq('user_id', userId?.id);
 
       if (error) {
-        //console.error*('Error fetching order ID:', error);
+        // console.error*('Error fetching order ID:', error);
         return;
       }
 
       if (!data || data.length === 0) {
-        //console.log*('No orders found for this user.');
+        // console.log*('No orders found for this user.');
         setLoading(false);
         return;
       }
@@ -101,7 +101,7 @@ const ShippingProgress = () => {
       setOrderIds(data.map((order) => order.id)); // Store multiple order IDs
       setTotalPrice(data.map((order) => order.total_price));
     };
-    //console.log*('totalPrice: ', totalPrice);
+    // console.log*('totalPrice: ', totalPrice);
 
     fetchOrderIds();
   }, []);
@@ -116,7 +116,7 @@ const ShippingProgress = () => {
         .in('id', orderIds);
 
       if (error) {
-        //console.error*('Error fetching order status:', error);
+        // console.error*('Error fetching order status:', error);
         return;
       }
 
@@ -150,7 +150,7 @@ const ShippingProgress = () => {
       // const {data: orderItemsSupabase, error: orderItemsError} = await supabase.from("order_items").select("*").eq("order_id", orderIds);
 
       if (orderItemsError) {
-        //console.error*('Unable to fetch order items: ', orderItemsError);
+        // console.error*('Unable to fetch order items: ', orderItemsError);
         setLoading(false);
         return;
       }
@@ -164,7 +164,7 @@ const ShippingProgress = () => {
             .single();
 
           if (productInfoError) {
-            //console.error*('Unable to fetch product info:', productInfoError);
+            // console.error*('Unable to fetch product info:', productInfoError);
             return null;
           }
 
@@ -194,7 +194,7 @@ const ShippingProgress = () => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch (err) {
-      //console.error*('Failed to copy:', err);
+      // console.error*('Failed to copy:', err);
     }
   };
 

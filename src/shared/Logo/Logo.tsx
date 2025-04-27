@@ -18,7 +18,7 @@ const Logo: FC<LogoProps> = ({ className = 'hidden' }) => {
         className="mt-1"
         height="40"
         width="40"
-        xmlns="http://www.w3.org/2000/svg"
+        xmlns="http:// www.w3.org/2000/svg"
       >
         <path
           className="fill-current" // Uses Tailwind's text color

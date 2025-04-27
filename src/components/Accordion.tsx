@@ -11,7 +11,7 @@ const Accordion = ({ question, answer, wfull }: any) => {
         <summary className="flex w-full cursor-pointer list-none items-center gap-4 rounded-lg px-6 py-10">
           <div className="">
             <svg
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns="http:// www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="1.5"
@@ -25,7 +25,7 @@ const Accordion = ({ question, answer, wfull }: any) => {
               />
             </svg>
             <svg
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns="http:// www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="1.5"

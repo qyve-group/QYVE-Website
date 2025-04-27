@@ -8,12 +8,12 @@ import { supabase } from '@/libs/supabaseClient';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
-  //console.log*('Webhook called');
+  // console.log*('Webhook called');
 
   const sig = req.headers.get('stripe-signature');
 
   if (!sig) {
-    //console.error*('❌ Missing Stripe Signature');
+    // console.error*('❌ Missing Stripe Signature');
     return NextResponse.json(
       { error: 'Missing Stripe Signature' },
       { status: 400 },
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     // ✅ Manually get raw body
     const bodyBuffer = await req.arrayBuffer();
     const rawBody = Buffer.from(bodyBuffer);
-    // //console.log*('📩 Raw body received:', rawBody);
+    // // console.log*('📩 Raw body received:', rawBody);
 
     event = stripe.webhooks.constructEvent(
       rawBody,
@@ -36,25 +36,25 @@ export async function POST(req: Request) {
       process.env.STRIPE_WEBHOOK_SECRET as string,
     );
     // event = stripe.webhooks.constructEvent(rawBodyString, sig, process.env.STRIPE_WEBHOOK_SECRET!);
-    // //console.log*('✅ Event parsed:', event);
+    // // console.log*('✅ Event parsed:', event);
   } catch (err) {
-    //console.error*('❌ Webhook Error:', err);
+    // console.error*('❌ Webhook Error:', err);
     return NextResponse.json(
       { error: `Webhook Error: ${(err as Error).message}` },
       { status: 400 },
     );
   }
-  // //console.log*('✅ Webhook received:', event);
+  // // console.log*('✅ Webhook received:', event);
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     // const userId = "1c2e85d0-410f-4019-88f3-c380ec3abc24";
     const userId = session.metadata?.user_id || '';
-    // //console.log*('✅ Checkout Session Object:', session);
-    // //console.log*('userid: ', userId);
+    // // console.log*('✅ Checkout Session Object:', session);
+    // // console.log*('userid: ', userId);
 
     if (!userId) {
-      //console.error*('User ID missing in metadata');
+      // console.error*('User ID missing in metadata');
       return NextResponse.json({ error: 'User ID missing' }, { status: 400 });
     }
 
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
       .single();
 
     if (cartInfoError || !cartInfo) {
-      //console.error*('Active cart not found for user:', cartInfoError);
+      // console.error*('Active cart not found for user:', cartInfoError);
       return NextResponse.json(
         { error: 'Active cart not found' },
         { status: 404 },
@@ -74,7 +74,7 @@ export async function POST(req: Request) {
     }
 
     const cartId = cartInfo.id;
-    // //console.log*('cartid: ', cartId);
+    // // console.log*('cartid: ', cartId);
 
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL as string,
@@ -87,7 +87,7 @@ export async function POST(req: Request) {
       .eq('cart_id', cartId);
 
     if (cartItemsError || !cartItems.length) {
-      //console.error*('Cart items not found:', cartItemsError);
+      // console.error*('Cart items not found:', cartItemsError);
       return NextResponse.json(
         { error: 'Cart items not found' },
         { status: 404 },
@@ -101,7 +101,7 @@ export async function POST(req: Request) {
       0,
     );
     const formattedTotalPrice = parseFloat(totalPrice.toFixed(2)); // Ensure precision
-    // //console.log*('Total Price Calculated:', formattedTotalPrice);
+    // // console.log*('Total Price Calculated:', formattedTotalPrice);
 
     const { error: orderError } = await supabase
       .from('orders')
@@ -118,18 +118,18 @@ export async function POST(req: Request) {
       .single();
 
     if (orderError) {
-      //console.error*('Failed to create order:', orderError);
+      // console.error*('Failed to create order:', orderError);
       return NextResponse.json(
         { error: 'Order creation failed' },
         { status: 500 },
       );
     }
 
-    ////console.log**('Order created: ', order);
+    // //console.log**('Order created: ', order);
 
     // Reduce stock in `product_sizes`
     for (const item of cartItems) {
-      //console.log*('Fetching current stock for item:', item);
+      // console.log*('Fetching current stock for item:', item);
 
       // Fetch the current stock from the database
       const { data: productSize, error: fetchError } = await supabase
@@ -140,21 +140,21 @@ export async function POST(req: Request) {
         .single();
 
       if (fetchError) {
-        //console.error*('Error fetching stock:', fetchError);
+        // console.error*('Error fetching stock:', fetchError);
         continue; // Skip to the next item if there's an error
       }
 
       // Ensure stock exists before updating
       if (!productSize || productSize.stock === undefined) {
-        //console.error*('Stock not found for item:', item);
+        // console.error*('Stock not found for item:', item);
         continue;
       }
 
       // Calculate new stock
       const newStock = productSize.stock - item.quantity;
-      //console.log*('newStock: ', newStock);
+      // console.log*('newStock: ', newStock);
 
-      //console.log*('Updating stock for item:', item);
+      // console.log*('Updating stock for item:', item);
 
       const { error: stockError } = await supabaseAdmin
         .from('products_sizes')
@@ -169,7 +169,7 @@ export async function POST(req: Request) {
         //   stockError,
         // );
       // } else {
-      //   //console.log*(
+      //   // console.log*(
       //     `✅ Stock updated for product ${item.product_id}, size_id ${item.size_id}`,
       //   );
       }
@@ -188,24 +188,24 @@ export async function POST(req: Request) {
         });
 
       if (orderItemsError) {
-        //console.log*('Error adding to order_items: ', orderItemsError);
+        // console.log*('Error adding to order_items: ', orderItemsError);
       }
     }
 
     // Clear the cart after payment
-    //console.log*('Clearing cart items for cart ID:', cartId);
+    // console.log*('Clearing cart items for cart ID:', cartId);
     const { error: clearCartError } = await supabaseAdmin
       .from('cart_items')
       .delete()
       .eq('cart_id', cartId);
 
     if (clearCartError) {
-      //console.error*('❌ Error clearing cart items:', clearCartError);
+      // console.error*('❌ Error clearing cart items:', clearCartError);
     } else {
-      //console.log*(`✅ Cart items cleared for cart ID: ${cartId}`);
+      // console.log*(`✅ Cart items cleared for cart ID: ${cartId}`);
     }
 
-    //console.log*('✅ Payment Successful:', session);
+    // console.log*('✅ Payment Successful:', session);
   }
 
   return NextResponse.json({ received: true });

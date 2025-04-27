@@ -20,7 +20,7 @@ export async function GET(request: Request) {
         return NextResponse.redirect(`${origin}${next}`);
       }
       if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`);
+        return NextResponse.redirect(`https:// ${forwardedHost}${next}`);
       }
       return NextResponse.redirect(`${origin}${next}`);
     }

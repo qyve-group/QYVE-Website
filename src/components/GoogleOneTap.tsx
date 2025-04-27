@@ -28,15 +28,15 @@ const OneTapComponent = () => {
 
   useEffect(() => {
     const initializeGoogleOneTap = () => {
-      //console.log*('Initializing Google One Tap');
+      // console.log*('Initializing Google One Tap');
       window.addEventListener('load', async () => {
         const [nonce, hashedNonce] = await generateNonce();
-        //console.log*('Nonce: ', nonce, hashedNonce);
+        // console.log*('Nonce: ', nonce, hashedNonce);
 
         // check if there's already an existing session before initializing the one-tap UI
         const { data, error } = await supabase.auth.getSession();
         if (error) {
-          //console.error*('Error getting session', error);
+          // console.error*('Error getting session', error);
         }
         if (data.session) {
           router.push('/');
@@ -56,17 +56,17 @@ const OneTapComponent = () => {
               });
 
               if (error) throw error;
-              //console.log*('Session data: ', data);
-              //console.log*('Successfully logged in with Google One Tap');
+              // console.log*('Session data: ', data);
+              // console.log*('Successfully logged in with Google One Tap');
 
               // redirect to protected page
               router.push('/');
             } catch (error) {
-              //console.error*('Error logging in with Google One Tap', error);
+              // console.error*('Error logging in with Google One Tap', error);
             }
           },
           nonce: hashedNonce,
-          // with chrome's removal of third-party cookiesm, we need to use FedCM instead (https://developers.google.com/identity/gsi/web/guides/fedcm-migration)
+          // with chrome's removal of third-party cookiesm, we need to use FedCM instead (https:// developers.google.com/identity/gsi/web/guides/fedcm-migration)
           use_fedcm_for_prompt: true,
         });
         window.google.accounts.id.prompt(); // Display the One Tap UI
@@ -78,7 +78,7 @@ const OneTapComponent = () => {
 
   return (
     <>
-      <Script src="https://accounts.google.com/gsi/client" />
+      <Script src="https:// accounts.google.com/gsi/client" />
       <div id="oneTap" className="fixed right-0 top-0 z-[100]" />
     </>
   );

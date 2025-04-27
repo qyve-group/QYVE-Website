@@ -31,7 +31,7 @@ const CartSideBar: React.FC = () => {
   const auth = useSelector((state: RootState) => state.auth);
 
   // const initialCart = useSelector((state: RootState) => state.cart);
-  //console.log*('CartSideBar.tsx----- Initial cart state: ', initialCart);
+  // console.log*('CartSideBar.tsx----- Initial cart state: ', initialCart);
 
   // Open & Close Sidebar
   const handleOpenMenu = () => setIsVisable(true);
@@ -95,8 +95,8 @@ const CartSideBar: React.FC = () => {
               <AiOutlineDelete
                 className="cursor-pointer text-2xl"
                 onClick={() => {
-                  // //console.log*("eleting item");
-                  //console.log*('Deleting item');
+                  // // console.log*("eleting item");
+                  // console.log*('Deleting item');
                   dispatch(removeFromCart({ id, product_size }));
                   // debouncedSaveCart(auth.user?.id ?? "", store.getState().cart.items);
 

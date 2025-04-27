@@ -36,7 +36,7 @@ const Button: FC<ButtonProps> = ({
     return (
       <svg
         className="-ml-1 mr-3 size-5 animate-spin"
-        xmlns="http://www.w3.org/2000/svg"
+        xmlns="http:// www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
       >

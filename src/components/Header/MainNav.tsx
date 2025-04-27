@@ -25,8 +25,8 @@ const MainNav = () => {
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  //console.log*('Auth: ', auth);
-  //console.log*('User: ', auth.user?.email);
+  // console.log*('Auth: ', auth);
+  // console.log*('User: ', auth.user?.email);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 

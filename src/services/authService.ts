@@ -8,8 +8,8 @@ export const submitSignUp = async (email: string, password: string) => {
   if (error) {
     throw error;
   }
-  //console.log*('Registered user: ', data.user);
-  //console.log*('Registered user session: ', data.session);
+  // console.log*('Registered user: ', data.user);
+  // console.log*('Registered user session: ', data.session);
 
   store.dispatch(setUser({ user: data.user, session: data.session }));
   return { user: data.user, session: data.session };

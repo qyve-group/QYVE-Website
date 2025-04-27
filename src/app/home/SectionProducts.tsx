@@ -25,11 +25,11 @@ interface Product {
 // useEffect(() => {
 //   const fetchData = async () => {
 //     try {
-//       const res = await fetch("http://localhost:5000/api/products");
+//       const res = await fetch("http:// localhost:5000/api/products");
 //       const data = await res.json();
 //       setProducts(data);
 //     } catch (err) {
-//       //console.log*("Error fetching products: ", err);
+//       // console.log*("Error fetching products: ", err);
 //     }
 //   };
 
@@ -37,7 +37,7 @@ interface Product {
 // }, []);
 
 const SectionProducts = () => {
-  //console.log*('Supabase client initialized:', supabase);
+  // console.log*('Supabase client initialized:', supabase);
 
   const [products, setProducts] = useState<Product[]>();
 
@@ -45,11 +45,11 @@ const SectionProducts = () => {
     const fetchProducts = async () => {
       const { data, error } = await supabase.from('products').select();
 
-      //console.log*('Fetched products:', data);
-      //console.log*('Supabase error:', error);
+      // console.log*('Fetched products:', data);
+      // console.log*('Supabase error:', error);
 
       if (error) {
-        //console.error*('Error fetching products: ', error);
+        // console.error*('Error fetching products: ', error);
       } else {
         setProducts(data);
       }

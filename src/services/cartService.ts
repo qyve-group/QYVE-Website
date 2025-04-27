@@ -41,7 +41,7 @@ type supabaseCartItem = {
 //     "updated_at": "2025-03-21T23:10:04.873857"
 
 // type reduxCartItem = {
-//   id: number; //product_id
+//   id: number; // product_id
 //   name: string;
 //   price: number;
 //   product_size: string | null;
@@ -57,7 +57,7 @@ type supabaseCartItem = {
 //     "quantity": 1,
 
 // export interface CartItem {
-//   id: number; //product_id
+//   id: number; // product_id
 //   name: string;
 //   price: number;
 //   // image: string;
@@ -96,10 +96,10 @@ export const fetchCartFromSupabase = async (
 
       if (newCartError) throw newCartError;
       cartId = newCart.id;
-      //console.log*('New cart created for user id:', userId);
+      // console.log*('New cart created for user id:', userId);
     }
 
-    //console.log*('Cart state before setting from Supabase:', currCart);
+    // console.log*('Cart state before setting from Supabase:', currCart);
 
     // Fetch cart items from supabase
     const { data: supabaseCartItems, error: supabaseCartItemsError } =
@@ -107,7 +107,7 @@ export const fetchCartFromSupabase = async (
 
     if (supabaseCartItemsError) throw supabaseCartItemsError;
 
-    //console.log*('Current cart items from Supabase:', supabaseCartItems);
+    // console.log*('Current cart items from Supabase:', supabaseCartItems);
 
     // Fetch additional product and size details for each item
     const supabaseCartWithDetails = await Promise.all(
@@ -121,7 +121,7 @@ export const fetchCartFromSupabase = async (
             .maybeSingle();
 
         if (productError) {
-          //console.error*('Error fetching product info:', productError);
+          // console.error*('Error fetching product info:', productError);
           return null;
         }
 
@@ -133,7 +133,7 @@ export const fetchCartFromSupabase = async (
           .maybeSingle();
 
         if (sizeError) {
-          //console.error*('Error fetching size info:', sizeError);
+          // console.error*('Error fetching size info:', sizeError);
           return null;
         }
 
@@ -160,7 +160,7 @@ export const fetchCartFromSupabase = async (
     //   store.getState().cart,
     // );
   } catch (error) {
-    //console.error*('Error fetching cart:', error);
+    // console.error*('Error fetching cart:', error);
   }
 };
 
@@ -177,7 +177,7 @@ export const saveCartToSupabase = async (
       .eq('user_id', userId)
       .single();
 
-    //console.log*("User id's cart: ", cart);
+    // console.log*("User id's cart: ", cart);
 
     if (cartError || !cart)
       throw new Error(`User id: ${userId} does not have an existing cart`);
@@ -190,7 +190,7 @@ export const saveCartToSupabase = async (
 
     if (supabaseExistingItemsError) throw supabaseExistingItemsError;
 
-    //console.log*('Existing items from Supabase:', supabaseExistingItems);
+    // console.log*('Existing items from Supabase:', supabaseExistingItems);
 
     // Convert existing items to a Map for quick lookup
     // Supabase cart_items
@@ -202,18 +202,18 @@ export const saveCartToSupabase = async (
       supabaseExistingItemsMap.set(key, supabaseExistingItem);
     });
 
-    //console.log*('existingItemsMap: ', supabaseExistingItemsMap);
+    // console.log*('existingItemsMap: ', supabaseExistingItemsMap);
 
     // -------------------------------  getting size_id from supabase using reduxCartItems elements   -------------------------------------------------------------------
     // Prepare batch updates
     const itemsToInsertOrUpdate: CartItemToPush[] = [];
     const itemsToDelete: CartItemToDelete[] = [];
 
-    //console.log*('reduxCartItems: ', reduxCartItems);
+    // console.log*('reduxCartItems: ', reduxCartItems);
 
     // Loop through cart items to check if supabaseItems need to be updated
     for (const reduxCartitem of reduxCartItems) {
-      //console.log*('item: ', reduxCartitem);
+      // console.log*('item: ', reduxCartitem);
 
       // Fetch the size_id based on product_id and size name
       // const { data: reduxSizeInfo, error: reduxSizeInfoError } = await supabase
@@ -256,7 +256,7 @@ export const saveCartToSupabase = async (
           supabaseExistingItem.quantity !== reduxCartitem.quantity ||
           supabaseExistingItem.price !== reduxCartitem.price
         ) {
-          //console.log*('Either quantity or price needs update');
+          // console.log*('Either quantity or price needs update');
           itemsToInsertOrUpdate.push({
             cartItem_id: supabaseExistingItem.id,
             cart_id: cartId,
@@ -313,7 +313,7 @@ export const saveCartToSupabase = async (
       price: item.price,
     }));
 
-    //console.log*('Updates: ', updates);
+    // console.log*('Updates: ', updates);
 
     for (const updateItem of updates) {
       if (updateItem.id) {
@@ -323,25 +323,25 @@ export const saveCartToSupabase = async (
           .upsert(updates);
 
         if (error) {
-          //console.error*('Error upserting');
+          // console.error*('Error upserting');
         }
-        //console.log*('Upserting existing cartItem_id: ', updates);
+        // console.log*('Upserting existing cartItem_id: ', updates);
       } else {
         const { error } = await supabase
           .from('cart_items')
           // .upsert(updates, { onConflict: "cart_id, product_id, size_id" });
           .insert(updateItem);
 
-        //console.log*('Inserting new cartItem_id: ', updates);
+        // console.log*('Inserting new cartItem_id: ', updates);
         if (error) {
-          //console.error*('Error inserting');
+          // console.error*('Error inserting');
         }
       }
     }
 
-    //console.log*('Cart successfully updated in Supabase.');
+    // console.log*('Cart successfully updated in Supabase.');
   } catch (error) {
-    //console.error*('Error saving cart:', error);
+    // console.error*('Error saving cart:', error);
   }
 };
 
@@ -358,7 +358,7 @@ export const saveCartAfterRemove = async (
       .eq('user_id', userId)
       .single();
 
-    //console.log*("User id's cart: ", cart);
+    // console.log*("User id's cart: ", cart);
 
     if (cartError || !cart)
       throw new Error(`User id: ${userId} does not have an existing cart`);
@@ -371,7 +371,7 @@ export const saveCartAfterRemove = async (
 
     if (supabaseExistingItemsError) throw supabaseExistingItemsError;
 
-    //console.log*('Existing items from Supabase:', supabaseExistingItems);
+    // console.log*('Existing items from Supabase:', supabaseExistingItems);
 
     // Convert existing items to a Map for quick lookup
     // Supabase cart_items
@@ -383,7 +383,7 @@ export const saveCartAfterRemove = async (
       supabaseExistingItemsMap.set(key, supabaseExistingItem);
     });
 
-    //console.log*('existingItemsMap: ', supabaseExistingItemsMap);
+    // console.log*('existingItemsMap: ', supabaseExistingItemsMap);
 
     // -------------------------------  getting size_id from supabase using reduxCartItems elements   -------------------------------------------------------------------
     // // Prepare batch updates

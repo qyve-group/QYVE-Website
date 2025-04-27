@@ -21,12 +21,12 @@ const LoginForm = () => {
     try {
       // const { user, session } = await submitLogin(email, password);
       await submitLogin(email, password);
-      //console.log*('Logged in user: ', user);
-      //console.log*('Logged in session: ', session);
+      // console.log*('Logged in user: ', user);
+      // console.log*('Logged in session: ', session);
 
       router.push('/home');
     } catch (error) {
-      //console.error*('Error logging in: ', error);
+      // console.error*('Error logging in: ', error);
     }
   };
 
@@ -34,10 +34,10 @@ const LoginForm = () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `http://localhost:3000/home`,
+        redirectTo: `http:// localhost:3000/home`,
       },
     });
-    // if (error) //console.error*('Gogole Sign-In error: ', error);
+    // if (error) // console.error*('Gogole Sign-In error: ', error);
   };
 
   return (

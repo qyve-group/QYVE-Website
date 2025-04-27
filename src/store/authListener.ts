@@ -6,7 +6,7 @@ import { store } from '@/store/store';
 
 export const listenForAuthChanges = () => {
   supabase.auth.getSession().then(({ data }) => {
-    //console.log*('Session retrieved from auth getSession: ', data);
+    // console.log*('Session retrieved from auth getSession: ', data);
     store.dispatch(
       setUser({
         user: data.session?.user || null,

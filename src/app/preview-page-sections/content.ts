@@ -65,7 +65,7 @@ export const midSection = {
   heading: 'Looking for more amazing Templates?',
   description:
     'Take a look at our collection of 100+ premium Templates at ThemeAlchemy.',
-  href: 'https://www.themealchemy.com',
+  href: 'https:// www.themealchemy.com',
 };
 
 export const mainPages = {
@@ -159,7 +159,7 @@ export const browseTemplates = {
   heading: 'Browse All Templates',
   description:
     'Take a look at our collection of 100+ premium Templates at ThemeAlchemy.',
-  href: 'https://www.themealchemy.com',
+  href: 'https:// www.themealchemy.com',
   coverImage: showcase1,
   buttonName: 'Buy Template',
 };
@@ -168,7 +168,7 @@ export const buyTemplate = {
   heading: 'Buy Template on ThemeAlchemy',
   description:
     'Take a look at our collection of 100+ premium Templates at ThemeAlchemy.',
-  href: 'https://www.themealchemy.com',
+  href: 'https:// www.themealchemy.com',
   coverImage: showcase2,
   buttonName: 'Explore more templates',
 };
