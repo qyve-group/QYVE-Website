@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       throw new Error('User ID is missing before creating Stripe session');
     }
 
-    console.log('userId in checkout route.ts: ', userId);
+    // console.log('userId in checkout route.ts: ', userId);
 
     const lineItems = cartItems.map((item: any) => ({
       price_data: {
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       quantity: item.quantity,
     }));
 
-    console.log('Line items: ', lineItems);
+    // console.log('Line items: ', lineItems);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],

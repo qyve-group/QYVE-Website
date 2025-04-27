@@ -26,7 +26,7 @@ const CartPage = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
   useEffect(() => {
-    console.log('Cart updated:', cartItems);
+    //console.log*('Cart updated:', cartItems);
   }, [cartItems]);
 
   const handleRemove = (id: number, product_size: string | null) => {
@@ -41,7 +41,7 @@ const CartPage = () => {
   const estimatedTaxes = subtotal * 0.1; // Example 10% tax
   const total = subtotal + estimatedTaxes;
 
-  console.log('CartItems in Cart: ', cartItems);
+  //console.log*('CartItems in Cart: ', cartItems);
 
   return (
     <div className="nc-CartPage">

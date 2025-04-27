@@ -51,7 +51,7 @@ const cartSlice = createSlice({
         state.totalPrice = totalPrice;
       }
 
-      console.log('Setting cart:', action.payload);
+      //console.log*('Setting cart:', action.payload);
     },
 
     // Add item to cart
@@ -63,7 +63,7 @@ const cartSlice = createSlice({
           item.product_size === action.payload.product_size,
       );
 
-      console.log('Before adding item:', JSON.parse(JSON.stringify(state))); // Log before update
+      //console.log*('Before adding item:', JSON.parse(JSON.stringify(state))); // Log before update
 
       if (existingItem) {
         existingItem.quantity += 1;
@@ -73,7 +73,7 @@ const cartSlice = createSlice({
       state.totalQuantity += 1;
       state.totalPrice += action.payload.price;
 
-      console.log('After adding item:', JSON.parse(JSON.stringify(state))); // Log after update
+      //console.log*('After adding item:', JSON.parse(JSON.stringify(state))); // Log after update
     },
 
     // Remove item from cart

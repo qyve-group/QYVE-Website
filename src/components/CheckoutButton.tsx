@@ -22,7 +22,7 @@ export default function CheckoutButton({
   const [loading, setLoading] = useState(false);
 
   const handleCheckout = async () => {
-    console.log('Checkout button clicked');
+    //console.log*('Checkout button clicked');
 
     if (!stripePromise) {
       alert('Stripe is not initialized.');
@@ -31,7 +31,7 @@ export default function CheckoutButton({
 
     try {
       setLoading(true);
-      console.log('Checkout button clicked');
+      //console.log*('Checkout button clicked');
 
       const res = await fetch('/api/checkout', {
         method: 'POST',
@@ -42,13 +42,13 @@ export default function CheckoutButton({
       if (!res.ok) throw new Error('Failed to create checkout session');
 
       const data = await res.json();
-      console.log('Redirecting to:', data.url);
-      console.log('API Response:', data); // Debugging output
+      //console.log*('Redirecting to:', data.url);
+      //console.log*('API Response:', data); // Debugging output
       if (data.url) {
         window.location.href = data.url;
       }
     } catch (error) {
-      console.error('Checkout error: ', error);
+      //console.error*('Checkout error: ', error);
     } finally {
       setLoading(false);
     }

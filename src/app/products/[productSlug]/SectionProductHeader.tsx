@@ -65,12 +65,12 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         .from('product_shots')
         .select('images')
         .eq('product_id', id);
-      console.log('Shots array: ', shotsData);
-      console.log('Shots array length: ', shotsData?.length);
-      console.log('Shots arra [0] length: ', shotsData?.[0]?.images || []);
+      //console.log*('Shots array: ', shotsData);
+      //console.log*('Shots array length: ', shotsData?.length);
+      //console.log*('Shots arra [0] length: ', shotsData?.[0]?.images || []);
 
       //   if (error) {
-      //     console.error("Error fetching shots:", error);
+      //     //console.error*("Error fetching shots:", error);
       //   } else {
       //     setShots(shotsData?.[0]?.images || []);
       //   }
@@ -78,7 +78,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       // };
 
       if (error) {
-        console.error('Error fetching shots:', error);
+        //console.error*('Error fetching shots:', error);
         return;
       }
 
@@ -101,11 +101,11 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   //       .eq("product_id", id);
 
   //     if (error) {
-  //       console.error("Error fetching shots:", error);
+  //       //console.error*("Error fetching shots:", error);
   //       return;
   //     }
 
-  //     console.log("Shots array: ", shotsData)
+  //     //console.log*("Shots array: ", shotsData)
 
   //     if (shotsData && shotsData.length > 0) {
   //       setShots(shotsData?.images || []); // Safely access images
@@ -134,20 +134,20 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         image: image_cover,
       }),
     );
-    console.log('Adding to Cart:', id, selectedSize);
+    //console.log*('Adding to Cart:', id, selectedSize);
   };
 
   const handleSelectSize = (product_size: string) => {
     // setSelectedSize(product_size);
     setSelectedSize(product_size);
-    console.log('selected size: ', selectedSize);
+    //console.log*('selected size: ', selectedSize);
   };
 
   useEffect(() => {
-    // console.log("Latest Cart State:", cart);
+    // //console.log*("Latest Cart State:", cart);
   }, [cart]);
 
-  // console.log("price:", price);
+  // //console.log*("price:", price);
   return (
     <div className="items-stretch justify-between space-y-10 lg:flex lg:space-y-0">
       <div className="basis-[50%]">

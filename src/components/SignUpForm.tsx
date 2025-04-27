@@ -16,10 +16,10 @@ const SignUpForm = () => {
 
   const submitForm = async () => {
     try {
-      const data = await submitSignUp(email, password);
-      console.log('Registration successfull: ', data);
+      await submitSignUp(email, password);
+      //console.log*('Registration successfull: ', data);
     } catch (error) {
-      console.error('Error in registering user: ', error);
+      //console.error*('Error in registering user: ', error);
     }
   };
 

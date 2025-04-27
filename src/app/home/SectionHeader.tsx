@@ -68,7 +68,7 @@ const SectionHeader = () => {
         .select('*')
         .eq('is_active', true);
 
-      console.log('slides: ', slides);
+      //console.log*('slides: ', slides);
       setSlides(slides);
     };
     fetchCarousel();
