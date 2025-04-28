@@ -75,7 +75,14 @@
           "unused-imports/no-unused-vars": [
             "error",
             { "argsIgnorePattern": "^_" }
-          ]
+          ],
+          "no-param-reassign": [
+          "error",
+          {
+            "props": true,
+            "ignorePropertyModificationsFor": ["state"]
+          }
+        ]
         }
       },
       // Configuration for testing
