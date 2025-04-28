@@ -33,9 +33,10 @@ const cartSlice = createSlice({
   reducers: {
     // Reducer functions to modify state
     setCart: (state, action: PayloadAction<CartItem[]>) => {
+      // eslint-disable-next-line no-param-reassign
       state.items = action.payload;
 
-      if (action.payload.length == 0) {
+      if (action.payload.length === 0) {
         state.totalPrice = 0;
         state.totalQuantity = 0;
       } else {
@@ -105,16 +106,16 @@ const cartSlice = createSlice({
         product_size: string | null;
       }>,
     ) => {
-      const item = state.items.find(
-        (item) =>
-          item.id === action.payload.id &&
-          item.product_size === action.payload.product_size,
+      const itemUQ = state.items.find(
+        (itemUQ) =>
+          itemUQ.id === action.payload.id &&
+        itemUQ.product_size === action.payload.product_size,
       );
-      if (item && action.payload.quantity > 0) {
-        const quantityDiff = action.payload.quantity - item.quantity;
+      if (itemUQ && action.payload.quantity > 0) {
+        const quantityDiff = action.payload.quantity - itemUQ.quantity;
         state.totalQuantity += quantityDiff;
-        state.totalPrice += quantityDiff * item.price;
-        item.quantity = action.payload.quantity;
+        state.totalPrice += quantityDiff * itemUQ.price;
+        itemUQ.quantity = action.payload.quantity;
       }
     },
 

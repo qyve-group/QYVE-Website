@@ -14,7 +14,14 @@
           "singleQuote": true,
           "endOfLine": "auto"
         }
-      ] // Avoid conflict rule between Prettier and Airbnb Eslint
+      ], // Avoid conflict rule between Prettier and Airbnb Eslint
+      "no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": ["state"]
+      }
+    ]
     },
     "overrides": [
       // Configuration for TypeScript files
