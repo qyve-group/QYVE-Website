@@ -107,9 +107,9 @@ const cartSlice = createSlice({
       }>,
     ) => {
       const itemUQ = state.items.find(
-        (itemUQ) =>
-          itemUQ.id === action.payload.id &&
-        itemUQ.product_size === action.payload.product_size,
+        (item) =>
+          item.id === action.payload.id &&
+        item.product_size === action.payload.product_size,
       );
       if (itemUQ && action.payload.quantity > 0) {
         const quantityDiff = action.payload.quantity - itemUQ.quantity;
