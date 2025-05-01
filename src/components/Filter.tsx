@@ -1,9 +1,9 @@
-import React from "react";
-import { LuFilter } from "react-icons/lu";
+import React from 'react';
+import { LuFilter } from 'react-icons/lu';
 
-import { filters } from "@/data/content";
-import Button from "@/shared/Button/Button";
-import Select from "@/shared/Select/Select";
+import { filters } from '@/data/content';
+import Button from '@/shared/Button/Button';
+import Select from '@/shared/Select/Select';
 
 const Filter = () => {
   return (

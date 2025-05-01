@@ -1,22 +1,22 @@
-import { createClient } from "@supabase/supabase-js";
-import { NextResponse } from "next/server";
-import Stripe from "stripe";
-import { v4 as uuidv4 } from "uuid"; // Import UUID library
+import { createClient } from '@supabase/supabase-js';
+import { NextResponse } from 'next/server';
+import Stripe from 'stripe';
+import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
-import { supabase } from "@/libs/supabaseClient";
+import { supabase } from '@/libs/supabaseClient';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
   // console.log*('Webhook called');
 
-  const sig = req.headers.get("stripe-signature");
+  const sig = req.headers.get('stripe-signature');
 
   if (!sig) {
     // console.error*('❌ Missing Stripe Signature');
     return NextResponse.json(
-      { error: "Missing Stripe Signature" },
-      { status: 400 }
+      { error: 'Missing Stripe Signature' },
+      { status: 400 },
     );
   }
 
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     event = stripe.webhooks.constructEvent(
       rawBody,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET as string
+      process.env.STRIPE_WEBHOOK_SECRET as string,
     );
     // event = stripe.webhooks.constructEvent(rawBodyString, sig, process.env.STRIPE_WEBHOOK_SECRET!);
     // // console.log*('✅ Event parsed:', event);
@@ -41,35 +41,35 @@ export async function POST(req: Request) {
     // console.error*('❌ Webhook Error:', err);
     return NextResponse.json(
       { error: `Webhook Error: ${(err as Error).message}` },
-      { status: 400 }
+      { status: 400 },
     );
   }
   // // console.log*('✅ Webhook received:', event);
 
-  if (event.type === "checkout.session.completed") {
+  if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     // const userId = "1c2e85d0-410f-4019-88f3-c380ec3abc24";
-    const userId = session.metadata?.user_id || "";
+    const userId = session.metadata?.user_id || '';
     // // console.log*('✅ Checkout Session Object:', session);
     // // console.log*('userid: ', userId);
 
     if (!userId) {
       // console.error*('User ID missing in metadata');
-      return NextResponse.json({ error: "User ID missing" }, { status: 400 });
+      return NextResponse.json({ error: 'User ID missing' }, { status: 400 });
     }
 
     // Fetch cart_id from cart table using user_id
     const { data: cartInfo, error: cartInfoError } = await supabase
-      .from("carts")
-      .select("id")
-      .eq("user_id", userId)
+      .from('carts')
+      .select('id')
+      .eq('user_id', userId)
       .single();
 
     if (cartInfoError || !cartInfo) {
       // console.error*('Active cart not found for user:', cartInfoError);
       return NextResponse.json(
-        { error: "Active cart not found" },
-        { status: 404 }
+        { error: 'Active cart not found' },
+        { status: 404 },
       );
     }
 
@@ -78,19 +78,19 @@ export async function POST(req: Request) {
 
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-      process.env.SUPABASE_SERVICE_ROLE_KEY as string
+      process.env.SUPABASE_SERVICE_ROLE_KEY as string,
     );
     // Fetch cart items using cart_id
     const { data: cartItems, error: cartItemsError } = await supabaseAdmin
-      .from("cart_items")
-      .select("*")
-      .eq("cart_id", cartId);
+      .from('cart_items')
+      .select('*')
+      .eq('cart_id', cartId);
 
     if (cartItemsError || !cartItems.length) {
       // console.error*('Cart items not found:', cartItemsError);
       return NextResponse.json(
-        { error: "Cart items not found" },
-        { status: 404 }
+        { error: 'Cart items not found' },
+        { status: 404 },
       );
     }
 
@@ -98,18 +98,18 @@ export async function POST(req: Request) {
     const orderId = uuidv4(); // Generate a new UUID
     const totalPrice = cartItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
-      0
+      0,
     );
     const formattedTotalPrice = parseFloat(totalPrice.toFixed(2)); // Ensure precision
     // // console.log*('Total Price Calculated:', formattedTotalPrice);
 
     const { error: orderError } = await supabase
-      .from("orders")
+      .from('orders')
       .insert([
         {
           id: orderId,
           user_id: userId,
-          status: "paid",
+          status: 'paid',
           total_price: formattedTotalPrice,
           stripe_session_id: session.id,
         },
@@ -120,8 +120,8 @@ export async function POST(req: Request) {
     if (orderError) {
       // console.error*('Failed to create order:', orderError);
       return NextResponse.json(
-        { error: "Order creation failed" },
-        { status: 500 }
+        { error: 'Order creation failed' },
+        { status: 500 },
       );
     }
 
@@ -132,10 +132,10 @@ export async function POST(req: Request) {
     /* eslint-disable no-await-in-loop */
     for (const item of cartItems) {
       const { data: productSize, error: fetchError } = await supabase
-        .from("products_sizes")
-        .select("stock")
-        .eq("product_id", item.product_id)
-        .eq("id", item.size_id)
+        .from('products_sizes')
+        .select('stock')
+        .eq('product_id', item.product_id)
+        .eq('id', item.size_id)
         .single();
 
       if (fetchError) {
@@ -156,10 +156,10 @@ export async function POST(req: Request) {
       // console.log*('Updating stock for item:', item);
 
       const { error: stockError } = await supabaseAdmin
-        .from("products_sizes")
+        .from('products_sizes')
         .update({ stock: newStock })
-        .eq("product_id", item.product_id)
-        .eq("id", item.size_id);
+        .eq('product_id', item.product_id)
+        .eq('id', item.size_id);
 
       if (stockError) {
         throw stockError;
@@ -169,7 +169,7 @@ export async function POST(req: Request) {
       const orderItemsId = uuidv4();
 
       const { error: orderItemsError } = await supabaseAdmin
-        .from("order_items")
+        .from('order_items')
         .insert({
           id: orderItemsId,
           order_id: orderId,
@@ -186,9 +186,9 @@ export async function POST(req: Request) {
     // Clear the cart after payment
     // console.log*('Clearing cart items for cart ID:', cartId);
     const { error: clearCartError } = await supabaseAdmin
-      .from("cart_items")
+      .from('cart_items')
       .delete()
-      .eq("cart_id", cartId);
+      .eq('cart_id', cartId);
 
     if (clearCartError) {
       // console.error*('❌ Error clearing cart items:', clearCartError);

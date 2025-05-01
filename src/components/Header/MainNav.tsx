@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { FaRegBell } from "react-icons/fa6";
-import { RiSearch2Line } from "react-icons/ri";
-import { useDispatch, useSelector } from "react-redux";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { FaRegBell } from 'react-icons/fa6';
+import { RiSearch2Line } from 'react-icons/ri';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Loading from "@/app/loading";
-import avatar from "@/images/avatar.png";
-import ButtonCircle3 from "@/shared/Button/ButtonCircle3";
-import Input from "@/shared/Input/Input";
-import Logo from "@/shared/Logo/Logo";
-import { logoutUser } from "@/store/authSlice";
-import type { AppDispatch, RootState } from "@/store/store";
+import Loading from '@/app/loading';
+import avatar from '@/images/avatar.png';
+import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
+import Input from '@/shared/Input/Input';
+import Logo from '@/shared/Logo/Logo';
+import { logoutUser } from '@/store/authSlice';
+import type { AppDispatch, RootState } from '@/store/store';
 
-import CartSideBar from "../CartSideBar";
-import MenuBar from "./MenuBar";
+import CartSideBar from '../CartSideBar';
+import MenuBar from './MenuBar';
 
 const MainNav = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -36,7 +36,7 @@ const MainNav = () => {
     await dispatch(logoutUser()); // Logout process
     setIsOpen(false); // Close dropdown
 
-    router.push("/home"); // Redirect after logout
+    router.push('/home'); // Redirect after logout
     setIsLoggingOut(false); // Stop loading (optional, since the page will change)
   };
 
@@ -73,7 +73,7 @@ const MainNav = () => {
               setIsOpen(!isOpen);
             }}
             onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
+              if (e.key === 'Enter' || e.key === ' ') {
                 setIsOpen(!isOpen);
               }
             }}
@@ -124,7 +124,7 @@ const MainNav = () => {
                       onClick={handleLogOut}
                       disabled={isLoggingOut}
                     >
-                      {isLoggingOut ? "Logging out..." : "Logout"}
+                      {isLoggingOut ? 'Logging out...' : 'Logout'}
                     </button>
 
                     {isLoggingOut && <Loading />}

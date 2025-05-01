@@ -1,44 +1,44 @@
-"use client";
+'use client';
 
-import { CheckCircle, CreditCard, Package, Truck } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { CheckCircle, CreditCard, Package, Truck } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 // import { CheckCircle, Truck, Package, Star, CreditCard } from "lucide-react";
 // import Button from "@/shared/Button/Button";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import { supabase } from "@/libs/supabaseClient";
-import type { CartItem } from "@/store/cartSlice";
-import type { RootState } from "@/store/store";
-import Image from "next/image";
+import { supabase } from '@/libs/supabaseClient';
+import type { CartItem } from '@/store/cartSlice';
+import type { RootState } from '@/store/store';
+import Image from 'next/image';
 
-import Loading from "../loading";
+import Loading from '../loading';
 
 // export default function MyOrders() {
 const ShippingProgress = () => {
   const steps = [
     {
       icon: <Package size={32} />,
-      label: "Order Placed",
-      date: "Mar 25, 2025",
+      label: 'Order Placed',
+      date: 'Mar 25, 2025',
       id: 1,
     },
     {
       icon: <CreditCard size={32} />,
-      label: "Paid",
-      date: "Mar 26, 2025",
+      label: 'Paid',
+      date: 'Mar 26, 2025',
       id: 2,
     },
     {
       icon: <Truck size={32} />,
-      label: "Shipped Out",
-      date: "Mar 27, 2025",
+      label: 'Shipped Out',
+      date: 'Mar 27, 2025',
       id: 3,
     },
     {
       icon: <CheckCircle size={32} />,
-      label: "Order Received",
-      date: "Mar 30, 2025",
+      label: 'Order Received',
+      date: 'Mar 30, 2025',
       id: 4,
     },
     // { icon: <Star size={32} />, label: "To Rate", date: null },
@@ -61,12 +61,12 @@ const ShippingProgress = () => {
   //   }
 
   const info = {
-    name: "Adam Yaqin",
-    phone: "0123456789",
-    street: "1, Lorong Dahlia, Kg. Sg. Kayu Ara",
-    city: "Petaling Jaya",
-    pcode: "46201",
-    state: "Selangor",
+    name: 'Adam Yaqin',
+    phone: '0123456789',
+    street: '1, Lorong Dahlia, Kg. Sg. Kayu Ara',
+    city: 'Petaling Jaya',
+    pcode: '46201',
+    state: 'Selangor',
   };
 
   // const [orderItems, setOrderItems] = useState([
@@ -95,9 +95,9 @@ const ShippingProgress = () => {
     // console.log*('userId: ', userId?.id);
     const fetchOrderIds = async () => {
       const { data, error } = await supabase
-        .from("orders")
-        .select("id, total_price")
-        .eq("user_id", userId?.id);
+        .from('orders')
+        .select('id, total_price')
+        .eq('user_id', userId?.id);
 
       if (error) {
         // console.error*('Error fetching order ID:', error);
@@ -124,9 +124,9 @@ const ShippingProgress = () => {
   useEffect(() => {
     const fetchOrderStatus = async () => {
       const { data, error } = await supabase
-        .from("orders")
-        .select("status")
-        .in("id", orderIds);
+        .from('orders')
+        .select('status')
+        .in('id', orderIds);
 
       if (error) {
         // console.error*('Error fetching order status:', error);
@@ -141,7 +141,7 @@ const ShippingProgress = () => {
       let highestStep = 0;
       data.forEach((order) => {
         const statusIndex = steps.findIndex(
-          (step) => step.label === order.status
+          (step) => step.label === order.status,
         );
         if (statusIndex > highestStep) highestStep = statusIndex;
       });
@@ -159,7 +159,7 @@ const ShippingProgress = () => {
       setLoading(true); // Step 2: Set loading to true before fetching
 
       const { data: orderItemsSupabase, error: orderItemsError } =
-        await supabase.from("order_items").select("*").in("order_id", orderIds); // ✅ Fix: Use .in() instead of .eq()
+        await supabase.from('order_items').select('*').in('order_id', orderIds); // ✅ Fix: Use .in() instead of .eq()
       // const {data: orderItemsSupabase, error: orderItemsError} = await supabase.from("order_items").select("*").eq("order_id", orderIds);
 
       if (orderItemsError) {
@@ -171,9 +171,9 @@ const ShippingProgress = () => {
       const updatedCartItems = await Promise.all(
         orderItemsSupabase.map(async (item) => {
           const { data: productInfo, error: productInfoError } = await supabase
-            .from("products")
-            .select("image_cover, name")
-            .eq("id", item.product_id)
+            .from('products')
+            .select('image_cover, name')
+            .eq('id', item.product_id)
             .single();
 
           if (productInfoError) {
@@ -187,11 +187,11 @@ const ShippingProgress = () => {
             quantity: item.quantity,
             price: item.price,
           };
-        })
+        }),
       );
 
       setOrderItems(
-        updatedCartItems.filter((item): item is CartItem => item !== null)
+        updatedCartItems.filter((item): item is CartItem => item !== null),
       );
       setLoading(false);
     };
@@ -200,7 +200,7 @@ const ShippingProgress = () => {
   }, [orderIds]);
 
   const [copied, setCopied] = useState(false);
-  const trackingCode = "M213ASD4S";
+  const trackingCode = 'M213ASD4S';
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(trackingCode);
@@ -251,7 +251,7 @@ const ShippingProgress = () => {
                 className={`md:w-13 md:h-13 flex size-8 items-center justify-center rounded-full p-2 transition-all duration-300
 
 
-                            ${index <= currentStep ? "bg-green-600 text-white" : "border-gray-400 border-2 bg-white text-customGray-400"}`}
+                            ${index <= currentStep ? 'bg-green-600 text-white' : 'border-gray-400 border-2 bg-white text-customGray-400'}`}
               >
                 {step.icon}
               </div>
@@ -259,7 +259,7 @@ const ShippingProgress = () => {
               {/* Label */}
               <div
                 className={`mt-1 text-center text-xs font-semibold
-                            ${index <= currentStep ? "text-green-500" : "text-customGray-400"}`}
+                            ${index <= currentStep ? 'text-green-500' : 'text-customGray-400'}`}
               >
                 {step.label}
               </div>
@@ -330,7 +330,7 @@ const ShippingProgress = () => {
               {orderIds.map((orderId, idx) => (
                 <div
                   key={orderId}
-                  className={`${idx !== 0 ? "border-t pt-4" : ""}`}
+                  className={`${idx !== 0 ? 'border-t pt-4' : ''}`}
                 >
                   <p className="mb-2 text-sm font-bold">Order ID: {orderId}</p>
 

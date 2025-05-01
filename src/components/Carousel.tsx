@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import "bootstrap/dist/css/bootstrap.min.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { useState } from "react";
-import { Carousel } from "react-bootstrap";
-import Image from "next/image";
+import { useState } from 'react';
+import { Carousel } from 'react-bootstrap';
+import Image from 'next/image';
 
-import { items } from "@/public/Items.json";
-import styles from "@/styles/Bootstrap.module.css";
+import { items } from '@/public/Items.json';
+import styles from '@/styles/Bootstrap.module.css';
 
 export default function BootstrapCarousel() {
   const { bootstrap } = items;

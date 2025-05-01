@@ -1,6 +1,6 @@
 // import FormItem from "@/shared/FormItem";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 // import { saveCartToSupabase } from "@/services/cartService";
 // import { debounce } from "@/utils/debounce";
 
@@ -28,7 +28,7 @@ const initialState: CartState = {
 };
 
 const cartSlice = createSlice({
-  name: "cart", // The slice name (used for actions)
+  name: 'cart', // The slice name (used for actions)
   initialState, // Initial state for the cart
   reducers: {
     // Reducer functions to modify state
@@ -61,7 +61,7 @@ const cartSlice = createSlice({
         // Reducer logic
         (item) =>
           item.id === action.payload.id &&
-          item.product_size === action.payload.product_size
+          item.product_size === action.payload.product_size,
       );
 
       // console.log*('Before adding item:', JSON.parse(JSON.stringify(state))); // Log before update
@@ -80,12 +80,12 @@ const cartSlice = createSlice({
     // Remove item from cart
     removeFromCart: (
       state,
-      action: PayloadAction<{ id: number; product_size: string | null }>
+      action: PayloadAction<{ id: number; product_size: string | null }>,
     ) => {
       const itemIndex = state.items.findIndex(
         (item) =>
           item.id === action.payload.id &&
-          item.product_size === action.payload.product_size
+          item.product_size === action.payload.product_size,
       );
       if (itemIndex !== -1) {
         state.totalQuantity -= state.items[itemIndex]?.quantity || 0;
@@ -104,12 +104,12 @@ const cartSlice = createSlice({
         id: number;
         quantity: number;
         product_size: string | null;
-      }>
+      }>,
     ) => {
       const itemUQ = state.items.find(
         (item) =>
           item.id === action.payload.id &&
-          item.product_size === action.payload.product_size
+          item.product_size === action.payload.product_size,
       );
       if (itemUQ && action.payload.quantity > 0) {
         const quantityDiff = action.payload.quantity - itemUQ.quantity;
