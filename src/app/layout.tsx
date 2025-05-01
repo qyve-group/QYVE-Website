@@ -10,7 +10,7 @@ import React from 'react';
 import LayoutClient from './layoutClient';
 
 export const metadata: Metadata = {
-  title: 'Hotkicks Ecommerce Template',
+  title: 'QYVE',
   icons: [
     {
       rel: 'apple-touch-icon',
