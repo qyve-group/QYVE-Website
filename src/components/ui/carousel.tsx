@@ -134,7 +134,7 @@ const Carousel = React.forwardRef<
     // eslint-disable-next-line consistent-return
     React.useEffect(() => {
       if (!api) {
-        return;
+        return undefined;
       }
 
       onSelect(api);

@@ -78,7 +78,7 @@ const MainNav = () => {
               }
             }}
           >
-            {auth.loading != true ? (
+            {auth.loading !== true ? (
               <div className="flex items-center gap-2 pl-5">
                 <ButtonCircle3
                   className="overflow-hidden bg-gray"
@@ -104,7 +104,7 @@ const MainNav = () => {
             )}
             {isOpen && (
               <div className="absolute right-0 z-10 mt-2 w-48 overflow-hidden rounded-lg bg-primary text-white shadow-lg">
-                {auth.loading != true ? (
+                {auth.loading !== true ? (
                   <>
                     <Link
                       href="/account"

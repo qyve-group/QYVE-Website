@@ -1,3 +1,5 @@
+/* eslint-disable unused-imports/no-unused-imports, no-unused-vars */
+
 'use client';
 
 import type { CredentialResponse } from 'google-one-tap';
@@ -43,31 +45,25 @@ const OneTapComponent = () => {
           return;
         }
 
-        /* global google */
-        /* eslint-disable unused-imports/no-unused-vars */
-        /* eslint-disable unused-imports/no-unused-imports */
         window.google.accounts.id.initialize({
           client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
           callback: async (response: CredentialResponse) => {
-            try {
-              // send id token returned in response.credential to supabase
-              const { error: errorSignIn } =
-                await supabase.auth.signInWithIdToken({
-                  provider: 'google',
-                  token: response.credential,
-                  nonce,
-                });
+            // send id token returned in response.credential to supabase
+            const { error: errorSignIn } =
+              await supabase.auth.signInWithIdToken({
+                provider: 'google',
+                token: response.credential,
+                nonce,
+              });
 
-              if (errorSignIn) throw errorSignIn;
-              // console.log*('Session data: ', data);
-              // console.log*('Successfully logged in with Google One Tap');
-
-              // redirect to protected page
-              router.push('/');
-            } catch (error) {
-              // console.error*('Error logging in with Google One Tap', error);
-              throw error;
+            if (errorSignIn) {
+              // Handle error appropriately (e.g., log it or show user a message)
+              // console.error('Error logging in with Google One Tap', errorSignIn);
+              throw errorSignIn;
             }
+
+            // redirect to protected page
+            router.push('/');
           },
           nonce: hashedNonce,
           // with chrome's removal of third-party cookiesm, we need to use FedCM instead (https:// developers.google.com/identity/gsi/web/guides/fedcm-migration)

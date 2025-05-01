@@ -41,10 +41,10 @@ const authSlice = createSlice({
   },
 });
 
+export const { setUser, logout, setLoading } = authSlice.actions;
+export default authSlice.reducer;
+
 export const logoutUser = () => async (dispatch: any) => {
   await supabase.auth.signOut(); // ✅ Clears session from Supabase
   dispatch(logout()); // ✅ Clears user from Redux state
 };
-
-export const { setUser, logout, setLoading } = authSlice.actions;
-export default authSlice.reducer;

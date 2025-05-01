@@ -2,9 +2,9 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { Carousel } from 'react-bootstrap';
-import Image from 'next/image';
 
 import { items } from '@/public/Items.json';
 import styles from '@/styles/Bootstrap.module.css';
@@ -26,7 +26,9 @@ export default function BootstrapCarousel() {
           <Carousel.Caption className={styles.caption}>
             <h3>{item.title}</h3>
             <p>{item.body}</p>
-            <button className="btn btn-danger">Visit Docs</button>
+            <button type="button" className="btn btn-danger">
+              Visit Docs
+            </button>
           </Carousel.Caption>
         </Carousel.Item>
       ))}

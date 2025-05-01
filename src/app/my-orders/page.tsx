@@ -1,6 +1,7 @@
 'use client';
 
 import { CheckCircle, CreditCard, Package, Truck } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 // import { CheckCircle, Truck, Package, Star, CreditCard } from "lucide-react";
 // import Button from "@/shared/Button/Button";
@@ -10,7 +11,6 @@ import { useSelector } from 'react-redux';
 import { supabase } from '@/libs/supabaseClient';
 import type { CartItem } from '@/store/cartSlice';
 import type { RootState } from '@/store/store';
-import Image from 'next/image';
 
 import Loading from '../loading';
 
@@ -371,9 +371,11 @@ const ShippingProgress = () => {
               {/* Totals */}
               {totalPrice.map((price, idx) => (
                 <div
-                  key={`${price}_${idx}`}
+                  /* eslint-disable react/no-array-index-key */
+                  key={idx}
                   className="text-gray-700 space-y-2 border-t pt-6"
                 >
+                  {/* eslint-disable-next-line react/no-array-index-key */}
                   <div className="flex justify-between font-semibold">
                     <div>Merchandise Subtotal</div>
                     <div>RM {price}</div>

@@ -24,7 +24,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         ref={ref}
         type={type}
-        className={`block w-full focus:ring focus:ring-transparent focus:ring-primary/25 disabled:bg-neutral-800 ${rounded} ${fontClass} ${sizeClass} ${className}`}
+        className={`block w-full focus:ring-primary/25 disabled:bg-neutral-800 ${rounded} ${fontClass} ${sizeClass} ${className}`}
         {...args}
       />
     );

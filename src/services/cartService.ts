@@ -1,11 +1,11 @@
-import type { UUID } from "crypto";
+import type { UUID } from 'crypto';
 
-import { supabase } from "@/libs/supabaseClient";
+import { supabase } from '@/libs/supabaseClient';
 // import CartSync from "./cartProvider";
 // import { debounce } from "@/utils/debounce";
-import type { CartItem } from "@/store/cartSlice";
-import { setCart } from "@/store/cartSlice";
-import type { AppDispatch } from "@/store/store";
+import type { CartItem } from '@/store/cartSlice';
+import { setCart } from '@/store/cartSlice';
+import type { AppDispatch } from '@/store/store';
 // import { store } from '@/store/store';
 
 type CartItemToPush = {
@@ -68,7 +68,7 @@ type SupabaseCartItem = {
 
 export const fetchCartFromSupabase = async (
   userId: string | null,
-  dispatch: AppDispatch
+  dispatch: AppDispatch,
 ) => {
   if (!userId) return;
 
@@ -77,9 +77,9 @@ export const fetchCartFromSupabase = async (
   try {
     // Fetch the cart ID for the user
     const { data: cart, error: cartError } = await supabase
-      .from("carts")
-      .select("id")
-      .eq("user_id", userId)
+      .from('carts')
+      .select('id')
+      .eq('user_id', userId)
       .maybeSingle();
 
     if (cartError) throw cartError;
@@ -88,9 +88,9 @@ export const fetchCartFromSupabase = async (
     // If no cart exists, create a new one
     if (!cartId) {
       const { data: newCart, error: newCartError } = await supabase
-        .from("carts")
+        .from('carts')
         .insert([{ user_id: userId }])
-        .select("id")
+        .select('id')
         .single();
 
       if (newCartError) throw newCartError;
@@ -102,7 +102,7 @@ export const fetchCartFromSupabase = async (
 
     // Fetch cart items from supabase
     const { data: supabaseCartItems, error: supabaseCartItemsError } =
-      await supabase.from("cart_items").select("*").eq("cart_id", cartId);
+      await supabase.from('cart_items').select('*').eq('cart_id', cartId);
 
     if (supabaseCartItemsError) throw supabaseCartItemsError;
 
@@ -114,9 +114,9 @@ export const fetchCartFromSupabase = async (
         // Fetch product details
         const { data: supabaseProductInfo, error: productError } =
           await supabase
-            .from("products")
-            .select("*")
-            .eq("id", supabaseCartItem.product_id)
+            .from('products')
+            .select('*')
+            .eq('id', supabaseCartItem.product_id)
             .maybeSingle();
 
         if (productError) {
@@ -126,9 +126,9 @@ export const fetchCartFromSupabase = async (
 
         // Fetch size details
         const { data: supabaseSizeInfo, error: sizeError } = await supabase
-          .from("products_sizes")
-          .select("*")
-          .eq("id", supabaseCartItem.size_id)
+          .from('products_sizes')
+          .select('*')
+          .eq('id', supabaseCartItem.size_id)
           .maybeSingle();
 
         if (sizeError) {
@@ -145,11 +145,11 @@ export const fetchCartFromSupabase = async (
           quantity: supabaseCartItem.quantity,
           image: supabaseProductInfo.image_cover,
         };
-      })
+      }),
     );
 
     const supabaseCartWithDetailsFiltered = supabaseCartWithDetails.filter(
-      (item) => item !== null
+      (item) => item !== null,
     );
 
     dispatch(setCart(supabaseCartWithDetailsFiltered));
@@ -165,15 +165,15 @@ export const fetchCartFromSupabase = async (
 
 export const saveCartToSupabase = async (
   userId: string,
-  reduxCartItems: any[]
+  reduxCartItems: any[],
 ) => {
   try {
     // ------------------------- fetching cartid and retrieving items from supabase to put into map   ------------------------------------------------------------
     // Fetch the cart ID
     const { data: cart, error: cartError } = await supabase
-      .from("carts")
-      .select("id")
-      .eq("user_id", userId)
+      .from('carts')
+      .select('id')
+      .eq('user_id', userId)
       .single();
 
     // console.log*("User id's cart: ", cart);
@@ -185,7 +185,7 @@ export const saveCartToSupabase = async (
 
     // Fetch existing supabase cart items
     const { data: supabaseExistingItems, error: supabaseExistingItemsError } =
-      await supabase.from("cart_items").select("*").eq("cart_id", cartId);
+      await supabase.from('cart_items').select('*').eq('cart_id', cartId);
 
     if (supabaseExistingItemsError) throw supabaseExistingItemsError;
 
@@ -217,11 +217,13 @@ export const saveCartToSupabase = async (
 
       // Fetch the size_id based on product_id and size name
       // const { data: reduxSizeInfo, error: reduxSizeInfoError } = await supabase
+
+      /* eslint-disable no-await-in-loop */
       const { data: reduxSizeInfo } = await supabase
-        .from("products_sizes")
-        .select("id")
-        .eq("product_id", reduxCartitem.id) // item.id is referring to product_id
-        .eq("size", reduxCartitem.product_size) // Match size name (e.g., "M")
+        .from('products_sizes')
+        .select('id')
+        .eq('product_id', reduxCartitem.id) // item.id is referring to product_id
+        .eq('size', reduxCartitem.product_size) // Match size name (e.g., "M")
         .single();
 
       // if (reduxSizeInfoError) {
@@ -294,7 +296,7 @@ export const saveCartToSupabase = async (
 
     // Any remaining items in existingItemsMap should be deleted because these items do not need to be updated in supabase. supabaseExistingItemsMap is only used to find items that need updates
     supabaseExistingItemsMap.forEach((item) =>
-      itemsToDelete.push({ cartItem_id: item.id })
+      itemsToDelete.push({ cartItem_id: item.id }),
     );
 
     // console.log(
@@ -315,11 +317,11 @@ export const saveCartToSupabase = async (
 
     // console.log*('Updates: ', updates);
 
-    // eslint-disable-next-line no-await-in-loop
     for (const updateItem of updates) {
       if (updateItem.id) {
+        // eslint-disable-next-line no-await-in-loop
         const { error } = await supabase
-          .from("cart_items")
+          .from('cart_items')
           // .upsert(updates, { onConflict: "cart_id, product_id, size_id" });
           .upsert(updates);
 
@@ -328,8 +330,9 @@ export const saveCartToSupabase = async (
         }
         // console.log*('Upserting existing cartItem_id: ', updates);
       } else {
+        // eslint-disable-next-line no-await-in-loop
         const { error } = await supabase
-          .from("cart_items")
+          .from('cart_items')
           // .upsert(updates, { onConflict: "cart_id, product_id, size_id" });
           .insert(updateItem);
 
@@ -348,15 +351,15 @@ export const saveCartToSupabase = async (
 
 export const saveCartAfterRemove = async (
   userId: string,
-  removedCartItem: CartItem
+  removedCartItem: CartItem,
 ) => {
   try {
     // ------------------------- fetching cartid and retrieving items from supabase to put into map   ------------------------------------------------------------
     // Fetch the cart ID
     const { data: cart, error: cartError } = await supabase
-      .from("carts")
-      .select("id")
-      .eq("user_id", userId)
+      .from('carts')
+      .select('id')
+      .eq('user_id', userId)
       .single();
 
     // console.log*("User id's cart: ", cart);
@@ -368,7 +371,7 @@ export const saveCartAfterRemove = async (
 
     // Fetch existing supabase cart items
     const { data: supabaseExistingItems, error: supabaseExistingItemsError } =
-      await supabase.from("cart_items").select("*").eq("cart_id", cartId);
+      await supabase.from('cart_items').select('*').eq('cart_id', cartId);
 
     if (supabaseExistingItemsError) throw supabaseExistingItemsError;
 
@@ -393,10 +396,10 @@ export const saveCartAfterRemove = async (
 
     // Fetch the size_id based on product_id and size name
     const { data: reduxSizeInfo } = await supabase
-      .from("products_sizes")
-      .select("id")
-      .eq("product_id", removedCartItem.id) // item.id is referring to product_id
-      .eq("size", removedCartItem.product_size) // Match size name (e.g., "M")
+      .from('products_sizes')
+      .select('id')
+      .eq('product_id', removedCartItem.id) // item.id is referring to product_id
+      .eq('size', removedCartItem.product_size) // Match size name (e.g., "M")
       .single();
 
     // if (reduxSizeInfoError) {
@@ -419,9 +422,9 @@ export const saveCartAfterRemove = async (
 
     if (supabaseItemToDelete) {
       await supabase
-        .from("cart_items")
+        .from('cart_items')
         .delete()
-        .eq("id", supabaseItemToDelete.id); // Delete by item ID
+        .eq('id', supabaseItemToDelete.id); // Delete by item ID
 
       // if (error) {
       //   console.error('Error deleting item from Supabase:', error);
