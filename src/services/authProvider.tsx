@@ -17,5 +17,5 @@ export default function AuthProvider({
     };
   }, []);
 
-  return { children };
+  return <>{children}</>;
 }
