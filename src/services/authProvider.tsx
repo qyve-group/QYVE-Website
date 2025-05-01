@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-import { listenForAuthChanges } from '@/store/authListener'; // Import function
+import { listenForAuthChanges } from "@/store/authListener"; // Import function
 
 export default function AuthProvider({
   children,
@@ -17,5 +17,5 @@ export default function AuthProvider({
     };
   }, []);
 
-  return <>{children}</>;
+  return { children };
 }

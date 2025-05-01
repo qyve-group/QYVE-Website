@@ -1,25 +1,27 @@
-'use client';
+/* eslint-disable @typescript-eslint/naming-convention */
 
-import { Dialog, Transition } from '@headlessui/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import React, { Fragment, useEffect, useState } from 'react';
-import { AiOutlineDelete } from 'react-icons/ai';
-import { FaBagShopping } from 'react-icons/fa6';
-import { MdClose, MdStar } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
+"use client";
 
-import { saveCartAfterRemove } from '@/services/cartService';
-import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
-import ButtonSecondary from '@/shared/Button/ButtonSecondary';
-import InputNumber from '@/shared/InputNumber/InputNumber';
-import type { CartItem } from '@/store/cartSlice';
-import { removeFromCart } from '@/store/cartSlice'; // Make sure this action exists in cartSlice
-import type { RootState } from '@/store/store';
-import { debounce } from '@/utils/debounce';
+import { Dialog, Transition } from "@headlessui/react";
+import Image from "next/image";
+import Link from "next/link";
+import React, { Fragment, useEffect, useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FaBagShopping } from "react-icons/fa6";
+import { MdClose, MdStar } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 
-import LikeButton from './LikeButton';
+import { saveCartAfterRemove } from "@/services/cartService";
+import ButtonCircle3 from "@/shared/Button/ButtonCircle3";
+import ButtonPrimary from "@/shared/Button/ButtonPrimary";
+import ButtonSecondary from "@/shared/Button/ButtonSecondary";
+import InputNumber from "@/shared/InputNumber/InputNumber";
+import type { CartItem } from "@/store/cartSlice";
+import { removeFromCart } from "@/store/cartSlice"; // Make sure this action exists in cartSlice
+import type { RootState } from "@/store/store";
+import { debounce } from "@/utils/debounce";
+
+import LikeButton from "./LikeButton";
 // import { store } from '@/store/store';
 
 const debouncedSaveCartAfterRemove = debounce(saveCartAfterRemove, 1000); // 1-second delay
@@ -101,7 +103,7 @@ const CartSideBar: React.FC = () => {
                   // debouncedSaveCart(auth.user?.id ?? "", store.getState().cart.items);
 
                   setTimeout(() => {
-                    debouncedSaveCartAfterRemove(auth.user?.id ?? '', item);
+                    debouncedSaveCartAfterRemove(auth.user?.id ?? "", item);
                   }, 300);
                   // setTimeout(() => {
                   //   debouncedSaveCartAfterRemove(auth.user?.id ?? "", store.getState().cart.items, item);
@@ -175,10 +177,10 @@ const CartSideBar: React.FC = () => {
                         </span>
                       </span>
                       <span className="text-xl font-medium">
-                        RM{' '}
+                        RM{" "}
                         {cartItems.reduce(
                           (total, item) => total + item.price * item.quantity,
-                          0,
+                          0
                         )}
                       </span>
                     </p>
@@ -229,7 +231,7 @@ const CartSideBar: React.FC = () => {
       <button
         type="button"
         onClick={handleOpenMenu}
-        className="mx-5 flex items-center gap-1 rounded-full bg-neutral-100 p-2 text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        className="mx-5 flex items-center gap-1 rounded-full bg-neutral-100 p-2 text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring/75"
       >
         <FaBagShopping className="text-2xl" />
         {/* <span className="hidden text-sm lg:block">{cartItems.length} items</span> */}

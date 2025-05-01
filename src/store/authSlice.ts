@@ -1,7 +1,7 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-import { supabase } from '@/libs/supabaseClient';
+import { supabase } from "@/libs/supabaseClient";
 
 interface Profile {
   id: string;
@@ -21,13 +21,8 @@ const initialState: AuthState = {
   loading: true,
 };
 
-export const logoutUser = () => async (dispatch: any) => {
-  await supabase.auth.signOut(); // ✅ Clears session from Supabase
-  dispatch(logout()); // ✅ Clears user from Redux state
-};
-
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<{ user: any; session: any }>) => {
@@ -45,6 +40,11 @@ const authSlice = createSlice({
     },
   },
 });
+
+export const logoutUser = () => async (dispatch: any) => {
+  await supabase.auth.signOut(); // ✅ Clears session from Supabase
+  dispatch(logout()); // ✅ Clears user from Redux state
+};
 
 export const { setUser, logout, setLoading } = authSlice.actions;
 export default authSlice.reducer;

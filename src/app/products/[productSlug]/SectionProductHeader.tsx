@@ -1,27 +1,27 @@
-'use client';
+"use client";
 
 // import type { StaticImageData } from "next/image";
-import Image from 'next/image';
-import type { FC } from 'react';
-import React, { useEffect, useState } from 'react';
-import { BsBag } from 'react-icons/bs';
-import { GoDotFill } from 'react-icons/go';
-import { LuInfo } from 'react-icons/lu';
-import { MdStar } from 'react-icons/md';
-import { PiSealCheckFill } from 'react-icons/pi';
-import { useDispatch, useSelector } from 'react-redux';
+import Image from "next/image";
+import type { FC } from "react";
+import React, { useEffect, useState } from "react";
+import { BsBag } from "react-icons/bs";
+import { GoDotFill } from "react-icons/go";
+import { LuInfo } from "react-icons/lu";
+import { MdStar } from "react-icons/md";
+import { PiSealCheckFill } from "react-icons/pi";
+import { useDispatch, useSelector } from "react-redux";
 
-import ImageShowCase from '@/components/ImageShowCase';
-import ShoeSizeButton from '@/components/ShoeSizeButton';
+import ImageShowCase from "@/components/ImageShowCase";
+import ShoeSizeButton from "@/components/ShoeSizeButton";
 // import { shoeSizes } from "@/data/content";
 // import nike_profile from '@/images/nike_profile.jpg';
-import { supabase } from '@/libs/supabaseClient';
-import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
-import ButtonSecondary from '@/shared/Button/ButtonSecondary';
-import Heading from '@/shared/Heading/Heading';
-import { addToCart } from '@/store/cartSlice';
-import type { RootState } from '@/store/store';
+import { supabase } from "@/libs/supabaseClient";
+import ButtonCircle3 from "@/shared/Button/ButtonCircle3";
+import ButtonPrimary from "@/shared/Button/ButtonPrimary";
+import ButtonSecondary from "@/shared/Button/ButtonSecondary";
+import Heading from "@/shared/Heading/Heading";
+import { addToCart } from "@/store/cartSlice";
+import type { RootState } from "@/store/store";
 // import { supabase } from "@/libs/supabaseClient";
 
 interface SectionProductHeaderProps {
@@ -31,7 +31,7 @@ interface SectionProductHeaderProps {
   price: number;
   previous_price: number;
   image_cover: string;
-  sizes: string[];
+  // sizes: string[];
   products_sizes: { size: string; stock: number }[];
   // currentPrice: number;
   // rating: number;
@@ -62,9 +62,9 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   useEffect(() => {
     const fetchShots = async () => {
       const { data: shotsData, error } = await supabase
-        .from('product_shots')
-        .select('images')
-        .eq('product_id', id);
+        .from("product_shots")
+        .select("images")
+        .eq("product_id", id);
       // console.log*('Shots array: ', shotsData);
       // console.log*('Shots array length: ', shotsData?.length);
       // console.log*('Shots arra [0] length: ', shotsData?.[0]?.images || []);
@@ -119,7 +119,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
   const handleAddToCart = () => {
     if (!selectedSize) {
-      alert('Please select a size before adding to cart!');
+      alert("Please select a size before adding to cart!");
       return;
     }
 
@@ -132,7 +132,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         // image: shots[0], // Assuming first image is the main product image
         quantity: 1,
         image: image_cover,
-      }),
+      })
     );
     // console.log*('Adding to Cart:', id, selectedSize);
   };
@@ -150,10 +150,10 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   // // console.log*("price:", price);
   return (
     <div className="items-stretch justify-between space-y-10 lg:flex lg:space-y-0">
-      <div className="basis-[50%]">
+      <div className="basis-1/2">
         <ImageShowCase shots={shots} />
       </div>
-      <div className="basis-[50%]">
+      <div className="basis-1/2">
         <Image
           src={image_cover}
           alt={`${name} cover photo`}

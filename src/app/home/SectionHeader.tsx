@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import type { UUID } from 'crypto';
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import type { UUID } from "crypto";
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
 
-import PromoTag from '@/components/PromoTag';
+import PromoTag from "@/components/PromoTag";
 // import BootstrapCarousel from "@/components/Carousel";
 import {
   Carousel,
@@ -12,11 +12,11 @@ import {
   CarouselItem,
   // CarouselNext,
   // CarouselPrevious,
-} from '@/components/ui/carousel';
-import { supabase } from '@/libs/supabaseClient';
+} from "@/components/ui/carousel";
+import { supabase } from "@/libs/supabaseClient";
 // import { headerSection } from "@/data/content";
 // import shoe_box from "@/images/shoe_box.png";
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
+import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 
 type Slide = {
   id: UUID;
@@ -63,13 +63,13 @@ const SectionHeader = () => {
 
   useEffect(() => {
     const fetchCarousel = async () => {
-      const { data: slides } = await supabase
-        .from('carousel_banner')
-        .select('*')
-        .eq('is_active', true);
+      const { data: slidesData } = await supabase
+        .from("carousel_banner")
+        .select("*")
+        .eq("is_active", true);
 
       // console.log*('slides: ', slides);
-      setSlides(slides);
+      setSlides(slidesData);
     };
     fetchCarousel();
   }, []);
@@ -95,7 +95,7 @@ const SectionHeader = () => {
         <CarouselContent
           style={{
             transform: `translateX(-${current * 100}%)`,
-            transition: 'transform 0.5s ease-in-out',
+            transition: "transform 0.5s ease-in-out",
           }}
         >
           {slides?.map((slide) => (
@@ -109,7 +109,7 @@ const SectionHeader = () => {
                     </h4>
                     <h1
                       className="text-[50px] font-medium tracking-tight"
-                      style={{ lineHeight: '1em' }}
+                      style={{ lineHeight: "1em" }}
                     >
                       {slide.heading}
                     </h1>
@@ -161,11 +161,11 @@ const SectionHeader = () => {
           ))}
         </CarouselContent>
         <div className="absolute bottom-0 left-1/2 z-10 flex -translate-x-1/2 -translate-y-3 justify-center space-x-2">
-          {slides?.map((_, idx) => (
+          {slides?.map((slide, idx) => (
             <div
-              key={idx}
+              key={slide.id}
               className={`size-2 rounded-full transition-all duration-300 ${
-                idx === current ? 'scale-125 bg-primary' : 'bg-blue-800'
+                idx === current ? "scale-125 bg-primary" : "bg-blue-800"
               }`}
             />
           ))}

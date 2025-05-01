@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { CredentialResponse } from 'google-one-tap';
-import { useRouter } from 'next/navigation';
-import Script from 'next/script';
-import { useEffect } from 'react';
+import type { CredentialResponse } from "google-one-tap";
+import { useRouter } from "next/navigation";
+import Script from "next/script";
+import { useEffect } from "react";
 
-import { supabase } from '@/libs/supabaseClient';
+import { supabase } from "@/libs/supabaseClient";
 
 const OneTapComponent = () => {
   const router = useRouter();
@@ -13,15 +13,15 @@ const OneTapComponent = () => {
   // generate nonce to use for google id token sign-in
   const generateNonce = async (): Promise<string[]> => {
     const nonce = btoa(
-      String.fromCharCode(...crypto.getRandomValues(new Uint8Array(32))),
+      String.fromCharCode(...crypto.getRandomValues(new Uint8Array(32)))
     );
     const encoder = new TextEncoder();
     const encodedNonce = encoder.encode(nonce);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', encodedNonce);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", encodedNonce);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     const hashedNonce = hashArray
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join('');
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
 
     return [nonce, hashedNonce];
   };
@@ -29,7 +29,7 @@ const OneTapComponent = () => {
   useEffect(() => {
     const initializeGoogleOneTap = () => {
       // console.log*('Initializing Google One Tap');
-      window.addEventListener('load', async () => {
+      window.addEventListener("load", async () => {
         const [nonce, hashedNonce] = await generateNonce();
         // console.log*('Nonce: ', nonce, hashedNonce);
 
@@ -39,30 +39,34 @@ const OneTapComponent = () => {
           // console.error*('Error getting session', error);
         }
         if (data.session) {
-          router.push('/');
+          router.push("/");
           return;
         }
 
         /* global google */
+        /* eslint-disable unused-imports/no-unused-vars */
+        /* eslint-disable unused-imports/no-unused-imports */
         window.google.accounts.id.initialize({
           client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
           callback: async (response: CredentialResponse) => {
             try {
               // send id token returned in response.credential to supabase
-              const {error } = await supabase.auth.signInWithIdToken({
-                provider: 'google',
-                token: response.credential,
-                nonce,
-              });
+              const { error: errorSignIn } =
+                await supabase.auth.signInWithIdToken({
+                  provider: "google",
+                  token: response.credential,
+                  nonce,
+                });
 
-              if (error) throw error;
+              if (errorSignIn) throw errorSignIn;
               // console.log*('Session data: ', data);
               // console.log*('Successfully logged in with Google One Tap');
 
               // redirect to protected page
-              router.push('/');
+              router.push("/");
             } catch (error) {
               // console.error*('Error logging in with Google One Tap', error);
+              throw error;
             }
           },
           nonce: hashedNonce,
@@ -73,7 +77,7 @@ const OneTapComponent = () => {
       });
     };
     initializeGoogleOneTap();
-    return () => window.removeEventListener('load', initializeGoogleOneTap);
+    return () => window.removeEventListener("load", initializeGoogleOneTap);
   }, []);
 
   return (

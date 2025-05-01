@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
-import { footerBannerData } from '@/data/content';
-import Heading from '@/shared/Heading/Heading';
+import { footerBannerData } from "@/data/content";
+import Heading from "@/shared/Heading/Heading";
 
-import ButtonPrimary from '../Button/ButtonPrimary';
+import ButtonPrimary from "../Button/ButtonPrimary";
 
 const FooterBanner = () => {
   return (
@@ -27,7 +27,7 @@ const FooterBanner = () => {
         <Heading className="mb-0" isMain isCenter>
           {footerBannerData.heading}
         </Heading>
-        <p className="mx-auto w-4/5 text-center md:w-[50%]">
+        <p className="mx-auto w-4/5 text-center md:w-1/2">
           {footerBannerData.description}
         </p>
         <div className="mt-10 flex items-center justify-center">

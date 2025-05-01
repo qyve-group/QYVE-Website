@@ -1,14 +1,14 @@
-import { pathOr } from 'ramda';
-import React from 'react';
+import { pathOr } from "ramda";
+import React from "react";
 
-import { blogs } from '@/data/content';
+import { blogs } from "@/data/content";
 
-import SectionBlogBody from './SectionBlogBody';
-import SectionBlogHero from './SectionBlogHero';
+import SectionBlogBody from "./SectionBlogBody";
+import SectionBlogHero from "./SectionBlogHero";
 
 type Props = {
   params: { blogId: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  // searchParams: { [key: string]: string | string[] | undefined };
 };
 
 const getBlogData = async (id: string) => {
@@ -23,14 +23,14 @@ const SingleBlogPage = async (props: Props) => {
     <div className="container">
       <div className="pt-10">
         <SectionBlogHero
-          coverImage={pathOr('', ['coverImage'], selectedBlog)}
-          title={pathOr('', ['title'], selectedBlog)}
-          brief={pathOr('', ['brief'], selectedBlog)}
+          coverImage={pathOr("", ["coverImage"], selectedBlog)}
+          title={pathOr("", ["title"], selectedBlog)}
+          brief={pathOr("", ["brief"], selectedBlog)}
         />
       </div>
 
       <div className="py-24">
-        <SectionBlogBody blogData={pathOr(null, ['blogData'], selectedBlog)} />
+        <SectionBlogBody blogData={pathOr(null, ["blogData"], selectedBlog)} />
       </div>
     </div>
   );
