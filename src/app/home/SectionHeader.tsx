@@ -74,24 +74,9 @@ const SectionHeader = () => {
     fetchCarousel();
   }, []);
 
-  // const getPositionClasses = (position: string) => {
-  //   switch (position) {
-  //     case "center":
-  //       return "absolute inset-0 flex flex-col items-center justify-center text-center";
-  //     case "bottom-left":
-  //       return "absolute bottom-10 left-10 text-left";
-  //     case "top-right":
-  //       return "absolute top-10 right-10 text-right";
-  //     case "left":
-  //       return "absolute left-10 top-1/2 -translate-y-1/2 text-left";
-  //     default:
-  //       return "absolute inset-0 flex items-center justify-center"; // fallback
-  //   }
-  // };
-
   return (
     <div className="container relative items-stretch gap-y-5 lg:flex lg:gap-5 lg:gap-y-0">
-      <Carousel className="w-3/4 px-6 text-center">
+      <Carousel className="w-3/4 text-center w-full">
         <CarouselContent
           style={{
             transform: `translateX(-${current * 100}%)`,
@@ -138,25 +123,6 @@ const SectionHeader = () => {
                   />
                 </div>
               </div>
-
-              {/*  ---------------------------------------- Fix this ---------------------------------------------- */}
-
-              {/* <div className="relative h-[500px] rounded-2xl overflow-hidden"> 
-                
-                {slide.media_type === "video" ? ( 
-                  <video ... />
-                ) : (
-                  <img src={slide.media_url} className="absolute inset-0 w-full h-full object-cover" />
-                )}
-
-                
-                <div className={`${getPositionClasses(slide.content_position)} ${slide.content_bg} p-6 z-10`}>
-                  <h1 className={`text-4xl font-bold ${slide.text_color}`}>{slide.heading}</h1>
-                  <p className={`mt-4 ${slide.text_color}`}>{slide.description}</p>
-                  <ButtonPrimary className="mt-6">{slide.button_text}</ButtonPrimary>
-                </div>
-              </div> */}
-              {/*  ---------------------------------------- Fix this ---------------------------------------------- */}
             </CarouselItem>
           ))}
         </CarouselContent>
