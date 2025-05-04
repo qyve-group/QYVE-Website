@@ -32,6 +32,19 @@ interface CartDisplay {
   image: string;
 }
 
+type ContactInfoData = {
+  phone: string;
+  email: string;
+};
+
+type ShippingAddressData = {
+  shipping_address_1: string;
+  shipping_address_2: string;
+  city: string;
+  state: string;
+  postal_code: string;
+};
+
 const CheckoutPage = () => {
   const [tabActive, setTabActive] = useState<
     'ContactInfo' | 'ShippingAddress' | 'PaymentMethod'
@@ -47,6 +60,8 @@ const CheckoutPage = () => {
   const userId = useSelector((state: RootState) => state.auth.user?.id);
   const [products, setProducts] = useState<CartDisplay[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [contactInfo, setContactInfo] = useState({});
+  const [shippingAddress, setShippingAddress] = useState({});
 
   useEffect(() => {
     const fetchCartId = async () => {
@@ -106,6 +121,13 @@ const CheckoutPage = () => {
 
     fetchCartId();
   }, []);
+
+  const handleContactInfo = (data: ContactInfoData) => {
+    setContactInfo(data);
+    console.log('Received from contact info component: ', data);
+
+    console.log('saved contact info: ', contactInfo);
+  };
 
   const renderProduct = (item: CartDisplay) => {
     console.log('Products: ', products);
@@ -175,6 +197,7 @@ const CheckoutPage = () => {
               setTabActive('ShippingAddress');
               handleScrollToEl('ShippingAddress');
             }}
+            onDataChange={handleContactInfo}
           />
         </div>
 

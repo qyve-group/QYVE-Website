@@ -4,17 +4,41 @@ import { FaRegCircleUser } from 'react-icons/fa6';
 
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
-import Checkbox from '@/shared/Checkbox/Checkbox';
+// import Checkbox from '@/shared/Checkbox/Checkbox';
 import FormItem from '@/shared/FormItem';
 import Input from '@/shared/Input/Input';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+
+type ContactInfoData = {
+  phone: string;
+  email: string;
+};
 
 interface Props {
   isActive: boolean;
   onOpenActive: () => void;
   onCloseActive: () => void;
+  onDataChange: (data: ContactInfoData) => void;
 }
 
-const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
+const ContactInfo: FC<Props> = ({
+  isActive,
+  onCloseActive,
+  onOpenActive,
+  onDataChange,
+}) => {
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const handleSubmit = () => {
+    onDataChange({ phone, email });
+  };
+
+  const user = useSelector((state: RootState) => state.auth.user?.name);
+  const userEmail = useSelector((state: RootState) => state.auth.user?.email);
+
   return (
     <div className="z-0 overflow-hidden rounded-xl border border-neutral-300">
       <div className="flex flex-col items-start p-6 sm:flex-row ">
@@ -25,8 +49,8 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
           <div className="sm:ml-8">
             <div className="uppercase tracking-tight">CONTACT INFORMATION</div>
             <div className="mt-1 text-sm font-semibold">
-              <span className="">Clark Kent</span>
-              <span className="ml-3 tracking-tighter">+123-456-7890</span>
+              <span className="">{user}</span>
+              <span className="ml-3 tracking-tighter">{userEmail}</span>
             </div>
           </div>
           <ButtonSecondary
@@ -50,35 +74,47 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
               rounded="rounded-lg"
               sizeClass="h-12 px-4 py-3"
               className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
-              defaultValue="+808 xxx"
+              placeholder="+60XXXXXXXXX"
+              // defaultValue="+60XXXXXXXXX"
+              value={phone}
               type="tel"
+              onChange={(e) => {
+                setPhone(e.target.value);
+              }}
             />
           </FormItem>
         </div>
         <div className="max-w-lg">
-          <FormItem label="Email address">
+          <FormItem label="Confirm email address">
             <Input
               rounded="rounded-lg"
+              value={email}
               sizeClass="h-12 px-4 py-3"
               className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
               type="email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             />
           </FormItem>
         </div>
-        <div>
+        {/* <div>
           <Checkbox
             className="!text-sm"
             name="uudai"
             label="Email me news and offers"
             defaultChecked
           />
-        </div>
+        </div> */}
 
         {/* ============ */}
         <div className="flex flex-col pt-6 sm:flex-row">
           <ButtonPrimary
             className="shadow-none sm:!px-7"
-            onClick={() => onCloseActive()}
+            onClick={() => {
+              handleSubmit();
+              onCloseActive();
+            }}
           >
             Save and go to Shipping
           </ButtonPrimary>

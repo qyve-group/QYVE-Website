@@ -66,7 +66,6 @@ export async function POST(req: Request) {
       .single();
 
     if (cartInfoError || !cartInfo) {
-      // console.error*('Active cart not found for user:', cartInfoError);
       return NextResponse.json(
         { error: 'Active cart not found' },
         { status: 404 },
@@ -74,7 +73,6 @@ export async function POST(req: Request) {
     }
 
     const cartId = cartInfo.id;
-    // // console.log*('cartid: ', cartId);
 
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL as string,
@@ -87,7 +85,6 @@ export async function POST(req: Request) {
       .eq('cart_id', cartId);
 
     if (cartItemsError || !cartItems.length) {
-      // console.error*('Cart items not found:', cartItemsError);
       return NextResponse.json(
         { error: 'Cart items not found' },
         { status: 404 },
@@ -101,7 +98,6 @@ export async function POST(req: Request) {
       0,
     );
     const formattedTotalPrice = parseFloat(totalPrice.toFixed(2)); // Ensure precision
-    // // console.log*('Total Price Calculated:', formattedTotalPrice);
 
     const { error: orderError } = await supabase
       .from('orders')
@@ -201,49 +197,3 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ received: true });
 }
-
-// import { NextRequest, NextResponse } from "next/server";
-// import { createClient } from "@supabase/supabase-js";
-// import Stripe from "stripe";
-
-// const supabase = createClient(
-//   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-//   process.env.SUPABASE_SERVICE_ROLE_KEY!
-// );
-// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-//   apiVersion: "2023-10-16",
-// });
-
-// export async function POST(req: NextRequest) {
-//   const sig = req.headers.get("stripe-signature");
-
-//   let event;
-//   try {
-//     const rawBody = await req.text(); // Read the raw body for signature verification
-//     event = stripe.webhooks.constructEvent(
-//       rawBody,
-//       sig!,
-//       process.env.STRIPE_WEBHOOK_SECRET!
-//     );
-//   } catch (err: any) {
-//     return NextResponse.json(
-//       { error: `Webhook Error: ${err.message}` },
-//       { status: 400 }
-//     );
-//   }
-
-//   // Handle checkout completion
-//   if (event.type === "checkout.session.completed") {
-//     const session = event.data.object;
-//     const orderId = session.metadata?.orderId;
-
-//     if (orderId) {
-//       await supabase
-//         .from("orders")
-//         .update({ status: "paid" })
-//         .eq("id", orderId);
-//     }
-//   }
-
-//   return NextResponse.json({ received: true });
-// }
