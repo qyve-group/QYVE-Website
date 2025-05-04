@@ -7,7 +7,7 @@ import React from 'react';
 import { supabase } from '@/libs/supabaseClient';
 
 // import SectionMoreProducts from "./SectionMoreProducts";
-import SectionNavigation from './SectionNavigation';
+// import SectionNavigation from './SectionNavigation';
 import SectionProductHeader from './SectionProductHeader';
 import SectionProductInfo from './SectionProductInfo';
 
@@ -50,7 +50,7 @@ const SingleProductPage = async ({ params }: Props) => {
 
   return (
     <div className="container">
-      <SectionNavigation />
+      {/* <SectionNavigation /> */}
 
       <div className="mb-20">
         <SectionProductHeader

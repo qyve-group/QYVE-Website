@@ -50,13 +50,13 @@ const ProductCard: FC<ProductCardProps> = ({
               showPrevPrice ? 'block' : 'hidden'
             } text-sm line-through`}
           >
-            ${product.previous_price}
+            RM{product.previous_price}
           </p>
         </div>
 
         <div className="flex items-center justify-between">
           {/* <p className="text-sm text-neutral-500">{product.shoeCategory}</p> */}
-          <p className="text-lg font-medium text-primary">${product.price}</p>
+          <p className="text-lg font-medium text-primary">RM {product.price}</p>
         </div>
       </div>
     </div>

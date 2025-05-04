@@ -5,10 +5,10 @@ import Image from 'next/image';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { BsBag } from 'react-icons/bs';
-import { GoDotFill } from 'react-icons/go';
+// import { GoDotFill } from 'react-icons/go';
 import { LuInfo } from 'react-icons/lu';
-import { MdStar } from 'react-icons/md';
-import { PiSealCheckFill } from 'react-icons/pi';
+// import { MdStar } from 'react-icons/md';
+// import { PiSealCheckFill } from 'react-icons/pi';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ImageShowCase from '@/components/ImageShowCase';
@@ -16,7 +16,7 @@ import ShoeSizeButton from '@/components/ShoeSizeButton';
 // import { shoeSizes } from "@/data/content";
 // import nike_profile from '@/images/nike_profile.jpg';
 import { supabase } from '@/libs/supabaseClient';
-import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
+// import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import Heading from '@/shared/Heading/Heading';
@@ -57,7 +57,9 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const dispatch = useDispatch();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [shots, setShots] = useState<string[]>([]);
-  // const prod_id = 6;
+
+  const session = useSelector((state: RootState) => state.auth.session);
+  console.log('session: ', session);
 
   useEffect(() => {
     const fetchShots = async () => {
@@ -65,17 +67,6 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         .from('product_shots')
         .select('images')
         .eq('product_id', id);
-      // console.log*('Shots array: ', shotsData);
-      // console.log*('Shots array length: ', shotsData?.length);
-      // console.log*('Shots arra [0] length: ', shotsData?.[0]?.images || []);
-
-      //   if (error) {
-      //     // console.error*("Error fetching shots:", error);
-      //   } else {
-      //     setShots(shotsData?.[0]?.images || []);
-      //   }
-
-      // };
 
       if (error) {
         // console.error*('Error fetching shots:', error);
@@ -93,32 +84,11 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
     fetchShots();
   }, []);
 
-  // useEffect(() => {
-  //   const fetchShots = async () => {
-  //     const { data: shotsData, error } = await supabase
-  //       .from("product_shots")
-  //       .select("images")
-  //       .eq("product_id", id);
-
-  //     if (error) {
-  //       // console.error*("Error fetching shots:", error);
-  //       return;
-  //     }
-
-  //     // console.log*("Shots array: ", shotsData)
-
-  //     if (shotsData && shotsData.length > 0) {
-  //       setShots(shotsData?.images || []); // Safely access images
-  //     } else {
-  //       setShots([]); // No images found, set empty array
-  //     }
-  //   };
-
-  //   fetchShots();
-  // }, [id]); // Re-run when `id` changes
-
   const handleAddToCart = () => {
-    if (!selectedSize) {
+    if (!session) {
+      alert('Login to add to cart!');
+      return;
+    } else if (!selectedSize) {
       alert('Please select a size before adding to cart!');
       return;
     }
@@ -149,36 +119,37 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
   // // console.log*("price:", price);
   return (
-    <div className="items-stretch justify-between space-y-10 lg:flex lg:space-y-0">
-      <div className="basis-1/2">
+    <div className="items-stretch justify-between space-y-10 lg:flex lg:space-y-0 mt-5">
+      <div className="basis-[1/2]">
         <ImageShowCase shots={shots} />
       </div>
       <div className="basis-1/2">
         <Image
           src={image_cover}
           alt={`${name} cover photo`}
-          width={600}
-          height={400}
+          width={400}
+          height={200}
         />
       </div>
 
       <div className="basis-[45%]">
-        <Heading className="mb-0" isMain title="new arrival!">
+        {/* <Heading className="mb-0" isMain title="new arrival!"> */}
+        <Heading className="mb-0" isMain>
           {name}
           {/* {id} */}
         </Heading>
 
-        <div className="mb-10 flex items-center">
+        {/* <div className="mb-10 flex items-center">
           <div className="flex items-center gap-1">
             <ButtonCircle3
               className="overflow-hidden border border-neutral-400"
               size="w-11 h-11"
             >
-              {/* <Image
+              <Image
                 src={nike_profile}
                 alt="nike_profile"
                 className="size-full object-cover"
-              /> */}
+              />
             </ButtonCircle3>
             <span className="font-medium">Nike</span>
             <PiSealCheckFill className="text-blue-600" />
@@ -186,14 +157,14 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
           <GoDotFill className="mx-3 text-neutral-500" />
           <div className="flex items-center gap-1">
             <MdStar className="text-yellow-400" />
-            {/* <p className="text-sm">
+            <p className="text-sm">
               {rating}{" "}
               <span className="text-neutral-500">{`(${reviews} Reviews)`}</span>
-            </p> */}
+            </p>
           </div>
           <GoDotFill className="mx-3 text-neutral-500" />
-          {/* <p className="text-neutral-500">{`${pieces_sold} items sold`}</p> */}
-        </div>
+          <p className="text-neutral-500">{`${pieces_sold} items sold`}</p>
+        </div> */}
 
         <div className="mb-5 space-y-1">
           <p className="text-neutral-500 line-through">RM{previous_price}</p>

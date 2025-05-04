@@ -18,7 +18,8 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
+          // DEFAULT: 'hsl(var(--primary))',
+          DEFAULT: 'hsl(96, 99%, 36%)',
           // DEFAULT: '#0BDA51',
           // foreground: '#0BDA51'
           foreground: 'hsl(var(--primary-foreground))',
@@ -42,6 +43,7 @@ module.exports = {
           900: '#202020',
         },
         background: 'hsl(var(--background))',
+        // background: 'hsl(0, 0%, 0%)',
         foreground: 'hsl(var(--foreground))',
         card: {
           DEFAULT: 'hsl(var(--card))',

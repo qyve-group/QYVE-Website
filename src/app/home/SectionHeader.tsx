@@ -137,9 +137,9 @@ const SectionHeader = () => {
           ))}
         </div>
       </Carousel>
-      <div className="mt-5 basis-[30%] lg:mt-0">
+      {/* <div className="mt-5 basis-[30%] lg:mt-0">
         <PromoTag />
-      </div>
+      </div> */}
     </div>
   );
 };

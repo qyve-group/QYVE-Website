@@ -47,14 +47,14 @@ const MainNav = () => {
       </div>
       <div className="flex items-center gap-5 lg:basis-3/5">
         <Logo />
-        <div className="hidden w-full max-w-2xl items-center gap-5 rounded-full border border-neutral-300 py-1 pr-3 lg:flex">
+        {/* <div className="hidden w-full max-w-2xl items-center gap-5 rounded-full border border-neutral-300 py-1 pr-3 lg:flex">
           <Input
             type="text"
             className="border-transparent bg-white placeholder:text-neutral-500 focus:border-transparent"
             placeholder="try 'Nike Air Jordan'"
           />
           <RiSearch2Line className="text-2xl text-neutral-500" />
-        </div>
+        </div> */}
       </div>
 
       <div className="flex flex-1 items-center justify-end gap-5">
