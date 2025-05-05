@@ -29,15 +29,24 @@ const ContactInfo: FC<Props> = ({
   onOpenActive,
   onDataChange,
 }) => {
-  const [email, setEmail] = useState('');
+  const user = useSelector((state: RootState) => state.auth.user?.name);
+  const userEmail = useSelector((state: RootState) => state.auth.user?.email);
+
+  const [email, setEmail] = useState<string>(userEmail || '');
   const [phone, setPhone] = useState('');
+  // const [emailInput, setEmailInput] = useState(userEmail || '');
+  // const [phoneInput, setPhoneInput] = useState('');
+  const [savedEmail, setSavedEmail] = useState(userEmail);
+  const [savedPhone, setSavedPhone] = useState('-');
 
   const handleSubmit = () => {
     onDataChange({ phone, email });
   };
 
-  const user = useSelector((state: RootState) => state.auth.user?.name);
-  const userEmail = useSelector((state: RootState) => state.auth.user?.email);
+  const handleSave = () => {
+    setSavedEmail(email);
+    setSavedPhone(phone);
+  };
 
   return (
     <div className="z-0 overflow-hidden rounded-xl border border-neutral-300">
@@ -50,7 +59,10 @@ const ContactInfo: FC<Props> = ({
             <div className="uppercase tracking-tight">CONTACT INFORMATION</div>
             <div className="mt-1 text-sm font-semibold">
               <span className="">{user}</span>
-              <span className="ml-3 tracking-tighter">{userEmail}</span>
+              <span className="ml-3 tracking-tighter">Email: {savedEmail}</span>
+              <span className="ml-3 tracking-tighter">
+                Phone number: {savedPhone}
+              </span>
             </div>
           </div>
           <ButtonSecondary
@@ -113,6 +125,7 @@ const ContactInfo: FC<Props> = ({
             className="shadow-none sm:!px-7"
             onClick={() => {
               handleSubmit();
+              handleSave();
               onCloseActive();
             }}
           >

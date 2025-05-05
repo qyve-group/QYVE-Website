@@ -1,27 +1,78 @@
 'use client';
 
 import type { FC } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { TbTruckDelivery } from 'react-icons/tb';
 
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import FormItem from '@/shared/FormItem';
 import Input from '@/shared/Input/Input';
-import Radio from '@/shared/Radio/Radio';
+// import Radio from '@/shared/Radio/Radio';
 import Select from '@/shared/Select/Select';
+// import { ShippingAddress } from '@stripe/stripe-js';
+
+type ShippingAddressData = {
+  fname: string;
+  lname: string;
+  shipping_address_1: string;
+  shipping_address_2: string;
+  no: string;
+  city: string;
+  state: string;
+  postal_code: string;
+};
 
 interface Props {
   isActive: boolean;
   onCloseActive: () => void;
   onOpenActive: () => void;
+  onShippingChange: (shippingData: ShippingAddressData) => void;
 }
 
 const ShippingAddress: FC<Props> = ({
   isActive,
   onCloseActive,
   onOpenActive,
+  onShippingChange,
 }) => {
+  const [fname, setFname] = useState('');
+  const [lname, setLname] = useState('');
+  const [shipping_address_1, setShippingAddress1] = useState('');
+  const [shipping_address_2, setShippingAddress2] = useState('');
+  const [no, setNo] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [postal_code, setPcode] = useState('');
+  const [savedAddress1, setSavedAddress1] = useState('');
+  const [savedAddress2, setSavedAddress2] = useState('');
+  const [savedNo, setSavedNo] = useState('');
+  const [savedPcode, setSavedPcode] = useState('');
+  const [savedCity, setSavedCity] = useState('');
+  const [savedState, setSavedState] = useState('');
+
+  const handleSubmit = () => {
+    onShippingChange({
+      fname,
+      lname,
+      shipping_address_1,
+      shipping_address_2,
+      no,
+      city,
+      state,
+      postal_code,
+    });
+  };
+
+  const handleSave = () => {
+    setSavedAddress1(shipping_address_1);
+    setSavedAddress2(shipping_address_2);
+    setSavedNo(no);
+    setSavedPcode(postal_code);
+    setSavedCity(city);
+    setSavedState(state);
+  };
+
   return (
     <div className="rounded-xl border border-neutral-300 ">
       <div className="flex flex-col items-start p-6 sm:flex-row">
@@ -34,7 +85,8 @@ const ShippingAddress: FC<Props> = ({
             <span className="uppercase">SHIPPING ADDRESS</span>
             <div className="mt-1 text-sm font-semibold">
               <span className="">
-                1234 Main Street, Apt 567, Cityville, State
+                {savedNo} {savedAddress1} {savedPcode} {savedCity}
+                {savedState}
               </span>
             </div>
           </div>
@@ -60,7 +112,11 @@ const ShippingAddress: FC<Props> = ({
                 rounded="rounded-lg"
                 sizeClass="h-12 px-4 py-3"
                 className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
-                defaultValue="Clark"
+                placeholder="First name"
+                value={fname}
+                onChange={(e) => {
+                  setFname(e.target.value);
+                }}
               />
             </FormItem>
           </div>
@@ -70,7 +126,11 @@ const ShippingAddress: FC<Props> = ({
                 rounded="rounded-lg"
                 sizeClass="h-12 px-4 py-3"
                 className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
-                defaultValue="Kent"
+                placeholder="Last name"
+                value={lname}
+                onChange={(e) => {
+                  setLname(e.target.value);
+                }}
               />
             </FormItem>
           </div>
@@ -84,19 +144,26 @@ const ShippingAddress: FC<Props> = ({
                 rounded="rounded-lg"
                 sizeClass="h-12 px-4 py-3"
                 className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
-                placeholder=""
-                defaultValue="1234 Main Street"
+                placeholder="Address line"
                 type="text"
+                value={shipping_address_1}
+                onChange={(e) => {
+                  setShippingAddress1(e.target.value);
+                }}
               />
             </FormItem>
           </div>
           <div className="sm:w-1/3">
-            <FormItem label="Apt, Suite *">
+            <FormItem label="No., Apt, Suite *">
               <Input
                 rounded="rounded-lg"
                 sizeClass="h-12 px-4 py-3"
                 className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
-                defaultValue="567"
+                placeholder="No., Apt, Suite *"
+                value={no}
+                onChange={(e) => {
+                  setNo(e.target.value);
+                }}
               />
             </FormItem>
           </div>
@@ -110,26 +177,31 @@ const ShippingAddress: FC<Props> = ({
                 rounded="rounded-lg"
                 sizeClass="h-12 px-4 py-3"
                 className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
-                defaultValue="Cityville"
+                placeholder="City"
+                value={city}
+                onChange={(e) => {
+                  setCity(e.target.value);
+                }}
               />
             </FormItem>
           </div>
           <div>
             <FormItem label="Country">
-              <Select
+              <Input
                 sizeClass="h-12 px-4 py-3"
                 className="rounded-lg border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
-                defaultValue="United States "
-              >
-                <option value="United States">United States</option>
+                defaultValue="Malaysia"
+                readOnly
+              />
+              {/* <option value="United States">United States</option>
                 <option value="United States">Canada</option>
                 <option value="United States">Mexico</option>
                 <option value="United States">Israel</option>
                 <option value="United States">France</option>
                 <option value="United States">England</option>
                 <option value="United States">Laos</option>
-                <option value="United States">China</option>
-              </Select>
+                <option value="United States">China</option> */}
+              {/* </Select> */}
             </FormItem>
           </div>
         </div>
@@ -137,30 +209,63 @@ const ShippingAddress: FC<Props> = ({
         {/* ============ */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-3">
           <div>
-            <FormItem label="State/Province">
-              <Input
+            <FormItem label="State">
+              <Select
+                sizeClass="h-12 px-4 py-3"
+                className="rounded-lg border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+                // defaultValue="-"
+                value={state}
+                // value={state}
+                onChange={(e) => {
+                  setState(e.target.value);
+                }}
+              >
+                <option value="" disabled hidden>
+                  Select a state
+                </option>
+                <option value="Sabah">Sabah</option>
+                <option value="Negeri Sembilan">Negeri Sembilan</option>
+                <option value="Johor">Johor</option>
+                <option value="Kelantan">Kelantan</option>
+                <option value="Pahang">Pahang</option>
+                <option value="Kedah">Kedah</option>
+                <option value="Sarawak">Sarawak</option>
+                <option value="Terengganu">Terengganu</option>
+                <option value="Melaka">Melaka</option>
+                <option value="Selangor">Selangor</option>
+                <option value="Perlis">Perlis</option>
+                <option value="Perak">Perak</option>
+                <option value="Pulau Pinang">Pulau Pinang</option>
+                <option value="Kuala Lumpur">Kuala Lumpur</option>
+                <option value="Putrajaya">Putrajaya</option>
+              </Select>
+              {/* <Input
                 rounded="rounded-lg"
                 sizeClass="h-12 px-4 py-3"
                 className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
                 defaultValue="Arizona"
-              />
+              /> */}
             </FormItem>
           </div>
         </div>
-        <div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-3">
           <FormItem label="Postal code">
             <Input
               rounded="rounded-lg"
               sizeClass="h-12 px-4 py-3"
               className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
-              defaultValue="12345"
+              placeholder="Postal code"
+              value={postal_code}
+              onChange={(e) => {
+                setPcode(e.target.value);
+              }}
             />
           </FormItem>
         </div>
       </div>
 
       {/* ============ */}
-      <div className="px-6">
+      {/* <div className="px-6">
         <FormItem label="Address type">
           <div className="mt-1.5 grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3">
             <Radio
@@ -176,11 +281,18 @@ const ShippingAddress: FC<Props> = ({
             />
           </div>
         </FormItem>
-      </div>
+      </div> */}
 
       {/* ============ */}
       <div className="flex flex-col p-6 sm:flex-row">
-        <ButtonPrimary className="shadow-none sm:!px-7" onClick={onCloseActive}>
+        <ButtonPrimary
+          className="shadow-none sm:!px-7"
+          onClick={() => {
+            handleSave();
+            handleSubmit();
+            onCloseActive();
+          }}
+        >
           Save and go to Payment
         </ButtonPrimary>
         <ButtonSecondary

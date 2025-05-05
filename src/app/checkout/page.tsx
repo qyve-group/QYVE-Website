@@ -4,11 +4,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { MdStar } from 'react-icons/md';
+// import { MdStar } from 'react-icons/md';
 
 import LikeButton from '@/components/LikeButton';
-import { shoes } from '@/data/content';
-import type { ProductType } from '@/data/types';
+// import { shoes } from '@/data/content';
+// import type { ProductType } from '@/data/types';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import Input from '@/shared/Input/Input';
 import InputNumber from '@/shared/InputNumber/InputNumber';
@@ -19,8 +19,13 @@ import ShippingAddress from './ShippingAddress';
 import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
 import { supabase } from '@/libs/supabaseClient';
-import { product } from 'ramda';
+import ButtonSecondary from '@/shared/Button/ButtonSecondary';
+// import { Router } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { CartItem } from '@/store/cartSlice';
+
+// import { product } from 'ramda';
+// import { CartItem } from '@/store/cartSlice';
 
 interface CartDisplay {
   id: number;
@@ -38,6 +43,8 @@ type ContactInfoData = {
 };
 
 type ShippingAddressData = {
+  fname: string;
+  lname: string;
   shipping_address_1: string;
   shipping_address_2: string;
   city: string;
@@ -57,11 +64,28 @@ const CheckoutPage = () => {
     }, 80);
   };
 
+  const router = useRouter();
+
   const userId = useSelector((state: RootState) => state.auth.user?.id);
   const [products, setProducts] = useState<CartDisplay[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [contactInfo, setContactInfo] = useState({});
   const [shippingAddress, setShippingAddress] = useState({});
+
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+
+  // Calculate subtotal dynamically
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0,
+  );
+  const estimatedTaxes = subtotal * 0.1; // Example 10% tax
+  // const total = subtotal + estimatedTaxes;
+  const total = subtotal;
+
+  useEffect(() => {
+    // console.log*('Cart updated:', cartItems);
+  }, [cartItems]);
 
   useEffect(() => {
     const fetchCartId = async () => {
@@ -129,9 +153,16 @@ const CheckoutPage = () => {
     console.log('saved contact info: ', contactInfo);
   };
 
-  const renderProduct = (item: CartDisplay) => {
+  const handleShippingInfo = (shippingData: ShippingAddressData) => {
+    setShippingAddress(shippingData);
+    console.log('Received from shipping component: ', shippingData);
+
+    console.log('saved shipping info: ', shippingAddress);
+  };
+
+  const renderProduct = (item: CartItem) => {
     console.log('Products: ', products);
-    const { id, name, price, product_size, quantity, slug, image } = item;
+    const { id, name, price, product_size, quantity, image } = item;
 
     return (
       <div
@@ -147,16 +178,16 @@ const CheckoutPage = () => {
             className="object-contain object-center"
             priority
           />
-          <Link className="absolute inset-0" href={`/products/${slug}`} />
+          {/* <Link className="absolute inset-0" href={`/products/${slug}`} /> */}
         </div>
 
         <div className="ml-4 flex flex-1 flex-col justify-between">
           <div>
             <div className="flex justify-between ">
               <div>
-                <h3 className="font-medium md:text-2xl ">
+                {/* <h3 className="font-medium md:text-2xl ">
                   <Link href={`/products/${slug}`}>{name}</Link>
-                </h3>
+                </h3> */}
                 <span className="my-1 text-sm text-neutral-500">
                   {/* {shoeCategory} */}
                   {product_size} X {quantity}
@@ -169,19 +200,81 @@ const CheckoutPage = () => {
               <span className="font-medium md:text-xl">RM {price}</span>
             </div>
           </div>
-          <div className="flex w-full items-end justify-between text-sm">
+          {/* <div className="flex w-full items-end justify-between text-sm">
             <div className="flex items-center gap-3">
               <LikeButton />
               <AiOutlineDelete className="text-2xl" />
             </div>
             <div>
-              <InputNumber id={id} product_size={product_size} />
+              <InputNumber
+                defaultValue={item.quantity}
+                id={item.id}
+                product_size={item.product_size}
+              />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     );
   };
+
+  // const renderProduct = (item: CartDisplay) => {
+  //   console.log('Products: ', products);
+  //   const { id, name, price, product_size, quantity, slug, image } = item;
+
+  //   return (
+  //     <div
+  //       key={`${userId}_${id}_${product_size}`}
+  //       className="flex py-5 last:pb-0"
+  //     >
+  //       <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl md:h-40 md:w-40">
+  //         <Image
+  //           fill
+  //           src={image}
+  //           sizes="(max-width: 768px) 160vw, 96px"
+  //           alt={name}
+  //           className="object-contain object-center"
+  //           priority
+  //         />
+  //         <Link className="absolute inset-0" href={`/products/${slug}`} />
+  //       </div>
+
+  //       <div className="ml-4 flex flex-1 flex-col justify-between">
+  //         <div>
+  //           <div className="flex justify-between ">
+  //             <div>
+  //               <h3 className="font-medium md:text-2xl ">
+  //                 <Link href={`/products/${slug}`}>{name}</Link>
+  //               </h3>
+  //               <span className="my-1 text-sm text-neutral-500">
+  //                 {/* {shoeCategory} */}
+  //                 {product_size} X {quantity}
+  //               </span>
+  //               {/* <div className="flex items-center gap-1">
+  //                 <MdStar className="text-yellow-400" />
+  //                 <span className="text-sm">{rating}</span>
+  //               </div> */}
+  //             </div>
+  //             <span className="font-medium md:text-xl">RM {price}</span>
+  //           </div>
+  //         </div>
+  //         {/* <div className="flex w-full items-end justify-between text-sm">
+  //           <div className="flex items-center gap-3">
+  //             <LikeButton />
+  //             <AiOutlineDelete className="text-2xl" />
+  //           </div>
+  //           <div>
+  //             <InputNumber
+  //               defaultValue={item.quantity}
+  //               id={item.id}
+  //               product_size={item.product_size}
+  //             />
+  //           </div>
+  //         </div> */}
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   const renderLeft = () => {
     return (
@@ -212,10 +305,11 @@ const CheckoutPage = () => {
               setTabActive('PaymentMethod');
               handleScrollToEl('PaymentMethod');
             }}
+            onShippingChange={handleShippingInfo}
           />
         </div>
 
-        <div id="PaymentMethod" className="scroll-mt-24">
+        {/* <div id="PaymentMethod" className="scroll-mt-24">
           <PaymentMethod
             isActive={tabActive === 'PaymentMethod'}
             onOpenActive={() => {
@@ -224,7 +318,7 @@ const CheckoutPage = () => {
             }}
             onCloseActive={() => setTabActive('PaymentMethod')}
           />
-        </div>
+        </div> */}
       </div>
     );
   };
@@ -243,14 +337,29 @@ const CheckoutPage = () => {
 
           <div className="my-10 shrink-0 border-t border-neutral-300 lg:mx-10 lg:my-0 lg:border-l lg:border-t-0 xl:lg:mx-14 2xl:mx-16 " />
 
-          <div className="w-full lg:w-[36%] ">
-            <h3 className="text-lg font-semibold">Order summary</h3>
-            <div className="mt-8 divide-y divide-neutral-300">
+          <div className="w-full lg:w-[36%]">
+            <div className="flex justify-between">
+              <h3 className="text-lg font-semibold py-2">Order summary</h3>
+              <ButtonSecondary
+                sizeClass="py-2 px-4"
+                className="border-2 border-primary text-primary"
+                onClick={() => {
+                  router.push('../cart');
+                }}
+              >
+                Edit
+              </ButtonSecondary>
+            </div>
+
+            {/* <div className="mt-8 divide-y divide-neutral-300">
               {products.map((prod) => renderProduct(prod))}
+            </div> */}
+            <div className="mt-8 divide-y divide-neutral-300">
+              {cartItems.map((item) => renderProduct(item))}
             </div>
 
             <div className="mt-10 border-t border-neutral-300 pt-6 text-sm">
-              <div>
+              {/* <div>
                 <div className="text-sm">Discount code</div>
                 <div className="mt-1.5 flex">
                   <Input
@@ -265,23 +374,23 @@ const CheckoutPage = () => {
                     Apply
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               <div className="mt-4 flex justify-between pb-4">
                 <span>Subtotal</span>
-                <span className="font-semibold">RM {totalPrice}</span>
+                <span className="font-semibold">RM {subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between py-4">
                 <span>Estimated Delivery & Handling</span>
                 <span className="font-semibold">Free</span>
               </div>
-              <div className="flex justify-between py-4">
+              {/* <div className="flex justify-between py-4">
                 <span>Estimated taxes</span>
                 <span className="font-semibold">$24.90</span>
-              </div>
+              </div> */}
               <div className="flex justify-between pt-4 text-base font-semibold">
                 <span>Total</span>
-                <span>RM {totalPrice}</span>
+                <span>RM {total.toFixed(2)}</span>
               </div>
             </div>
             <ButtonPrimary className="mt-8 w-full">Confirm order</ButtonPrimary>

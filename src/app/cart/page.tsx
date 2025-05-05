@@ -92,7 +92,7 @@ const CartPage = () => {
                         </div>
                       </div>
                       <span className="font-medium md:text-xl">
-                        ${item.price}
+                        RM {item.price}
                       </span>
                     </div>
                   </div>
@@ -125,7 +125,7 @@ const CartPage = () => {
                   <div className="flex justify-between pb-4">
                     <span>Subtotal</span>
                     <span className="font-semibold">
-                      ${subtotal.toFixed(2)}
+                      RM {subtotal.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between py-4">
@@ -135,12 +135,12 @@ const CartPage = () => {
                   <div className="flex justify-between py-4">
                     <span>Estimated Taxes</span>
                     <span className="font-semibold">
-                      ${estimatedTaxes.toFixed(2)}
+                      RM {estimatedTaxes.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between pt-4 text-base font-semibold">
                     <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>RM {total.toFixed(2)}</span>
                   </div>
                 </div>
                 <CheckOutButton cartItems={cartItems} />

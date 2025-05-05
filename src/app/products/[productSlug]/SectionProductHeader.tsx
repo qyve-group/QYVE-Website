@@ -22,6 +22,7 @@ import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import Heading from '@/shared/Heading/Heading';
 import { addToCart } from '@/store/cartSlice';
 import type { RootState } from '@/store/store';
+import { useRouter } from 'next/navigation';
 // import { supabase } from "@/libs/supabaseClient";
 
 interface SectionProductHeaderProps {
@@ -60,6 +61,8 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
   const session = useSelector((state: RootState) => state.auth.session);
   console.log('session: ', session);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchShots = async () => {
@@ -104,6 +107,30 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         image: image_cover,
       }),
     );
+    // console.log*('Adding to Cart:', id, selectedSize);
+  };
+
+  const handleBuyNow = () => {
+    if (!session) {
+      alert('Login to add to cart!');
+      return;
+    } else if (!selectedSize) {
+      alert('Please select a size before adding to cart!');
+      return;
+    }
+
+    dispatch(
+      addToCart({
+        id,
+        name,
+        price,
+        product_size: selectedSize,
+        // image: shots[0], // Assuming first image is the main product image
+        quantity: 1,
+        image: image_cover,
+      }),
+    );
+    router.push('../checkout');
     // console.log*('Adding to Cart:', id, selectedSize);
   };
 
@@ -189,7 +216,9 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         </div>
 
         <div className="mt-5 flex items-center gap-5">
-          <ButtonPrimary className="w-full">Buy Now</ButtonPrimary>
+          <ButtonPrimary className="w-full" onClick={handleBuyNow}>
+            Buy Now
+          </ButtonPrimary>
           <ButtonSecondary
             className="flex w-full items-center gap-1 border-2 border-primary text-primary transition-all hover:bg-primary hover:text-white active:scale-95 active:text-white"
             onClick={handleAddToCart}
