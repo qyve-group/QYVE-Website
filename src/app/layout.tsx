@@ -13,26 +13,52 @@ export const metadata: Metadata = {
   title: 'QYVE',
   icons: [
     {
-      rel: 'apple-touch-icon',
-      url: '/apple-touch-icon.png',
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '16x16',
+      url: '/qyve-white-16x16.png',
     },
     {
       rel: 'icon',
       type: 'image/png',
       sizes: '32x32',
-      url: '/favicon.png',
+      url: '/qyve-white-32x32.png',
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '16x16',
-      url: '/favicon.png',
-    },
-    {
-      rel: 'icon',
-      url: '/favicon.ico',
+      rel: 'apple-touch-icon',
+      sizes: '180x180',
+      url: '/qyve-white-apple.png',
     },
   ],
+  // icons: {
+  //   icon: '/qyve-white.png', // This will be used as the favicon
+  // },
+  // icons: [
+  //   {
+  //     rel: 'apple-touch-icon',
+  //     // url: '/apple-touch-icon.png',
+  //     url: '/qyve-white.png',
+  //   },
+  //   {
+  //     rel: 'icon',
+  //     type: 'image/png',
+  //     sizes: '32x32',
+  //     // url: '/favicon.png',
+  //     url: '/qyve-white.png',
+  //   },
+  //   {
+  //     rel: 'icon',
+  //     type: 'image/png',
+  //     sizes: '16x16',
+  //     // url: '/favicon.png',
+  //     url: '/qyve-white.png',
+  //   },
+  //   {
+  //     rel: 'icon',
+  //     // url: '/favicon.ico',
+  //     url: '/qyve-white.png',
+  //   },
+  // ],
 };
 
 export default function RootLayout({
