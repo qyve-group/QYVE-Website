@@ -9,7 +9,8 @@ import { TbBrandPaypal } from 'react-icons/tb';
 import { useDispatch, useSelector } from 'react-redux';
 
 // import { fetchCartFromSupabase, saveCartToSupabase } from "@/services/cartService";
-import CheckOutButton from '@/components/CheckoutButton';
+// import CheckOutButton from '@/components/CheckoutButton';
+import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import LikeButton from '@/components/LikeButton';
 // import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
@@ -39,7 +40,8 @@ const CartPage = () => {
     0,
   );
   const estimatedTaxes = subtotal * 0.1; // Example 10% tax
-  const total = subtotal + estimatedTaxes;
+  // const total = subtotal + estimatedTaxes;
+  const total = subtotal;
 
   // console.log*('CartItems in Cart: ', cartItems);
 
@@ -132,28 +134,28 @@ const CartPage = () => {
                     <span>Estimated Delivery & Handling</span>
                     <span className="font-semibold">Free</span>
                   </div>
-                  <div className="flex justify-between py-4">
+                  {/* <div className="flex justify-between py-4">
                     <span>Estimated Taxes</span>
                     <span className="font-semibold">
                       RM {estimatedTaxes.toFixed(2)}
                     </span>
-                  </div>
+                  </div> */}
                   <div className="flex justify-between pt-4 text-base font-semibold">
                     <span>Total</span>
                     <span>RM {total.toFixed(2)}</span>
                   </div>
                 </div>
-                <CheckOutButton cartItems={cartItems} />
-                {/* <ButtonPrimary href="/checkout" className="mt-8 w-full">
+                {/* <CheckOutButton cartItems={cartItems} /> */}
+                <ButtonPrimary href="/checkout" className="mt-8 w-full">
                   Checkout Now
-                </ButtonPrimary> */}
-                <ButtonSecondary
+                </ButtonPrimary>
+                {/* <ButtonSecondary
                   className="mt-3 inline-flex w-full items-center gap-1 border-2 border-primary text-primary"
                   href="/checkout"
                 >
                   <TbBrandPaypal className="text-2xl" />
                   PayPal
-                </ButtonSecondary>
+                </ButtonSecondary> */}
               </div>
             </div>
           </div>

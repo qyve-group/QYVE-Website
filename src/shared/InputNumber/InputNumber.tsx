@@ -3,8 +3,7 @@
 import { updateQuantity } from '@/store/cartSlice';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from "react-redux";
-
+import { useDispatch } from 'react-redux';
 
 export interface InputNumberProps {
   className?: string;
@@ -42,7 +41,7 @@ const InputNumber: FC<InputNumberProps> = ({
       return state - 1;
     });
 
-    dispatch(updateQuantity({id: id, quantity: (value-1), product_size}));
+    dispatch(updateQuantity({ id: id, quantity: value - 1, product_size }));
 
     onChange && onChange(value - 1);
   };
@@ -52,7 +51,7 @@ const InputNumber: FC<InputNumberProps> = ({
       return state + 1;
     });
 
-    dispatch(updateQuantity({id: id, quantity: (value+1), product_size}));
+    dispatch(updateQuantity({ id: id, quantity: value + 1, product_size }));
     onChange && onChange(value + 1);
   };
 

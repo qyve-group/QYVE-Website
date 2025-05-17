@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { FaRegBell } from 'react-icons/fa6';
-import { RiSearch2Line } from 'react-icons/ri';
+// import { RiSearch2Line } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Loading from '@/app/loading';
 import avatar from '@/images/avatar.png';
 import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
-import Input from '@/shared/Input/Input';
+// import Input from '@/shared/Input/Input';
 import Logo from '@/shared/Logo/Logo';
 import { logoutUser } from '@/store/authSlice';
 import type { AppDispatch, RootState } from '@/store/store';

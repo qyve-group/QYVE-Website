@@ -31,6 +31,7 @@ const CartSideBar: React.FC = () => {
   const dispatch = useDispatch();
 
   const auth = useSelector((state: RootState) => state.auth);
+  const quantity = useSelector((state: RootState) => state.cart.totalQuantity);
 
   // const initialCart = useSelector((state: RootState) => state.cart);
   // console.log*('CartSideBar.tsx----- Initial cart state: ', initialCart);
@@ -238,7 +239,8 @@ const CartSideBar: React.FC = () => {
         {/* Prevent hydration mismatch */}
         {hydrated ? (
           <span className="hidden text-sm lg:block">
-            {cartItems.length} items
+            {/* {cartItems.length} items */}
+            {quantity} items
           </span>
         ) : (
           <span className="hidden text-sm lg:block">Loading...</span>

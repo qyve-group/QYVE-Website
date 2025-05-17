@@ -150,14 +150,14 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       <div className="basis-[1/2]">
         <ImageShowCase shots={shots} />
       </div>
-      <div className="basis-1/2">
+      {/* <div className="basis-1/2">
         <Image
           src={image_cover}
           alt={`${name} cover photo`}
           width={400}
           height={200}
         />
-      </div>
+      </div> */}
 
       <div className="basis-[45%]">
         {/* <Heading className="mb-0" isMain title="new arrival!"> */}

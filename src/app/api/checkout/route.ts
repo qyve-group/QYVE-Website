@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       mode: 'payment',
       line_items: lineItems,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/home`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cart`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout`,
       metadata: { user_id: userId ?? 'unknown user' },
     });
 

@@ -1,5 +1,6 @@
 'use client';
 
+import CheckoutButton from '@/components/CheckoutButton';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -393,7 +394,8 @@ const CheckoutPage = () => {
                 <span>RM {total.toFixed(2)}</span>
               </div>
             </div>
-            <ButtonPrimary className="mt-8 w-full">Confirm order</ButtonPrimary>
+            <CheckoutButton cartItems={cartItems} />
+            {/* <ButtonPrimary className="mt-8 w-full">Confirm order</ButtonPrimary> */}
           </div>
         </div>
       </main>

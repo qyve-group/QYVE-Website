@@ -22,7 +22,7 @@ export default function CheckoutButton({
   const [loading, setLoading] = useState(false);
 
   const handleCheckout = async () => {
-    // console.log*('Checkout button clicked');
+    // console.log * 'Checkout button clicked';
 
     if (!stripePromise) {
       throw new Error('Stripe is not initialized.');
@@ -60,7 +60,7 @@ export default function CheckoutButton({
       onClick={handleCheckout}
       disabled={loading}
     >
-      {loading ? 'Processing...' : 'Checkout Now'}
+      {loading ? 'Processing...' : 'Pay Now'}
     </ButtonPrimary>
   );
 }
