@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 
-import Filter from '@/components/Filter';
+// import Filter from '@/components/Filter';
 import ProductCard from '@/components/ProductCard';
 import { productsSection } from '@/data/content';
 import { supabase } from '@/libs/supabaseClient';
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
+// import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import Heading from '@/shared/Heading/Heading';
 
 interface Product {

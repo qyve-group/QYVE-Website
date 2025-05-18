@@ -66,16 +66,16 @@ export const topNavLinks: NavItemType[] = [
     name: 'FAQ',
     href: '/faqs',
   },
-  {
-    id: 'h6i78g',
-    name: 'Checkout',
-    href: '/checkout',
-  },
-  {
-    id: 'f678ty',
-    name: 'Cart',
-    href: '/cart',
-  },
+  // {
+  //   id: 'h6i78g',
+  //   name: 'Checkout',
+  //   href: '/checkout',
+  // },
+  // {
+  //   id: 'f678ty',
+  //   name: 'Cart',
+  //   href: '/cart',
+  // },
 ];
 
 export const NavLinks: NavItemType[] = [
@@ -105,31 +105,33 @@ export const NavLinks: NavItemType[] = [
     name: 'FAQ',
     href: '/faqs',
   },
-  {
-    id: 'h6i78g',
-    name: 'Checkout',
-    href: '/checkout',
-  },
-  {
-    id: 'f678ty',
-    name: 'Cart',
-    href: '/cart',
-  },
+  // {
+  //   id: 'h6i78g',
+  //   name: 'Checkout',
+  //   href: '/checkout',
+  // },
+  // {
+  //   id: 'f678ty',
+  //   name: 'Cart',
+  //   href: '/cart',
+  // },
 ];
 
-export const headerSection = [
-  {
-    title: 'NEW ARRIVAL!',
-    heading: 'QYVE ProGrip Socks',
-    description: 'Stay locked in. No slips, just goals',
-  },
-  {
-    title: 'Coming soon',
-    heading: 'QYVE Recovery Slides',
-    description:
-      'Give your feet a break after a futsal session—slip into recovery slides for ultimate comfort and faster recovery',
-  },
-];
+// export const headerSection = [
+//   {
+//     id: 1,
+//     title: 'NEW ARRIVAL!',
+//     heading: 'QYVE ProGrip Socks',
+//     description: 'Stay locked in.\nNo slips, just goals',
+//   },
+//   {
+//     id: 2,
+//     title: 'Coming soon',
+//     heading: 'QYVE Recovery Slides',
+//     description:
+//       'Give your feet a break after a futsal session—slip into recovery slides for ultimate comfort and faster recovery',
+//   },
+// ];
 
 export const promotionTag = {
   heading: 'DISC UP TO 50% FOR SNEAKERS FEST ID 2023',
@@ -585,9 +587,9 @@ export const shoes = [
 ];
 
 export const productsSection = {
-  heading: 'Shop Now, Look Good Later',
+  heading: 'Gear Up with Qyve',
   description:
-    'We have a buch of collections for you! Lets explore and find your dream shoes, make it happen',
+    'Born on the court. Built for performance and style. Designed in Malaysia.',
 };
 
 const shoeBrands = ['Nike', 'Alexander Mqueen', 'New Balance', 'Compass'];
@@ -655,10 +657,11 @@ export const footerData = {
       title: 'Main Pages',
       links: [
         { href: '/home', name: 'Home' },
-        { href: '/products', name: 'Collections' },
+        { href: '/about-us', name: 'About Us' },
+        { href: '/products', name: 'Products' },
         { href: '/cart', name: 'Cart' },
-        { href: '/checkout', name: 'Checkout' },
-        { href: '/blog', name: 'Blogs' },
+        // { href: '/checkout', name: 'Checkout' },
+        // { href: '/blog', name: 'Blogs' },
       ],
     },
     {

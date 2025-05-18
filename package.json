@@ -64,6 +64,7 @@
     "react-hook-form": "^7.47.0",
     "react-icons": "^4.11.0",
     "react-redux": "^9.2.0",
+    "react-social-icons": "^6.24.0",
     "react-swipeable": "^7.0.1",
     "react-use": "^17.4.0",
     "redux-persist": "^6.0.0",

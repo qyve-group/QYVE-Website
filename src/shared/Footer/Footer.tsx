@@ -5,7 +5,9 @@ import { footerData } from '@/data/content';
 
 import Logo from '../Logo/Logo';
 import FooterBanner from './FooterBanner';
-import Subscribe from './Subscribe';
+import ReactDOM from 'react-dom';
+import { SocialIcon } from 'react-social-icons';
+// import Subscribe from './Subscribe';
 
 const Footer: React.FC = () => {
   return (
@@ -19,21 +21,41 @@ const Footer: React.FC = () => {
           <div className="space-y-10 md:pr-20">
             <Logo className="block" />
             <p className="">{footerData.description}</p>
-            <Subscribe />
+            {/* <Subscribe /> */}
           </div>
 
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-3">
-            <div className="space-y-5">
-              <h4 className="text-2xl font-medium">
+          <div className="grid grid-cols-2 gap-5">
+            <div className="space-y-5 flex flex-col items-start pl-[30%]">
+              {/* <h4 className="text-2xl font-medium">
                 {footerData.footerLinks[0]?.title}
-              </h4>
+              </h4> */}
               {footerData.footerLinks[0]?.links.map((link) => (
                 <div key={link.name}>
                   <Link href={link.href}>{link.name}</Link>
                 </div>
               ))}
             </div>
-            <div>
+            <div className="flex gap-5 items-center justify-center">
+              <SocialIcon
+                network="instagram"
+                url="https://www.instagram.com/qyveofficial"
+              />
+              <SocialIcon
+                network="tiktok"
+                bgColor="white"
+                fgColor="black"
+                url="https://www.tiktok.com/@qyveofficial"
+              />
+              <SocialIcon network="whatsapp" />
+              <SocialIcon network="email" />
+            </div>
+            {/* <div className="flex bg-yellow-500">
+              <div>Instagram</div>
+              <div>TikTok</div>
+              <div>Whatsapp</div>
+              <div>Email</div>
+            </div> */}
+            {/* <div>
               <div className="grid gap-5">
                 {footerData.footerLinks.slice(1, 3).map((item) => (
                   <div key={item.title} className="space-y-5">
@@ -46,9 +68,9 @@ const Footer: React.FC = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
 
-            <div className="space-y-5">
+            {/* <div className="space-y-5">
               <h4 className="text-2xl font-medium">
                 {footerData.footerLinks[3]?.title}
               </h4>
@@ -57,7 +79,7 @@ const Footer: React.FC = () => {
                   <Link href={link.href}>{link.name}</Link>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
