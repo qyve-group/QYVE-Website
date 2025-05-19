@@ -1,8 +1,8 @@
 'use client';
 
-import type { UUID } from 'crypto';
+// import type { UUID } from 'crypto';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 // import PromoTag from '@/components/PromoTag';
 // import BootstrapCarousel from "@/components/Carousel";
@@ -13,22 +13,24 @@ import {
   // CarouselNext,
   // CarouselPrevious,
 } from '@/components/ui/carousel';
-import { supabase } from '@/libs/supabaseClient';
+// import { supabase } from '@/libs/supabaseClient';
 // import { headerSection } from "@/data/content";
 // import shoe_box from "@/images/shoe_box.png";
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import { useRouter } from 'next/navigation';
+import { FaCircle } from 'react-icons/fa6';
+
 // import { headerSection } from '@/data/content';
 
-type Slide = {
-  id: UUID;
-  title: string;
-  heading: string;
-  description: string;
-  image_url: string;
-  cta_text: string;
-  is_active: boolean;
-};
+// type Slide = {
+//   id: UUID;
+//   title: string;
+//   heading: string;
+//   description: string;
+//   image_url: string;
+//   cta_text: string;
+//   is_active: boolean;
+// };
 
 const banners = [
   {
@@ -54,7 +56,7 @@ const banners = [
 
 const SectionHeader = () => {
   const [current, setCurrent] = useState(0);
-  const intervalTime = 5000; // 5 seconds
+  // const intervalTime = 5000;
   // const slides = [0, 1, 2]; // Can be objects if dynamic
   // const [slides, setSlides] = useState<Slide[] | null>([]);
   const total = banners.length;
@@ -91,7 +93,7 @@ const SectionHeader = () => {
   const router = useRouter();
 
   return (
-    <div className="container relative items-stretch gap-y-5 lg:flex lg:gap-5 lg:gap-y-0">
+    <div className="container relative items-stretch gap-y-5 lg:flex lg:gap-5 lg:gap-y-0 ">
       <Carousel className="w-3/4 text-center w-full">
         <CarouselContent
           style={{
@@ -101,7 +103,7 @@ const SectionHeader = () => {
         >
           {banners.map((banner) => (
             <CarouselItem key={banner.id} className="min-w-full">
-              <div className="h-full basis-[68%] items-center space-y-10 rounded-2xl bg-gray p-5 md:flex md:space-y-0">
+              <div className="h-full basis-[68%] items-center space-y-10 bg-gray p-5 md:flex md:space-y-0 rounded-t-2xl">
                 <div className="flex basis-[63%] flex-col justify-between">
                   <div>
                     <h4 className="mb-5 text-xl font-medium text-primary">
@@ -133,45 +135,37 @@ const SectionHeader = () => {
 
                   {/* Arrows & Pagination */}
                   {/* <div className="mt-10 flex flex-col items-center space-y-3 bg-blue-600"> */}
-                  <div className="mt-10 flex items-center gap-10 rounded-2xl bg-grey w-max mx-auto px-2 bg-yellow-400">
-                    {/* <div className="flex items-center justify-center space-x-4" /> */}
+                  {/* <div className="mt-10 flex items-center gap-10 rounded-2xl bg-grey w-max mx-auto px-2 bg-yellow-300"> */}
+                  {/* <div className="mt-10 flex items-center gap-10 rounded-2xl bg-grey w-full px-2 bg-yellow-300">
                     <div>
-                      <button onClick={prevSlide} className="text-xl">
+                      <button onClick={prevSlide} className="text-lg">
                         ←
                       </button>
                     </div>
                     <div className="">
                       <div className="text-black flex gap-2">
-                        {/* {banners.map((_, idx) =>
-                          current === idx ? (
-                            <div className="font-bold text-lg text-primary scale-100">
-                              {idx + 1}
-                            </div>
-                          ) : (
-                            <div className="text-lg scale-75">{idx + 1}</div>
-                          ),
-                          
-                        )} */}
+
                         {banners.map((_, idx) => (
                           <div
                             key={`${idx}_${idx + 1}`}
-                            className={`flex items-center rounded transition-all duration-1000 ${
+                            className={`flex items-center rounded transition-all duration-100 ${
                               current === idx
-                                ? 'font-bold text-lg text-primary scale-100'
-                                : 'text-lg scale-75 text-gray-800'
+                                ? 'font-bold text-md text-primary scale-80'
+                                : 'text-md scale-50 text-gray-800'
                             }`}
                           >
-                            {idx + 1}
+                            
+                            <FaCircle />
                           </div>
                         ))}
                       </div>
                     </div>
                     <div>
-                      <button onClick={nextSlide} className="text-xl">
+                      <button onClick={nextSlide} className="text-lg">
                         →
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="basis-[37%]">
                   <Image
@@ -185,6 +179,9 @@ const SectionHeader = () => {
               </div>
             </CarouselItem>
           ))}
+          {/* <div className="bg-blue-300">
+            <h1>Test</h1>
+          </div> */}
 
           {/* {slides?.map((slide) => (
             <CarouselItem key={slide.id} className="min-w-full">
@@ -234,6 +231,46 @@ const SectionHeader = () => {
             />
           ))}
         </div> */}
+        <div className="flex items-center gap-10 bg-grey w-full px-2 bg-gray justify-center rounded-b-2xl">
+          {/* <div className="flex items-center justify-center space-x-4" /> */}
+          <div>
+            <button onClick={prevSlide} className="text-lg">
+              ←
+            </button>
+          </div>
+          <div className="">
+            <div className="text-black flex gap-2">
+              {/* {banners.map((_, idx) =>
+                          current === idx ? (
+                            <div className="font-bold text-lg text-primary scale-100">
+                              {idx + 1}
+                            </div>
+                          ) : (
+                            <div className="text-lg scale-75">{idx + 1}</div>
+                          ),
+                          
+                        )} */}
+              {banners.map((_, idx) => (
+                <div
+                  key={`${idx}_${idx + 1}`}
+                  className={`flex items-center rounded transition-all duration-100 ${
+                    current === idx
+                      ? 'font-bold text-md text-primary scale-80'
+                      : 'text-md scale-50 text-gray-800'
+                  }`}
+                >
+                  {/* {idx + 1} */}
+                  <FaCircle />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <button onClick={nextSlide} className="text-lg">
+              →
+            </button>
+          </div>
+        </div>
       </Carousel>
       {/* <div className="mt-5 basis-[30%] lg:mt-0">
         <PromoTag />

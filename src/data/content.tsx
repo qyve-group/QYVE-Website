@@ -644,9 +644,12 @@ export const brandsSection = {
 };
 
 export const footerBannerData = {
-  heading: 'BRINGING YOU TO UPDATE WITH FANTASTIC FOOTWEAR',
+  heading: 'Empowering Trust Through Every Step on the Court ',
   description:
-    'View all brands of our collection on HotKicks, there is another collection. Please check it out bro, like seriously',
+    'At QYVE, we believe that true performance begins with trust — trust in your gear, trust in your team, and trust in the community that supports you. Our mission is to bridge the gap between athletes and innovation by delivering futsal products designed with precision, honesty, and a deep understanding of the game.',
+
+  description2:
+    ' Every pair of shoes, every stitch, and every decision we make is driven by a commitment to quality and transparency. \nWe are not just here to sell — we are here to stand beside every player who laces up with purpose. Together, we are building more than just a brand — we are building a community grounded in reliability, respect, and a passion for futsal.',
 };
 
 export const footerData = {

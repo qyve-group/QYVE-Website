@@ -3,7 +3,7 @@
 import type { FC } from 'react';
 import React, { useState } from 'react';
 
-import { note } from '@/data/content';
+// import { note } from '@/data/content';
 import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
 import Heading from '@/shared/Heading/Heading';
 
@@ -71,10 +71,10 @@ const ProductInfoTab: FC<ProductInfoTabProps> = ({
         </div>
       ))}
 
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <h3 className="text-xl font-medium">Note*</h3>
         <p className="text-neutral-500">{note}</p>
-      </div>
+      </div> */}
     </div>
   );
 };

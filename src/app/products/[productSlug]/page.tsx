@@ -10,6 +10,7 @@ import { supabase } from '@/libs/supabaseClient';
 // import SectionNavigation from './SectionNavigation';
 import SectionProductHeader from './SectionProductHeader';
 import SectionProductInfo from './SectionProductInfo';
+import SectionMoreProducts from './SectionMoreProducts';
 
 type Props = {
   params: { productSlug: string };
@@ -20,7 +21,9 @@ export const fetchCache = 'force-no-store'; // Prevents caching
 const getProductData = async (productSlug: string) => {
   const { data: product, error: productError } = await supabase
     .from('products')
-    .select('id, name, price, previous_price, image_cover')
+    .select(
+      'id, name, price, previous_price, image_cover, overview, shipment_details',
+    )
     .eq('slug', productSlug)
     .single();
 
@@ -84,9 +87,9 @@ const SingleProductPage = async ({ params }: Props) => {
         />
       </div>
 
-      {/* <div className="mb-28">
-        <SectionMoreProducts />
-      </div> */}
+      <div className="mb-28">
+        <SectionMoreProducts selectedProductName={selectedProduct?.name} />
+      </div>
     </div>
   );
 };

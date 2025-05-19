@@ -8,7 +8,7 @@ interface LogoProps {
 
 const Logo: FC<LogoProps> = ({ className = 'hidden' }) => {
   return (
-    <Link className="flex cursor-pointer items-center gap-2" href="/">
+    <Link className="flex cursor-pointer items-center gap-2" href="/home">
       <svg
         stroke="currentColor"
         fill="currentColor"
@@ -29,7 +29,7 @@ const Logo: FC<LogoProps> = ({ className = 'hidden' }) => {
           d="m566.92913,42.65718L428.63898,0l-217.50435,172.53946,217.50435,172.53946,138.29015-42.65718s-125.07046-.58218-235.07219-129.88228c110.00173-129.30009,235.07219-129.88228,235.07219-129.88228Z"
         />
       </svg>
-      <span className={`${className} text-2xl font-bold`}>HotKicks.</span>
+      <span className={`${className} text-2xl font-bold`}>QYVE</span>
     </Link>
   );
 };
