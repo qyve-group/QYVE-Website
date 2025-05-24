@@ -1,20 +1,20 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-type ContactInfoData = {
-  phone: string;
-  email: string;
-};
+// type ContactInfoData = {
+//   phone: string;
+//   email: string;
+// };
 
-type ShippingAddressData = {
-  fname: string;
-  lname: string;
-  shipping_address_1: string;
-  shipping_address_2: string;
-  city: string;
-  state: string;
-  postal_code: string;
-};
+// type ShippingAddressData = {
+//   fname: string;
+//   lname: string;
+//   shipping_address_1: string;
+//   shipping_address_2: string;
+//   city: string;
+//   state: string;
+//   postal_code: string;
+// };
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
