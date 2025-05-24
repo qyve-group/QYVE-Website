@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { MdStar } from 'react-icons/md';
-import { TbBrandPaypal } from 'react-icons/tb';
+// import { TbBrandPaypal } from 'react-icons/tb';
 import { useDispatch, useSelector } from 'react-redux';
 
 // import { fetchCartFromSupabase, saveCartToSupabase } from "@/services/cartService";
@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import LikeButton from '@/components/LikeButton';
 // import ButtonPrimary from "@/shared/Button/ButtonPrimary";
-import ButtonSecondary from '@/shared/Button/ButtonSecondary';
+// import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import InputNumber from '@/shared/InputNumber/InputNumber';
 import { removeFromCart } from '@/store/cartSlice';
 import type { RootState } from '@/store/store';
@@ -39,7 +39,7 @@ const CartPage = () => {
     (acc, item) => acc + item.price * item.quantity,
     0,
   );
-  const estimatedTaxes = subtotal * 0.1; // Example 10% tax
+  // const estimatedTaxes = subtotal * 0.1; // Example 10% tax
   // const total = subtotal + estimatedTaxes;
   const total = subtotal;
 

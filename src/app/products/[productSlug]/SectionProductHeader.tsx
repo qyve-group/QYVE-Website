@@ -1,7 +1,7 @@
 'use client';
 
 // import type { StaticImageData } from "next/image";
-import Image from 'next/image';
+// import Image from 'next/image';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { BsBag } from 'react-icons/bs';

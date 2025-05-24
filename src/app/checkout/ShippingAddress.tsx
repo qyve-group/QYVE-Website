@@ -45,7 +45,8 @@ const ShippingAddress: FC<Props> = ({
   const [state, setState] = useState('');
   const [postal_code, setPcode] = useState('');
   const [savedAddress1, setSavedAddress1] = useState('');
-  const [savedAddress2, setSavedAddress2] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [, setSavedAddress2] = useState('');
   const [savedNo, setSavedNo] = useState('');
   const [savedPcode, setSavedPcode] = useState('');
   const [savedCity, setSavedCity] = useState('');

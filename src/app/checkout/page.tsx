@@ -70,7 +70,8 @@ const CheckoutPage = () => {
 
   const userId = useSelector((state: RootState) => state.auth.user?.id);
   const [products, setProducts] = useState<CartDisplay[]>([]);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [, setTotalPrice] = useState<number>(0);
   const [contactInfo, setContactInfo] = useState<ContactInfoData | null>(null);
   const [shippingAddress, setShippingAddress] =
     useState<ShippingAddressData | null>(null);
