@@ -139,12 +139,12 @@ const ShippingAddress: FC<Props> = ({
         {/* ============ */}
         <div className="space-y-4 sm:flex sm:space-x-3 sm:space-y-0">
           <div className="flex-1">
-            <FormItem label="Address">
+            <FormItem label="Address Line 1">
               <Input
                 rounded="rounded-lg"
                 sizeClass="h-12 px-4 py-3"
                 className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
-                placeholder="Address line"
+                placeholder="Address line 1"
                 type="text"
                 value={shipping_address_1}
                 onChange={(e) => {
@@ -153,6 +153,7 @@ const ShippingAddress: FC<Props> = ({
               />
             </FormItem>
           </div>
+
           <div className="sm:w-1/3">
             <FormItem label="No., Apt, Suite *">
               <Input
@@ -167,6 +168,21 @@ const ShippingAddress: FC<Props> = ({
               />
             </FormItem>
           </div>
+        </div>
+        <div className="flex-1">
+          <FormItem label="Address Line 2">
+            <Input
+              rounded="rounded-lg"
+              sizeClass="h-12 px-4 py-3"
+              className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+              placeholder="Address line 2"
+              type="text"
+              value={shipping_address_2}
+              onChange={(e) => {
+                setShippingAddress2(e.target.value);
+              }}
+            />
+          </FormItem>
         </div>
 
         {/* ============ */}

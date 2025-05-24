@@ -8,14 +8,34 @@ import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import type { CartItem } from '@/store/cartSlice';
 import type { RootState } from '@/store/store';
 
+type ContactInfoData = {
+  phone: string;
+  email: string;
+};
+
+type ShippingAddressData = {
+  fname: string;
+  lname: string;
+  shipping_address_1: string;
+  shipping_address_2: string;
+  no: string;
+  city: string;
+  state: string;
+  postal_code: string;
+};
+
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
 );
 
 export default function CheckoutButton({
   cartItems,
+  orderAddress,
+  orderContact,
 }: {
   cartItems: CartItem[];
+  orderAddress: ShippingAddressData;
+  orderContact: ContactInfoData;
 }) {
   const userId = useSelector((state: RootState) => state.auth.user?.id);
 
@@ -36,7 +56,7 @@ export default function CheckoutButton({
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, cartItems }),
+        body: JSON.stringify({ userId, cartItems, orderAddress, orderContact }),
       });
 
       if (!res.ok) throw new Error('Failed to create checkout session');

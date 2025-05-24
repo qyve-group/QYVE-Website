@@ -8,7 +8,7 @@ import { supabase } from '@/libs/supabaseClient';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
-  // console.log*('Webhook called');
+  // console.log('Webhook called');
 
   const sig = req.headers.get('stripe-signature');
 
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     // ✅ Manually get raw body
     const bodyBuffer = await req.arrayBuffer();
     const rawBody = Buffer.from(bodyBuffer);
-    // // console.log*('📩 Raw body received:', rawBody);
+    // console.log('📩 Raw body received:', rawBody);
 
     event = stripe.webhooks.constructEvent(
       rawBody,
@@ -52,11 +52,20 @@ export async function POST(req: Request) {
     const userId = session.metadata?.user_id || '';
     // // console.log*('✅ Checkout Session Object:', session);
     // // console.log*('userid: ', userId);
+    const orderAddressString = session.metadata?.order_address || '{}';
+    const orderAddress = JSON.parse(orderAddressString);
 
+    const contactInfoString = session.metadata?.order_contact || '{}';
+    const contactInfo = JSON.parse(contactInfoString);
+
+    // console.log('orderAddress: ', orderAddress);
+    // console.log('contactInfo ', contactInfo);
     if (!userId) {
       // console.error*('User ID missing in metadata');
       return NextResponse.json({ error: 'User ID missing' }, { status: 400 });
     }
+
+    // console.log('userid: ', userId);
 
     // Fetch cart_id from cart table using user_id
     const { data: cartInfo, error: cartInfoError } = await supabase
@@ -73,6 +82,7 @@ export async function POST(req: Request) {
     }
 
     const cartId = cartInfo.id;
+    // console.log('cartId: ', cartId);
 
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL as string,
@@ -90,36 +100,74 @@ export async function POST(req: Request) {
         { status: 404 },
       );
     }
+    // console.log('cartItems: ', cartItems);
 
     // Create an order linked to cart_id
     const orderId = uuidv4(); // Generate a new UUID
+    // console.log('OrderID is: ', orderId);
     const totalPrice = cartItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0,
     );
     const formattedTotalPrice = parseFloat(totalPrice.toFixed(2)); // Ensure precision
 
-    const { error: orderError } = await supabase
-      .from('orders')
-      .insert([
-        {
-          id: orderId,
-          user_id: userId,
-          status: 'paid',
-          total_price: formattedTotalPrice,
-          stripe_session_id: session.id,
-        },
-      ])
-      .select()
-      .single();
+    // console.log('About to insert order with values:', {
+    //   orderId,
+    //   userId,
+    //   formattedTotalPrice,
+    //   stripeSessionId: session.id,
+    // });
 
-    if (orderError) {
-      // console.error*('Failed to create order:', orderError);
-      return NextResponse.json(
-        { error: 'Order creation failed' },
-        { status: 500 },
-      );
+    try {
+      const { error: orderError } = await supabase
+        .from('orders')
+        .insert([
+          {
+            id: orderId,
+            user_id: userId,
+            status: 'Paid',
+            total_price: formattedTotalPrice,
+            stripe_session_id: session.id,
+          },
+        ])
+        .select()
+        .single();
+
+      if (orderError) {
+        // console.error('❌ Insert error:', orderError);
+      } else {
+        // console.log('✅ Order inserted:', orderData);
+      }
+    } catch (err) {
+      // console.error('❌ Unexpected error:', err);
     }
+
+    // const { data: orderData, error: orderError } = await supabase
+    //   .from('orders')
+    //   .insert([
+    //     {
+    //       id: orderId,
+    //       user_id: userId,
+    //       status: 'paid',
+    //       total_price: formattedTotalPrice,
+    //       stripe_session_id: session.id,
+    //     },
+    //   ])
+    //   .select()
+    //   .single();
+
+    // console.log('orderError:', orderError);
+    // console.log('orderData:', orderData);
+
+    // if (orderError) {
+    //   // console.error*('Failed to create order:', orderError);
+    //   return NextResponse.json(
+    //     { error: 'Order creation failed' },
+    //     { status: 500 },
+    //   );
+    // }
+
+    // console.log('Order data inserted in order table: ', orderData);
 
     // //console.log**('Order created: ', order);
 
@@ -179,6 +227,43 @@ export async function POST(req: Request) {
       }
     }
 
+    const { error: orderAddressesError } = await supabaseAdmin
+      .from('order_addresses')
+      .insert({
+        house_no: orderAddress.no,
+        city: orderAddress.city,
+        state: orderAddress.state,
+        postal_code: orderAddress.postal_code,
+        address_line_1: orderAddress.shipping_address_1,
+        address_line_2: orderAddress.shipping_address_2,
+        first_name: orderAddress.fname,
+        last_name: orderAddress.lname,
+        order_id: orderId,
+      })
+      .select()
+      .single();
+
+    if (orderAddressesError) {
+      // console.error('orderAddressesError: ', orderAddressesError);
+    }
+    // console.log('returned ordercontact from supabase: ', orderAdd);
+
+    const { error: orderContactInfoData } = await supabaseAdmin
+      .from('order_contact_info')
+      .insert({
+        phone: contactInfo.phone,
+        email: contactInfo.email,
+        order_id: orderId,
+      })
+      .select()
+      .single();
+
+    if (orderContactInfoData) {
+      // console.error('orderContactInfo: ', orderContactInfoData);
+    }
+
+    // console.log('returned ordercontact from supabase: ', orderContactInfo);
+
     // Clear the cart after payment
     // console.log*('Clearing cart items for cart ID:', cartId);
     const { error: clearCartError } = await supabaseAdmin
@@ -193,6 +278,7 @@ export async function POST(req: Request) {
     }
 
     // console.log*('✅ Payment Successful:', session);
+    // console.log('order address: ', orderAddress);
   }
 
   return NextResponse.json({ received: true });

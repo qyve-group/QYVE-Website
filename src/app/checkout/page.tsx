@@ -2,20 +2,20 @@
 
 import CheckoutButton from '@/components/CheckoutButton';
 import Image from 'next/image';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { AiOutlineDelete } from 'react-icons/ai';
+// import { AiOutlineDelete } from 'react-icons/ai';
 // import { MdStar } from 'react-icons/md';
 
-import LikeButton from '@/components/LikeButton';
+// import LikeButton from '@/components/LikeButton';
 // import { shoes } from '@/data/content';
 // import type { ProductType } from '@/data/types';
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
-import Input from '@/shared/Input/Input';
-import InputNumber from '@/shared/InputNumber/InputNumber';
+// import ButtonPrimary from '@/shared/Button/ButtonPrimary';
+// import Input from '@/shared/Input/Input';
+// import InputNumber from '@/shared/InputNumber/InputNumber';
 
 import ContactInfo from './ContactInfo';
-import PaymentMethod from './PaymentMethod';
+// import PaymentMethod from './PaymentMethod';
 import ShippingAddress from './ShippingAddress';
 import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
@@ -48,6 +48,7 @@ type ShippingAddressData = {
   lname: string;
   shipping_address_1: string;
   shipping_address_2: string;
+  no: string;
   city: string;
   state: string;
   postal_code: string;
@@ -70,8 +71,9 @@ const CheckoutPage = () => {
   const userId = useSelector((state: RootState) => state.auth.user?.id);
   const [products, setProducts] = useState<CartDisplay[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [contactInfo, setContactInfo] = useState({});
-  const [shippingAddress, setShippingAddress] = useState({});
+  const [contactInfo, setContactInfo] = useState<ContactInfoData | null>(null);
+  const [shippingAddress, setShippingAddress] =
+    useState<ShippingAddressData | null>(null);
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
@@ -80,7 +82,7 @@ const CheckoutPage = () => {
     (acc, item) => acc + item.price * item.quantity,
     0,
   );
-  const estimatedTaxes = subtotal * 0.1; // Example 10% tax
+  // const estimatedTaxes = subtotal * 0.1; // Example 10% tax
   // const total = subtotal + estimatedTaxes;
   const total = subtotal;
 
@@ -150,15 +152,11 @@ const CheckoutPage = () => {
   const handleContactInfo = (data: ContactInfoData) => {
     setContactInfo(data);
     console.log('Received from contact info component: ', data);
-
-    console.log('saved contact info: ', contactInfo);
   };
 
   const handleShippingInfo = (shippingData: ShippingAddressData) => {
     setShippingAddress(shippingData);
     console.log('Received from shipping component: ', shippingData);
-
-    console.log('saved shipping info: ', shippingAddress);
   };
 
   const renderProduct = (item: CartItem) => {
@@ -394,7 +392,24 @@ const CheckoutPage = () => {
                 <span>RM {total.toFixed(2)}</span>
               </div>
             </div>
-            <CheckoutButton cartItems={cartItems} />
+            <CheckoutButton
+              cartItems={cartItems}
+              // orderAddress={shippingAddress}
+              orderAddress={{
+                fname: shippingAddress?.fname || '',
+                lname: shippingAddress?.lname || '',
+                shipping_address_1: shippingAddress?.shipping_address_1 || '',
+                shipping_address_2: shippingAddress?.shipping_address_2 || '',
+                no: shippingAddress?.no || '',
+                city: shippingAddress?.city || '',
+                postal_code: shippingAddress?.postal_code || '',
+                state: shippingAddress?.state || '',
+              }}
+              orderContact={{
+                phone: contactInfo?.phone || '',
+                email: contactInfo?.email || '',
+              }}
+            />
             {/* <ButtonPrimary className="mt-8 w-full">Confirm order</ButtonPrimary> */}
           </div>
         </div>

@@ -1,11 +1,26 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
+type ContactInfoData = {
+  phone: string;
+  email: string;
+};
+
+type ShippingAddressData = {
+  fname: string;
+  lname: string;
+  shipping_address_1: string;
+  shipping_address_2: string;
+  city: string;
+  state: string;
+  postal_code: string;
+};
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
   try {
-    const { userId, cartItems } = await req.json(); // Get items from the request
+    const { userId, cartItems, orderAddress, orderContact } = await req.json(); // Get items from the request
 
     if (!userId) {
       throw new Error('User ID is missing before creating Stripe session');
@@ -32,8 +47,14 @@ export async function POST(req: Request) {
       mode: 'payment',
       line_items: lineItems,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/home`,
+      customer_email: orderContact.email,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout`,
-      metadata: { user_id: userId ?? 'unknown user' },
+      metadata: {
+        user_id: userId ?? 'unknown user',
+        order_address: JSON.stringify(orderAddress),
+        order_contact: JSON.stringify(orderContact),
+        order_id: '2222222',
+      },
     });
 
     return NextResponse.json({ url: session.url });

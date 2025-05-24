@@ -3,7 +3,7 @@ import React from 'react';
 
 import { footerData } from '@/data/content';
 
-import Logo from '../Logo/Logo';
+// import Logo from '../Logo/Logo';
 import FooterBanner from './FooterBanner';
 // import ReactDOM from 'react-dom';
 import { SocialIcon } from 'react-social-icons';
