@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import React from 'react';
+// import ReactDOM from 'react-dom';
+import { SocialIcon } from 'react-social-icons';
 
 import { footerData } from '@/data/content';
 
 // import Logo from '../Logo/Logo';
 import FooterBanner from './FooterBanner';
-// import ReactDOM from 'react-dom';
-import { SocialIcon } from 'react-social-icons';
 // import Subscribe from './Subscribe';
 
 const Footer: React.FC = () => {
@@ -18,14 +18,14 @@ const Footer: React.FC = () => {
 
       <div className="bg-black text-white">
         <div className="container grid gap-10 py-16 lg:grid-cols-2 lg:gap-0">
-          <div className="space-y-10 md:pr-20 my-auto">
+          <div className="my-auto space-y-10 md:pr-20">
             {/* <Logo className="block" /> */}
             <p className="">{footerData.description}</p>
             {/* <Subscribe /> */}
           </div>
 
           <div className="grid grid-cols-2 gap-5">
-            <div className="space-y-5 flex flex-col items-start pl-[30%]">
+            <div className="flex flex-col items-start space-y-5 pl-[30%]">
               {/* <h4 className="text-2xl font-medium">
                 {footerData.footerLinks[0]?.title}
               </h4> */}
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
                 </div>
               ))}
             </div>
-            <div className="flex gap-5 items-center justify-center">
+            <div className="flex items-center justify-center gap-5">
               <SocialIcon
                 network="instagram"
                 url="https://www.instagram.com/qyveofficial"

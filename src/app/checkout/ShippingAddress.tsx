@@ -15,12 +15,12 @@ import Select from '@/shared/Select/Select';
 type ShippingAddressData = {
   fname: string;
   lname: string;
-  shipping_address_1: string;
-  shipping_address_2: string;
+  shippingAddress1: string;
+  shippingAddress2: string;
   no: string;
   city: string;
   state: string;
-  postal_code: string;
+  postalCode: string;
 };
 
 interface Props {
@@ -38,12 +38,12 @@ const ShippingAddress: FC<Props> = ({
 }) => {
   const [fname, setFname] = useState('');
   const [lname, setLname] = useState('');
-  const [shipping_address_1, setShippingAddress1] = useState('');
-  const [shipping_address_2, setShippingAddress2] = useState('');
+  const [shippingAddress1, setShippingAddress1] = useState('');
+  const [shippingAddress2, setShippingAddress2] = useState('');
   const [no, setNo] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
-  const [postal_code, setPcode] = useState('');
+  const [postalCode, setPcode] = useState('');
   const [savedAddress1, setSavedAddress1] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [, setSavedAddress2] = useState('');
@@ -56,20 +56,20 @@ const ShippingAddress: FC<Props> = ({
     onShippingChange({
       fname,
       lname,
-      shipping_address_1,
-      shipping_address_2,
+      shippingAddress1,
+      shippingAddress2,
       no,
       city,
       state,
-      postal_code,
+      postalCode,
     });
   };
 
   const handleSave = () => {
-    setSavedAddress1(shipping_address_1);
-    setSavedAddress2(shipping_address_2);
+    setSavedAddress1(shippingAddress1);
+    setSavedAddress2(shippingAddress2);
     setSavedNo(no);
-    setSavedPcode(postal_code);
+    setSavedPcode(postalCode);
     setSavedCity(city);
     setSavedState(state);
   };
@@ -147,7 +147,7 @@ const ShippingAddress: FC<Props> = ({
                 className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
                 placeholder="Address line 1"
                 type="text"
-                value={shipping_address_1}
+                value={shippingAddress1}
                 onChange={(e) => {
                   setShippingAddress1(e.target.value);
                 }}
@@ -178,7 +178,7 @@ const ShippingAddress: FC<Props> = ({
               className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
               placeholder="Address line 2"
               type="text"
-              value={shipping_address_2}
+              value={shippingAddress2}
               onChange={(e) => {
                 setShippingAddress2(e.target.value);
               }}
@@ -272,7 +272,7 @@ const ShippingAddress: FC<Props> = ({
               sizeClass="h-12 px-4 py-3"
               className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
               placeholder="Postal code"
-              value={postal_code}
+              value={postalCode}
               onChange={(e) => {
                 setPcode(e.target.value);
               }}

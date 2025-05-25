@@ -2,6 +2,7 @@
 
 // import type { StaticImageData } from "next/image";
 // import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { BsBag } from 'react-icons/bs';
@@ -22,7 +23,6 @@ import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import Heading from '@/shared/Heading/Heading';
 import { addToCart } from '@/store/cartSlice';
 import type { RootState } from '@/store/store';
-import { useRouter } from 'next/navigation';
 // import { supabase } from "@/libs/supabaseClient";
 
 interface SectionProductHeaderProps {
@@ -91,7 +91,8 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
     if (!session) {
       alert('Login to add to cart!');
       return;
-    } else if (!selectedSize) {
+    }
+    if (!selectedSize) {
       alert('Please select a size before adding to cart!');
       return;
     }
@@ -114,7 +115,8 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
     if (!session) {
       alert('Login to add to cart!');
       return;
-    } else if (!selectedSize) {
+    }
+    if (!selectedSize) {
       alert('Please select a size before adding to cart!');
       return;
     }
@@ -146,7 +148,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
   // // console.log*("price:", price);
   return (
-    <div className="items-stretch justify-between space-y-10 lg:flex lg:space-y-0 mt-5">
+    <div className="mt-5 items-stretch justify-between space-y-10 lg:flex lg:space-y-0">
       <div className="basis-[1/2]">
         <ImageShowCase shots={shots} />
       </div>

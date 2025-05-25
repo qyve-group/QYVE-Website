@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { FaRegBell } from 'react-icons/fa6';
+// import { FaRegBell } from 'react-icons/fa6';
 // import { RiSearch2Line } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,6 +18,7 @@ import type { AppDispatch, RootState } from '@/store/store';
 
 import CartSideBar from '../CartSideBar';
 import MenuBar from './MenuBar';
+import TopNav from './TopNav';
 
 const MainNav = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -41,7 +42,7 @@ const MainNav = () => {
   };
 
   return (
-    <div className="container flex items-center justify-between py-4">
+    <div className="container flex items-center justify-between py-2 bg-black">
       <div className="flex-1 lg:hidden">
         <MenuBar />
       </div>
@@ -55,13 +56,17 @@ const MainNav = () => {
           />
           <RiSearch2Line className="text-2xl text-neutral-500" />
         </div> */}
+        <TopNav />
       </div>
+      {/* <div>
+        <TopNav />
+      </div> */}
 
       <div className="flex flex-1 items-center justify-end gap-5">
-        <div className="relative hidden lg:block">
+        {/* <div className="relative hidden lg:block">
           <span className="absolute -top-1/4 left-3/4 aspect-square w-3 rounded-full bg-red-600" />
           <FaRegBell className="text-2xl" />
-        </div>
+        </div> */}
 
         <div className="flex items-center divide-x divide-neutral-300">
           <CartSideBar />

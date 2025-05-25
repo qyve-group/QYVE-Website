@@ -1,29 +1,31 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 'use client';
 
-import CheckoutButton from '@/components/CheckoutButton';
 import Image from 'next/image';
+// import { Router } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 // import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+
+import CheckoutButton from '@/components/CheckoutButton';
+import { supabase } from '@/libs/supabaseClient';
+import ButtonSecondary from '@/shared/Button/ButtonSecondary';
+import type { CartItem } from '@/store/cartSlice';
+import type { RootState } from '@/store/store';
+
 // import { AiOutlineDelete } from 'react-icons/ai';
 // import { MdStar } from 'react-icons/md';
-
 // import LikeButton from '@/components/LikeButton';
 // import { shoes } from '@/data/content';
 // import type { ProductType } from '@/data/types';
 // import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 // import Input from '@/shared/Input/Input';
 // import InputNumber from '@/shared/InputNumber/InputNumber';
-
 import ContactInfo from './ContactInfo';
 // import PaymentMethod from './PaymentMethod';
 import ShippingAddress from './ShippingAddress';
-import { RootState } from '@/store/store';
-import { useSelector } from 'react-redux';
-import { supabase } from '@/libs/supabaseClient';
-import ButtonSecondary from '@/shared/Button/ButtonSecondary';
-// import { Router } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { CartItem } from '@/store/cartSlice';
 
 // import { product } from 'ramda';
 // import { CartItem } from '@/store/cartSlice';
@@ -46,12 +48,12 @@ type ContactInfoData = {
 type ShippingAddressData = {
   fname: string;
   lname: string;
-  shipping_address_1: string;
-  shipping_address_2: string;
+  shippingAddress1: string;
+  shippingAddress2: string;
   no: string;
   city: string;
   state: string;
-  postal_code: string;
+  postalCode: string;
 };
 
 const CheckoutPage = () => {
@@ -116,6 +118,7 @@ const CheckoutPage = () => {
         const sizeId = product.size_id;
         const productQty = product.quantity;
 
+        // eslint-disable-next-line no-await-in-loop
         const { data: productInfoData } = await supabase
           .from('products_sizes')
           .select('size')
@@ -123,8 +126,9 @@ const CheckoutPage = () => {
           .single();
 
         const productSize = productInfoData?.size;
-        console.log('productSize: ', productSize);
+        // console.log('productSize: ', productSize);
 
+        // eslint-disable-next-line no-await-in-loop
         const { data: productData } = await supabase
           .from('products')
           .select('name, slug, image_cover')
@@ -141,10 +145,13 @@ const CheckoutPage = () => {
           image: productData?.image_cover,
         });
       }
-      const total = fetchedProducts.reduce((acc, item) => acc + item.price, 0);
+      const totalFp = fetchedProducts.reduce(
+        (acc, item) => acc + item.price,
+        0,
+      );
 
       setProducts(fetchedProducts);
-      setTotalPrice(total);
+      setTotalPrice(totalFp);
     };
 
     fetchCartId();
@@ -152,12 +159,12 @@ const CheckoutPage = () => {
 
   const handleContactInfo = (data: ContactInfoData) => {
     setContactInfo(data);
-    console.log('Received from contact info component: ', data);
+    // console.log('Received from contact info component: ', data);
   };
 
   const handleShippingInfo = (shippingData: ShippingAddressData) => {
     setShippingAddress(shippingData);
-    console.log('Received from shipping component: ', shippingData);
+    // console.log('Received from shipping component: ', shippingData);
   };
 
   const renderProduct = (item: CartItem) => {
@@ -169,7 +176,7 @@ const CheckoutPage = () => {
         key={`${userId}_${id}_${product_size}`}
         className="flex py-5 last:pb-0"
       >
-        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl md:h-40 md:w-40">
+        <div className="relative size-24 shrink-0 overflow-hidden rounded-xl md:size-40">
           <Image
             fill
             src={image}
@@ -339,7 +346,7 @@ const CheckoutPage = () => {
 
           <div className="w-full lg:w-[36%]">
             <div className="flex justify-between">
-              <h3 className="text-lg font-semibold py-2">Order summary</h3>
+              <h3 className="py-2 text-lg font-semibold">Order summary</h3>
               <ButtonSecondary
                 sizeClass="py-2 px-4"
                 className="border-2 border-primary text-primary"
@@ -399,11 +406,11 @@ const CheckoutPage = () => {
               orderAddress={{
                 fname: shippingAddress?.fname || '',
                 lname: shippingAddress?.lname || '',
-                shipping_address_1: shippingAddress?.shipping_address_1 || '',
-                shipping_address_2: shippingAddress?.shipping_address_2 || '',
+                shipping_address_1: shippingAddress?.shippingAddress1 || '',
+                shipping_address_2: shippingAddress?.shippingAddress2 || '',
                 no: shippingAddress?.no || '',
                 city: shippingAddress?.city || '',
-                postal_code: shippingAddress?.postal_code || '',
+                postal_code: shippingAddress?.postalCode || '',
                 state: shippingAddress?.state || '',
               }}
               orderContact={{

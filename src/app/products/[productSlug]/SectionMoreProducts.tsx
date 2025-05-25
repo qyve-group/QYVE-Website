@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ProductCard from '@/components/ProductCard';
+import { supabase } from '@/libs/supabaseClient';
 // import { shoes } from '@/data/content';
 import Heading from '@/shared/Heading/Heading';
-import { useEffect, useState } from 'react';
-import { supabase } from '@/libs/supabaseClient';
 
 interface Product {
   id: number;

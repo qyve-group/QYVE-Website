@@ -1,8 +1,8 @@
+import Image from 'next/image';
 import React from 'react';
 
 import { footerBannerData } from '@/data/content';
 import Heading from '@/shared/Heading/Heading';
-import Image from 'next/image';
 
 // import ButtonPrimary from '../Button/ButtonPrimary';
 // import next from 'next';
@@ -26,15 +26,15 @@ const FooterBanner = () => {
 
       {/* Foreground content */}
       <div className="relative z-10">
-        <Heading className="mb-0 mx-auto text-justify w-4/5 md:w-1/2" isCenter>
+        <Heading className="mx-auto mb-0 w-4/5 text-justify md:w-1/2" isCenter>
           {footerBannerData.heading}
         </Heading>
         <br />
-        <p className="mx-auto text-justify w-4/5 md:w-1/2">
+        <p className="mx-auto w-4/5 text-justify md:w-1/2">
           {footerBannerData.description}
         </p>
         <br />
-        <p className="mx-auto text-justify w-4/5 md:w-1/2">
+        <p className="mx-auto w-4/5 text-justify md:w-1/2">
           {footerBannerData.description2}
         </p>
         <div className="mt-10 flex items-center justify-center">

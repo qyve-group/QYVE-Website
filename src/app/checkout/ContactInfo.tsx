@@ -1,15 +1,14 @@
 import type { FC } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { FaRegCircleUser } from 'react-icons/fa6';
+import { useSelector } from 'react-redux';
 
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 // import Checkbox from '@/shared/Checkbox/Checkbox';
 import FormItem from '@/shared/FormItem';
 import Input from '@/shared/Input/Input';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
+import type { RootState } from '@/store/store';
 
 type ContactInfoData = {
   phone: string;

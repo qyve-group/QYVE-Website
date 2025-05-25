@@ -4,10 +4,22 @@ import React from 'react';
 // import SectionBrands from "./SectionBrands";
 import SectionHeader from './SectionHeader';
 import SectionProducts from './SectionProducts';
+import MainBanner from './MainBanner';
+import BrandMessage from './BrandMessage';
+import Values from './Values';
 
 const page = () => {
   return (
     <div>
+      <MainBanner />
+      <div>
+        <BrandMessage />
+      </div>
+
+      <div>
+        <Values />
+      </div>
+
       <div className="my-7">
         <SectionHeader />
       </div>

@@ -8,10 +8,10 @@ import { MdStar } from 'react-icons/md';
 // import { TbBrandPaypal } from 'react-icons/tb';
 import { useDispatch, useSelector } from 'react-redux';
 
+import LikeButton from '@/components/LikeButton';
 // import { fetchCartFromSupabase, saveCartToSupabase } from "@/services/cartService";
 // import CheckOutButton from '@/components/CheckoutButton';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
-import LikeButton from '@/components/LikeButton';
 // import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 // import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import InputNumber from '@/shared/InputNumber/InputNumber';

@@ -2,7 +2,9 @@
 
 // import type { UUID } from 'crypto';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { FaCircle } from 'react-icons/fa6';
 
 // import PromoTag from '@/components/PromoTag';
 // import BootstrapCarousel from "@/components/Carousel";
@@ -17,8 +19,6 @@ import {
 // import { headerSection } from "@/data/content";
 // import shoe_box from "@/images/shoe_box.png";
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
-import { useRouter } from 'next/navigation';
-import { FaCircle } from 'react-icons/fa6';
 
 // import { headerSection } from '@/data/content';
 
@@ -93,8 +93,8 @@ const SectionHeader = () => {
   const router = useRouter();
 
   return (
-    <div className="container relative items-stretch gap-y-5 lg:flex lg:gap-5 lg:gap-y-0 ">
-      <Carousel className="w-3/4 text-center w-full">
+    <div className="relative items-stretch gap-y-5 lg:flex lg:gap-5 lg:gap-y-0 ">
+      <Carousel className=" w-full text-center">
         <CarouselContent
           style={{
             transform: `translateX(-${current * 100}%)`,
@@ -102,21 +102,74 @@ const SectionHeader = () => {
           }}
         >
           {banners.map((banner) => (
+            <CarouselItem
+              key={banner.id}
+              className="relative min-w-full h-[500px] rounded-2xl overflow-hidden"
+            >
+              {/* Background Image */}
+              <Image
+                src={banner.image}
+                alt={banner.title}
+                fill
+                className="object-cover"
+              />
+
+              {/* Dark Overlay for better text contrast */}
+              <div className="absolute inset-0 bg-black bg-opacity-50" />
+
+              {/* Text Content */}
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
+                <h4 className="mb-4 text-lg md:text-2xl font-semibold text-white">
+                  {banner.title}
+                </h4>
+                <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight drop-shadow-md">
+                  {banner.heading}
+                </h1>
+                <p className="mt-6 max-w-2xl text-white text-sm md:text-lg">
+                  {banner.subtitle.split('\n').map((line, idx) => (
+                    <React.Fragment key={idx}>
+                      {line}
+                      <br />
+                    </React.Fragment>
+                  ))}
+                </p>
+                <div className="mt-8">
+                  <ButtonPrimary
+                    sizeClass="px-5 py-3"
+                    onClick={() => router.push(banner.ctalink)}
+                  >
+                    Buy Now
+                  </ButtonPrimary>
+                </div>
+              </div>
+            </CarouselItem>
+          ))}
+          {/* {banners.map((banner) => (
             <CarouselItem key={banner.id} className="min-w-full">
-              <div className="h-full basis-[68%] items-center space-y-10 bg-gray p-5 md:flex md:space-y-0 rounded-t-2xl">
+              <Image
+                src={banner.image}
+                alt={banner.title}
+                fill
+                className="w-full rounded-2xl object-cover"
+              />
+
+              <div className="absolute inset-0 bg-black bg-opacity-50" />
+
+              <div className="h-full basis-[68%] items-center space-y-10 bg-black p-5 md:flex md:space-y-0">
                 <div className="flex basis-[63%] flex-col justify-between">
                   <div>
-                    <h4 className="mb-5 text-xl font-medium text-primary">
+                    <h4 className="mb-5 text-xl font-medium text-white">
                       {banner.title}
                     </h4>
                     <h1
-                      className="text-[50px] font-medium tracking-tight"
+                      className="text-[50px] font-medium tracking-tight text-white"
                       style={{ lineHeight: '1em' }}
                     >
                       {banner.heading}
                     </h1>
-                    <p className="my-10 text-neutral-500">
+                    <p className="my-10 text-white">
                       {banner.subtitle.split('\n').map((line, idx) => (
+                         eslint-disable react/no-array-index-key 
                         <React.Fragment key={idx}>
                           {line}
                           <br />
@@ -132,40 +185,6 @@ const SectionHeader = () => {
                       Buy Now
                     </ButtonPrimary>
                   </div>
-
-                  {/* Arrows & Pagination */}
-                  {/* <div className="mt-10 flex flex-col items-center space-y-3 bg-blue-600"> */}
-                  {/* <div className="mt-10 flex items-center gap-10 rounded-2xl bg-grey w-max mx-auto px-2 bg-yellow-300"> */}
-                  {/* <div className="mt-10 flex items-center gap-10 rounded-2xl bg-grey w-full px-2 bg-yellow-300">
-                    <div>
-                      <button onClick={prevSlide} className="text-lg">
-                        ←
-                      </button>
-                    </div>
-                    <div className="">
-                      <div className="text-black flex gap-2">
-
-                        {banners.map((_, idx) => (
-                          <div
-                            key={`${idx}_${idx + 1}`}
-                            className={`flex items-center rounded transition-all duration-100 ${
-                              current === idx
-                                ? 'font-bold text-md text-primary scale-80'
-                                : 'text-md scale-50 text-gray-800'
-                            }`}
-                          >
-                            
-                            <FaCircle />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div>
-                      <button onClick={nextSlide} className="text-lg">
-                        →
-                      </button>
-                    </div>
-                  </div> */}
                 </div>
                 <div className="basis-[37%]">
                   <Image
@@ -178,7 +197,7 @@ const SectionHeader = () => {
                 </div>
               </div>
             </CarouselItem>
-          ))}
+          ))} */}
           {/* <div className="bg-blue-300">
             <h1>Test</h1>
           </div> */}
@@ -231,15 +250,15 @@ const SectionHeader = () => {
             />
           ))}
         </div> */}
-        <div className="flex items-center gap-10 bg-grey w-full px-2 bg-gray justify-center rounded-b-2xl">
+        <div className="bg-grey flex w-full items-center justify-center gap-10 bg-gray px-2">
           {/* <div className="flex items-center justify-center space-x-4" /> */}
           <div>
-            <button onClick={prevSlide} className="text-lg">
+            <button type="button" onClick={prevSlide} className="text-lg">
               ←
             </button>
           </div>
           <div className="">
-            <div className="text-black flex gap-2">
+            <div className="flex gap-2 text-black">
               {/* {banners.map((_, idx) =>
                           current === idx ? (
                             <div className="font-bold text-lg text-primary scale-100">
@@ -251,12 +270,13 @@ const SectionHeader = () => {
                           
                         )} */}
               {banners.map((_, idx) => (
+                /* eslint-disable react/no-array-index-key */
                 <div
                   key={`${idx}_${idx + 1}`}
                   className={`flex items-center rounded transition-all duration-100 ${
                     current === idx
-                      ? 'font-bold text-md text-primary scale-80'
-                      : 'text-md scale-50 text-gray-800'
+                      ? 'text-md scale-80 font-bold text-primary'
+                      : 'text-md text-gray-800 scale-50'
                   }`}
                 >
                   {/* {idx + 1} */}
@@ -266,7 +286,7 @@ const SectionHeader = () => {
             </div>
           </div>
           <div>
-            <button onClick={nextSlide} className="text-lg">
+            <button type="button" onClick={nextSlide} className="text-lg">
               →
             </button>
           </div>
