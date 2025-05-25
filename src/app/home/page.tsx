@@ -1,11 +1,11 @@
 import React from 'react';
 
+import BrandMessage from './BrandMessage';
+import MainBanner from './MainBanner';
 // import SectionBestDeals from "./SectionBestDeals";
 // import SectionBrands from "./SectionBrands";
 import SectionHeader from './SectionHeader';
 import SectionProducts from './SectionProducts';
-import MainBanner from './MainBanner';
-import BrandMessage from './BrandMessage';
 import Values from './Values';
 
 const page = () => {

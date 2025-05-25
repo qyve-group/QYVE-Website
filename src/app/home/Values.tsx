@@ -51,6 +51,7 @@ const Values = () => {
             text: `We are proudly born in Malaysia and shaped by Southeast
       Asia's unique style of play, climate, and culture.`,
           },
+          /* eslint-disable react/no-array-index-key */
         ].map(({ src, alt, text }, i) => (
           // eslint-disable-next-line react/no-array-index-key
           <div
