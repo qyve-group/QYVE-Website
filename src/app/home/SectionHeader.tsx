@@ -127,6 +127,7 @@ const SectionHeader = () => {
                 </h1>
                 <p className="mt-6 max-w-2xl text-white text-sm md:text-lg">
                   {banner.subtitle.split('\n').map((line, idx) => (
+                    // eslint-disable-next-line react/no-array-index-key
                     <React.Fragment key={idx}>
                       {line}
                       <br />

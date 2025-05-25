@@ -52,6 +52,7 @@ const Values = () => {
       Asia's unique style of play, climate, and culture.`,
           },
         ].map(({ src, alt, text }, i) => (
+          // eslint-disable-next-line react/no-array-index-key
           <div
             key={i}
             className="relative w-full aspect-[3/4] overflow-hidden group"
