@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { ProductType } from '@/data/types';
 
-import LikeButton from './LikeButton';
+// import LikeButton from './LikeButton';
 
 interface ProductCardProps {
   product: ProductType;
@@ -20,15 +20,15 @@ const ProductCard: FC<ProductCardProps> = ({
 }) => {
   return (
     <div
-      className={`transitionEffect relative rounded-2xl p-3 shadow-md ${className}`}
+      className={`transitionEffect relative border shadow-sm p-3 ${className}`}
     >
-      <div className="h-[250px] w-full overflow-hidden rounded-2xl lg:h-[350px] 2xl:h-[400px]">
+      <div className="h-[250px] w-full overflow-hidden lg:h-[350px] 2xl:h-[400px]">
         {/* {product.justIn && (
           <div className="absolute left-6 top-0 rounded-b-lg bg-primary px-3 py-2 text-sm uppercase text-white shadow-md">
             Just In!
           </div>
         )} */}
-        <LikeButton className="absolute right-2 top-2" />
+        {/* <LikeButton className="absolute right-2 top-2" /> */}
         <Link
           className="h-[250px] w-full lg:h-[220px]"
           href={`/products/${product.slug}`}
@@ -42,7 +42,7 @@ const ProductCard: FC<ProductCardProps> = ({
           />
         </Link>
       </div>
-      <div className="mt-3">
+      <div className="mt-3 border-t">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold">{product.name}</h3>
           <p

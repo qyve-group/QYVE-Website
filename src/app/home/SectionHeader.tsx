@@ -35,7 +35,7 @@ import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 const banners = [
   {
     id: 1,
-    image: '/white-socks-ps.jpg',
+    image: '/socks_white_lifestyle.jpg',
     heading: '🔥 QYVE ProGrip Socks',
     title: 'New DROP!',
     subtitle: 'Stay locked in\nNo slips, just goals.',
@@ -104,7 +104,7 @@ const SectionHeader = () => {
           {banners.map((banner) => (
             <CarouselItem
               key={banner.id}
-              className="relative min-w-full h-[500px] rounded-2xl overflow-hidden"
+              className="relative min-w-full h-[500px] overflow-hidden"
             >
               {/* Background Image */}
               <Image
@@ -250,10 +250,17 @@ const SectionHeader = () => {
             />
           ))}
         </div> */}
-        <div className="bg-grey flex w-full items-center justify-center gap-10 bg-gray px-2">
+        <div
+          className="bg-grey flex items-center justify-center gap-10 px-2 opacity-100 absolute top-[90%] left-[50%] z-20 w-max"
+          style={{ transform: 'translateX(-50%)' }}
+        >
           {/* <div className="flex items-center justify-center space-x-4" /> */}
           <div>
-            <button type="button" onClick={prevSlide} className="text-lg">
+            <button
+              type="button"
+              onClick={prevSlide}
+              className="text-3xl text-white"
+            >
               ←
             </button>
           </div>
@@ -276,7 +283,7 @@ const SectionHeader = () => {
                   className={`flex items-center rounded transition-all duration-100 ${
                     current === idx
                       ? 'text-md scale-80 font-bold text-primary'
-                      : 'text-md text-gray-800 scale-50'
+                      : 'text-md text-white scale-50'
                   }`}
                 >
                   {/* {idx + 1} */}
@@ -286,7 +293,11 @@ const SectionHeader = () => {
             </div>
           </div>
           <div>
-            <button type="button" onClick={nextSlide} className="text-lg">
+            <button
+              type="button"
+              onClick={nextSlide}
+              className="text-3xl text-white"
+            >
               →
             </button>
           </div>
