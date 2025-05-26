@@ -79,6 +79,7 @@ const CheckoutPage = () => {
     useState<ShippingAddressData | null>(null);
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const [shippingFee, setShippingFee] = useState(0);
 
   // Calculate subtotal dynamically
   const subtotal = cartItems.reduce(
@@ -87,7 +88,7 @@ const CheckoutPage = () => {
   );
   // const estimatedTaxes = subtotal * 0.1; // Example 10% tax
   // const total = subtotal + estimatedTaxes;
-  const total = subtotal;
+  const total = subtotal + shippingFee;
 
   useEffect(() => {
     // console.log*('Cart updated:', cartItems);
@@ -157,6 +158,17 @@ const CheckoutPage = () => {
     fetchCartId();
   }, []);
 
+  useEffect(() => {
+    if (
+      shippingAddress?.state === 'Sabah' ||
+      shippingAddress?.state === 'Sarawak'
+    ) {
+      setShippingFee(15);
+    } else {
+      setShippingFee(8);
+    }
+  }, [shippingAddress?.state]);
+
   const handleContactInfo = (data: ContactInfoData) => {
     setContactInfo(data);
     // console.log('Received from contact info component: ', data);
@@ -224,64 +236,6 @@ const CheckoutPage = () => {
       </div>
     );
   };
-
-  // const renderProduct = (item: CartDisplay) => {
-  //   console.log('Products: ', products);
-  //   const { id, name, price, product_size, quantity, slug, image } = item;
-
-  //   return (
-  //     <div
-  //       key={`${userId}_${id}_${product_size}`}
-  //       className="flex py-5 last:pb-0"
-  //     >
-  //       <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl md:h-40 md:w-40">
-  //         <Image
-  //           fill
-  //           src={image}
-  //           sizes="(max-width: 768px) 160vw, 96px"
-  //           alt={name}
-  //           className="object-contain object-center"
-  //           priority
-  //         />
-  //         <Link className="absolute inset-0" href={`/products/${slug}`} />
-  //       </div>
-
-  //       <div className="ml-4 flex flex-1 flex-col justify-between">
-  //         <div>
-  //           <div className="flex justify-between ">
-  //             <div>
-  //               <h3 className="font-medium md:text-2xl ">
-  //                 <Link href={`/products/${slug}`}>{name}</Link>
-  //               </h3>
-  //               <span className="my-1 text-sm text-neutral-500">
-  //                 {/* {shoeCategory} */}
-  //                 {product_size} X {quantity}
-  //               </span>
-  //               {/* <div className="flex items-center gap-1">
-  //                 <MdStar className="text-yellow-400" />
-  //                 <span className="text-sm">{rating}</span>
-  //               </div> */}
-  //             </div>
-  //             <span className="font-medium md:text-xl">RM {price}</span>
-  //           </div>
-  //         </div>
-  //         {/* <div className="flex w-full items-end justify-between text-sm">
-  //           <div className="flex items-center gap-3">
-  //             <LikeButton />
-  //             <AiOutlineDelete className="text-2xl" />
-  //           </div>
-  //           <div>
-  //             <InputNumber
-  //               defaultValue={item.quantity}
-  //               id={item.id}
-  //               product_size={item.product_size}
-  //             />
-  //           </div>
-  //         </div> */}
-  //       </div>
-  //     </div>
-  //   );
-  // };
 
   const renderLeft = () => {
     return (
@@ -387,9 +341,9 @@ const CheckoutPage = () => {
                 <span>Subtotal</span>
                 <span className="font-semibold">RM {subtotal.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between py-4">
+              <div className="flex mt-4 justify-between pb-4">
                 <span>Estimated Delivery & Handling</span>
-                <span className="font-semibold">Free</span>
+                <span className="font-semibold">RM {shippingFee}</span>
               </div>
               {/* <div className="flex justify-between py-4">
                 <span>Estimated taxes</span>

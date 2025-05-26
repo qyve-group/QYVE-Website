@@ -37,8 +37,17 @@ const ContactInfo: FC<Props> = ({
   // const [phoneInput, setPhoneInput] = useState('');
   const [savedEmail, setSavedEmail] = useState(userEmail);
   const [savedPhone, setSavedPhone] = useState('-');
+  const [hasSubmit, setHasSubmit] = useState(false);
 
   const handleSubmit = () => {
+    setHasSubmit(true);
+
+    if (hasSubmit) {
+      if (phone === '' || email === '') {
+        return;
+      }
+    }
+
     onDataChange({ phone, email });
   };
 
@@ -84,7 +93,7 @@ const ContactInfo: FC<Props> = ({
             <Input
               rounded="rounded-lg"
               sizeClass="h-12 px-4 py-3"
-              className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+              className={`border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary ${hasSubmit && phone === '' ? 'border-red-500' : ''}`}
               placeholder="+60XXXXXXXXX"
               // defaultValue="+60XXXXXXXXX"
               value={phone}
@@ -101,7 +110,7 @@ const ContactInfo: FC<Props> = ({
               rounded="rounded-lg"
               value={email}
               sizeClass="h-12 px-4 py-3"
-              className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+              className={`border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary ${hasSubmit && email === '' ? 'border-red-500' : ''}`}
               type="email"
               onChange={(e) => {
                 setEmail(e.target.value);

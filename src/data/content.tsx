@@ -654,7 +654,7 @@ export const footerBannerData = {
 
 export const footerData = {
   description:
-    'Founded in 2024, QYVE exists to elevate the standards of futsal by prioritizing performance, innovation, and community—bringing players together through a shared passion for the game',
+    "Found in 2024, QYVE's mission is to elevate the standards of sports in the region by prioritizing performance, innovation and the community - bringing players together through a shared passion of the game.",
   footerLinks: [
     {
       title: 'Main Pages',

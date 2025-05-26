@@ -51,8 +51,26 @@ const ShippingAddress: FC<Props> = ({
   const [savedPcode, setSavedPcode] = useState('');
   const [savedCity, setSavedCity] = useState('');
   const [savedState, setSavedState] = useState('');
+  const [hasSubmit, setHasSubmit] = useState(false);
 
   const handleSubmit = () => {
+    setHasSubmit(true);
+
+    if (hasSubmit) {
+      if (
+        fname === '' ||
+        lname === '' ||
+        shippingAddress1 === '' ||
+        shippingAddress2 === '' ||
+        no === '' ||
+        city === '' ||
+        state === '' ||
+        postalCode === ''
+      ) {
+        return;
+      }
+    }
+
     onShippingChange({
       fname,
       lname,
@@ -112,7 +130,7 @@ const ShippingAddress: FC<Props> = ({
               <Input
                 rounded="rounded-lg"
                 sizeClass="h-12 px-4 py-3"
-                className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+                className={`border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary ${hasSubmit && fname === '' ? 'border-red-500' : ''}`}
                 placeholder="First name"
                 value={fname}
                 onChange={(e) => {
@@ -126,7 +144,7 @@ const ShippingAddress: FC<Props> = ({
               <Input
                 rounded="rounded-lg"
                 sizeClass="h-12 px-4 py-3"
-                className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+                className={`border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary ${hasSubmit && lname === '' ? 'border-red-500' : ''}`}
                 placeholder="Last name"
                 value={lname}
                 onChange={(e) => {
@@ -144,7 +162,7 @@ const ShippingAddress: FC<Props> = ({
               <Input
                 rounded="rounded-lg"
                 sizeClass="h-12 px-4 py-3"
-                className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+                className={`border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary ${hasSubmit && shippingAddress1 === '' ? 'border-red-500' : ''}`}
                 placeholder="Address line 1"
                 type="text"
                 value={shippingAddress1}
@@ -160,7 +178,7 @@ const ShippingAddress: FC<Props> = ({
               <Input
                 rounded="rounded-lg"
                 sizeClass="h-12 px-4 py-3"
-                className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+                className={`border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary ${hasSubmit && no === '' ? 'border-red-500' : ''}`}
                 placeholder="No., Apt, Suite *"
                 value={no}
                 onChange={(e) => {
@@ -175,7 +193,7 @@ const ShippingAddress: FC<Props> = ({
             <Input
               rounded="rounded-lg"
               sizeClass="h-12 px-4 py-3"
-              className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+              className={`border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary ${hasSubmit && shippingAddress2 === '' ? 'border-red-500' : ''}`}
               placeholder="Address line 2"
               type="text"
               value={shippingAddress2}
@@ -193,7 +211,7 @@ const ShippingAddress: FC<Props> = ({
               <Input
                 rounded="rounded-lg"
                 sizeClass="h-12 px-4 py-3"
-                className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+                className={`border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary ${hasSubmit && city === '' ? 'border-red-500' : ''}`}
                 placeholder="City"
                 value={city}
                 onChange={(e) => {
@@ -229,7 +247,7 @@ const ShippingAddress: FC<Props> = ({
             <FormItem label="State">
               <Select
                 sizeClass="h-12 px-4 py-3"
-                className="rounded-lg border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+                className={`border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary ${hasSubmit && state === '' ? 'border-red-500' : ''}`}
                 // defaultValue="-"
                 value={state}
                 // value={state}
@@ -270,7 +288,7 @@ const ShippingAddress: FC<Props> = ({
             <Input
               rounded="rounded-lg"
               sizeClass="h-12 px-4 py-3"
-              className="border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+              className={`border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary ${hasSubmit && postalCode === '' ? 'border-red-500' : ''}`}
               placeholder="Postal code"
               value={postalCode}
               onChange={(e) => {

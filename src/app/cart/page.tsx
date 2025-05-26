@@ -4,11 +4,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { MdStar } from 'react-icons/md';
+// import { MdStar } from 'react-icons/md';
 // import { TbBrandPaypal } from 'react-icons/tb';
 import { useDispatch, useSelector } from 'react-redux';
 
-import LikeButton from '@/components/LikeButton';
+// import LikeButton from '@/components/LikeButton';
 // import { fetchCartFromSupabase, saveCartToSupabase } from "@/services/cartService";
 // import CheckOutButton from '@/components/CheckoutButton';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
@@ -80,39 +80,58 @@ const CartPage = () => {
                   </div>
 
                   <div className="ml-4 flex flex-1 flex-col justify-between">
-                    <div className="flex justify-between">
+                    <div className="flex flex-col justify-between">
                       <div>
                         <h3 className="font-medium md:text-2xl">
-                          <Link href={`/products/${item.id}`}>{item.name}</Link>
+                          <Link href={`/products/${item.name}`}>
+                            {item.name}
+                          </Link>
                         </h3>
-                        <span className="my-1 text-sm text-neutral-500">
+                        {/* <span className="my-1 text-sm text-neutral-500">
                           Category
-                        </span>
-                        <div className="flex items-center gap-1">
+                        </span> */}
+                        {/* <div className="flex items-center gap-1">
                           <MdStar className="text-yellow-400" />
                           <span className="text-sm">4.5</span>
-                        </div>
+                        </div> */}
                       </div>
-                      <span className="font-medium md:text-xl">
-                        RM {item.price}
-                      </span>
+                      <div>
+                        <span className="font-medium md:text-xl">
+                          RM {item.price}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="flex w-full items-end justify-between text-sm">
+                  {/* <div className="flex w-full items-end text-sm">
                     <div className="flex items-center gap-3">
-                      <LikeButton />
                       <AiOutlineDelete
                         className="cursor-pointer text-2xl"
                         onClick={() => handleRemove(item.id, item.product_size)}
                       />
+                      <div>
+                        <InputNumber
+                          defaultValue={item.quantity}
+                          id={item.id}
+                          product_size={item.product_size}
+                        />
+                      </div>
                     </div>
-                    <div>
-                      <InputNumber
-                        defaultValue={item.quantity}
-                        id={item.id}
-                        product_size={item.product_size}
+                  </div> */}
+                  <div className="flex w-full items-end justify-end text-sm">
+                    <div className="flex flex-row items-center gap-3">
+                      {/* <LikeButton /> */}
+                      <AiOutlineDelete
+                        className="cursor-pointer text-2xl"
+                        onClick={() => handleRemove(item.id, item.product_size)}
                       />
+                      <div>
+                        <InputNumber
+                          defaultValue={item.quantity}
+                          id={item.id}
+                          product_size={item.product_size}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -131,8 +150,8 @@ const CartPage = () => {
                     </span>
                   </div>
                   <div className="flex justify-between py-4">
-                    <span>Estimated Delivery & Handling</span>
-                    <span className="font-semibold">Free</span>
+                    <span>Shipping and taxes calculated at checkout.</span>
+                    {/* <span className="font-semibold">Free</span> */}
                   </div>
                   {/* <div className="flex justify-between py-4">
                     <span>Estimated Taxes</span>

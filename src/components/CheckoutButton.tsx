@@ -40,9 +40,23 @@ export default function CheckoutButton({
   const userId = useSelector((state: RootState) => state.auth.user?.id);
 
   const [loading, setLoading] = useState(false);
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
+
+  const hasEmptyAddress = Object.values(orderAddress).some(
+    (val) => val === null || val === '' || val === undefined,
+  );
+
+  const hasEmptyContact = Object.values(orderContact).some(
+    (val) => val === null || val === '' || val === undefined,
+  );
 
   const handleCheckout = async () => {
     // console.log * 'Checkout button clicked';
+    setHasAttemptedSubmit(true);
+
+    if (hasEmptyAddress || hasEmptyContact) {
+      return;
+    }
 
     if (!stripePromise) {
       throw new Error('Stripe is not initialized.');
@@ -75,12 +89,19 @@ export default function CheckoutButton({
   };
 
   return (
-    <ButtonPrimary
-      className="mt-8 w-full"
-      onClick={handleCheckout}
-      disabled={loading}
-    >
-      {loading ? 'Processing...' : 'Pay Now'}
-    </ButtonPrimary>
+    <>
+      <ButtonPrimary
+        className="mt-8 w-full"
+        onClick={handleCheckout}
+        disabled={loading}
+      >
+        {loading ? 'Processing...' : 'Pay Now'}
+      </ButtonPrimary>
+      {hasAttemptedSubmit && (hasEmptyAddress || hasEmptyContact) && (
+        <div className="text-red-500">
+          Please fill in the missing information
+        </div>
+      )}
+    </>
   );
 }
