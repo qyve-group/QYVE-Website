@@ -91,6 +91,35 @@ const CheckoutPage = () => {
   const total = subtotal + shippingFee;
 
   useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('api/shipment/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bulk: [
+            {
+              pick_code: '47400',
+              pick_state: 'Selangor',
+              pick_country: 'MY',
+              send_code: `${shippingAddress?.postalCode}`,
+              send_state: `${shippingAddress?.state}`,
+              send_country: 'MY',
+              weight: '1',
+            },
+            {},
+          ],
+        }),
+      });
+
+      const data = response.json();
+
+      console.log('Checking rate: ', data);
+    };
+
+    fetchData();
+  }, [shippingAddress]);
+
+  useEffect(() => {
     // console.log*('Cart updated:', cartItems);
   }, [cartItems]);
 
