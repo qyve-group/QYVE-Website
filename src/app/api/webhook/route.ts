@@ -4,6 +4,7 @@ import Stripe from 'stripe';
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 import { supabase } from '@/libs/supabaseClient';
+import { Phone } from 'lucide-react';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -277,8 +278,98 @@ export async function POST(req: Request) {
       // console.log*(`✅ Cart items cleared for cart ID: ${cartId}`);
     }
 
+    // await fetch('/api/shipment/', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({
+    //     action: 'makeOrder',
+    //     bulk: [
+    //       {
+    //         weight: 1,
+    //         content: 'shoe',
+    //         amount: totalPrice,
+    //         serviceId: 'EP-CS08H', //servId,
+    //         pick_point: 'EP-CB0ZU3', //dropOffPoint,
+    //         pick_name: 'QYVE',
+    //         pick_contact: '01234567891',
+    //         pick_addr1: '16, Lorong Dahlia, PJU 6A',
+    //         pick_city: 'Petaling Jaya',
+    //         pick_state: 'Selangor',
+    //         pick_code: '47400',
+    //         pick_country: 'Malaysia',
+    //         // send_point:
+    //         send_name: orderAddress.fname,
+    //         send_contact: contactInfo.phone,
+    //         send_addr1: orderAddress.shipping_address_1,
+    //         send_city: orderAddress.city,
+    //         send_state: orderAddress.state,
+    //         send_code: orderAddress.postal_code,
+    //         send_country: 'Malaysia',
+    //         collect_date: '', //YYYY-MM-DD
+    //         sms: '0', //true/false
+    //         send_email: contactInfo.email,
+    //       },
+    //     ],
+    //   }),
+    // });
+
+    //https://api.telegram.org/bot7714034948:AAG_oIFL386bn5hRfIDMXY76kbNpyGLoiqI/sendMessage?chat_id=782540400&text=New+paid+order%21%0AOrder+ID+98765%0ACustomer%3A+Alice+Tan%0AEmail%3A+alice.tan%40example.com%0APhone+number%3A+0123456789%0A%0AAddress%3A+45+Jalan+Bunga+Raya%2C+Kuala+Lumpur%2C+Wilayah+Persekutuan%2C+50450
+
+    await fetch(
+      `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: process.env.CHAT_ID,
+          text: `New paid order!\nOrder ID ${orderId}\nCustomer: ${orderAddress.first_name} ${orderAddress.last_name}\n
+          Email: ${contactInfo.email}\nPhone number: ${contactInfo.phone}\n\n
+          Address: ${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}`,
+        }),
+      },
+    );
+
     // console.log*('✅ Payment Successful:', session);
     // console.log('order address: ', orderAddress);
+
+    // const response = await fetch('/api/shipment/', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({
+    //     action: 'makeOrder',
+    //     bulk: [
+    //       {
+    //         weight: 1,
+    //         content: 'shoe',
+    //         amount: totalPrice,
+    //         serviceId: 'EP-CS0W', //servId,
+    //         pick_point: '', //dropOffPoint,
+    //         pick_name: 'QYVE',
+    //         pick_contact: '01234567891',
+    //         pick_addr1: '16, Lorong Dahlia, PJU 6A',
+    //         pick_city: 'Petaling Jaya',
+    //         pick_state: 'Selangor',
+    //         pick_code: '47400',
+    //         pick_country: 'Malaysia',
+    //         // send_point:
+    //         send_name: orderAddress.fname,
+    //         send_contact: contactInfo.phone,
+    //         send_addr1: orderAddress.shipping_address_1,
+    //         send_city: orderAddress.city,
+    //         send_state: orderAddress.state,
+    //         send_code: orderAddress.postal_code,
+    //         send_country: 'Malaysia',
+    //         collect_date: '2025-06-07', //YYYY-MM-DD
+    //         sms: '0', //true/false
+    //         send_email: contactInfo.email,
+    //       },
+    //     ],
+    //   }),
+    // });
+
+    // const data = await response.json();
+
+    // return NextResponse.json(data);
   }
 
   return NextResponse.json({ received: true });

@@ -111,14 +111,14 @@ const MainNav = () => {
               <div className="absolute right-0 z-10 mt-2 w-48 overflow-hidden rounded-lg bg-primary text-white shadow-lg">
                 {auth.loading !== true ? (
                   <>
-                    <Link
+                    {/* <Link
                       href="/account"
                       className="text-gray-700 hover:bg-gray-100 block px-4 py-2"
                     >
                       Profile
-                    </Link>
+                    </Link> */}
                     <Link
-                      href="/orders"
+                      href="/my-orders"
                       className="text-gray-700 hover:bg-gray-100 block px-4 py-2"
                     >
                       Orders

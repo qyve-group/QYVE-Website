@@ -53,7 +53,6 @@ export async function POST(req: Request) {
         user_id: userId ?? 'unknown user',
         order_address: JSON.stringify(orderAddress),
         order_contact: JSON.stringify(orderContact),
-        order_id: '2222222',
       },
     });
 

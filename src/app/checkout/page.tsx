@@ -91,29 +91,49 @@ const CheckoutPage = () => {
   const total = subtotal + shippingFee;
 
   useEffect(() => {
+    // if (shippingAddress == null) {
+    //   return;
+    // }
+
     const fetchData = async () => {
-      const response = await fetch('api/shipment/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          bulk: [
-            {
-              pick_code: '47400',
-              pick_state: 'Selangor',
-              pick_country: 'MY',
-              send_code: `${shippingAddress?.postalCode}`,
-              send_state: `${shippingAddress?.state}`,
-              send_country: 'MY',
-              weight: '1',
-            },
-            {},
-          ],
-        }),
-      });
+      try {
+        const response = await fetch('/api/shipment/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'checkRates',
+            bulk: [
+              {
+                pick_code: '47400',
+                pick_state: 'Selangor',
+                pick_country: 'MY',
+                send_code: `${shippingAddress?.postalCode}`,
+                send_state: `${shippingAddress?.state}`,
+                // send_code: `53201`,
+                // send_state: `Johor`,
+                send_country: 'MY',
+                weight: '1',
+              },
+            ],
+          }),
+        });
 
-      const data = response.json();
+        console.log('Response status:', response.status);
 
-      console.log('Checking rate: ', data);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        console.log('Checking rate: ', data);
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error('Failed to fetch shipping rates:', error.message);
+        } else {
+          console.error('Unknown error:', error);
+        }
+      }
     };
 
     fetchData();

@@ -8,7 +8,8 @@ import Link from 'next/link';
 import React, { Fragment, useEffect, useState } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { FaBagShopping } from 'react-icons/fa6';
-import { MdClose, MdStar } from 'react-icons/md';
+import { MdClose } from 'react-icons/md';
+// import { MdClose, MdStar } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { saveCartAfterRemove } from '@/services/cartService';
@@ -21,7 +22,7 @@ import { removeFromCart } from '@/store/cartSlice'; // Make sure this action exi
 import type { RootState } from '@/store/store';
 import { debounce } from '@/utils/debounce';
 
-import LikeButton from './LikeButton';
+// import LikeButton from './LikeButton';
 // import { store } from '@/store/store';
 
 const debouncedSaveCartAfterRemove = debounce(saveCartAfterRemove, 1000); // 1-second delay
@@ -85,18 +86,18 @@ const CartSideBar: React.FC = () => {
                 <span className="text-sm text-neutral-500">
                   Size: {product_size}
                 </span>
-                <div className="flex items-center gap-1">
+                {/* <div className="flex items-center gap-1">
                   <MdStar className="text-yellow-400" />
-                </div>
+                </div> */}
               </div>
               <span className="font-medium">RM{price}</span>
             </div>
           </div>
 
           {/* Actions: Like, Delete, Quantity */}
-          <div className="flex w-full items-end justify-between text-sm">
+          <div className="flex w-full items-center justify-between text-sm">
             <div className="flex items-center gap-3">
-              <LikeButton />
+              {/* <LikeButton /> */}
               <AiOutlineDelete
                 className="cursor-pointer text-2xl"
                 onClick={() => {

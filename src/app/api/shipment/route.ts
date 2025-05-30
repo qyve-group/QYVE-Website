@@ -1,6 +1,7 @@
 // import { json } from 'stream/consumers';
+import { NextResponse } from 'next/server';
 
-const baseUrl = 'http://demo.connect.easyparcel.my/';
+const baseUrl = 'http://demo.connect.easyparcel.my/?ac=';
 
 // export async function GET() {
 //   const response = await fetch(baseUrl, {
@@ -28,18 +29,78 @@ const baseUrl = 'http://demo.connect.easyparcel.my/';
 // })
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  try {
+    const body = await req.json();
 
-  const additionalBody = { api: process.env.EASYPARCEL_KEY, ...body };
+    // console.log('payload: ', body);
 
-  const response = await fetch(baseUrl + '?ac=EPRateCheckingBulk', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(additionalBody),
-  });
+    switch (body.action) {
+      case 'checkRates': {
+        const newBody = JSON.stringify({
+          api: process.env.EASYPARCEL_KEY,
+          bulk: body.bulk,
+        });
 
-  const data = await response.json();
-  return Response.json(data);
+        const response = await fetch(`${baseUrl}EPRateCheckingBulk`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: newBody,
+        });
+
+        if (!response.ok) {
+          throw new Error(`External API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        return NextResponse.json(data);
+      }
+
+      default:
+        return NextResponse.json({ message: 'Default action' });
+    }
+  } catch (error) {
+    console.error('API route error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
+  }
+
+  // switch (body.action) {
+  //   case 'checkRates': {
+  //     const newBody = JSON.stringify({
+  //       api: process.env.EASYPARCEL_KEY,
+  //       bulk: body.bulk,
+  //     });
+
+  //     const response = await fetch(baseUrl, {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: newBody,
+  //     });
+
+  //     const data = await response.json();
+
+  //     return NextResponse.json(data);
+  //   }
+
+  //   default: {
+  //     return NextResponse.json({ message: 'Default action' });
+  //   }
+
+  // }
+
+  // const additionalBody = { api: process.env.EASYPARCEL_KEY, ...body };
+
+  // const response = await fetch(baseUrl + '?ac=EPRateCheckingBulk', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify(additionalBody),
+  // });
+
+  // const data = await response.json();
+  // return Response.json(data);
 }
