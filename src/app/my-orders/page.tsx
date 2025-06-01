@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle, CreditCard, Package, Truck } from 'lucide-react';
+// import { CheckCircle, CreditCard, Package, Truck } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 // import { CheckCircle, Truck, Package, Star, CreditCard } from "lucide-react";
@@ -17,33 +17,33 @@ import Loading from '../loading';
 
 // export default function MyOrders() {
 const ShippingProgress = () => {
-  const steps = [
-    {
-      icon: <Package size={32} />,
-      label: 'Order Placed',
-      date: 'Mar 25, 2025',
-      id: 1,
-    },
-    {
-      icon: <CreditCard size={32} />,
-      label: 'Paid',
-      date: 'Mar 26, 2025',
-      id: 2,
-    },
-    {
-      icon: <Truck size={32} />,
-      label: 'Shipped Out',
-      date: 'Mar 27, 2025',
-      id: 3,
-    },
-    {
-      icon: <CheckCircle size={32} />,
-      label: 'Order Received',
-      date: 'Mar 30, 2025',
-      id: 4,
-    },
-    // { icon: <Star size={32} />, label: "To Rate", date: null },
-  ];
+  // const steps = [
+  //   {
+  //     icon: <Package size={32} />,
+  //     label: 'Order Placed',
+  //     date: 'Mar 25, 2025',
+  //     id: 1,
+  //   },
+  //   {
+  //     icon: <CreditCard size={32} />,
+  //     label: 'Paid',
+  //     date: 'Mar 26, 2025',
+  //     id: 2,
+  //   },
+  //   {
+  //     icon: <Truck size={32} />,
+  //     label: 'Shipped Out',
+  //     date: 'Mar 27, 2025',
+  //     id: 3,
+  //   },
+  //   {
+  //     icon: <CheckCircle size={32} />,
+  //     label: 'Order Received',
+  //     date: 'Mar 30, 2025',
+  //     id: 4,
+  //   },
+  //   // { icon: <Star size={32} />, label: "To Rate", date: null },
+  // ];
 
   //   export interface CartItem {
   //     id: number; // product_id

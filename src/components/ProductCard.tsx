@@ -37,13 +37,13 @@ const ProductCard: FC<ProductCardProps> = ({
             src={product.image_cover}
             alt={`${product.name} cover photo`}
             className="size-full object-cover object-bottom"
-            width={400}
-            height={400}
+            width={200}
+            height={200}
           />
         </Link>
       </div>
       <div className="mt-3 border-t">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-3">
           <h3 className="font-semibold">{product.name}</h3>
           <p
             className={`text-neutral-500 ${

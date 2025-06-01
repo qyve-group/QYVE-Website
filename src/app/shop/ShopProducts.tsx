@@ -22,7 +22,7 @@ interface Product {
   image_cover: string;
 }
 
-const SectionProducts = () => {
+const ShopProducts = () => {
   // console.log*('Supabase client initialized:', supabase);
 
   const [products, setProducts] = useState<Product[]>();
@@ -48,22 +48,21 @@ const SectionProducts = () => {
     <div className="container">
       <Heading isCenter isMain desc={productsSection.description}>
         <div className="font-myFont italic text-4xl mt-8">
-          {productsSection.heading}
+          {/* {productsSection.heading} */}
+          Products
         </div>
       </Heading>
       {/* <Filter /> */}
 
       <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
         {products && products.length > 0 ? (
-          products
-            .slice(0, 3)
-            .map((product) => (
-              <ProductCard
-                key={product.name}
-                product={product}
-                className="border-neutral-300 rounded-2xl"
-              />
-            ))
+          products.map((product) => (
+            <ProductCard
+              key={product.name}
+              product={product}
+              className="border-neutral-300 rounded-2xl"
+            />
+          ))
         ) : (
           <p>Loading</p>
         )}
@@ -77,11 +76,11 @@ const SectionProducts = () => {
         ))} */}
       </div>
 
-      <div className="mt-8 flex items-center justify-center">
+      {/* <div className="mt-8 flex items-center justify-center">
         <ButtonPrimary>Explore more</ButtonPrimary>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default SectionProducts;
+export default ShopProducts;

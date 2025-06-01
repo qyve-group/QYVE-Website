@@ -42,25 +42,25 @@ import type { BlogType } from './types';
 
 export const topNavLinks: NavItemType[] = [
   {
-    id: 'ee46t',
-    name: 'Home',
-    href: '/home',
+    id: 'eeshop',
+    name: 'Shop',
+    href: '/shop',
   },
   {
     id: 'eerrrt',
     name: 'Blog',
     href: '/blog',
   },
-  {
-    id: 'eexct',
-    name: 'Collections',
-    href: '/products',
-  },
-  {
-    id: 'h6ii8g',
-    name: 'Contact',
-    href: '/contact',
-  },
+  // {
+  //   id: 'eexct',
+  //   name: 'Collections',
+  //   href: '/products',
+  // },
+  // {
+  //   id: 'h6ii8g',
+  //   name: 'Contact',
+  //   href: '/contact',
+  // },
   {
     id: 'h678ty',
     name: 'FAQ',
@@ -587,7 +587,7 @@ export const shoes = [
 ];
 
 export const productsSection = {
-  heading: 'Gear Up with Qyve',
+  heading: 'Featured Products',
   description:
     'Born on the court. Built for performance and style. Designed in Malaysia.',
 };
@@ -644,7 +644,7 @@ export const brandsSection = {
 };
 
 export const footerBannerData = {
-  heading: 'Empowering Trust Through Every Step on the Court ',
+  heading: 'EMPOWERING TRUST THRUGH EVERY STEP ON THE COURT',
   description:
     'At QYVE, we believe that true performance begins with trust — trust in your gear, trust in your team, and trust in the community that supports you. Our mission is to bridge the gap between athletes and innovation by delivering futsal products designed with precision, honesty, and a deep understanding of the game.',
 

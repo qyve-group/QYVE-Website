@@ -16,10 +16,19 @@ module.exports = {
       '6xl': '4rem',
     },
     extend: {
+      fontFamily: {
+        myFont: ['MyFont', 'sans-serif'],
+        myFontLight: ['MyFontLight2', 'sans-serif'],
+        myFontSS: ['MyFontSS', 'sans-serif'],
+        myFontSSBook: ['MyFontSSBook', 'sans-serif'],
+        myFontEmOne: ['MyFontEmOne', 'sans-serif'],
+      },
       colors: {
         primary: {
           // DEFAULT: 'hsl(var(--primary))',
-          DEFAULT: 'hsl(96, 99%, 36%)',
+          // DEFAULT: 'hsl(96, 99%, 36%)',
+          DEFAULT: 'hsl(85, 88%, 70%)',
+
           // DEFAULT: '#0BDA51',
           // foreground: '#0BDA51'
           foreground: 'hsl(var(--primary-foreground))',

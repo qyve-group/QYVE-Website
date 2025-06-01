@@ -15,9 +15,9 @@ const Logo: FC<LogoProps> = ({ className = 'hidden' }) => {
         strokeWidth="0"
         viewBox="0 0 600 400"
         // className="w-16 h-16  text-primary"
-        className="mt-1 text-white"
-        height="40"
-        width="40"
+        className="mt-1 text-black"
+        height="60"
+        width="60"
         xmlns="http:// www.w3.org/2000/svg"
       >
         <path

@@ -8,7 +8,7 @@ export interface HeaderProps {}
 
 const Header: FC<HeaderProps> = () => {
   return (
-    <div className="nc-Header sticky inset-x-0 top-0 z-50 w-full bg-black">
+    <div className="nc-Header sticky inset-x-0 top-0 z-50 w-full bg-white">
       {/* <TopNav /> */}
       <MainNav />
       {/* <TopNav /> */}

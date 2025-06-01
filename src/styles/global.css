@@ -4,6 +4,71 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'MyFont';
+  src: url('/fonts/TT Lakes Neue Trial Extended Black Italic.ttf')
+    format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'MyFont';
+  src: url('/fonts/TT Lakes Neue Trial Extended Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MyFontLight';
+  src: url('/fonts/TT Lakes Neue Trial Extended Medium Italic.ttf')
+    format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'MyFontLight';
+  src: url('/fonts/TT Lakes Neue Trial Extended Medium.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MyFontLight2';
+  src: url('/fonts/TT Hoves Pro Trial Italic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'MyFontLight2';
+  src: url('/fonts/TT Hoves Pro Trial Regular.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MyFontSS';
+  src: url('/fonts/Stevie Sans Medium.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MyFontSSbook';
+  src: url('/fonts/Stevie Sans Book.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MyFontEmOne';
+  src: url('/fonts/EmOne-SemiBold.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
 * {
   font-family: 'Poppins', sans-serif;
 }

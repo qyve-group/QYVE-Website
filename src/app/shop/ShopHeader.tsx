@@ -54,7 +54,7 @@ const banners = [
   },
 ];
 
-const SectionHeader = () => {
+const ShopHeader = () => {
   const [current, setCurrent] = useState(0);
   // const intervalTime = 5000;
   // const slides = [0, 1, 2]; // Can be objects if dynamic
@@ -311,4 +311,4 @@ const SectionHeader = () => {
   );
 };
 
-export default SectionHeader;
+export default ShopHeader;

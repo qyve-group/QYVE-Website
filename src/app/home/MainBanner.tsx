@@ -23,13 +23,18 @@ const MainBanner = () => {
 
       <div className="absolute inset-0 bg-black bg-opacity-50 z-10" />
 
-      <div className="absolute flex inset-0 z-20 items-center justify-center">
-        <h1
-          data-aos="fade-up"
-          className="text-white text-xl md:text-2xl lg:text-4xl font-bold"
-        >
-          Welcome to Your Journey
-        </h1>
+      <div
+        // data-aos="fade-up"
+        className="absolute flex flex-col inset-0 z-20 font-bold left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-[50%]  items-center justify-center"
+      >
+        <div className="text-center">
+          <h1 className="font-myFont italic text-white text-3xl md:text-4xl lg:text-6xl">
+            WELCOME TO YOUR JOURNEY
+          </h1>
+          <p className="font-myFontLight italic text-white text-lg md:text-xl  lg:text-2xl">
+            #OwnYourJourney
+          </p>
+        </div>
       </div>
     </div>
   );

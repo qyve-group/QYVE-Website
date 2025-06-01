@@ -18,7 +18,7 @@ const Heading: React.FC<HeadingProps> = ({
   children,
   desc = '',
   title = '',
-  className = 'mb-10',
+  className = 'font-myFont italic d',
   isCenter = false,
   isMain,
   hasNextPrev,
@@ -34,21 +34,21 @@ const Heading: React.FC<HeadingProps> = ({
         }
       >
         {title && (
-          <p className="text-2xl font-medium uppercase text-primary">{title}</p>
+          <p className="text-md font-medium uppercase text-primary">{title}</p>
         )}
         <h2
           style={{ lineHeight: '1.2em' }}
           className={`${
-            isMain ? 'lineHeight text-3xl lg:text-[55px]' : 'text-3xl'
-          } mb-5 font-medium`}
+            isMain ? 'lineHeight text-xl lg:text-[55px]' : 'text-3xl'
+          }  font-medium`}
           {...args}
         >
           {children}
         </h2>
-        {desc && <p className="mt-5 text-neutral-500">{desc}</p>}
+        {/* {desc && <p className="mt-5 font-myFont italic">{desc}</p>} */}
       </div>
       {hasNextPrev && !isCenter && (
-        <div className="mt-4 flex shrink-0 justify-end sm:ml-2 sm:mt-0">
+        <div className="4 flex shrink-0 justify-end sm:ml-2 sm:mt-0">
           <NextPrev {...args} />
         </div>
       )}

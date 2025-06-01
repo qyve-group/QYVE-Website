@@ -9,7 +9,8 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Loading from '@/app/loading';
-import avatar from '@/images/avatar.png';
+// import avatar from '@/images/avatar.png';
+import { RiAccountCircleFill } from 'react-icons/ri';
 import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
 // import Input from '@/shared/Input/Input';
 import Logo from '@/shared/Logo/Logo';
@@ -42,7 +43,7 @@ const MainNav = () => {
   };
 
   return (
-    <div className="container flex items-center justify-between py-2 bg-black">
+    <div className="container flex items-center justify-between py-2">
       <div className="flex-1 lg:hidden">
         <MenuBar />
       </div>
@@ -89,11 +90,12 @@ const MainNav = () => {
                   className="overflow-hidden bg-gray"
                   size="w-10 h-10"
                 >
-                  <Image
+                  {/* <Image
                     src={avatar}
                     alt="avatar"
                     className="size-full object-cover object-center"
-                  />
+                  /> */}
+                  <RiAccountCircleFill className="size-full object-cover object-center" />
                 </ButtonCircle3>
                 {/* <p>Welcome, {auth.user?.email}</p> */}
               </div>
