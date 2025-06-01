@@ -104,7 +104,7 @@ const ShopHeader = () => {
           {banners.map((banner) => (
             <CarouselItem
               key={banner.id}
-              className="relative min-w-full h-[500px] overflow-hidden"
+              className="relative h-[500px] min-w-full overflow-hidden"
             >
               {/* Background Image */}
               <Image
@@ -118,14 +118,14 @@ const ShopHeader = () => {
               <div className="absolute inset-0 bg-black bg-opacity-50" />
 
               {/* Text Content */}
-              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
-                <h4 className="mb-4 text-lg md:text-2xl font-semibold text-white">
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
+                <h4 className="mb-4 text-lg font-semibold text-white md:text-2xl">
                   {banner.title}
                 </h4>
-                <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight drop-shadow-md">
+                <h1 className="text-3xl font-bold leading-tight text-white drop-shadow-md md:text-5xl">
                   {banner.heading}
                 </h1>
-                <p className="mt-6 max-w-2xl text-white text-sm md:text-lg">
+                <p className="mt-6 max-w-2xl text-sm text-white md:text-lg">
                   {banner.subtitle.split('\n').map((line, idx) => (
                     // eslint-disable-next-line react/no-array-index-key
                     <React.Fragment key={idx}>
@@ -252,7 +252,7 @@ const ShopHeader = () => {
           ))}
         </div> */}
         <div
-          className="bg-grey flex items-center justify-center gap-10 px-2 opacity-100 absolute top-[90%] left-[50%] z-20 w-max"
+          className="bg-grey absolute left-[50%] top-[90%] z-20 flex w-max items-center justify-center gap-10 px-2 opacity-100"
           style={{ transform: 'translateX(-50%)' }}
         >
           {/* <div className="flex items-center justify-center space-x-4" /> */}
@@ -284,7 +284,7 @@ const ShopHeader = () => {
                   className={`flex items-center rounded transition-all duration-100 ${
                     current === idx
                       ? 'text-md scale-80 font-bold text-primary'
-                      : 'text-md text-white scale-50'
+                      : 'text-md scale-50 text-white'
                   }`}
                 >
                   {/* {idx + 1} */}

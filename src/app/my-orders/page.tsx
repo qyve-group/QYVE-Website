@@ -224,17 +224,17 @@ const ShippingProgress = () => {
           orderIds.map((orderId, idx) => (
             <div
               key={orderId}
-              className="rounded-lg bg-white shadow-md p-6 space-y-6 border border-gray-200"
+              className="border-gray-200 space-y-6 rounded-lg border bg-white p-6 shadow-md"
             >
               {/* Order Header */}
               <div className="border-b pb-4">
-                <p className="text-sm font-semibold text-gray-700">
+                <p className="text-gray-700 text-sm font-semibold">
                   Order ID:{' '}
-                  <span className="text-customGray-800 italic">{orderId}</span>
+                  <span className="italic text-customGray-800">{orderId}</span>
                 </p>
-                <p className="text-sm font-semibold text-gray-700 mt-2">
+                <p className="text-gray-700 mt-2 text-sm font-semibold">
                   Tracking Number:{}
-                  <span className="text-customGray-800 italic">
+                  <span className="italic text-customGray-800">
                     {tracking[idx] !== '' ? ` ${tracking[idx]}` : ' Processing'}
                   </span>
                 </p>
@@ -252,23 +252,23 @@ const ShippingProgress = () => {
                       alt={item.name}
                       width={400}
                       height={400}
-                      className="size-16 rounded-md object-cover border"
+                      className="size-16 rounded-md border object-cover"
                     />
 
                     <div className="flex-1">
-                      <p className="font-medium text-gray-800">{item.name}</p>
+                      <p className="text-gray-800 font-medium">{item.name}</p>
                     </div>
 
                     <div className="text-right text-sm">
                       <p className="text-gray-600">Qty: {item.quantity}</p>
-                      <p className="font-bold text-gray-900">RM {item.price}</p>
+                      <p className="text-gray-900 font-bold">RM {item.price}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
               {/* Summary */}
-              <div className="space-y-2 border-t pt-4 text-sm text-gray-700">
+              <div className="text-gray-700 space-y-2 border-t pt-4 text-sm">
                 <div className="flex justify-between font-semibold">
                   <span>Merchandise Subtotal</span>
                   <span>RM {totalPrice[idx]}</span>
@@ -281,7 +281,7 @@ const ShippingProgress = () => {
                   <span>Order Total</span>
                   <span>RM {(totalPrice[idx] ?? 0) + 5}</span>
                 </div>
-                <div className="mt-2 flex justify-between text-xs text-gray-600">
+                <div className="text-gray-600 mt-2 flex justify-between text-xs">
                   <span>Payment Method</span>
                   <span>Credit / Debit Card</span>
                 </div>

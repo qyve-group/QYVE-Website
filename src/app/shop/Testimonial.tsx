@@ -5,12 +5,12 @@ const Testimonial = () => {
     <div>
       <div className="content bg-customGray-300 p-10">
         <div className="flex items-center justify-center">
-          <div className="font-myFont italic text-4xl mb-5">
+          <div className="mb-5 font-myFont text-4xl italic">
             TRIED AND TESTED
           </div>
         </div>
-        <div className="flex flex-col md:flex-row items-stretch justify-center gap-10 mb-10">
-          <div className="flex-1 rounded-2xl bg-white text-center p-4 shadow-lg ">
+        <div className="mb-10 flex flex-col items-stretch justify-center gap-10 md:flex-row">
+          <div className="flex-1 rounded-2xl bg-white p-4 text-center shadow-lg ">
             <div className="flex flex-col gap-5">
               <div className="flex flex-row justify-center">
                 <FaRegStar />
@@ -27,7 +27,7 @@ const Testimonial = () => {
             </div>
           </div>
 
-          <div className="flex-1 rounded-2xl bg-white text-center p-4 shadow-lg ">
+          <div className="flex-1 rounded-2xl bg-white p-4 text-center shadow-lg ">
             <div className="flex flex-col gap-5">
               <div className="flex flex-row justify-center">
                 <FaRegStar />
@@ -44,7 +44,7 @@ const Testimonial = () => {
             </div>
           </div>
 
-          <div className="flex-1 rounded-2xl bg-white text-center p-4 shadow-lg ">
+          <div className="flex-1 rounded-2xl bg-white p-4 text-center shadow-lg ">
             <div className="flex flex-col gap-5">
               <div className="flex flex-row justify-center">
                 <FaRegStar />
@@ -67,8 +67,8 @@ const Testimonial = () => {
             TRIED AND TESTED
           </div>
         </div> */}
-        <div className="flex flex-col md:flex-row items-stretch justify-center gap-10 mb-10">
-          <div className="flex-1 bg-white text-center p-4  ">
+        <div className="mb-10 flex flex-col items-stretch justify-center gap-10 md:flex-row">
+          <div className="flex-1 bg-white p-4 text-center  ">
             <div className="flex flex-col gap-5">
               <div className="flex flex-row justify-center">Sapot Lokal</div>
               <div>Malaysia’s homegrown sports brand, wear it with pride.</div>
@@ -76,7 +76,7 @@ const Testimonial = () => {
             </div>
           </div>
 
-          <div className="flex-1 bg-white text-center p-4 ">
+          <div className="flex-1 bg-white p-4 text-center ">
             <div className="flex flex-col gap-5">
               <div className="flex flex-row justify-center">
                 Performance First
@@ -86,7 +86,7 @@ const Testimonial = () => {
             </div>
           </div>
 
-          <div className="flex-1  bg-white text-center p-4 ">
+          <div className="flex-1  bg-white p-4 text-center ">
             <div className="flex flex-col gap-5">
               <div className="flex flex-row justify-center">
                 Crafted with Care

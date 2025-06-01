@@ -1,16 +1,15 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+// import avatar from '@/images/avatar.png';
+import { RiAccountCircleFill } from 'react-icons/ri';
 // import { FaRegBell } from 'react-icons/fa6';
 // import { RiSearch2Line } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Loading from '@/app/loading';
-// import avatar from '@/images/avatar.png';
-import { RiAccountCircleFill } from 'react-icons/ri';
 import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
 // import Input from '@/shared/Input/Input';
 import Logo from '@/shared/Logo/Logo';

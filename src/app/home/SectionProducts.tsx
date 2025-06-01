@@ -47,7 +47,7 @@ const SectionProducts = () => {
   return (
     <div className="container">
       <Heading isCenter isMain desc={productsSection.description}>
-        <div className="font-myFont italic text-4xl mt-8">
+        <div className="mt-8 font-myFont text-4xl italic">
           {productsSection.heading}
         </div>
       </Heading>
@@ -61,7 +61,7 @@ const SectionProducts = () => {
               <ProductCard
                 key={product.name}
                 product={product}
-                className="border-neutral-300 rounded-2xl"
+                className="rounded-2xl border-neutral-300"
               />
             ))
         ) : (

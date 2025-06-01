@@ -4,7 +4,6 @@ import Stripe from 'stripe';
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 import { supabase } from '@/libs/supabaseClient';
-import { Phone } from 'lucide-react';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -313,7 +312,7 @@ export async function POST(req: Request) {
     //   }),
     // });
 
-    //https://api.telegram.org/bot7714034948:AAG_oIFL386bn5hRfIDMXY76kbNpyGLoiqI/sendMessage?chat_id=-1002524031364&text=New+paid+order%21%0AOrder+ID+98765%0ACustomer%3A+Syafiq+Aqmar%0AEmail%3A+syafiq.aqmar%40example.com%0APhone+number%3A+0123456789%0A%0AAddress%3A+45+Jalan+Bunga+Raya%2C+Kuala+Lumpur%2C+Wilayah+Persekutuan%2C+50450
+    // https://api.telegram.org/bot7714034948:AAG_oIFL386bn5hRfIDMXY76kbNpyGLoiqI/sendMessage?chat_id=-1002524031364&text=New+paid+order%21%0AOrder+ID+98765%0ACustomer%3A+Syafiq+Aqmar%0AEmail%3A+syafiq.aqmar%40example.com%0APhone+number%3A+0123456789%0A%0AAddress%3A+45+Jalan+Bunga+Raya%2C+Kuala+Lumpur%2C+Wilayah+Persekutuan%2C+50450
     await fetch(
       `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
       {

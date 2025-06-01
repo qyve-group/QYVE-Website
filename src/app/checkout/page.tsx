@@ -390,7 +390,7 @@ const CheckoutPage = () => {
                 <span>Subtotal</span>
                 <span className="font-semibold">RM {subtotal.toFixed(2)}</span>
               </div>
-              <div className="flex mt-4 justify-between pb-4">
+              <div className="mt-4 flex justify-between pb-4">
                 <span>Estimated Delivery & Handling</span>
                 <span className="font-semibold">RM {shippingFee}</span>
               </div>

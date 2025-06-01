@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react';
 import ProductCard from '@/components/ProductCard';
 import { productsSection } from '@/data/content';
 import { supabase } from '@/libs/supabaseClient';
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import Heading from '@/shared/Heading/Heading';
 
 interface Product {
@@ -47,7 +46,7 @@ const ShopProducts = () => {
   return (
     <div className="container">
       <Heading isCenter isMain desc={productsSection.description}>
-        <div className="font-myFont italic text-4xl mt-8">
+        <div className="mt-8 font-myFont text-4xl italic">
           {/* {productsSection.heading} */}
           Products
         </div>
@@ -60,7 +59,7 @@ const ShopProducts = () => {
             <ProductCard
               key={product.name}
               product={product}
-              className="border-neutral-300 rounded-2xl"
+              className="rounded-2xl border-neutral-300"
             />
           ))
         ) : (

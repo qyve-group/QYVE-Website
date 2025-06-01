@@ -16,7 +16,7 @@ export interface HeadingProps extends NextPrevProps {
 
 const Heading: React.FC<HeadingProps> = ({
   children,
-  desc = '',
+  // desc = '',
   title = '',
   className = 'font-myFont italic d',
   isCenter = false,

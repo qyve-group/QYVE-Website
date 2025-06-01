@@ -56,16 +56,16 @@ const Values = () => {
           // eslint-disable-next-line react/no-array-index-key
           <div
             key={i}
-            className="relative w-full aspect-[3/4] overflow-hidden group"
+            className="group relative aspect-[3/4] w-full overflow-hidden"
           >
             <Image fill src={src} alt={alt} className="object-cover" />
             <div
               // data-aos="fade-up"
-              className="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-black group-hover:bg-opacity-70 transition-all duration-300"
+              className="absolute inset-0 bg-black bg-opacity-30 transition-all duration-300 group-hover:bg-black group-hover:bg-opacity-70"
             />
             <div
               // data-aos="fade-up"
-              className="absolute inset-0 text-white flex items-center px-4 text-sm sm:text-base opacity-0 group-hover:opacity-100 group-hover:translate-y-[30%] transform transition-all duration-700"
+              className="absolute inset-0 flex items-center px-4 text-sm text-white opacity-0 transition-all duration-700 group-hover:translate-y-[30%] group-hover:opacity-100 sm:text-base"
             >
               <p className="text-shadow-md">{text}</p>
             </div>

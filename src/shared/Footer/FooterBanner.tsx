@@ -10,7 +10,7 @@ import Heading from '@/shared/Heading/Heading';
 const FooterBanner = () => {
   return (
     // <div className="rounded-2xl bg-[url('/bgProducts.jpg')] bg-cover bg-center bg-no-repeat py-16 text-white">
-    <div className="pt-9 text-black bg-black mt-8 rounded-2xl w-3/4 mx-auto pb-10">
+    <div className="mx-auto mt-8 w-3/4 rounded-2xl bg-black pb-10 pt-9 text-black">
       {/* Video Background */}
       {/* <video
         className="absolute inset-0 size-full object-cover"
@@ -27,7 +27,7 @@ const FooterBanner = () => {
       {/* Foreground content */}
       <div className="w-full text-white">
         <Heading
-          className="mb-0 text-justify md:w-3/4 font-myFontEmOne mx-auto"
+          className="mx-auto mb-0 text-justify font-myFontEmOne md:w-3/4"
           isCenter
         >
           {footerBannerData.heading}

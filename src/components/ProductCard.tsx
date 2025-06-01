@@ -20,7 +20,7 @@ const ProductCard: FC<ProductCardProps> = ({
 }) => {
   return (
     <div
-      className={`transitionEffect relative border shadow-sm p-3 ${className}`}
+      className={`transitionEffect relative border p-3 shadow-sm ${className}`}
     >
       <div className="h-[250px] w-full overflow-hidden lg:h-[350px] 2xl:h-[400px]">
         {/* {product.justIn && (
@@ -43,7 +43,7 @@ const ProductCard: FC<ProductCardProps> = ({
         </Link>
       </div>
       <div className="mt-3 border-t">
-        <div className="flex items-center justify-between mt-3">
+        <div className="mt-3 flex items-center justify-between">
           <h3 className="font-semibold">{product.name}</h3>
           <p
             className={`text-neutral-500 ${
