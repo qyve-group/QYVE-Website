@@ -38,7 +38,7 @@ const MainNav = () => {
     setIsOpen(false); // Close dropdown
 
     router.push('/home'); // Redirect after logout
-    setIsLoggingOut(false); // Stop loading (optional, since the page will change)
+    // setIsLoggingOut(false);
   };
 
   return (
@@ -71,32 +71,30 @@ const MainNav = () => {
         <div className="flex items-center divide-x divide-neutral-300">
           <CartSideBar />
           <div
-            role="button"
+            // role="button"
             tabIndex={0}
             className="relative cursor-pointer"
-            onClick={() => {
-              setIsOpen(!isOpen);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                setIsOpen(!isOpen);
-              }
-            }}
+            // onClick={() => {
+            //   setIsOpen(!isOpen);
+            // }}
+            // onKeyDown={(e) => {
+            //   if (e.key === 'Enter' || e.key === ' ') {
+            //     setIsOpen(!isOpen);
+            //   }
+            // }}
           >
             {auth.loading !== true ? (
+              // {auth.user?.id !== null ? (
               <div className="flex items-center gap-2 pl-5">
                 <ButtonCircle3
+                  onClick={() => {
+                    setIsOpen(!isOpen);
+                  }}
                   className="overflow-hidden bg-gray"
                   size="w-10 h-10"
                 >
-                  {/* <Image
-                    src={avatar}
-                    alt="avatar"
-                    className="size-full object-cover object-center"
-                  /> */}
                   <RiAccountCircleFill className="size-full object-cover object-center" />
                 </ButtonCircle3>
-                {/* <p>Welcome, {auth.user?.email}</p> */}
               </div>
             ) : (
               <div className="flex items-center gap-2 pl-5">
@@ -110,34 +108,40 @@ const MainNav = () => {
             )}
             {isOpen && (
               <div className="absolute right-0 z-10 mt-2 w-48 overflow-hidden rounded-lg bg-primary text-white shadow-lg">
-                {auth.loading !== true ? (
+                {/* {auth.loading !== true ? (
                   <>
-                    {/* <Link
-                      href="/account"
-                      className="text-gray-700 hover:bg-gray-100 block px-4 py-2"
-                    >
-                      Profile
-                    </Link> */}
                     <Link
                       href="/my-orders"
-                      className="text-gray-700 hover:bg-gray-100 block px-4 py-2"
+                      className="text-black hover:bg-gray-100 block px-4 py-2"
                     >
                       Orders
                     </Link>
                     <button
                       type="button"
-                      className="text-gray-700 hover:bg-gray-100 block px-4 py-2"
+                      className="text-black hover:bg-gray-100 block px-4 py-2"
                       onClick={handleLogOut}
                       disabled={isLoggingOut}
                     >
                       {isLoggingOut ? 'Logging out...' : 'Logout'}
                     </button>
-
-                    {isLoggingOut && <Loading />}
                   </>
                 ) : (
                   <Loading />
-                )}
+                )} */}
+                <Link
+                  href="/my-orders"
+                  className="text-black hover:bg-gray-100 block px-4 py-2"
+                >
+                  Orders
+                </Link>
+                <button
+                  type="button"
+                  className="text-black hover:bg-gray-100 block px-4 py-2"
+                  onClick={handleLogOut}
+                  disabled={isLoggingOut}
+                >
+                  {isLoggingOut ? 'Logging out...' : 'Logout'}
+                </button>
               </div>
             )}
           </div>

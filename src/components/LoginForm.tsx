@@ -30,11 +30,66 @@ const LoginForm = () => {
     }
   };
 
+  // const randomStr = (len: number) => {
+  //   const arr = new Uint8Array(len);
+  //   window.crypto.getRandomValues(arr);
+  //   return String.fromCharCode(...toCharCodes(arr));
+  // };
+
+  // const toCharCodes = (arr: Uint8Array) => {
+  //   const validChars =
+  //     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  //   return arr.map((x) => validChars.charCodeAt(x % validChars.length));
+  // };
+
+  // const sha256 = (message: string) => {
+  //   const encoder = new TextEncoder();
+  //   const data = encoder.encode(message);
+  //   return window.crypto.subtle.digest('SHA-256', data);
+  // };
+
+  // const bufferToBase64UrlEncoded = (input: ArrayBuffer) => {
+  //   const bytes = new Uint8Array(input);
+  //   return urlEncodeBase64(window.btoa(String.fromCharCode(...bytes)));
+  // };
+
+  // const urlEncodeBase64 = (input: string) => {
+  //   const chars = { '+': '-', '/': '_', '=': '' };
+  //   return input.replace(/[\+\/=]/g, (m) => chars[m as '+' | '/' | '=']);
+  // };
+
+  // const generateStateToken = () => {
+  //   return randomStr(32);
+  // };
+
   const handleGoogleSignIn = async () => {
+    // const codeVerifier = randomStr(32);
+    // const codeChallenge = await sha256base64url(codeVerifier);
+
+    // const shaBuffer = await sha256(codeVerifier);
+    // const encoded = bufferToBase64UrlEncoded(shaBuffer);
+    // const state = generateStateToken();
+
+    // // Store verifier in session or encrypted cookie (not in localStorage)
+    // localStorage.setItem('code_verifier', codeVerifier);
+    // localStorage.setItem('oauth_state', state);
+
+    // window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${new URLSearchParams(
+    //   {
+    //     response_type: 'code',
+    //     client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+    //     redirect_uri: 'http://localhost:3000/auth/callback',
+    //     scope: 'openid email profile',
+    //     code_challenge: encoded,
+    //     code_challenge_method: 'S256',
+    //     state: state,
+    //   },
+    // )}`;
+
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `http:// localhost:3000/home`,
+        redirectTo: `http://localhost:3000/auth/callback`,
       },
     });
     // if (error) // console.error*('Gogole Sign-In error: ', error);
