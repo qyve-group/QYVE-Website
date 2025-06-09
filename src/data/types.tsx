@@ -21,6 +21,7 @@ export type ProductType = {
   slug: string;
   previous_price: number;
   image_cover: string;
+  colors: string[];
 };
 
 export type BlogData = {

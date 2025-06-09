@@ -644,7 +644,7 @@ export const brandsSection = {
 };
 
 export const footerBannerData = {
-  heading: 'EMPOWERING TRUST THRUGH EVERY STEP ON THE COURT',
+  heading: 'EMPOWERING TRUST THROUGH EVERY STEP ON THE COURT',
   description:
     'At QYVE, we believe that true performance begins with trust — trust in your gear, trust in your team, and trust in the community that supports you. Our mission is to bridge the gap between athletes and innovation by delivering futsal products designed with precision, honesty, and a deep understanding of the game.',
 

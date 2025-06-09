@@ -18,6 +18,7 @@ interface Product {
   slug: string;
   previous_price: number;
   image_cover: string;
+  colors: string[];
 }
 
 type SelectedProduct = {
@@ -43,7 +44,7 @@ const SectionMoreProducts = ({ selectedProductName }: SelectedProduct) => {
 
   return (
     <div>
-      <Heading className="mb-0">Explore more products</Heading>
+      <Heading className="mb-4">Explore more products</Heading>
 
       <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
         {products && products.length > 0 ? (
@@ -54,7 +55,7 @@ const SectionMoreProducts = ({ selectedProductName }: SelectedProduct) => {
               <ProductCard
                 key={product.name}
                 product={product}
-                className="border-neutral-300"
+                className="border-neutral-300 rounded-xl"
               />
             ))
         ) : (

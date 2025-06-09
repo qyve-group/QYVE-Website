@@ -51,6 +51,8 @@ module.exports = {
           800: '#404040',
           900: '#202020',
         },
+        pink: { 500: '#ba939e' },
+        beige: { 500: '#d3c5a8' },
         background: 'hsl(var(--background))',
         // background: 'hsl(0, 0%, 0%)',
         foreground: 'hsl(var(--foreground))',

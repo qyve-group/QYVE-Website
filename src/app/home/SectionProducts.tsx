@@ -8,8 +8,8 @@ import { productsSection } from '@/data/content';
 import { supabase } from '@/libs/supabaseClient';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import Heading from '@/shared/Heading/Heading';
-// import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+// import { useRouter } from 'next/navigation';
 
 interface Product {
   id: number;
@@ -22,12 +22,13 @@ interface Product {
   slug: string;
   previous_price: number;
   image_cover: string;
+  colors: string[];
 }
 
 const SectionProducts = () => {
   // console.log*('Supabase client initialized:', supabase);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const [products, setProducts] = useState<Product[]>();
 
@@ -82,14 +83,16 @@ const SectionProducts = () => {
       </div>
 
       <div className="mt-8 flex items-center justify-center">
-        <ButtonPrimary
-          type="button"
-          onClick={() => {
-            router.push('/shop');
-          }}
-        >
-          Explore more
-        </ButtonPrimary>
+        <Link href="/shop">
+          <ButtonPrimary
+            type="button"
+            // onClick={() => {
+            //   router.push('/shop');
+            // }}
+          >
+            Explore more
+          </ButtonPrimary>
+        </Link>
       </div>
     </div>
   );

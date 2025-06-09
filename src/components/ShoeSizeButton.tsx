@@ -25,12 +25,12 @@ const ShoeSizeButton: FC<ShoeSizeButtonProps> = ({
       onClick={() => {
         onSelect(product.size);
       }}
-      className={`relative w-full rounded-xl py-10 font-medium disabled:bg-gray disabled:text-neutral-500 ${
-        isSelected ? 'bg-primary text-white' : 'bg-gray text-black'
+      className={`relative w-full rounded-xl py-10 font-medium disabled:bg-gray disabled:text-customGray-300 ${
+        isSelected ? 'bg-primary text-black' : 'bg-gray text-black'
       }`}
     >
       <FaCheckCircle
-        className={`absolute right-2 top-2 text-white ${
+        className={`absolute right-2 top-2 text-black ${
           isSelected ? 'block' : 'hidden'
         }`}
       />

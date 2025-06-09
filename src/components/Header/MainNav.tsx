@@ -9,7 +9,7 @@ import { RiAccountCircleFill } from 'react-icons/ri';
 // import { RiSearch2Line } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Loading from '@/app/loading';
+// import Loading from '@/app/loading';
 import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
 // import Input from '@/shared/Input/Input';
 import Logo from '@/shared/Logo/Logo';

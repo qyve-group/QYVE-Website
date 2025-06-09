@@ -222,7 +222,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
             Buy Now
           </ButtonPrimary>
           <ButtonSecondary
-            className="flex w-full items-center gap-1 border-2 border-primary text-primary transition-all hover:bg-primary hover:text-white active:scale-95 active:text-white"
+            className="flex w-full items-center gap-1 border-2  text-white bg-black transition-all hover:bg-white hover:border-primary hover:text-black active:scale-95 active:text-white"
             onClick={handleAddToCart}
           >
             <BsBag /> Add to cart
