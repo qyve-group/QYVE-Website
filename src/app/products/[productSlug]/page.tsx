@@ -22,7 +22,7 @@ const getProductData = async (productSlug: string) => {
   const { data: product, error: productError } = await supabase
     .from('products')
     .select(
-      'id, name, price, previous_price, image_cover, overview, shipment_details',
+      'id, name, price, previous_price, image_cover, overview, shipment_details, colors',
     )
     .eq('slug', productSlug)
     .single();
@@ -65,6 +65,7 @@ const SingleProductPage = async ({ params }: Props) => {
           image_cover={pathOr('', ['image_cover'], selectedProduct)}
           // sizes={pathOr([], ["sizes"], selectedProduct)}
           products_sizes={pathOr([], ['products_sizes'], selectedProduct)}
+          colors={pathOr([], ['colors'], selectedProduct)}
           // currentPrice={pathOr(0, ["currentPrice"], selectedProduct)}
           // rating={pathOr(0, ["rating"], selectedProduct)}
           // pieces_sold={pathOr(0, ["pieces_sold"], selectedProduct)}

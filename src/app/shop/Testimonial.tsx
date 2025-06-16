@@ -1,4 +1,7 @@
 import { FaRegStar } from 'react-icons/fa';
+import { CiFlag1 } from 'react-icons/ci';
+import { FaRunning } from 'react-icons/fa';
+import { VscSmiley } from 'react-icons/vsc';
 
 const Testimonial = () => {
   return (
@@ -67,31 +70,40 @@ const Testimonial = () => {
             TRIED AND TESTED
           </div>
         </div> */}
-        <div className="mb-10 flex flex-col items-stretch justify-center gap-10 md:flex-row">
-          <div className="flex-1 bg-white p-4 text-center  ">
-            <div className="flex flex-col gap-5">
-              <div className="flex flex-row justify-center">Sapot Lokal</div>
-              <div>Malaysia’s homegrown sports brand, wear it with pride.</div>
+        <div className="mb-10 flex flex-col items-stretch justify-center gap-10 md:flex-row p-4">
+          <div className="flex-1 p-4 text-center bg-blue-300">
+            <div className="flex flex-col gap-5 w-3/4">
+              <div className="flex flex-row justify-center">
+                <CiFlag1 className="text-2xl mr-2" />
+                <div>Sapot Lokal</div>
+              </div>
+              <div className="text-justify">
+                Malaysia’s homegrown sports brand, wear it with pride.
+              </div>
               {/* <div>Bazly Ahmad</div> */}
             </div>
           </div>
 
           <div className="flex-1 bg-white p-4 text-center ">
-            <div className="flex flex-col gap-5">
-              <div className="flex flex-row justify-center">
-                Performance First
+            <div className="flex flex-col gap-5 w-3/4">
+              <div className="flex flex-row justify-center ">
+                <FaRunning className="text-2xl mr-2" />
+                <div>Performance First</div>
               </div>
-              <div>Gear that enhances your performance with every play. </div>
+              <div className="text-justify">
+                Gear that enhances your performance with every play.{' '}
+              </div>
               {/* <div>Anonymous</div> */}
             </div>
           </div>
 
           <div className="flex-1  bg-white p-4 text-center ">
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5 w-3/4">
               <div className="flex flex-row justify-center">
-                Crafted with Care
+                <VscSmiley className="text-2xl mr-2" />
+                <div>Crafted with Care</div>
               </div>
-              <div className="h-">
+              <div className="text-justify">
                 Made by craftsmen who ensures every stitch is perfect.{' '}
               </div>
               {/* <div className="h-10">Razman</div> */}

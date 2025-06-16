@@ -1,7 +1,7 @@
 'use client';
 
 // import type { StaticImageData } from "next/image";
-// import Image from 'next/image';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
@@ -34,6 +34,7 @@ interface SectionProductHeaderProps {
   image_cover: string;
   // sizes: string[];
   products_sizes: { size: string; stock: number }[];
+  colors: string[];
   // currentPrice: number;
   // rating: number;
   // pieces_sold: number;
@@ -48,6 +49,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   previous_price,
   image_cover,
   products_sizes,
+  colors,
   // currentPrice,
   // rating,
   // pieces_sold,
@@ -57,7 +59,11 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const cart = useSelector((state: RootState) => state.cart); // Get latest cart state
   const dispatch = useDispatch();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<number>(0);
   const [shots, setShots] = useState<string[]>([]);
+  const [activeColor, setActiveColor] = useState(0);
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedImage, setSelectedImage] = useState('');
 
   const session = useSelector((state: RootState) => state.auth.session);
   console.log('session: ', session);
@@ -97,15 +103,19 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       return;
     }
 
+    console.log('dispatching with selectedId: ', selectedId);
+    console.log('dispatching with name: ', selectedColor);
+    console.log('dispatching with image: ', image_cover);
+
     dispatch(
       addToCart({
-        id,
-        name,
+        id: selectedId,
+        name: selectedColor,
         price,
         product_size: selectedSize,
         // image: shots[0], // Assuming first image is the main product image
         quantity: 1,
-        image: image_cover,
+        image: selectedImage,
       }),
     );
     // console.log*('Adding to Cart:', id, selectedSize);
@@ -123,18 +133,22 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
     dispatch(
       addToCart({
-        id,
-        name,
+        id: selectedId,
+        name: selectedColor,
         price,
         product_size: selectedSize,
         // image: shots[0], // Assuming first image is the main product image
         quantity: 1,
-        image: image_cover,
+        image: selectedImage,
       }),
     );
     router.push('../checkout');
     // console.log*('Adding to Cart:', id, selectedSize);
   };
+
+  // const handleSelectId = (product_size: string) => {
+  //   setSelectedId(product_size);
+  // };
 
   const handleSelectSize = (product_size: string) => {
     // setSelectedSize(product_size);
@@ -198,6 +212,81 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         <div className="mb-5 space-y-1">
           <p className="text-neutral-500 line-through">RM{previous_price}</p>
           <h1 className="text-3xl font-medium">RM{price}</h1>
+        </div>
+
+        <div className="flex flex-col">
+          <p className="text-xl mb-5">Available colors</p>
+          <div className="grid grid-cols-4 gap-1 mb-5">
+            {colors.map((color, index) => (
+              <div
+                key={color.split('|')[0]}
+                className={`relative ${
+                  activeColor === index ? 'border-2 border-primary' : ''
+                } h-[50px] overflow-hidden rounded-lg aspect-[4/3]`}
+              >
+                <button
+                  className="relative size-full "
+                  type="button"
+                  onClick={() => {
+                    setActiveColor(index);
+                    setSelectedId(Number(color.split('|')[0]));
+                    setSelectedColor(color.split('|')[1] || '');
+                    setSelectedImage(
+                      color.split('|')[2]?.trim() || '/qyve-black.png',
+                    );
+                    // setChosenColor(colorName || '');
+                    console.log('Chosen pId: ', Number(color.split('|')[0]));
+                  }}
+                >
+                  <Image
+                    src={color.split('|')[2]?.trim() || '/qyve-black.png'}
+                    alt={color.split('|')[1]?.trim() || ''}
+                    // src={selectedImage || '/qyve-black.png'}
+                    // alt={selectedColor || ''}
+                    // width={100}
+                    // height={100}
+                    fill
+                    className="object-cover object-center"
+                  />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* <div className="grid grid-cols-4 gap-3 mb-5">
+            {colors.map((color, index) => (
+              <div
+                key={color}
+                className={`${
+                  activeColor === index ? 'border-2 border-primary' : ''
+                } h-[50px] overflow-hidden rounded-lg`}
+              >
+                <button
+                  className="size-full"
+                  type="button"
+                  onClick={() => {
+                    const parts = color.split('|');
+                    const pId = Number(parts[0]?.trim());
+                    const col = parts[1]?.trim() || '';
+
+                    setActiveColor(index);
+                    setSelectedId(pId);
+                    setChosenColor(col);
+
+                    console.log('Chosen pId: ', pId);
+                  }}
+                >
+                  <Image
+                    src={color.split('|')[2]?.trim() || '/qyve-black.png'}
+                    alt="product image"
+                    width={100}
+                    height={100}
+                    className="size-full object-cover object-center"
+                  />
+                </button>
+              </div>
+            ))}
+          </div> */}
         </div>
 
         <div className="mb-5 flex items-end justify-between">

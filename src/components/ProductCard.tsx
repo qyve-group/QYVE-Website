@@ -19,12 +19,18 @@ const ProductCard: FC<ProductCardProps> = ({
   className,
   showPrevPrice = false,
 }) => {
+  const colorMap: { [key: string]: string } = {
+    beige: 'text-beige-500',
+    pink: 'text-pink-500',
+    black: 'text-black',
+    white: 'text-white',
+  };
   return (
     <Link href={`/products/${product.slug}`}>
       <div
         className={`transitionEffect relative border p-3 shadow-sm ${className}`}
       >
-        <div className="relative h-[250px] w-full rounded-xl overflow-hidden lg:h-[350px] 2xl:h-[400px]">
+        <div className="relative aspect-[4/5] w-full rounded-xl overflow-hidden lg:h-[350px] 2xl:h-[400px]">
           {/* {product.justIn && (
           <div className="absolute left-6 top-0 rounded-b-lg bg-primary px-3 py-2 text-sm uppercase text-white shadow-md">
             Just In!
@@ -44,7 +50,7 @@ const ProductCard: FC<ProductCardProps> = ({
               <div className="flex gap-2 text-2xl">
                 {product.colors.map((color) => (
                   <FaCircle
-                    className={`rounded-full border border-black text-${color}`}
+                    className={`rounded-full border border-black ${colorMap[color]}`}
                   />
                 ))}
               </div>
