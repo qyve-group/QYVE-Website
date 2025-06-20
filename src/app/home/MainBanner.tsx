@@ -12,7 +12,7 @@ const MainBanner = () => {
   return (
     <div className="relative h-[600px] w-full overflow-hidden">
       <video autoPlay loop muted playsInline className="size-full object-cover">
-        <source src="videos/qyve_video.mp4" type="video/mp4" />
+        <source src="/videos/qyve_video.mp4" type="video/mp4" />
       </video>
 
       <div className="absolute inset-0 z-10 bg-black bg-opacity-50" />

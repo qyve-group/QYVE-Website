@@ -50,7 +50,7 @@ const ProductCard: FC<ProductCardProps> = ({
               <div className="flex gap-2 text-2xl">
                 {product.colors.map((color) => (
                   <FaCircle
-                    className={`rounded-full border border-black ${colorMap[color]}`}
+                    key={color} className={`rounded-full border border-black ${colorMap[color]}`}
                   />
                 ))}
               </div>

@@ -167,7 +167,7 @@ const CartSideBar: React.FC = () => {
                       {cartItems.length > 0 ? (
                         cartItems.map((item) => renderProduct(item))
                       ) : (
-                        <p className="text-center text-neutral-500">
+                        <p className="text-center text-neutral-500 mt-4">
                           Your cart is empty.
                         </p>
                       )}
