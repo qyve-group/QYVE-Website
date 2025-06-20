@@ -40,7 +40,7 @@ const banners = [
     title: 'New DROP!',
     subtitle: 'Stay locked in\nNo slips, just goals.',
     cta: 'Buy Now',
-    ctalink: '/products/beige_slides',
+    ctalink: '/products/progrip_socks_white',
   },
   {
     id: 2,
@@ -50,7 +50,7 @@ const banners = [
     subtitle:
       'Give your feet a break after a futsal session—slip into recovery slides for ultimate comfort and faster recovery',
     cta: 'Get IT NOW!',
-    ctalink: '/products/beige_slides',
+    ctalink: '/products/recovery_slides_beige',
   },
 ];
 

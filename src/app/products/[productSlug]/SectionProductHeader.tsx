@@ -161,7 +161,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
   // // console.log*("price:", price);
   return (
-    <div className="mt-5 items-stretch justify-between space-y-10 lg:flex lg:space-y-0">
+    <div className="mt-5 items-stretch justify-center gap-6 space-y-10 lg:flex lg:space-y-0">
       <div className="basis-[1/2]">
         <ImageShowCase shots={shots} />
       </div>
@@ -215,43 +215,38 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
         <div className="flex flex-col">
           <p className="text-xl mb-5">Available colors</p>
-          <div className="grid grid-cols-4 gap-1 mb-5">
+          <div className="flex flex-wrap gap-4 mb-5">
             {colors.map((color, index) => {
-              return(
-              <div
-                key={color.split('|')[0]}
-                className={`relative ${
-                  activeColor === index ? 'border-2 border-primary' : ''
-                } h-[50px] overflow-hidden rounded-lg aspect-[4/3]`}
-              >
-                <button
-                  className="relative size-full "
-                  type="button"
-                  onClick={() => {
-                    setActiveColor(index);
-                    setSelectedId(Number(color.split('|')[0]));
-                    setSelectedColor(color.split('|')[1] || '');
-                    setSelectedImage(
-                      color.split('|')[2]?.trim() || '/qyve-black.png',
-                    );
-                    // setChosenColor(colorName || '');
-                    console.log('Chosen pId: ', Number(color.split('|')[0]));
-                  }}
+              return (
+                <div
+                  key={color.split('|')[0]}
+                  className={`relative ${
+                    activeColor === index ? 'border-2 border-primary' : ''
+                  } h-[50px] overflow-hidden rounded-lg aspect-[4/3]`}
                 >
-                  <Image
-                    src={color.split('|')[2]?.trim() || '/qyve-black.png'}
-                    alt={color.split('|')[1]?.trim() || ''}
-                    // src={selectedImage || '/qyve-black.png'}
-                    // alt={selectedColor || ''}
-                    // width={100}
-                    // height={100}
-                    fill
-                    className="object-cover object-center"
-                  />
-                </button>
-              </div>
-            );
-          })}
+                  <button
+                    className="relative size-full"
+                    type="button"
+                    onClick={() => {
+                      setActiveColor(index);
+                      setSelectedId(Number(color.split('|')[0]));
+                      setSelectedColor(color.split('|')[1] || '');
+                      setSelectedImage(
+                        color.split('|')[2]?.trim() || '/qyve-black.png',
+                      );
+                      console.log('Chosen pId: ', Number(color.split('|')[0]));
+                    }}
+                  >
+                    <Image
+                      src={color.split('|')[2]?.trim() || '/qyve-black.png'}
+                      alt={color.split('|')[1]?.trim() || ''}
+                      fill
+                      className="object-cover object-center"
+                    />
+                  </button>
+                </div>
+              );
+            })}
           </div>
 
           {/* <div className="grid grid-cols-4 gap-3 mb-5">
