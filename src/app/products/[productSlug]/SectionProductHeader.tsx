@@ -66,7 +66,6 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const [selectedImage, setSelectedImage] = useState('');
 
   const session = useSelector((state: RootState) => state.auth.session);
-  console.log('session: ', session);
 
   const router = useRouter();
 
@@ -217,7 +216,8 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         <div className="flex flex-col">
           <p className="text-xl mb-5">Available colors</p>
           <div className="grid grid-cols-4 gap-1 mb-5">
-            {colors.map((color, index) => (
+            {colors.map((color, index) => {
+              return(
               <div
                 key={color.split('|')[0]}
                 className={`relative ${
@@ -250,7 +250,8 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                   />
                 </button>
               </div>
-            ))}
+            );
+          })}
           </div>
 
           {/* <div className="grid grid-cols-4 gap-3 mb-5">
@@ -296,14 +297,33 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
           </p>
         </div>
         <div className="grid grid-cols-3 gap-3">
-          {products_sizes.map((product) => (
-            <ShoeSizeButton
-              key={product.size}
-              product={product}
-              onSelect={handleSelectSize}
-              isSelected={selectedSize === product.size} // Check if this button is selected
-            />
-          ))}
+          {products_sizes
+            .sort((a, b) => {
+              const sizeOrder = ['S', 'M', 'L', 'XL']; // Define custom order for letter sizes
+              const isNumber = (size: string) => /^\d/.test(size); // Check if size starts with a number
+
+              if (isNumber(a.size) && isNumber(b.size)) {
+                // Sort numerical sizes
+                return parseInt(a.size.split('-')[0]) - parseInt(b.size.split('-')[0]);
+              } else if (!isNumber(a.size) && !isNumber(b.size)) {
+                // Sort letter sizes based on custom order
+                return sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
+              } else {
+                // Keep numbers before letters
+                return isNumber(a.size) ? -1 : 1;
+              }
+            })
+            .map((product) => {
+              return (
+                <div key={product.size} className="col-span-1">
+                  <ShoeSizeButton
+                    product={product}
+                    onSelect={handleSelectSize}
+                    isSelected={selectedSize === product.size} // Check if this button is selected
+                  />
+                </div>
+              );
+            })}
         </div>
 
         <div className="mt-5 flex items-center gap-5">
