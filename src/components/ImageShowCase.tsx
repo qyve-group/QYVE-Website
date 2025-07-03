@@ -14,6 +14,7 @@ interface ImageShowCaseProps {
 
 const ImageShowCase: FC<ImageShowCaseProps> = ({ shots }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  console.log('shots in imageshowcase: ', shots);
 
   return (
     <div className="space-y-3 rounded-2xl border border-neutral-300 p-2">
@@ -22,7 +23,7 @@ const ImageShowCase: FC<ImageShowCaseProps> = ({ shots }) => {
         <Image
           // src={pathOr("", [activeImageIndex], shots)}
           src={shots[activeImageIndex] || ''}
-          alt="shoe image"
+          alt="Product Image"
           fill
           // className="h-full w-full object-cover object-center"
           className="object-cover object-center"
@@ -44,7 +45,7 @@ const ImageShowCase: FC<ImageShowCaseProps> = ({ shots }) => {
             >
               <Image
                 src={shot}
-                alt="shoe image"
+                alt={`Product shots ${index + 1}`}
                 width={100}
                 height={100}
                 className="size-full object-cover object-center"

@@ -33,8 +33,21 @@ interface SectionProductHeaderProps {
   previous_price: number;
   image_cover: string;
   // sizes: string[];
-  products_sizes: { size: string; stock: number }[];
+  products_sizes: {
+    id: number;
+    size: string;
+    stock: number;
+    product_id: number;
+    product_color_id: number;
+  }[];
   colors: string[];
+  product_shots: string[];
+  product_colors: {
+    id: number;
+    product_id: number;
+    color: string;
+    image: string;
+  }[];
   // currentPrice: number;
   // rating: number;
   // pieces_sold: number;
@@ -50,6 +63,8 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   image_cover,
   products_sizes,
   colors,
+  product_shots,
+  product_colors,
   // currentPrice,
   // rating,
   // pieces_sold,
@@ -64,30 +79,42 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const [activeColor, setActiveColor] = useState(0);
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
+  const [selectedColorId, setSelectedColorId] = useState(1);
+  const [uniqueSizeArray, setUniqueSizeArray] = useState<string[]>([]);
 
   const session = useSelector((state: RootState) => state.auth.session);
-  console.log('session: ', session);
+  // console.log('session: ', session);
+
+  const filteredProductSizes = products_sizes.filter(
+    (ps) => ps.product_color_id === selectedColorId,
+  );
 
   const router = useRouter();
 
   useEffect(() => {
-    const fetchShots = async () => {
-      const { data: shotsData, error } = await supabase
-        .from('product_shots')
-        .select('images')
-        .eq('product_id', id);
+    // const fetchShots = async () => {
+    //   const { data: shotsData, error } = await supabase
+    //     .from('product_shots')
+    //     .select('images')
+    //     .eq('product_id', id);
 
-      if (error) {
-        // console.error*('Error fetching shots:', error);
-        return;
-      }
+    //   if (error) {
+    //     // console.error*('Error fetching shots:', error);
+    //     return;
+    //   }
 
-      // Set shots if data is available, otherwise fallback to empty array
-      if (shotsData && shotsData.length > 0) {
-        setShots(shotsData?.[0]?.images || []); // safely access images
-      } else {
-        setShots([]); // No images found, set empty array
-      }
+    //   // Set shots if data is available, otherwise fallback to empty array
+    //   if (shotsData && shotsData.length > 0) {
+    //     setShots(shotsData?.[0]?.images || []); // safely access images
+    //   } else {
+    //     setShots([]); // No images found, set empty array
+    //   }
+    // };
+    console.log(product_shots);
+    const fetchShots = () => {
+      setShots(product_shots);
+
+      console.log('shots: ', shots);
     };
 
     fetchShots();
@@ -103,9 +130,9 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       return;
     }
 
-    console.log('dispatching with selectedId: ', selectedId);
-    console.log('dispatching with name: ', selectedColor);
-    console.log('dispatching with image: ', image_cover);
+    // console.log('dispatching with selectedId: ', selectedId);
+    // console.log('dispatching with name: ', selectedColor);
+    // console.log('dispatching with image: ', image_cover);
 
     dispatch(
       addToCart({
@@ -152,6 +179,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
   const handleSelectSize = (product_size: string) => {
     // setSelectedSize(product_size);
+    // setSelectedColorId(product_color_id);
     setSelectedSize(product_size);
     // console.log*('selected size: ', selectedSize);
   };
@@ -159,6 +187,13 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   useEffect(() => {
     // // console.log*("Latest Cart State:", cart);
   }, [cart]);
+
+  // useEffect(() => {
+
+  // }, [selectedColor]);
+  // const sizes = products_sizes
+  //   .filter((ps) => ps.product_color_id === selectedId)
+  //   .map((ps) => ps.size);
 
   // // console.log*("price:", price);
   return (
@@ -217,9 +252,9 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         <div className="flex flex-col">
           <p className="text-xl mb-5">Available colors</p>
           <div className="grid grid-cols-4 gap-1 mb-5">
-            {colors.map((color, index) => (
+            {product_colors.map((pc, index) => (
               <div
-                key={color.split('|')[0]}
+                key={`${pc.product_id}-${pc.id}-${pc.color}`}
                 className={`relative ${
                   activeColor === index ? 'border-2 border-primary' : ''
                 } h-[50px] overflow-hidden rounded-lg aspect-[4/3]`}
@@ -229,18 +264,16 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                   type="button"
                   onClick={() => {
                     setActiveColor(index);
-                    setSelectedId(Number(color.split('|')[0]));
-                    setSelectedColor(color.split('|')[1] || '');
-                    setSelectedImage(
-                      color.split('|')[2]?.trim() || '/qyve-black.png',
-                    );
+                    setSelectedColorId(pc.id);
+                    setSelectedColor(pc.color);
+                    setSelectedImage(pc.image || '/qyve-black.png');
                     // setChosenColor(colorName || '');
-                    console.log('Chosen pId: ', Number(color.split('|')[0]));
+                    console.log(`Chosen pId: ${id}-${selectedId}`);
                   }}
                 >
                   <Image
-                    src={color.split('|')[2]?.trim() || '/qyve-black.png'}
-                    alt={color.split('|')[1]?.trim() || ''}
+                    src={pc.image || '/qyve-black.png'}
+                    alt={pc.color || ''}
                     // src={selectedImage || '/qyve-black.png'}
                     // alt={selectedColor || ''}
                     // width={100}
@@ -252,41 +285,6 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
               </div>
             ))}
           </div>
-
-          {/* <div className="grid grid-cols-4 gap-3 mb-5">
-            {colors.map((color, index) => (
-              <div
-                key={color}
-                className={`${
-                  activeColor === index ? 'border-2 border-primary' : ''
-                } h-[50px] overflow-hidden rounded-lg`}
-              >
-                <button
-                  className="size-full"
-                  type="button"
-                  onClick={() => {
-                    const parts = color.split('|');
-                    const pId = Number(parts[0]?.trim());
-                    const col = parts[1]?.trim() || '';
-
-                    setActiveColor(index);
-                    setSelectedId(pId);
-                    setChosenColor(col);
-
-                    console.log('Chosen pId: ', pId);
-                  }}
-                >
-                  <Image
-                    src={color.split('|')[2]?.trim() || '/qyve-black.png'}
-                    alt="product image"
-                    width={100}
-                    height={100}
-                    className="size-full object-cover object-center"
-                  />
-                </button>
-              </div>
-            ))}
-          </div> */}
         </div>
 
         <div className="mb-5 flex items-end justify-between">
@@ -296,9 +294,17 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
           </p>
         </div>
         <div className="grid grid-cols-3 gap-3">
-          {products_sizes.map((product) => (
+          {/* {products_sizes.map((product) => (
             <ShoeSizeButton
-              key={product.size}
+              key={`${product.product_id}-${product.product_color_id}-${product.id}`}
+              product={product}
+              onSelect={handleSelectSize}
+              isSelected={selectedSize === product.size} // Check if this button is selected
+            />
+          ))} */}
+          {filteredProductSizes.map((product) => (
+            <ShoeSizeButton
+              key={`${product.product_id}-${product.product_color_id}-${product.id}`}
               product={product}
               onSelect={handleSelectSize}
               isSelected={selectedSize === product.size} // Check if this button is selected

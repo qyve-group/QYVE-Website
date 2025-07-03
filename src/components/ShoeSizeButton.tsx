@@ -6,10 +6,14 @@ import { FaCheckCircle } from 'react-icons/fa';
 
 interface ShoeSizeButtonProps {
   product: {
+    id: number;
     size: string;
     stock: number;
+    product_id: number;
+    product_color_id: number;
   };
-  onSelect: (size: string) => void;
+
+  onSelect: (selectedSize: string) => void;
   isSelected: boolean;
 }
 
