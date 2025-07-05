@@ -15,6 +15,7 @@ export const listenForAuthChanges = () => {
     );
 
     if (data.session) {
+      console.log('fetching cart from supabase from authlistener...');
       fetchCartFromSupabase(data.session.user.id, store.dispatch);
     }
   });

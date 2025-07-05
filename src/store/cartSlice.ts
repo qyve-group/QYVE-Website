@@ -52,7 +52,7 @@ const cartSlice = createSlice({
         state.totalPrice = totalPrice;
       }
 
-      // console.log*('Setting cart:', action.payload);
+      console.log('Setting cart:', action.payload);
     },
 
     // Add item to cart

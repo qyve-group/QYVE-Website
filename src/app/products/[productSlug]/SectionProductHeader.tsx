@@ -81,6 +81,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const [selectedImage, setSelectedImage] = useState('');
   const [selectedColorId, setSelectedColorId] = useState(1);
   const [uniqueSizeArray, setUniqueSizeArray] = useState<string[]>([]);
+  const [selectedProductSizeId, setSelectedProductSizeId] = useState<number>();
 
   const session = useSelector((state: RootState) => state.auth.session);
   // console.log('session: ', session);
@@ -92,24 +93,6 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const router = useRouter();
 
   useEffect(() => {
-    // const fetchShots = async () => {
-    //   const { data: shotsData, error } = await supabase
-    //     .from('product_shots')
-    //     .select('images')
-    //     .eq('product_id', id);
-
-    //   if (error) {
-    //     // console.error*('Error fetching shots:', error);
-    //     return;
-    //   }
-
-    //   // Set shots if data is available, otherwise fallback to empty array
-    //   if (shotsData && shotsData.length > 0) {
-    //     setShots(shotsData?.[0]?.images || []); // safely access images
-    //   } else {
-    //     setShots([]); // No images found, set empty array
-    //   }
-    // };
     console.log(product_shots);
     const fetchShots = () => {
       setShots(product_shots);
@@ -129,14 +112,9 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       alert('Please select a size before adding to cart!');
       return;
     }
-
-    // console.log('dispatching with selectedId: ', selectedId);
-    // console.log('dispatching with name: ', selectedColor);
-    // console.log('dispatching with image: ', image_cover);
-
     dispatch(
       addToCart({
-        id: selectedId,
+        id: selectedProductSizeId!,
         name: selectedColor,
         price,
         product_size: selectedSize,
@@ -160,58 +138,35 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
     dispatch(
       addToCart({
-        id: selectedId,
+        id: selectedProductSizeId!,
         name: selectedColor,
         price,
         product_size: selectedSize,
-        // image: shots[0], // Assuming first image is the main product image
         quantity: 1,
         image: selectedImage,
       }),
     );
     router.push('../checkout');
-    // console.log*('Adding to Cart:', id, selectedSize);
   };
 
-  // const handleSelectId = (product_size: string) => {
-  //   setSelectedId(product_size);
-  // };
-
-  const handleSelectSize = (product_size: string) => {
-    // setSelectedSize(product_size);
-    // setSelectedColorId(product_color_id);
-    setSelectedSize(product_size);
-    // console.log*('selected size: ', selectedSize);
+  const handleSelectSize = ({
+    selectedSize,
+    selectedProductSizeId,
+  }: {
+    selectedSize: string;
+    selectedProductSizeId: number;
+  }) => {
+    setSelectedSize(selectedSize);
+    setSelectedProductSizeId(selectedProductSizeId);
   };
 
-  useEffect(() => {
-    // // console.log*("Latest Cart State:", cart);
-  }, [cart]);
-
-  // useEffect(() => {
-
-  // }, [selectedColor]);
-  // const sizes = products_sizes
-  //   .filter((ps) => ps.product_color_id === selectedId)
-  //   .map((ps) => ps.size);
-
-  // // console.log*("price:", price);
   return (
     <div className="mt-5 items-stretch justify-between space-y-10 lg:flex lg:space-y-0">
       <div className="basis-[1/2]">
         <ImageShowCase shots={shots} />
       </div>
-      {/* <div className="basis-1/2">
-        <Image
-          src={image_cover}
-          alt={`${name} cover photo`}
-          width={400}
-          height={200}
-        />
-      </div> */}
 
       <div className="basis-[45%]">
-        {/* <Heading className="mb-0" isMain title="new arrival!"> */}
         <Heading className="mb-0" isMain>
           {name}
           {/* {id} */}
@@ -327,5 +282,4 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
     </div>
   );
 };
-
 export default SectionProductHeader;

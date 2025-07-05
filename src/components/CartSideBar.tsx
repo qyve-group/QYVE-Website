@@ -47,6 +47,8 @@ const CartSideBar: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [hydrated, setHydrated] = useState(false);
 
+  console.log('cartItems: ', cartItems);
+
   useEffect(() => {
     setHydrated(true);
   }, []);

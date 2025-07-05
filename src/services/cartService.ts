@@ -13,8 +13,9 @@ type CartItemToPush = {
   cart_id: UUID;
   product_id: number;
   quantity: number;
+  product_size_id: number;
   price: number;
-  size_id: number;
+  // size_id: number;
 };
 
 type CartItemToDelete = {
@@ -75,6 +76,7 @@ export const fetchCartFromSupabase = async (
   // const currCart = store.getState().cart;
 
   try {
+    console.log('Fetching cart from supabase...');
     // Fetch the cart ID for the user
     const { data: cart, error: cartError } = await supabase
       .from('carts')
@@ -102,57 +104,44 @@ export const fetchCartFromSupabase = async (
 
     // Fetch cart items from supabase
     const { data: supabaseCartItems, error: supabaseCartItemsError } =
-      await supabase.from('cart_items').select('*').eq('cart_id', cartId);
+      await supabase
+        .from('cart_items')
+        .select('*, products_sizes(*, product_colors(*))')
+        .eq('cart_id', cartId);
 
     if (supabaseCartItemsError) throw supabaseCartItemsError;
 
-    // console.log*('Current cart items from Supabase:', supabaseCartItems);
-
-    // Fetch additional product and size details for each item
-    const supabaseCartWithDetails = await Promise.all(
-      supabaseCartItems.map(async (supabaseCartItem) => {
-        // Fetch product details
-        const { data: supabaseProductInfo, error: productError } =
-          await supabase
-            .from('products')
-            .select('*')
-            .eq('id', supabaseCartItem.product_id)
-            .maybeSingle();
-
-        if (productError) {
-          // console.error*('Error fetching product info:', productError);
-          return null;
-        }
-
-        // Fetch size details
-        const { data: supabaseSizeInfo, error: sizeError } = await supabase
-          .from('products_sizes')
-          .select('*')
-          .eq('id', supabaseCartItem.size_id)
-          .maybeSingle();
-
-        if (sizeError) {
-          // console.error*('Error fetching size info:', sizeError);
-          return null;
-        }
-
-        // Construct new cart item
-        return {
-          id: supabaseCartItem.product_id,
-          name: supabaseProductInfo.name,
-          price: supabaseCartItem.price,
-          product_size: supabaseSizeInfo.size || null,
-          quantity: supabaseCartItem.quantity,
-          image: supabaseProductInfo.image_cover,
-        };
-      }),
+    console.log('Current cart items from Supabase:', supabaseCartItems);
+    console.log(
+      'Is supabaseCartItems an array?',
+      Array.isArray(supabaseCartItems),
     );
 
-    const supabaseCartWithDetailsFiltered = supabaseCartWithDetails.filter(
-      (item) => item !== null,
-    );
+    let supabaseCartItemsFiltered: CartItem[] = [];
 
-    dispatch(setCart(supabaseCartWithDetailsFiltered));
+    try {
+      supabaseCartItemsFiltered = supabaseCartItems.map((supabaseCartItem) => ({
+        id: supabaseCartItem.product_size_id,
+        name:
+          supabaseCartItem.products_sizes?.product_colors?.color ?? 'no name',
+        price: supabaseCartItem.price,
+        product_size: supabaseCartItem.products_sizes?.size ?? null,
+        quantity: supabaseCartItem.quantity,
+        image:
+          supabaseCartItem.products_sizes?.product_colors?.image ??
+          'qyve-white.png',
+      }));
+    } catch (error) {
+      console.error('error with filtering supabasecartitems', error);
+    }
+
+    console.log('supabasecartitemsfiltered: ', supabaseCartItemsFiltered);
+
+    try {
+      dispatch(setCart(supabaseCartItemsFiltered));
+    } catch (error) {
+      console.error('error dispatching to cart from supabase: ', error);
+    }
 
     // console.log(
     //   'Cart state after setting from Supabase:',
@@ -167,6 +156,7 @@ export const saveCartToSupabase = async (
   userId: string,
   reduxCartItems: any[],
 ) => {
+  console.log('trying to savecarttosupabase - cartService.tsx ');
   try {
     // ------------------------- fetching cartid and retrieving items from supabase to put into map   ------------------------------------------------------------
     // Fetch the cart ID
@@ -184,19 +174,52 @@ export const saveCartToSupabase = async (
     const cartId = cart.id;
 
     // Fetch existing supabase cart items
+    // const { data: supabaseExistingItems, error: supabaseExistingItemsError } =
+    //   await supabase.from('cart_items').select('*').eq('cart_id', cartId);
+
+    // if (supabaseExistingItemsError) throw supabaseExistingItemsError;
+
     const { data: supabaseExistingItems, error: supabaseExistingItemsError } =
-      await supabase.from('cart_items').select('*').eq('cart_id', cartId);
+      await supabase
+        .from('cart_items')
+        .select('*, products_sizes(*, product_colors(*))')
+        .eq('cart_id', cartId);
 
     if (supabaseExistingItemsError) throw supabaseExistingItemsError;
 
-    // console.log*('Existing items from Supabase:', supabaseExistingItems);
+    console.log('Current cart items from Supabase:', supabaseExistingItems);
+    console.log(
+      'Is supabaseCartItems an array?',
+      Array.isArray(supabaseExistingItems),
+    );
+
+    // let supabaseCartItemsFiltered: CartItem[] = [];
+
+    // try {
+    //   supabaseCartItemsFiltered = supabaseExistingItems.map((supabaseItem) => ({
+    //     id: supabaseItem.product_size_id,
+    //     name:
+    //       supabaseItem.products_sizes?.product_colors?.color ?? 'no name',
+    //     price: supabaseItem.price,
+    //     product_size: supabaseItem.products_sizes?.size ?? null,
+    //     quantity: supabaseItem.quantity,
+    //     image:
+    //       supabaseItem.products_sizes?.product_colors?.image ??
+    //       'qyve-white.png',
+    //   }));
+    // } catch (error) {
+    //   console.error('error with filtering supabaseexistingitems', error);
+    // }
+
+    console.log('Existing items from Supabase:', supabaseExistingItems);
 
     // Convert existing items to a Map for quick lookup
     // Supabase cart_items
     const supabaseExistingItemsMap = new Map<string, SupabaseCartItem>();
 
     supabaseExistingItems.forEach((supabaseExistingItem) => {
-      const key = `${supabaseExistingItem.product_id}-${supabaseExistingItem.size_id}`;
+      // const key = `${supabaseExistingItem.product_id}-${supabaseExistingItem.product_size_id}`;
+      const key = `${supabaseExistingItem.product_size_id}`;
       // const key = `${item.id}`;
       supabaseExistingItemsMap.set(key, supabaseExistingItem);
     });
@@ -213,40 +236,25 @@ export const saveCartToSupabase = async (
     // Loop through cart items to check if supabaseItems need to be updated
     // eslint-disable-next-line no-await-in-loop
     for (const reduxCartitem of reduxCartItems) {
-      // console.log*('item: ', reduxCartitem);
+      // /* eslint-disable no-await-in-loop */
+      // const { data: reduxSizeInfo } = await supabase
+      //   .from('products_sizes')
+      //   .select('id')
+      //   .eq('product_id', reduxCartitem.id) // item.id is referring to product_id
+      //   .eq('size', reduxCartitem.product_size) // Match size name (e.g., "M")
+      //   .single();
 
-      // Fetch the size_id based on product_id and size name
-      // const { data: reduxSizeInfo, error: reduxSizeInfoError } = await supabase
-
-      /* eslint-disable no-await-in-loop */
-      const { data: reduxSizeInfo } = await supabase
-        .from('products_sizes')
-        .select('id')
-        .eq('product_id', reduxCartitem.id) // item.id is referring to product_id
-        .eq('size', reduxCartitem.product_size) // Match size name (e.g., "M")
-        .single();
-
-      // if (reduxSizeInfoError) {
-      //   console.error(
-      //     `Error fetching size_id for size ${reduxCartitem.product_size}:`,
-      //     reduxSizeInfoError,
-      //   );
-      // } else {
-      //   console.log(
-      //     `size_id: ${reduxSizeInfo.id}, size: ${reduxCartitem.product_size}, product_id: ${reduxCartitem.id}`,
-      //   );
-      // }
-
-      const sizeId = reduxSizeInfo?.id;
+      // const sizeId = reduxSizeInfo?.id;
 
       // key for reduxCartItem
-      const key = `${reduxCartitem.id}-${sizeId}`;
+      // const key = `${reduxCartitem.id}-${sizeId}`;
+      const key = `${reduxCartitem.id}`;
 
       // cross referencing using reduxCartItem key with existingItemsMap (this is the map containing supabase fetched data) to filter out existing items
-      const supabaseExistingItem = supabaseExistingItemsMap.get(key); // item.id is product_id
+      const crossRefExistingItem = supabaseExistingItemsMap.get(key); // item.id is product_id
 
       // exitingItem is true if product_id and sizeId is the same
-      if (supabaseExistingItem) {
+      if (crossRefExistingItem) {
         // console.log(
         //   `reduxCartItem key: ${key} found for supabaseExistingItem: ${
         //     supabaseExistingItem
@@ -255,17 +263,19 @@ export const saveCartToSupabase = async (
 
         // Update only if quantity, price, or size_id has changed
         if (
-          supabaseExistingItem.quantity !== reduxCartitem.quantity ||
-          supabaseExistingItem.price !== reduxCartitem.price
+          crossRefExistingItem.quantity !== reduxCartitem.quantity ||
+          crossRefExistingItem.price !== reduxCartitem.price
         ) {
           // console.log*('Either quantity or price needs update');
           itemsToInsertOrUpdate.push({
-            cartItem_id: supabaseExistingItem.id,
+            cartItem_id: crossRefExistingItem.id,
             cart_id: cartId,
-            product_id: reduxCartitem.id,
+            // product_id: reduxCartitem.id,
+            product_id: crossRefExistingItem.product_id,
             quantity: reduxCartitem.quantity,
+            product_size_id: reduxCartitem.id,
             price: reduxCartitem.price,
-            size_id: sizeId,
+            // size_id: sizeId,
           });
         }
         // else {
@@ -285,11 +295,14 @@ export const saveCartToSupabase = async (
         // Insert new item
         itemsToInsertOrUpdate.push({
           // cartItem_id: undefined,
+          cartItem_id: crossRefExistingItem!.id,
           cart_id: cartId,
-          product_id: reduxCartitem.id,
+          // product_id: reduxCartitem.id,
+          product_id: crossRefExistingItem!.product_id,
           quantity: reduxCartitem.quantity,
+          product_size_id: reduxCartitem.id,
           price: reduxCartitem.price,
-          size_id: sizeId,
+          // size_id: sizeId,
         });
       }
     }
@@ -299,26 +312,22 @@ export const saveCartToSupabase = async (
       itemsToDelete.push({ cartItem_id: item.id }),
     );
 
-    // console.log(
-    //   'itemsToInsertOrUpdate from supabaseExistingItemsMap: ',
-    //   itemsToInsertOrUpdate,
-    // );
-    // console.log('itemsToDelete from supabaseExistingItemsMap: ', itemsToDelete);
-
     // this is to reformat the title so that it matches with cart_items table in supabase
     const updates = itemsToInsertOrUpdate.map((item) => ({
       id: item?.cartItem_id,
       cart_id: item.cart_id, // Match existing row
       product_id: item.product_id,
-      size_id: item.size_id,
+      // size_id: item.size_id,
       quantity: item.quantity,
+      product_size_id: item.product_size_id,
       price: item.price,
     }));
 
-    // console.log*('Updates: ', updates);
+    console.log('Updates - cartService.tsx: ', updates);
 
     for (const updateItem of updates) {
       if (updateItem.id) {
+        //this id is cartitem id
         // eslint-disable-next-line no-await-in-loop
         const { error } = await supabase
           .from('cart_items')
@@ -343,7 +352,7 @@ export const saveCartToSupabase = async (
       }
     }
 
-    // console.log*('Cart successfully updated in Supabase.');
+    console.log('Cart successfully updated in Supabase.');
   } catch (error) {
     // console.error*('Error saving cart:', error);
   }
@@ -370,19 +379,38 @@ export const saveCartAfterRemove = async (
     const cartId = cart.id;
 
     // Fetch existing supabase cart items
+    // const { data: supabaseExistingItems, error: supabaseExistingItemsError } =
+    //   await supabase.from('cart_items').select('*').eq('cart_id', cartId);
+
+    // if (supabaseExistingItemsError) throw supabaseExistingItemsError;
+
+    // // console.log*('Existing items from Supabase:', supabaseExistingItems);
+
     const { data: supabaseExistingItems, error: supabaseExistingItemsError } =
-      await supabase.from('cart_items').select('*').eq('cart_id', cartId);
+      await supabase
+        .from('cart_items')
+        .select('*, products_sizes(*, product_colors(*))')
+        .eq('cart_id', cartId);
 
     if (supabaseExistingItemsError) throw supabaseExistingItemsError;
 
-    // console.log*('Existing items from Supabase:', supabaseExistingItems);
+    // console.log('Current cart items from Supabase:', supabaseExistingItems);
+    // console.log(
+    //   'Is supabaseCartItems an array?',
+    //   Array.isArray(supabaseExistingItems),
+    // );
+
+    console.log(
+      'Existing items from Supabase - savecartafterremove carservice.tsx:',
+      supabaseExistingItems,
+    );
 
     // Convert existing items to a Map for quick lookup
     // Supabase cart_items
     const supabaseExistingItemsMap = new Map<string, SupabaseCartItem>();
 
     supabaseExistingItems.forEach((supabaseExistingItem) => {
-      const key = `${supabaseExistingItem.product_id}-${supabaseExistingItem.size_id}`;
+      const key = `${supabaseExistingItem.product_size_id}`;
       // const key = `${item.id}`;
       supabaseExistingItemsMap.set(key, supabaseExistingItem);
     });
@@ -391,32 +419,18 @@ export const saveCartAfterRemove = async (
 
     // -------------------------------  getting size_id from supabase using reduxCartItems elements   -------------------------------------------------------------------
     // // Prepare batch updates
-    // const itemsToInsertOrUpdate: CartItemToPush[] = [];
-    // const itemsToDelete: CartItemToDelete[] = [];
 
     // Fetch the size_id based on product_id and size name
-    const { data: reduxSizeInfo } = await supabase
-      .from('products_sizes')
-      .select('id')
-      .eq('product_id', removedCartItem.id) // item.id is referring to product_id
-      .eq('size', removedCartItem.product_size) // Match size name (e.g., "M")
-      .single();
+    // const { data: reduxSizeInfo } = await supabase
+    //   .from('products_sizes')
+    //   .select('id')
+    //   .eq('product_id', removedCartItem.id) // item.id is referring to product_id
+    //   .eq('size', removedCartItem.product_size) // Match size name (e.g., "M")
+    //   .single();
 
-    // if (reduxSizeInfoError) {
-    //   console.error(
-    //     `Error fetching size_id for size ${removedCartItem.product_size}:`,
-    //     reduxSizeInfoError,
-    //   );
-    // }
-    // else {
-    //   console.log(
-    //     `size_id: ${reduxSizeInfo.id}, size: ${removedCartItem.product_size}, product_id: ${removedCartItem.id}`,
-    //   );
-    // }
+    // const sizeId = reduxSizeInfo?.id;
 
-    const sizeId = reduxSizeInfo?.id;
-
-    const reduxKeyToDelete = `${removedCartItem.id}-${sizeId}`;
+    const reduxKeyToDelete = `${removedCartItem.id}`;
 
     const supabaseItemToDelete = supabaseExistingItemsMap.get(reduxKeyToDelete);
 
