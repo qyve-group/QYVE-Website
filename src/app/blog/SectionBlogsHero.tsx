@@ -19,13 +19,13 @@ const SectionBlogsHero = () => {
     >
       <div className="space-y-10 lg:col-span-2">
         <Link href={`/blog/${pathOr('', ['slug'], blogs[0])}`}>
-          <Image
+          {/* <Image
             src={pathOr('', ['coverImage'], blogs[0])}
             alt=""
             className="w-full rounded-3xl"
             width={1000}
             height={1000}
-          />
+          /> */}
         </Link>
         <div className="space-y-3">
           <p className="border-b border-neutral-300 py-5 text-neutral-500">
@@ -46,13 +46,13 @@ const SectionBlogsHero = () => {
               className="flex flex-col gap-3"
             >
               <div className="overflow-hidden rounded-xl">
-                <Image
+                {/* <Image
                   src={blog.coverImage}
                   alt="cover image"
                   className="size-full object-cover object-center"
                   width={1000}
                   height={1000}
-                />
+                /> */}
               </div>
               <div className="space-y-1">
                 <span className="text-neutral-500">

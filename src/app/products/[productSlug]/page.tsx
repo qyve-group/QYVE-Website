@@ -36,8 +36,6 @@ const getProductData = async (productSlug: string) => {
     .eq('slug', productSlug)
     .single();
 
-  console.log('product sizes retrieved: ', product?.products_sizes);
-
   if (productError || !product) {
     return null;
   }
@@ -75,6 +73,7 @@ const SingleProductPage = async ({ params }: Props) => {
           price={pathOr(0, ['price'], selectedProduct)}
           previous_price={pathOr(0, ['previous_price'], selectedProduct)}
           image_cover={pathOr('', ['image_cover'], selectedProduct)}
+          slug={params.productSlug}
           // sizes={pathOr([], ["sizes"], selectedProduct)}
           products_sizes={pathOr([], ['products_sizes'], selectedProduct)}
           colors={pathOr([], ['colors'], selectedProduct)}

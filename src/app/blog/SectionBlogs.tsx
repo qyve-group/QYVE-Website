@@ -47,7 +47,7 @@ const SectionBlogs = () => {
           ))}
         </div>
       </div>
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {/* <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {filteredBlogs?.map((blog) => (
           <BlogCard
             key={blog.slug}
@@ -59,7 +59,7 @@ const SectionBlogs = () => {
             slug={blog.slug}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

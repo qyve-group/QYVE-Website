@@ -33,6 +33,7 @@ interface SectionProductHeaderProps {
   previous_price: number;
   image_cover: string;
   // sizes: string[];
+  slug: string;
   products_sizes: {
     id: number;
     size: string;
@@ -61,6 +62,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   price,
   previous_price,
   image_cover,
+  slug,
   products_sizes,
   colors,
   product_shots,
@@ -82,9 +84,11 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const [selectedColorId, setSelectedColorId] = useState(1);
   const [uniqueSizeArray, setUniqueSizeArray] = useState<string[]>([]);
   const [selectedProductSizeId, setSelectedProductSizeId] = useState<number>();
+  const [custom, setCustom] = useState('');
 
   const session = useSelector((state: RootState) => state.auth.session);
-  // console.log('session: ', session);
+  console.log('session sectopnproductheader: ', session);
+  console.log('slug -sectionproductheader: ', slug);
 
   const filteredProductSizes = products_sizes.filter(
     (ps) => ps.product_color_id === selectedColorId,
@@ -205,41 +209,97 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         </div>
 
         <div className="flex flex-col">
-          <p className="text-xl mb-5">Available colors</p>
-          <div className="grid grid-cols-4 gap-1 mb-5">
-            {product_colors.map((pc, index) => (
-              <div
-                key={`${pc.product_id}-${pc.id}-${pc.color}`}
-                className={`relative ${
-                  activeColor === index ? 'border-2 border-primary' : ''
-                } h-[50px] overflow-hidden rounded-lg aspect-[4/3]`}
-              >
-                <button
-                  className="relative size-full "
-                  type="button"
-                  onClick={() => {
-                    setActiveColor(index);
-                    setSelectedColorId(pc.id);
-                    setSelectedColor(pc.color);
-                    setSelectedImage(pc.image || '/qyve-black.png');
-                    // setChosenColor(colorName || '');
-                    console.log(`Chosen pId: ${id}-${selectedId}`);
-                  }}
-                >
-                  <Image
-                    src={pc.image || '/qyve-black.png'}
-                    alt={pc.color || ''}
-                    // src={selectedImage || '/qyve-black.png'}
-                    // alt={selectedColor || ''}
-                    // width={100}
-                    // height={100}
-                    fill
-                    className="object-cover object-center"
-                  />
-                </button>
+          {slug === 'jersey' ? (
+            <div className="flex md:flex-row flex-col">
+              <div className="basis-[40%]">
+                <p className="text-xl mb-5">Available colors</p>
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {product_colors.map((pc, index) => (
+                    <div
+                      key={`${pc.product_id}-${pc.id}-${pc.color}`}
+                      className={`relative ${
+                        activeColor === index ? 'border-2 border-primary' : ''
+                      } h-[50px] overflow-hidden rounded-lg aspect-[4/3]`}
+                    >
+                      <button
+                        className="relative size-full "
+                        type="button"
+                        onClick={() => {
+                          setActiveColor(index);
+                          setSelectedColorId(pc.id);
+                          setSelectedColor(pc.color);
+                          setSelectedImage(pc.image || '/qyve-black.png');
+                          // setChosenColor(colorName || '');
+                          console.log(`Chosen pId: ${id}-${selectedId}`);
+                        }}
+                      >
+                        <Image
+                          src={pc.image || '/qyve-black.png'}
+                          alt={pc.color || ''}
+                          // src={selectedImage || '/qyve-black.png'}
+                          // alt={selectedColor || ''}
+                          // width={100}
+                          // height={100}
+                          fill
+                          className="object-cover object-center"
+                        />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
+              <div className="basis-[60%]">
+                <p className="text-xl mb-5">Customization</p>
+
+                <textarea
+                  id="custom"
+                  className="border border-gray-300 rounded-md p-2 w-3/4 md:w-full resize-none placeholder:text-sm"
+                  placeholder="Name - Number e.g Max - 7"
+                  onChange={(e) => setCustom(e.target.value)}
+                />
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div>
+                <p className="text-xl mb-5">Available colors</p>
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {product_colors.map((pc, index) => (
+                    <div
+                      key={`${pc.product_id}-${pc.id}-${pc.color}`}
+                      className={`relative ${
+                        activeColor === index ? 'border-2 border-primary' : ''
+                      } h-[50px] overflow-hidden rounded-lg aspect-[4/3]`}
+                    >
+                      <button
+                        className="relative size-full "
+                        type="button"
+                        onClick={() => {
+                          setActiveColor(index);
+                          setSelectedColorId(pc.id);
+                          setSelectedColor(pc.color);
+                          setSelectedImage(pc.image || '/qyve-black.png');
+                          // setChosenColor(colorName || '');
+                          console.log(`Chosen pId: ${id}-${selectedId}`);
+                        }}
+                      >
+                        <Image
+                          src={pc.image || '/qyve-black.png'}
+                          alt={pc.color || ''}
+                          // src={selectedImage || '/qyve-black.png'}
+                          // alt={selectedColor || ''}
+                          // width={100}
+                          // height={100}
+                          fill
+                          className="object-cover object-center"
+                        />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="mb-5 flex items-end justify-between">
