@@ -89,9 +89,14 @@ export async function POST(req: Request) {
       process.env.SUPABASE_SERVICE_ROLE_KEY as string,
     );
     // Fetch cart items using cart_id
+    // const { data: cartItems, error: cartItemsError } = await supabaseAdmin
+    //   .from('cart_items')
+    //   .select('*')
+    //   .eq('cart_id', cartId);
+
     const { data: cartItems, error: cartItemsError } = await supabaseAdmin
       .from('cart_items')
-      .select('*')
+      .select('*, products_sizes(*, product_colors(*))')
       .eq('cart_id', cartId);
 
     if (cartItemsError || !cartItems.length) {
@@ -100,7 +105,7 @@ export async function POST(req: Request) {
         { status: 404 },
       );
     }
-    // console.log('cartItems: ', cartItems);
+    console.log('cartItems: -webhook', cartItems);
 
     // Create an order linked to cart_id
     const orderId = uuidv4(); // Generate a new UUID
@@ -111,12 +116,12 @@ export async function POST(req: Request) {
     );
     const formattedTotalPrice = parseFloat(totalPrice.toFixed(2)); // Ensure precision
 
-    // console.log('About to insert order with values:', {
-    //   orderId,
-    //   userId,
-    //   formattedTotalPrice,
-    //   stripeSessionId: session.id,
-    // });
+    console.log('About to insert order with values:', {
+      orderId,
+      userId,
+      formattedTotalPrice,
+      stripeSessionId: session.id,
+    });
 
     try {
       const { error: orderError } = await supabase
@@ -134,7 +139,7 @@ export async function POST(req: Request) {
         .single();
 
       if (orderError) {
-        // console.error('❌ Insert error:', orderError);
+        console.error('❌ Insert error:', orderError);
       } else {
         // console.log('✅ Order inserted:', orderData);
       }
@@ -142,72 +147,42 @@ export async function POST(req: Request) {
       // console.error('❌ Unexpected error:', err);
     }
 
-    // const { data: orderData, error: orderError } = await supabase
-    //   .from('orders')
-    //   .insert([
-    //     {
-    //       id: orderId,
-    //       user_id: userId,
-    //       status: 'paid',
-    //       total_price: formattedTotalPrice,
-    //       stripe_session_id: session.id,
-    //     },
-    //   ])
-    //   .select()
-    //   .single();
-
-    // console.log('orderError:', orderError);
-    // console.log('orderData:', orderData);
-
-    // if (orderError) {
-    //   // console.error*('Failed to create order:', orderError);
-    //   return NextResponse.json(
-    //     { error: 'Order creation failed' },
-    //     { status: 500 },
-    //   );
-    // }
-
-    // console.log('Order data inserted in order table: ', orderData);
-
-    // //console.log**('Order created: ', order);
-
     // Reduce stock in `product_sizes`
-
     /* eslint-disable no-await-in-loop */
     for (const item of cartItems) {
       const { data: productSize, error: fetchError } = await supabase
         .from('products_sizes')
         .select('stock')
-        .eq('product_id', item.product_id)
-        .eq('id', item.size_id)
+        .eq('id', item.product_size_id)
         .single();
 
       if (fetchError) {
-        // console.error*('Error fetching stock:', fetchError);
+        console.error('Error fetching stock:', fetchError);
         continue; // Skip to the next item if there's an error
       }
 
       // Ensure stock exists before updating
       if (!productSize || productSize.stock === undefined) {
-        // console.error*('Stock not found for item:', item);
+        console.error('Stock not found for item:', item);
         continue;
       }
 
       // Calculate new stock
       const newStock = productSize.stock - item.quantity;
-      // console.log*('newStock: ', newStock);
+      console.log(`newStock for item ${item.id}: ${newStock}`);
 
-      // console.log*('Updating stock for item:', item);
+      console.log('Updating stock for item:', item);
 
       const { error: stockError } = await supabaseAdmin
         .from('products_sizes')
         .update({ stock: newStock })
-        .eq('product_id', item.product_id)
-        .eq('id', item.size_id);
+        .eq('id', item.product_size_id);
 
       if (stockError) {
         throw stockError;
       }
+
+      console.log('stock updated at ');
 
       // Adding ordered items into order_items
       const orderItemsId = uuidv4();
@@ -217,7 +192,7 @@ export async function POST(req: Request) {
         .insert({
           id: orderItemsId,
           order_id: orderId,
-          product_id: item.product_id,
+          product_size_id: item.product_size_id,
           quantity: item.quantity,
           price: item.price,
         });
@@ -320,7 +295,7 @@ export async function POST(req: Request) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           chat_id: process.env.CHAT_ID,
-          text: `New paid order!\nOrder ID ${orderId}\nCustomer: ${orderAddress.first_name} ${orderAddress.last_name}\n
+          text: `New paid order!\nOrder ID ${orderId}\nCustomer: ${orderAddress.fname} ${orderAddress.lname}\n
           Email: ${contactInfo.email}\nPhone number: ${contactInfo.phone}\n\n
           Address: ${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}`,
         }),

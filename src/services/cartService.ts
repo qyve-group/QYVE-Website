@@ -286,24 +286,29 @@ export const saveCartToSupabase = async (
         // }
         supabaseExistingItemsMap.delete(key);
       } else {
-        // console.log(
-        //   `reduxCartItem key: ${key} not found for supabaseExistingItem: ${
-        //     supabaseExistingItem
-        //   }`,
-        // );
+        console.log(
+          `reduxCartItem key: ${key} not found for supabaseExistingItem:`,
+        );
+
+        const { data: productInfo } = await supabase
+          .from('products_sizes')
+          .select('product_id')
+          .eq('id', reduxCartitem.id);
 
         // Insert new item
         itemsToInsertOrUpdate.push({
-          // cartItem_id: undefined,
-          cartItem_id: crossRefExistingItem!.id,
+          cartItem_id: undefined,
+          // cartItem_id: crossRefExistingItem?.id,
           cart_id: cartId,
           // product_id: reduxCartitem.id,
-          product_id: crossRefExistingItem!.product_id,
+          product_id: productInfo?.[0]?.product_id,
           quantity: reduxCartitem.quantity,
           product_size_id: reduxCartitem.id,
           price: reduxCartitem.price,
           // size_id: sizeId,
         });
+
+        console.log('new item to insert in suapbase: ', itemsToInsertOrUpdate);
       }
     }
 
