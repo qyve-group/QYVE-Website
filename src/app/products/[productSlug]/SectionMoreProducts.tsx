@@ -55,7 +55,7 @@ const SectionMoreProducts = ({ selectedProductName }: SelectedProduct) => {
               <ProductCard
                 key={product.name}
                 product={product}
-                className="border-neutral-300 rounded-xl"
+                className="rounded-xl border-neutral-300"
               />
             ))
         ) : (

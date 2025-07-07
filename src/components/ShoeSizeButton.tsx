@@ -14,8 +14,8 @@ interface ShoeSizeButtonProps {
   };
 
   onSelect: (args: {
-    selectedSize: string;
-    selectedProductSizeId: number;
+    selectedSize2: string;
+    selectedProductSizeId2: number;
   }) => void;
   isSelected: boolean;
 }
@@ -31,8 +31,8 @@ const ShoeSizeButton: FC<ShoeSizeButtonProps> = ({
       disabled={product.stock === 0}
       onClick={() => {
         onSelect({
-          selectedSize: product.size,
-          selectedProductSizeId: product.id,
+          selectedSize2: product.size,
+          selectedProductSizeId2: product.id,
         });
       }}
       className={`relative w-full rounded-xl py-10 font-medium disabled:bg-gray disabled:text-customGray-300 ${

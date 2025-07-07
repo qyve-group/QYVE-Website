@@ -19,6 +19,7 @@ interface Product {
   slug: string;
   previous_price: number;
   image_cover: string;
+  colors: string[];
 }
 
 const ShopProducts = () => {

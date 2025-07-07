@@ -16,7 +16,6 @@ import ImageShowCase from '@/components/ImageShowCase';
 import ShoeSizeButton from '@/components/ShoeSizeButton';
 // import { shoeSizes } from "@/data/content";
 // import nike_profile from '@/images/nike_profile.jpg';
-import { supabase } from '@/libs/supabaseClient';
 // import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
@@ -27,11 +26,11 @@ import type { RootState } from '@/store/store';
 
 interface SectionProductHeaderProps {
   // shots: StaticImageData[];
-  id: number;
+  // id: number;
   name: string;
   price: number;
   previous_price: number;
-  image_cover: string;
+  // image_cover: string;
   // sizes: string[];
   slug: string;
   products_sizes: {
@@ -41,7 +40,7 @@ interface SectionProductHeaderProps {
     product_id: number;
     product_color_id: number;
   }[];
-  colors: string[];
+  // colors: string[];
   product_shots: string[];
   product_colors: {
     id: number;
@@ -57,14 +56,14 @@ interface SectionProductHeaderProps {
 
 const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   // shots,
-  id,
+  // id,
   name,
   price,
   previous_price,
-  image_cover,
+  // image_cover,
   slug,
   products_sizes,
-  colors,
+  // colors,
   product_shots,
   product_colors,
   // currentPrice,
@@ -73,10 +72,10 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   // reviews,
   // image_cover,
 }) => {
-  const cart = useSelector((state: RootState) => state.cart); // Get latest cart state
+  // const cart = useSelector((state: RootState) => state.cart); // Get latest cart state
   const dispatch = useDispatch();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedId, setSelectedId] = useState<number>(0);
+  // const [selectedId, setSelectedId] = useState<number>(0);
   const [shots, setShots] = useState<string[]>([]);
   const [activeColor, setActiveColor] = useState(0);
   const [selectedColor, setSelectedColor] = useState('');
@@ -86,8 +85,8 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const [custom, setCustom] = useState('');
 
   const session = useSelector((state: RootState) => state.auth.session);
-  console.log('session sectopnproductheader: ', session);
-  console.log('slug -sectionproductheader: ', slug);
+  // console.log('session sectopnproductheader: ', session);
+  // console.log('slug -sectionproductheader: ', slug);
 
   const filteredProductSizes = products_sizes.filter(
     (ps) => ps.product_color_id === selectedColorId,
@@ -96,11 +95,11 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const router = useRouter();
 
   useEffect(() => {
-    console.log(product_shots);
+    // console.log(product_shots);
     const fetchShots = () => {
       setShots(product_shots);
 
-      console.log('shots: ', shots);
+      // console.log('shots: ', shots);
     };
 
     fetchShots();
@@ -153,14 +152,14 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   };
 
   const handleSelectSize = ({
-    selectedSize,
-    selectedProductSizeId,
+    selectedSize2,
+    selectedProductSizeId2,
   }: {
-    selectedSize: string;
-    selectedProductSizeId: number;
+    selectedSize2: string;
+    selectedProductSizeId2: number;
   }) => {
-    setSelectedSize(selectedSize);
-    setSelectedProductSizeId(selectedProductSizeId);
+    setSelectedSize(selectedSize2);
+    setSelectedProductSizeId(selectedProductSizeId2);
   };
 
   return (
@@ -209,16 +208,16 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
         <div className="flex flex-col">
           {slug === 'jersey' ? (
-            <div className="flex md:flex-row flex-col">
-              <div className="basis-[40%]">
-                <p className="text-xl mb-5">Available colors</p>
-                <div className="flex flex-wrap gap-2 mb-5">
+            <div className="flex flex-col md:flex-row">
+              <div className="basis-2/5">
+                <p className="mb-5 text-xl">Available colors</p>
+                <div className="mb-5 flex flex-wrap gap-2">
                   {product_colors.map((pc, index) => (
                     <div
                       key={`${pc.product_id}-${pc.id}-${pc.color}`}
                       className={`relative ${
                         activeColor === index ? 'border-2 border-primary' : ''
-                      } h-[50px] overflow-hidden rounded-lg aspect-[4/3]`}
+                      } aspect-[4/3] h-[50px] overflow-hidden rounded-lg`}
                     >
                       <button
                         className="relative size-full "
@@ -229,7 +228,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                           setSelectedColor(pc.color);
                           setSelectedImage(pc.image || '/qyve-black.png');
                           // setChosenColor(colorName || '');
-                          console.log(`Chosen pId: ${id}-${selectedId}`);
+                          // console.log(`Chosen pId: ${id}-${selectedId}`);
                         }}
                       >
                         <Image
@@ -247,12 +246,12 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                   ))}
                 </div>
               </div>
-              <div className="basis-[60%]">
-                <p className="text-xl mb-5">Customization</p>
+              <div className="basis-3/5">
+                <p className="mb-5 text-xl">Customization</p>
 
                 <textarea
                   id="custom"
-                  className="border border-gray-300 rounded-md p-2 w-3/4 md:w-full resize-none placeholder:text-sm"
+                  className="border-gray-300 w-3/4 resize-none rounded-md border p-2 placeholder:text-sm md:w-full"
                   placeholder="Name - Number e.g Max - 7"
                   onChange={(e) => setCustom(e.target.value)}
                 />
@@ -261,14 +260,14 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
           ) : (
             <div>
               <div>
-                <p className="text-xl mb-5">Available colors</p>
-                <div className="flex flex-wrap gap-2 mb-5">
+                <p className="mb-5 text-xl">Available colors</p>
+                <div className="mb-5 flex flex-wrap gap-2">
                   {product_colors.map((pc, index) => (
                     <div
                       key={`${pc.product_id}-${pc.id}-${pc.color}`}
                       className={`relative ${
                         activeColor === index ? 'border-2 border-primary' : ''
-                      } h-[50px] overflow-hidden rounded-lg aspect-[4/3]`}
+                      } aspect-[4/3] h-[50px] overflow-hidden rounded-lg`}
                     >
                       <button
                         className="relative size-full "
@@ -279,7 +278,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                           setSelectedColor(pc.color);
                           setSelectedImage(pc.image || '/qyve-black.png');
                           // setChosenColor(colorName || '');
-                          console.log(`Chosen pId: ${id}-${selectedId}`);
+                          // console.log(`Chosen pId: ${id}-${selectedId}`);
                         }}
                       >
                         <Image
@@ -331,7 +330,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
             Buy Now
           </ButtonPrimary>
           <ButtonSecondary
-            className="flex w-full items-center gap-1 border-2  text-white bg-black transition-all hover:bg-white hover:border-primary hover:text-black active:scale-95 active:text-white"
+            className="flex w-full items-center gap-1 border-2  bg-black text-white transition-all hover:border-primary hover:bg-white hover:text-black active:scale-95 active:text-white"
             onClick={handleAddToCart}
           >
             <BsBag /> Add to cart

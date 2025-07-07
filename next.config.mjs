@@ -35,6 +35,12 @@ export default bundleAnalyzer({
   },
   poweredByHeader: false,
   reactStrictMode: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+    // Or keep errors and warnings:
+    // removeConsole: { exclude: ['error', 'warn'] },
+  },
+
   webpack: (config) => {
     // config.externals is needed to resolve the following errors:
     // Module not found: Can't resolve 'bufferutil'

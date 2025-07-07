@@ -72,7 +72,7 @@ const MainNav = () => {
           <CartSideBar />
           <div
             // role="button"
-            tabIndex={0}
+            // tabIndex={0}
             className="relative cursor-pointer"
             // onClick={() => {
             //   setIsOpen(!isOpen);
@@ -130,13 +130,13 @@ const MainNav = () => {
                 )} */}
                 <Link
                   href="/my-orders"
-                  className="text-black hover:bg-gray-100 block px-4 py-2"
+                  className="hover:bg-gray-100 block px-4 py-2 text-black"
                 >
                   Orders
                 </Link>
                 <button
                   type="button"
-                  className="text-black hover:bg-gray-100 block px-4 py-2"
+                  className="hover:bg-gray-100 block px-4 py-2 text-black"
                   onClick={handleLogOut}
                   disabled={isLoggingOut}
                 >

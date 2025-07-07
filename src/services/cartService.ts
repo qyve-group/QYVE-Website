@@ -292,6 +292,7 @@ export const saveCartToSupabase = async (
           `reduxCartItem key: ${key} not found for supabaseExistingItem:`,
         );
 
+        /* eslint-disable no-await-in-loop */
         const { data: productInfo } = await supabase
           .from('products_sizes')
           .select('product_id')
@@ -336,7 +337,7 @@ export const saveCartToSupabase = async (
 
     for (const updateItem of updates) {
       if (updateItem.id) {
-        //this id is cartitem id
+        // this id is cartitem id
         // eslint-disable-next-line no-await-in-loop
         const { error } = await supabase
           .from('cart_items')

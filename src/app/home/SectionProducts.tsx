@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 // import Filter from '@/components/Filter';
@@ -8,7 +9,6 @@ import { productsSection } from '@/data/content';
 import { supabase } from '@/libs/supabaseClient';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import Heading from '@/shared/Heading/Heading';
-import Link from 'next/link';
 // import { useRouter } from 'next/navigation';
 
 interface Product {

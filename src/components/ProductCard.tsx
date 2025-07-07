@@ -2,9 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
+import { FaCircle } from 'react-icons/fa6';
 
 import type { ProductType } from '@/data/types';
-import { FaCircle } from 'react-icons/fa6';
 
 // import LikeButton from './LikeButton';
 
@@ -30,7 +30,7 @@ const ProductCard: FC<ProductCardProps> = ({
       <div
         className={`transitionEffect relative border p-3 shadow-sm ${className}`}
       >
-        <div className="relative aspect-[4/5] w-full rounded-xl overflow-hidden lg:h-[350px] 2xl:h-[400px]">
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl lg:h-[350px] 2xl:h-[400px]">
           {/* {product.justIn && (
           <div className="absolute left-6 top-0 rounded-b-lg bg-primary px-3 py-2 text-sm uppercase text-white shadow-md">
             Just In!
@@ -41,11 +41,11 @@ const ProductCard: FC<ProductCardProps> = ({
           <Image
             src={product.image_cover}
             alt={`${product.name} cover photo`}
-            className="object-cover object-bottom z-0 rounded-xl"
+            className="z-0 rounded-xl object-cover object-bottom"
             fill
           />
 
-          <div className="absolute flex gap-3 bottom-0 right-0 z-20 px-2 py-1">
+          <div className="absolute bottom-0 right-0 z-20 flex gap-3 px-2 py-1">
             {product.colors.length > 1 ? (
               <div className="flex gap-2 text-2xl">
                 {product.colors.map((color, index) => (
@@ -55,9 +55,7 @@ const ProductCard: FC<ProductCardProps> = ({
                   />
                 ))}
               </div>
-            ) : (
-              <></>
-            )}
+            ) : null}
           </div>
         </div>
         <div className="mt-3 border-t">

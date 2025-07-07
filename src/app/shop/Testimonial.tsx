@@ -1,8 +1,6 @@
-import { FaRegStar } from 'react-icons/fa';
 import { CiFlag1 } from 'react-icons/ci';
-import { FaRunning } from 'react-icons/fa';
+import { FaRegStar, FaRunning, FaStar } from 'react-icons/fa';
 import { VscSmiley } from 'react-icons/vsc';
-import { FaStar } from 'react-icons/fa';
 
 const Testimonial = () => {
   return (
@@ -71,12 +69,12 @@ const Testimonial = () => {
             TRIED AND TESTED
           </div>
         </div> */}
-        <div className="mb-10 flex flex-col items-stretch justify-center gap-10 md:flex-row p-4">
+        <div className="mb-10 flex flex-col items-stretch justify-center gap-10 p-4 md:flex-row">
           <div className="flex-1 p-4 text-center">
-            <div className="flex flex-col gap-5 w-3/4">
+            <div className="flex w-3/4 flex-col gap-5">
               <div className="flex flex-row justify-center">
-                <CiFlag1 className="text-4xl mr-2 font bold" />
-                <div className=" font-bold text-2xl">Sapot Lokal</div>
+                <CiFlag1 className="font bold mr-2 text-4xl" />
+                <div className=" text-2xl font-bold">Sapot Lokal</div>
               </div>
               <div className="text-justify">
                 Malaysia’s homegrown sports brand, wear it with pride.
@@ -86,10 +84,10 @@ const Testimonial = () => {
           </div>
 
           <div className="flex-1 bg-white p-4 text-center ">
-            <div className="flex flex-col gap-5 w-3/4">
+            <div className="flex w-3/4 flex-col gap-5">
               <div className="flex flex-row justify-center ">
-                <FaRunning className="text-4xl mr-2" />
-                <div className="font-bold text-2xl">Performance First</div>
+                <FaRunning className="mr-2 text-4xl" />
+                <div className="text-2xl font-bold">Performance First</div>
               </div>
               <div className="text-justify">
                 Gear that enhances your performance with every play.{' '}
@@ -99,10 +97,10 @@ const Testimonial = () => {
           </div>
 
           <div className="flex-1  bg-white p-4 text-center ">
-            <div className="flex flex-col gap-5 w-3/4">
+            <div className="flex w-3/4 flex-col gap-5">
               <div className="flex flex-row justify-center">
-                <VscSmiley className="text-4xl mr-2" />
-                <div className="font-bold text-2xl">Crafted with Care</div>
+                <VscSmiley className="mr-2 text-4xl" />
+                <div className="text-2xl font-bold">Crafted with Care</div>
               </div>
               <div className="text-justify">
                 Made by craftsmen who ensures every stitch is perfect.{' '}

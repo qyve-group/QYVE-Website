@@ -68,15 +68,15 @@ const SingleProductPage = async ({ params }: Props) => {
       <div className="mb-20">
         <SectionProductHeader
           // shots={pathOr([], ["shots"], selectedProduct)}
-          id={pathOr(0, ['id'], selectedProduct)}
+          // id={pathOr(0, ['id'], selectedProduct)}
           name={pathOr('', ['name'], selectedProduct)}
           price={pathOr(0, ['price'], selectedProduct)}
           previous_price={pathOr(0, ['previous_price'], selectedProduct)}
-          image_cover={pathOr('', ['image_cover'], selectedProduct)}
+          // image_cover={pathOr('', ['image_cover'], selectedProduct)}
           slug={params.productSlug}
           // sizes={pathOr([], ["sizes"], selectedProduct)}
           products_sizes={pathOr([], ['products_sizes'], selectedProduct)}
-          colors={pathOr([], ['colors'], selectedProduct)}
+          // colors={pathOr([], ['colors'], selectedProduct)}
           product_shots={selectedProduct?.product_shots?.[0]?.images || []}
           // product_shots={images:{pathOr([], ['product_shots', 'images'], selectedProduct)}}
           // product_colors={pathOr([], ['product_colors'], selectedProduct)  as { id: number; color: string; stock: number }
