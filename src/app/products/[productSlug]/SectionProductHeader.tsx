@@ -82,7 +82,6 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
   const [selectedColorId, setSelectedColorId] = useState(1);
-  const [uniqueSizeArray, setUniqueSizeArray] = useState<string[]>([]);
   const [selectedProductSizeId, setSelectedProductSizeId] = useState<number>();
   const [custom, setCustom] = useState('');
 
@@ -119,7 +118,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
     dispatch(
       addToCart({
         id: selectedProductSizeId!,
-        name: selectedColor,
+        name: `${selectedColor}-${custom}`,
         price,
         product_size: selectedSize,
         // image: shots[0], // Assuming first image is the main product image

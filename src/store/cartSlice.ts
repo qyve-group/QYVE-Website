@@ -74,7 +74,7 @@ const cartSlice = createSlice({
       state.totalQuantity += 1;
       state.totalPrice += action.payload.price;
 
-      // console.log*('After adding item:', JSON.parse(JSON.stringify(state))); // Log after update
+      console.log('After adding item:', JSON.parse(JSON.stringify(state))); // Log after update
     },
 
     // Remove item from cart

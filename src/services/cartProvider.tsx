@@ -21,7 +21,7 @@ const CartSync = () => {
     if (!auth.user || cart.items.length === 0) return;
 
     console.log('cartProvider.tsx ----- Syncing redux cart to supabase...');
-    // console.log*('cart items: ', cart.items);
+    console.log('cart items: ', cart.items);
 
     try {
       debouncedSaveCart(auth.user.id, cart.items);

@@ -33,17 +33,14 @@ const Values = () => {
       come from real stories, real struggles, and real feedback.`,
           },
           {
-            src: '/jersey_pic_2.jpg',
-            alt: 'Jersey Picture',
-            text: `We blend performance insights with smart design. Through QYVE
-      Plus, we aim to use athlete data to shape better products and
-      unlock deeper understanding of the game...`,
+            src: '/qyveplus.png',
+            alt: 'Qyve+',
+            text: `QYVE+ is where data meets purpose. It's our upcoming tool to help athletes understand, grow, and play with intention—powered by the numbers that matter`,
           },
           {
-            src: '/jersey_pic.jpg',
+            src: '/firstqyve.png',
             alt: 'Jersey Picture',
-            text: `Every stitch, sole, and panel is made to move. We prioritize grip,
-      comfort, and durability to ensure you play at your peak...`,
+            text: `QYVE Infinitus is where it all begins. Our first product, made for players who deserve a local brand they can stand behind. There’s more coming — stay ready.`,
           },
           {
             src: '/jersey_pic.jpg',

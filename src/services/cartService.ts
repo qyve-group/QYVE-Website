@@ -15,6 +15,7 @@ type CartItemToPush = {
   quantity: number;
   product_size_id: number;
   price: number;
+  remarks: string;
   // size_id: number;
 };
 
@@ -275,6 +276,7 @@ export const saveCartToSupabase = async (
             quantity: reduxCartitem.quantity,
             product_size_id: reduxCartitem.id,
             price: reduxCartitem.price,
+            remarks: reduxCartitem.name,
             // size_id: sizeId,
           });
         }
@@ -305,6 +307,7 @@ export const saveCartToSupabase = async (
           quantity: reduxCartitem.quantity,
           product_size_id: reduxCartitem.id,
           price: reduxCartitem.price,
+          remarks: reduxCartitem.name,
           // size_id: sizeId,
         });
 
@@ -326,6 +329,7 @@ export const saveCartToSupabase = async (
       quantity: item.quantity,
       product_size_id: item.product_size_id,
       price: item.price,
+      remarks: item.remarks,
     }));
 
     console.log('Updates - cartService.tsx: ', updates);
