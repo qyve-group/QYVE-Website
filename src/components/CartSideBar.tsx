@@ -61,9 +61,7 @@ const CartSideBar: React.FC = () => {
       // <div key={id} className="flex py-5 last:pb-0">
       <div key={`${id}-${product_size}`} className="flex py-5 last:pb-0">
         {/* Product Image */}
-        <div>
-          {id} {name}
-        </div>
+
         <div className="relative size-24 shrink-0 overflow-hidden rounded-xl">
           <Image
             fill

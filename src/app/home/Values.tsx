@@ -22,15 +22,14 @@ const Values = () => {
 
   return (
     <div>
-      <div className="mt-10 grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ">
         {[
           {
             src: '/pbs.jpg',
             alt: 'PBS Picture',
             text: `Our community is the centerpoint of our brand. Everything starts
-      with the people who wear our gear. We believe in building
-      alongside athletes—not just for them—because the best products
-      come from real stories, real struggles, and real feedback.`,
+      with the people who wear our gear. We believe in cherishing
+      real stories, real struggles, and real feedback.`,
           },
           {
             src: '/qyveplus.png',
@@ -62,7 +61,7 @@ const Values = () => {
             />
             <div
               // data-aos="fade-up"
-              className="absolute inset-0 flex items-center px-4 text-sm text-white opacity-0 transition-all duration-700 group-hover:translate-y-[30%] group-hover:opacity-100 sm:text-base"
+              className="absolute top-0 left-2 right-2 text-sm inset-0 text-white opacity-0 transition-all duration-700 group-hover:translate-y-[30%] group-hover:opacity-100 sm:text-base"
             >
               <p className="text-shadow-md">{text}</p>
             </div>
