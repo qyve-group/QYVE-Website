@@ -102,9 +102,10 @@ const ShippingProgress = () => {
         .eq('user_id', userId?.id);
 
       if (error) {
-        // console.error*('Error fetching order ID:', error);
+        console.error('Error fetching order ID my-orders:', error);
         return;
       }
+      console.log(data);
 
       if (!data || data.length === 0) {
         // console.log*('No orders found for this user.');
