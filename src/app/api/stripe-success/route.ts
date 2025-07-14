@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-08-01', // or your current version
+  apiVersion: '2025-06-30.basil', // ✅ required for proper types
 });
-
 export async function GET(req: NextRequest) {
   const sessionId = req.nextUrl.searchParams.get('session_id');
 
@@ -13,39 +12,38 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    // 1. Get the Checkout Session
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    // 2. Get the PaymentIntent (charges will be expanded)
+    // Step 2: Access the PaymentIntent ID from the session
+    const paymentIntentId = session.payment_intent as string;
+
+    // Step 3: Retrieve the PaymentIntent using that ID
     const paymentIntent = await stripe.paymentIntents.retrieve(
-      session.payment_intent as string,
+      paymentIntentId,
       {
-        expand: ['charges.data.payment_method_details'],
+        expand: ['latest_charge.payment_method_details'], // expand if needed
       },
     );
 
-    // 3. Get the Charge
-    const charge = paymentIntent.charges?.data?.[0];
+    const charge = paymentIntent.latest_charge as Stripe.Charge;
 
     if (!charge) {
       return NextResponse.json({ error: 'No charge found' }, { status: 404 });
     }
 
-    // 4. Build FPX Confirmation Data
-    const result = {
+    return NextResponse.json({
       transactionDateTime: new Date(charge.created * 1000).toLocaleString(),
       amount: (charge.amount / 100).toFixed(2),
-      sellerOrderNo: charge.statement_descriptor,
-      fpxTransactionId: charge.payment_method_details?.fpx?.transaction_id,
-      buyerBank: charge.payment_method_details?.fpx?.bank,
+      sellerOrderNo: charge.statement_descriptor || 'N/A',
+      fpxTransactionId:
+        charge.payment_method_details?.fpx?.transaction_id || 'N/A',
+      buyerBank: charge.payment_method_details?.fpx?.bank || 'N/A',
       status: charge.status,
-    };
-
-    return NextResponse.json(result);
+    });
   } catch (err: any) {
-    console.error('Stripe Success API Error:', err.message);
+    console.error('Stripe Error:', err.message);
     return NextResponse.json(
-      { error: 'Failed to retrieve payment info' },
+      { error: 'Failed to retrieve payment' },
       { status: 500 },
     );
   }
