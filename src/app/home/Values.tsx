@@ -61,7 +61,7 @@ const Values = () => {
             />
             <div
               // data-aos="fade-up"
-              className="absolute top-0 left-2 right-2 text-sm inset-0 text-white opacity-0 transition-all duration-700 group-hover:translate-y-[30%] group-hover:opacity-100 sm:text-base"
+              className="absolute inset-0 inset-x-2 text-sm text-white opacity-0 transition-all duration-700 group-hover:translate-y-[30%] group-hover:opacity-100 sm:text-base"
             >
               <p className="text-shadow-md">{text}</p>
             </div>

@@ -24,8 +24,8 @@ export default function SuccessPage() {
   if (!transaction) return <p>Loading...</p>;
 
   return (
-    <div className="max-w-md mx-auto mt-10 border p-6 rounded shadow">
-      <h1 className="text-xl font-bold mb-4">💳 FPX Payment Confirmation</h1>
+    <div className="mx-auto mt-10 max-w-md rounded border p-6 shadow">
+      <h1 className="mb-4 text-xl font-bold">💳 FPX Payment Confirmation</h1>
       <ul className="space-y-2 text-sm">
         <li>
           <strong>Transaction Date & Time:</strong>{' '}
