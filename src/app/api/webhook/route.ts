@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
+import { notifyTelegram } from '@/libs/telegram';
 
 import { supabase } from '@/libs/supabaseClient';
 
@@ -293,25 +294,36 @@ export async function POST(req: Request) {
     //   }),
     // });
 
-    const res = await fetch(
-      `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: process.env.GROUP_CHAT_ID,
-          text: `New paid order!\nOrder ID ${orderId}\nCustomer: ${orderAddress.fname} ${orderAddress.lname}\n
-          Email: ${contactInfo.email}\nPhone number: ${contactInfo.phone}\n\n
-          Address: ${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}`,
-        }),
-      },
-    );
-    const json = await res.json();
-    if (!res.ok) {
-      console.error('Telegram Error:', json);
-    } else {
-      console.log('Message sent:', json);
-    }
+    // try {
+    //   const body = await req.json();
+    //   console.log('✅ Telegram Webhook Payload:', body);
+
+    //   // Always return quickly
+    //   return NextResponse.json({ ok: true });
+    // } catch (error) {
+    //   console.error('❌ Error in Telegram Webhook:', error);
+    //   return NextResponse.json({ error: 'Bad Request' }, { status: 400 });
+    // }
+
+    // const res = await fetch(
+    //   `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
+    //   {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({
+    //       chat_id: process.env.GROUP_CHAT_ID,
+    //       text: `New paid order!\nOrder ID ${orderId}\nCustomer: ${orderAddress.fname} ${orderAddress.lname}\n
+    //       Email: ${contactInfo.email}\nPhone number: ${contactInfo.phone}\n\n
+    //       Address: ${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}`,
+    //     }),
+    //   },
+    // );
+    // const json = await res.json();
+    // if (!res.ok) {
+    //   console.error('Telegram Error:', json);
+    // } else {
+    //   console.log('Message sent:', json);
+    // }
 
     // console.log*('✅ Payment Successful:', session);
     // console.log('order address: ', orderAddress);
@@ -354,6 +366,8 @@ export async function POST(req: Request) {
     // const data = await response.json();
 
     // return NextResponse.json(data);
+
+    await notifyTelegram(orderId, orderAddress, contactInfo);
   }
 
   return NextResponse.json({ received: true });
