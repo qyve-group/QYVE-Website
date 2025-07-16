@@ -5,6 +5,8 @@ export async function notifyTelegram(
   orderAddress: any,
   contactInfo: any,
 ) {
+  console.log('calling notifyTelegram');
+
   const res = await fetch(
     `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
     {
