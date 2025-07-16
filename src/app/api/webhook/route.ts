@@ -9,7 +9,7 @@ import { notifyTelegram } from '@/libs/telegram';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
-  // console.log('Webhook called');
+  console.log('Webhook called');
 
   const sig = req.headers.get('stripe-signature');
 
