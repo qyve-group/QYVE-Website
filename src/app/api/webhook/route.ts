@@ -2,9 +2,9 @@ import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
-import { notifyTelegram } from '@/libs/telegram';
 
 import { supabase } from '@/libs/supabaseClient';
+import { notifyTelegram } from '@/libs/telegram';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
