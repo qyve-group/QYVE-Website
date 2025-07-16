@@ -187,18 +187,24 @@ export async function POST(req: Request) {
       // Adding ordered items into order_items
       const orderItemsId = uuidv4();
 
-      const { error: orderItemsError } = await supabaseAdmin
-        .from('order_items')
-        .insert({
-          id: orderItemsId,
-          order_id: orderId,
-          product_size_id: item.product_size_id,
-          quantity: item.quantity,
-          price: item.price,
-        });
+      console.log('created orderItemsId: ', orderItemsId);
 
-      if (orderItemsError) {
-        throw orderItemsError;
+      try {
+        const { error: orderItemsError } = await supabaseAdmin
+          .from('order_items')
+          .insert({
+            id: orderItemsId,
+            order_id: orderId,
+            product_size_id: item.product_size_id,
+            quantity: item.quantity,
+            price: item.price,
+          });
+
+        if (orderItemsError) {
+          console.error('Insert error: ', orderItemsError);
+        }
+      } catch (error) {
+        console.error('Unexpected insert failure: ', error);
       }
     }
 
