@@ -2,10 +2,11 @@ import { createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
 
 export const config = {
-  matcher: [
-    // apply middleware to everything EXCEPT /api/webhook
-    '/((?!api/webhook).*)',
-  ],
+  // matcher: [
+  //   // apply middleware to everything EXCEPT /api/webhook
+  //   '/((?!api/webhook).*)',
+  // ],
+  matcher: '/((?!api|static|\\..*|_next|auth).*)',
 };
 
 export async function updateSession(request: NextRequest) {
