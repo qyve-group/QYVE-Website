@@ -1,12 +1,21 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
+// import { headers } from 'next/headers';
 import Stripe from 'stripe';
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 import { supabase } from '@/libs/supabaseClient';
 import { notifyTelegram } from '@/libs/telegram';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-06-30.basil',
+});
+
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
 
 export async function POST(req: Request) {
   console.log('Webhook called');
@@ -21,28 +30,31 @@ export async function POST(req: Request) {
     );
   }
 
+  const body = await req.arrayBuffer();
+  const rawBody = Buffer.from(body);
+
   // let rawBody = await req.arrayBuffer(); // This is the only way to get raw body in App Router
 
-  let event;
+  let event: Stripe.Event;
   try {
     // const rawBody = await req.text(); // Get raw body for verification
     // const rawBody = await req.arrayBuffer();
     // const rawBodyString = Buffer.from(rawBody).toString("utf8"); // Convert to string for Stripe verification
     // ✅ Manually get raw body
-    const bodyBuffer = await req.arrayBuffer();
-    const rawBody = Buffer.from(bodyBuffer);
+    // const bodyBuffer = await req.arrayBuffer();
+    // const rawBody = Buffer.from(bodyBuffer);
 
     // console.log('📩 Raw body received:', rawBody);
 
     event = stripe.webhooks.constructEvent(
       rawBody,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET as string,
+      process.env.STRIPE_WEBHOOK_SECRET! as string,
     );
     // event = stripe.webhooks.constructEvent(rawBodyString, sig, process.env.STRIPE_WEBHOOK_SECRET!);
     // // console.log*('✅ Event parsed:', event);
-  } catch (err) {
-    // console.error*('❌ Webhook Error:', err);
+  } catch (err: any) {
+    console.error('❌ Webhook signature verification failed:', err.message);
     return NextResponse.json(
       { error: `Webhook Error: ${(err as Error).message}` },
       { status: 400 },
