@@ -21,6 +21,8 @@ export async function POST(req: Request) {
     );
   }
 
+  // let rawBody = await req.arrayBuffer(); // This is the only way to get raw body in App Router
+
   let event;
   try {
     // const rawBody = await req.text(); // Get raw body for verification
@@ -29,6 +31,7 @@ export async function POST(req: Request) {
     // ✅ Manually get raw body
     const bodyBuffer = await req.arrayBuffer();
     const rawBody = Buffer.from(bodyBuffer);
+
     // console.log('📩 Raw body received:', rawBody);
 
     event = stripe.webhooks.constructEvent(
