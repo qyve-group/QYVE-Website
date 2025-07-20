@@ -2,9 +2,12 @@
 
 'use client';
 
+// import { XCircle, ArrowLeft, RefreshCw, HelpCircle } from 'lucide-react';
+import { ArrowLeft, RefreshCw, XCircle } from 'lucide-react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import Link from 'next/link';
+
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -13,8 +16,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-// import { XCircle, ArrowLeft, RefreshCw, HelpCircle } from 'lucide-react';
-import { XCircle, ArrowLeft, RefreshCw } from 'lucide-react';
 
 const PaymentFailed = () => {
   const searchParams = useSearchParams();
@@ -55,11 +56,11 @@ const PaymentFailed = () => {
   const isCancelled = error === 'cancelled';
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md text-center">
         <CardHeader className="pb-4">
-          <div className="mx-auto mb-4 w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
-            <XCircle className="w-8 h-8 text-red-600" />
+          <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-red-100">
+            <XCircle className="size-8 text-red-600" />
           </div>
           <CardTitle className="text-2xl text-foreground">
             {isCancelled ? 'Payment Cancelled' : 'Payment Failed'}
@@ -71,13 +72,13 @@ const PaymentFailed = () => {
 
         <CardContent className="space-y-4">
           {errorCode && (
-            <div className="p-3 bg-muted rounded-lg">
+            <div className="rounded-lg bg-muted p-3">
               <p className="text-sm text-muted-foreground">Error Code</p>
-              <p className="text-sm font-mono">{errorCode}</p>
+              <p className="font-mono text-sm">{errorCode}</p>
             </div>
           )}
 
-          <div className="text-sm text-muted-foreground space-y-2">
+          <div className="space-y-2 text-sm text-muted-foreground">
             {isCardError && (
               <>
                 <p>💳 Try using a different card</p>
@@ -96,13 +97,13 @@ const PaymentFailed = () => {
 
           <div className="space-y-3 pt-4">
             <Button className="w-full" onClick={() => window.history.back()}>
-              <RefreshCw className="mr-2 h-4 w-4" />
+              <RefreshCw className="mr-2 size-4" />
               Try Payment Again
             </Button>
 
             <Button variant="outline" asChild className="w-full">
               <Link href="/home">
-                <ArrowLeft className="mr-2 h-4 w-4" />
+                <ArrowLeft className="mr-2 size-4" />
                 Back to Home
               </Link>
             </Button>

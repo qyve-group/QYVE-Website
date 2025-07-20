@@ -53,9 +53,20 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import {
+  ArrowRight,
+  Building2,
+  CheckCircle,
+  // Eye,
+  // EyeOff,
+  CreditCard,
+  Download,
+  // Copy,
+  // Check,
+} from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -65,17 +76,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  CheckCircle,
-  ArrowRight,
-  Download,
-  // Eye,
-  // EyeOff,
-  CreditCard,
-  Building2,
-  // Copy,
-  // Check,
-} from 'lucide-react';
 
 const PaymentSuccess = () => {
   const searchParams = useSearchParams();
@@ -106,16 +106,16 @@ const PaymentSuccess = () => {
   //   searchParams?.get('session_id') || 'cs_test_example123456789';
   // const paymentIntentId = transaction.payment_intent;
   // const amount = parseInt(searchParams?.get('amount') || '2999');
-  const amount = transaction.amount;
-  const paymentMethod = transaction.paymentMethod;
+  const { amount } = transaction;
+  const { paymentMethod } = transaction;
   // const currency = searchParams?.get('currency') || 'myr';
   const dateTime = transaction.transactionDateTime;
   // const paymentMethod = searchParams?.get('payment_method') || 'card';
   // const last4 = searchParams?.get('last4') || '4242';
   // const brand = searchParams?.get('brand') || 'visa';
-  const fpxBank = transaction.fpxBank;
-  const brand = transaction.brand;
-  const last4 = transaction.last4;
+  const { fpxBank } = transaction;
+  const { brand } = transaction;
+  const { last4 } = transaction;
 
   // const mockSessionMetadata = {
   //   order_id: 'ORD-2024-001',
@@ -162,18 +162,19 @@ const PaymentSuccess = () => {
   const getPaymentMethodIcon = (type: string) => {
     switch (type) {
       case 'card':
-        return <CreditCard className="w-4 h-4" />;
+        return <CreditCard className="size-4" />;
       case 'fpx':
-        return <Building2 className="w-4 h-4" />;
+        return <Building2 className="size-4" />;
       default:
-        return <CreditCard className="w-4 h-4" />;
+        return <CreditCard className="size-4" />;
     }
   };
 
   const getPaymentMethodDisplay = () => {
     if (paymentMethod === 'card') {
       return `${brand.toUpperCase()} •••• ${last4}`;
-    } else if (paymentMethod === 'fpx') {
+    }
+    if (paymentMethod === 'fpx') {
       return `FPX - ${
         fpxBank
           .split('_') // Split by underscore -> ['bank', 'rakyat']
@@ -196,12 +197,12 @@ const PaymentSuccess = () => {
   // };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-2xl space-y-6">
-        <Card className="text-center animate-fade-in">
+        <Card className="animate-fade-in text-center">
           <CardHeader className="pb-4">
-            <div className="mx-auto mb-4 w-16 h-16 bg-green-100 rounded-full flex items-center justify-center animate-scale-in">
-              <CheckCircle className="w-8 h-8 text-green-600" />
+            <div className="animate-scale-in mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-green-100">
+              <CheckCircle className="size-8 text-green-600" />
             </div>
             <CardTitle className="text-2xl text-foreground">
               Payment Successful!
@@ -213,15 +214,15 @@ const PaymentSuccess = () => {
           </CardHeader>
 
           <CardContent className="space-y-4">
-            <div className="p-4 bg-muted rounded-lg text-left space-y-3">
-              <div className="flex justify-between items-center">
+            <div className="space-y-3 rounded-lg bg-muted p-4 text-left">
+              <div className="flex items-center justify-between">
                 <span className="font-medium">Amount Paid</span>
                 <span className="text-lg font-bold text-green-600">
                   {`RM ${amount}`}
                 </span>
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <span className="font-medium">Payment Method</span>
                 <div className="flex items-center gap-2">
                   {getPaymentMethodIcon(paymentMethod)}
@@ -231,14 +232,14 @@ const PaymentSuccess = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <span className="font-medium">Transaction Date</span>
                 <span>{dateTime}</span>
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <span className="font-medium">Status</span>
-                <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                <span className="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
                   Completed
                 </span>
               </div>
@@ -274,7 +275,7 @@ const PaymentSuccess = () => {
               ))}
             </div> */}
 
-            <div className="text-sm text-muted-foreground space-y-2">
+            <div className="space-y-2 text-sm text-muted-foreground">
               <p>✅ Payment processed securely</p>
               <p>📧 Confirmation email sent</p>
               <p>🔒 Your information is protected</p>
@@ -284,12 +285,12 @@ const PaymentSuccess = () => {
               <Button asChild className="w-full">
                 <Link href="/">
                   Continue to Dashboard
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRight className="ml-2 size-4" />
                 </Link>
               </Button>
 
               <Button variant="outline" className="w-full">
-                <Download className="mr-2 h-4 w-4" />
+                <Download className="mr-2 size-4" />
                 Download Receipt
               </Button>
             </div>
