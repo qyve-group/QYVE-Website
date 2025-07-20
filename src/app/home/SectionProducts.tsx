@@ -34,7 +34,10 @@ const SectionProducts = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data, error } = await supabase.from('products').select();
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .in('id', [7, 9, 6]);
 
       // console.log*('Fetched products:', data);
       // console.log*('Supabase error:', error);

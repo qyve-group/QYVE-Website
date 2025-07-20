@@ -22,7 +22,11 @@ export const submitLogin = async (email: string, password: string) => {
   });
 
   if (error) {
-    throw error;
+    if (error.message === 'Invalid login credentials') {
+      throw new Error('Your email or password is incorrect.');
+    }
+
+    throw new Error('Something went wrong. Please try again later.');
   }
 
   store.dispatch(setUser({ user: data.user, session: data.session }));

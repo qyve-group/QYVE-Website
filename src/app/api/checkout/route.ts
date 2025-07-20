@@ -49,7 +49,7 @@ export async function POST(req: Request) {
       // success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/home`,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       customer_email: orderContact.email,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/failed`,
       metadata: {
         user_id: userId ?? 'unknown user',
         order_address: JSON.stringify(orderAddress),

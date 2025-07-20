@@ -16,6 +16,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const router = useRouter();
+  const [errMessage, setErrMessage] = useState<string>('');
 
   const submitForm = async () => {
     try {
@@ -27,6 +28,16 @@ const LoginForm = () => {
       router.push('/home');
     } catch (error) {
       // console.error*('Error logging in: ', error);
+      // alert(error.message);
+      if (error instanceof Error) {
+        // alert(error.message);
+        // <div>{error.message}</div>;
+        setErrMessage(error.message);
+      } else {
+        // alert('An unexpected error occurred.');
+        // <div>An unexpected error occurred</div>;
+        setErrMessage('An unexpected error occured.');
+      }
     }
   };
 
@@ -141,8 +152,14 @@ const LoginForm = () => {
                   }}
                 />
               </FormItem>
+              {errMessage && (
+                <div className=" mx-auto max-w-md text-red-500">
+                  {errMessage}
+                </div>
+              )}
               <ButtonPrimary onClick={submitForm}>Login</ButtonPrimary>
             </div>
+
             <div className="flex flex-col items-center justify-center gap-2">
               <Link href="/forgot-pass" className="text-sm text-primary">
                 Forgot password

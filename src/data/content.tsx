@@ -79,27 +79,32 @@ export const topNavLinks: NavItemType[] = [
 ];
 
 export const NavLinks: NavItemType[] = [
+  // {
+  //   id: 'ee46t',
+  //   name: 'Home',
+  //   href: '/home',
+  // },
   {
-    id: 'ee46t',
-    name: 'Home',
-    href: '/home',
+    id: 'eeshop',
+    name: 'Shop',
+    href: '/shop',
   },
-  {
-    id: 'eerrrt',
-    name: 'Blog',
-    href: '/blog',
-  },
-  {
-    id: 'eexct',
-    name: 'Collection',
-    href: '/products',
-  },
+  // {
+  //   id: 'eerrrt',
+  //   name: 'Blog',
+  //   href: '/blog',
+  // },
+  // {
+  //   id: 'eexct',
+  //   name: 'Collection',
+  //   href: '/products',
+  // },
 
-  {
-    id: 'h6ii8g',
-    name: 'Contact',
-    href: '/contact',
-  },
+  // {
+  //   id: 'h6ii8g',
+  //   name: 'Contact',
+  //   href: '/contact',
+  // },
   {
     id: 'h678ty',
     name: 'FAQ',

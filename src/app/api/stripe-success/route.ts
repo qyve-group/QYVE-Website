@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
 
     // Step 2: Access the PaymentIntent ID from the session
     const paymentIntentId = session.payment_intent as string;
+    // console.log('paymentintent: ', paymentIntentId);
 
     // Step 3: Retrieve the PaymentIntent using that ID
     const paymentIntent = await stripe.paymentIntents.retrieve(
@@ -27,6 +28,8 @@ export async function GET(req: NextRequest) {
     );
 
     const charge = paymentIntent.latest_charge as Stripe.Charge;
+    console.log('Payment intent/charge: ', charge);
+    console.log('Payment method: ', charge.payment_method_details?.type);
 
     if (!charge) {
       return NextResponse.json({ error: 'No charge found' }, { status: 404 });
@@ -38,8 +41,11 @@ export async function GET(req: NextRequest) {
       sellerOrderNo: charge.statement_descriptor || 'N/A',
       fpxTransactionId:
         charge.payment_method_details?.fpx?.transaction_id || 'N/A',
-      buyerBank: charge.payment_method_details?.fpx?.bank || 'N/A',
+      fpxBank: charge.payment_method_details?.fpx?.bank || 'N/A',
       status: charge.status,
+      paymentMethod: charge.payment_method_details?.type,
+      last4: charge.payment_method_details?.card?.last4,
+      brand: charge.payment_method_details?.card?.brand, // e.g. 'visa'
     });
   } catch (err: any) {
     console.error('Stripe Error:', err.message);
