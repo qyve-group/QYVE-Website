@@ -30,16 +30,16 @@ const Heading: React.FC<HeadingProps> = ({
     >
       <div
         className={
-          isCenter ? 'mx-auto mb-2 w-full max-w-3xl text-center' : 'max-w-4xl'
+          isCenter ? 'mx-auto mb-2 w-3/4 max-w-3xl text-center' : 'max-w-4xl'
         }
       >
         {title && (
-          <p className="text-md font-medium uppercase text-primary">{title}</p>
+          <p className="text-2xl font-medium uppercase text-primary">{title}</p>
         )}
         <h2
           style={{ lineHeight: '1.2em' }}
           className={`${
-            isMain ? 'lineHeight text-xl lg:text-[55px]' : 'text-3xl'
+            isMain ? 'lineHeight text-lg ' : 'text-2xl'
           }  font-medium`}
           {...args}
         >

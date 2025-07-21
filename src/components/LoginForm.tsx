@@ -100,7 +100,7 @@ const LoginForm = () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `http://localhost:3000/auth/callback`,
+        redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
       },
     });
     // if (error) // console.error*('Gogole Sign-In error: ', error);
@@ -109,14 +109,14 @@ const LoginForm = () => {
   return (
     <div className="nc-PageLogin" data-nc-id="PageLogin">
       <div className="container mb-24 lg:mb-32">
-        <h2 className="my-20 flex items-center justify-center text-3xl font-semibold leading-[115%] md:text-5xl md:leading-[115%]">
+        <h2 className="my-20 flex items-center justify-center font-myFont text-4xl italic leading-[115%] md:text-5xl md:leading-[115%]">
           Login
         </h2>
         <div className="mx-auto max-w-md">
           <div className="space-y-6">
             <div className="">
               <ButtonSecondary
-                className="flex w-full items-center gap-3 border-2 border-primary text-primary"
+                className="flex w-full items-center gap-3 border-2 border-black text-black hover:bg-black hover:text-primary"
                 onClick={handleGoogleSignIn}
               >
                 <FaGoogle className="text-2xl" /> Continue with Google
@@ -157,16 +157,24 @@ const LoginForm = () => {
                   {errMessage}
                 </div>
               )}
-              <ButtonPrimary onClick={submitForm}>Login</ButtonPrimary>
+              <ButtonPrimary
+                onClick={submitForm}
+                className="font-myFont italic hover:bg-black hover:text-primary"
+              >
+                Login
+              </ButtonPrimary>
             </div>
 
             <div className="flex flex-col items-center justify-center gap-2">
-              <Link href="/forgot-pass" className="text-sm text-primary">
+              <Link
+                href="/forgot-pass"
+                className="text-sm font-semibold text-black"
+              >
                 Forgot password
               </Link>
               <span className="block text-center text-sm text-neutral-500">
                 Don&apos;t have an account? {` `}
-                <Link href="/signup" className="text-primary">
+                <Link href="/signup" className="font-semibold text-black">
                   Signup
                 </Link>
               </span>

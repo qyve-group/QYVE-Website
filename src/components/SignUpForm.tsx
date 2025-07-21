@@ -26,13 +26,13 @@ const SignUpForm = () => {
   return (
     <div className={`nc-PageSignUp `} data-nc-id="PageSignUp">
       <div className="container mb-24 lg:mb-32">
-        <h2 className="my-20 flex items-center justify-center text-3xl font-semibold leading-[115%] md:text-5xl md:leading-[115%]">
+        <h2 className="my-20 flex items-center justify-center font-myFont text-3xl italic leading-[115%] md:text-5xl md:leading-[115%]">
           Signup
         </h2>
         <div className="mx-auto max-w-md ">
           <div className="space-y-6">
             <div className="">
-              <ButtonSecondary className="flex w-full items-center gap-3 border-2 border-primary text-primary">
+              <ButtonSecondary className="flex w-full items-center gap-3 border-2 border-black text-black hover:bg-black hover:text-primary">
                 <FaGoogle className="text-2xl" /> Continue with Google
               </ButtonSecondary>
             </div>
@@ -64,11 +64,16 @@ const SignUpForm = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </FormItem>
-              <ButtonPrimary onClick={submitForm}>Continue</ButtonPrimary>
+              <ButtonPrimary
+                onClick={submitForm}
+                className="font-myFont italic hover:bg-black hover:text-primary"
+              >
+                Continue
+              </ButtonPrimary>
             </div>
             <span className="block text-center text-sm text-neutral-500">
               Already have an account? {` `}
-              <Link href="/login" className="text-primary">
+              <Link href="/login" className="font-semibold text-black">
                 Login
               </Link>
             </span>

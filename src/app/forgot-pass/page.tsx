@@ -28,11 +28,11 @@ const PageForgotPass = () => {
         {/* ==== */}
         <span className="block text-center text-neutral-500">
           Go back for {` `}
-          <Link href="/login" className="text-primary">
+          <Link href="/login" className="font-semibold text-black">
             Sign in
           </Link>
           {` / `}
-          <Link href="/signup" className="text-primary">
+          <Link href="/signup" className="font-semibold text-black">
             Sign up
           </Link>
         </span>

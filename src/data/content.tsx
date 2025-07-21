@@ -776,123 +776,190 @@ export const faqsData = {
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget adipiscing nibh nunc. Velit rhoncus arcu velesaed.',
   faqs: [
     {
-      category: 'Shipping',
+      category: 'About QYVE',
       data: [
         {
-          question: 'How can I track my order?',
+          question: 'What is QYVE?',
           answer:
-            'You can track your order by logging into your account and checking the order status. Additionally, a tracking number will be provided in the shipping confirmation email.',
+            'QYVE is an innovative sports brand that blends performance, lifestyle and affordability.',
         },
         {
-          question: 'What is the estimated delivery time for my order?',
+          question: 'What does the name “QYVE” means?',
           answer:
-            'Delivery times vary based on your location. Typically, domestic orders take 3-5 business days, while international orders may take 7-14 business days.',
+            'QYVE is a crafted name that echoes our purpose: to deliver Quality products that support Your journey with Value and relentless Evolution. It’s our way of saying — own your journey, every step of the way',
         },
         {
-          question: 'Can I change my shipping address after placing an order?',
-          answer:
-            'Unfortunately, we cannot change the shipping address once the order is placed. Please double-check your information before completing the purchase.',
+          question: 'Where is QYVE based?',
+          answer: 'Our Tanah Air is Malaysia.',
         },
         {
-          question: 'Do you offer expedited shipping options?',
+          question: 'What makes QYVE different from other sportswear brands?',
           answer:
-            'Yes, we offer expedited shipping at an additional cost. You can choose your preferred shipping method during the checkout process.',
-        },
-        {
-          question: 'What should I do if my order is delayed or lost?',
-          answer:
-            'If your order is significantly delayed or lost, please contact our customer support team, and we will investigate the issue.',
+            'We’re proud to be born in Southeast Asia — and we’re here to change the game. QYVE is different because we design with purpose: to uplift local athletes, inspire a movement, and redefine what it means to be a sports brand in this region.',
         },
       ],
     },
+    // {
+    //   category: 'Shipping',
+    //   data: [
+    //     {
+    //       question: 'How can I track my order?',
+    //       answer:
+    //         'You can track your order by logging into your account and checking the order status. Additionally, a tracking number will be provided in the shipping confirmation email.',
+    //     },
+    //     {
+    //       question: 'What is the estimated delivery time for my order?',
+    //       answer:
+    //         'Delivery times vary based on your location. Typically, domestic orders take 3-5 business days, while international orders may take 7-14 business days.',
+    //     },
+    //     {
+    //       question: 'Can I change my shipping address after placing an order?',
+    //       answer:
+    //         'Unfortunately, we cannot change the shipping address once the order is placed. Please double-check your information before completing the purchase.',
+    //     },
+    //     {
+    //       question: 'Do you offer expedited shipping options?',
+    //       answer:
+    //         'Yes, we offer expedited shipping at an additional cost. You can choose your preferred shipping method during the checkout process.',
+    //     },
+    //     {
+    //       question: 'What should I do if my order is delayed or lost?',
+    //       answer:
+    //         'If your order is significantly delayed or lost, please contact our customer support team, and we will investigate the issue.',
+    //     },
+    //   ],
+    // },
     {
       category: 'Products',
       data: [
         {
-          question: 'How do I determine the right size for my sneakers?',
+          question: 'What is QYVE Infinitus?',
           answer:
-            'Refer to our size chart available on the product page. It provides measurements and guidelines to help you choose the correct size.',
+            'QYVE Infinitus is our first and flagship futsal shoe, built with simplicity. It is our Beginner series meant to cater to players who are just starting out and looking to unleash their potential. ',
         },
         {
-          question: 'Are your sneakers authentic?',
+          question: 'What sizes are available for QYVE Infinitus?',
           answer:
-            'Yes, we guarantee the authenticity of all our sneakers. We source them directly from authorized retailers and reputable suppliers.',
+            'Unfortunately, we have it available in Size EUR 40 and 41 and sold out from size EUR 42 to EUR 44 due to demand. However, we are working hard towards designing our next generation futsal shoe which will be available in many sizes. ',
         },
         {
-          question: "Can I return or exchange my sneakers if they don't fit?",
+          question: 'What are QYVE ProGrip Socks?',
           answer:
-            'Yes, we have a hassle-free return policy. You can return or exchange unworn sneakers within 30 days of receiving your order.',
+            'It is our best-selling anti-slip grip socks that are built with ProGrip technology, engineered to give you the maximum traction and boost your performance in-game. ',
         },
         {
-          question: 'Are the colors of the sneakers accurate in the photos?',
+          question: 'Are the QYVE ProGrip Socks only for Futsal?',
           answer:
-            'We strive to provide accurate color representation, but slight variations may occur due to monitor settings. Refer to product descriptions for additional details.',
+            'No, while it caters to the game of futsal’s agility and quick cuts, it is also widely used in other similar sports such as Padel, Pickle, Tennis, Badminton, Running and more. ',
         },
         {
-          question: 'Do you restock sold-out sneakers?',
+          question: 'How do I wash and care for ProGrip Socks?',
           answer:
-            'We restock popular styles based on demand. You can sign up for notifications to be informed when a specific product is back in stock.',
+            'Machine Washable at a maximum 30 degrees, no tumble dry and no iron can be used.',
+        },
+        {
+          question: 'What makes QYVE Recovery Slides unique?',
+          answer:
+            'It is designed with ultra-soft EVA foam that provides ergonomic value to your feet after a tiring game.',
+        },
+        {
+          question: 'Can I wear QYVE Recovery Slides daily?',
+          answer: 'Yes you can!',
+        },
+        {
+          question: 'How do I care for my QYVE Recovery Slides?',
+          answer:
+            'Take a wet cloth or tissue and wipe the surface for any excess dirt. If there’s any stubborn stains, run cold water over the Slides and gently scrub off the stain with soap. After cleaning, let the slippers air-dry naturally. Avoid using direct heat sources like hair dryers. When not in use, store your slippers in a cool, dry place and away from direct sunlight as it may deform the colour.',
+        },
+        {
+          question:
+            'What colour sizes are available for the QYVE Recovery Slides?',
+          answer:
+            'They are available in Black and Beige and in 4 sizes which are EUR 38-39, EUR40-41, EUR42-43 and EUR43-45.',
+        },
+        {
+          question: 'What material is the QYVE Retro Jersey made out of?',
+          answer:
+            'It is made out of Microfiber RJ which is a high-quality jersey material and is heat-resistant, sweat wicking and long-lasting.',
+        },
+        {
+          question: 'What does Leyenda Espesial mean?',
+          answer:
+            "Especially legendary, inspired by the Argentinian iconic world cup squad from 1994. The 1994 home kit was a striking update on the traditional Argentinian sky blue and white stripes and had great significance as Maradona was included in this squad after a long absence. Relieve the magic of 1994 with QYVE's refreshed design and celebrate history's favourite moments with more from our retro series.",
+        },
+        {
+          question: 'Can I customise the QYVE Retro Jersey?',
+          answer:
+            'Yes, you can! Contact us through our WhatsApp or contact form to let us know your name and number.',
+        },
+        {
+          question: 'What sizes are available for the QYVE Retro Jersey?',
+          answer: 'Available from size S to XXXL.',
         },
       ],
     },
     {
-      category: 'Payments',
+      category: 'Payment, Order and Shipping',
       data: [
         {
-          question: 'What payment methods do you accept?',
-          answer:
-            'We accept major credit cards, PayPal, and other secure payment methods. You can view the full list during the checkout process.',
+          question: 'How many payment options do you provide?',
+          answer: 'We accept major credit cards, debit cards and fpx.',
         },
         {
-          question: 'How can I apply a discount code to my order?',
+          question: 'How long does shipping take?',
           answer:
-            'Enter your discount code in the designated field during checkout. The discount will be applied to your total before payment.',
+            'All of Malaysia (except Sabah and Sarawak): 3-5 Working Days Sabah and Sarawak: 5-7 Working Days',
         },
         {
-          question: 'Can I modify or cancel my order after payment?',
+          question: 'Who is QYVE’s courier partner?',
           answer:
-            'Once an order is placed, it cannot be modified or canceled. Please review your order carefully before completing the purchase.',
+            'We use various service providers that can deliver the best service at the point of time.',
         },
         {
-          question: 'Is my payment information secure?',
+          question: 'How much is the shipping cost?',
           answer:
-            'Yes, we use industry-standard encryption to secure your payment information. Your data is protected and never stored on our servers.',
+            'RM 8 for all of Malaysia (except Sabah and Sarawak): RM 10 Sabah and Sarawak: RM15',
         },
         {
-          question: 'Do you offer gift cards?',
+          question: 'Can I track my order?',
           answer:
-            'Yes, we offer gift cards of various denominations. They make great presents for sneaker enthusiasts!',
+            'Yes, you will be provided the tracking number through email and in your accoutn under "my orders".',
+        },
+        {
+          question: 'What if I receive the wrong item or size',
+          answer:
+            'We have a money-back guarantee policy, so if you receive the wrong item or size, we will return or refund the item (subject to the return policy).',
         },
       ],
     },
     {
-      category: 'Returns',
+      category: 'Customer Support',
       data: [
         {
-          question: 'How do I initiate a return or exchange?',
+          question: 'How do I contact QYVE?',
           answer:
-            'Visit the "Returns & Exchanges" page on our website, follow the instructions, and submit a request. Our team will guide you through the process.',
+            'You can reach out to us through our socials, or our WhatsApp.',
         },
         {
-          question: 'What is your return policy for defective products?',
+          question: 'What are our customer service hours?',
           answer:
-            'If you receive a defective product, please contact our customer support within 7 days of receiving the order. We will arrange a replacement or refund.',
+            'We endeavour to reply to you as fast as we can. Official customer service hours are between 9am to 6pm daily.',
         },
-        {
-          question: 'Are there any restocking fees for returns?',
-          answer:
-            'We do not charge restocking fees for returns. However, please review our return policy for specific details.',
-        },
-        {
-          question: 'How long does it take to process a refund?',
-          answer:
-            'Refunds are typically processed within 5-7 business days after we receive the returned items and verify their condition.',
-        },
-        {
-          question: "Can I return sneakers if I've worn them?",
-          answer:
-            'We only accept returns for unworn sneakers. Please try them on in a clean, indoor environment to ensure they are the right fit before wearing them outside.',
-        },
+        // {
+        //   question: 'Are there any restocking fees for returns?',
+        //   answer:
+        //     'We do not charge restocking fees for returns. However, please review our return policy for specific details.',
+        // },
+        // {
+        //   question: 'How long does it take to process a refund?',
+        //   answer:
+        //     'Refunds are typically processed within 5-7 business days after we receive the returned items and verify their condition.',
+        // },
+        // {
+        //   question: "Can I return sneakers if I've worn them?",
+        //   answer:
+        //     'We only accept returns for unworn sneakers. Please try them on in a clean, indoor environment to ensure they are the right fit before wearing them outside.',
+        // },
       ],
     },
   ],

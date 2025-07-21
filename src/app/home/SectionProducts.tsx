@@ -55,7 +55,7 @@ const SectionProducts = () => {
   return (
     <div className="container">
       <Heading isCenter isMain desc={productsSection.description}>
-        <div className="mt-8 font-myFont text-4xl italic">
+        <div className="mb-2 mt-8 font-myFont text-3xl italic leading-tight md:text-4xl">
           {productsSection.heading}
         </div>
       </Heading>

@@ -127,7 +127,7 @@ html {
 }
 
 .loader .circle {
-  --color: #fd5545;
+  --color: #0bda51;
   --dim: 1.2rem;
   width: var(--dim);
   height: var(--dim);
