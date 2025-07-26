@@ -32,10 +32,14 @@ export default function CheckoutButton({
   cartItems,
   orderAddress,
   orderContact,
+  shippingPrice,
+  discountCode,
 }: {
   cartItems: CartItem[];
   orderAddress: ShippingAddressData;
   orderContact: ContactInfoData;
+  shippingPrice: number;
+  discountCode: string;
 }) {
   const userId = useSelector((state: RootState) => state.auth.user?.id);
 
@@ -70,7 +74,14 @@ export default function CheckoutButton({
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, cartItems, orderAddress, orderContact }),
+        body: JSON.stringify({
+          userId,
+          cartItems,
+          orderAddress,
+          orderContact,
+          shippingPrice,
+          discountCode,
+        }),
       });
 
       if (!res.ok) throw new Error('Failed to create checkout session');

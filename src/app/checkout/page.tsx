@@ -12,16 +12,16 @@ import { useSelector } from 'react-redux';
 import CheckoutButton from '@/components/CheckoutButton';
 import { supabase } from '@/libs/supabaseClient';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
-import type { CartItem } from '@/store/cartSlice';
-import type { RootState } from '@/store/store';
-
 // import { AiOutlineDelete } from 'react-icons/ai';
 // import { MdStar } from 'react-icons/md';
 // import LikeButton from '@/components/LikeButton';
 // import { shoes } from '@/data/content';
 // import type { ProductType } from '@/data/types';
 // import ButtonPrimary from '@/shared/Button/ButtonPrimary';
-// import Input from '@/shared/Input/Input';
+import Input from '@/shared/Input/Input';
+import type { CartItem } from '@/store/cartSlice';
+import type { RootState } from '@/store/store';
+
 // import InputNumber from '@/shared/InputNumber/InputNumber';
 import ContactInfo from './ContactInfo';
 // import PaymentMethod from './PaymentMethod';
@@ -80,21 +80,125 @@ const CheckoutPage = () => {
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [shippingFee, setShippingFee] = useState(0);
+  const [voucher, setVoucher] = useState('');
+  const [voucherValidity, setVoucherValidity] = useState('');
+  const [clicked, setClicked] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [, setVoucherValue] = useState(0);
+  // const [discountType, setDiscountType] = useState('');
+  // const [discountValue, setDiscountValue] = useState(0);
+  const [discountPercentage, setDiscountPercentage] = useState(0);
+  const [discountPrice, setDiscountPrice] = useState(0);
 
-  // Calculate subtotal dynamically
+  const [discountValue, setDiscountValue] = useState(0);
+
+  // // Calculate subtotal dynamically
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0,
   );
-  // const estimatedTaxes = subtotal * 0.1; // Example 10% tax
-  // const total = subtotal + estimatedTaxes;
-  const total = subtotal + shippingFee;
+
+  const [total, setTotal] = useState(subtotal + shippingFee);
 
   useEffect(() => {
-    // if (shippingAddress == null) {
-    //   return;
-    // }
+    const newSubtotal = cartItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0,
+    );
+    setTotal(newSubtotal + shippingFee);
+  }, [cartItems, shippingFee]);
 
+  console.log('initial total: ', total);
+  // // const estimatedTaxes = subtotal * 0.1; // Example 10% tax
+  // // const total = subtotal + estimatedTaxes;
+  // const [total, setTotal] = useState(subtotal);
+  // setTotal(
+  //   subtotal +
+  //     shippingFee +
+  //     subtotal * (discountPercentage / 100) +
+  //     discountPrice,
+  // );
+
+  // useEffect(() => {
+  //   setTotal(
+  //     subtotal +
+  //       shippingFee -
+  //       subtotal * (discountPercentage / 100) -
+  //       discountPrice,
+  //   );
+  //   setDiscountValue(subtotal * (discountPercentage / 100) + discountPrice);
+  // }, [subtotal, shippingFee, discountPercentage, discountPrice]);
+
+  const handleVoucher = async () => {
+    setVoucherValidity(''); // reset previous validity
+    setVoucherValue(0);
+    setDiscountPercentage(0);
+    setDiscountPrice(0);
+    setDiscountValue(0);
+    // setDiscountType('');
+    setClicked(false);
+    console.log(`userid: ${userId} || voucher: ${voucher}`);
+    const res = await fetch('/api/check-voucher', {
+      method: 'POST',
+      body: JSON.stringify({
+        userId,
+        code: voucher,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!res.ok) {
+      console.error('Error calling check-voucher', res.status);
+    } else {
+      const result = await res.json();
+
+      console.log('result: ', result.status);
+
+      if (result.status === 'used') {
+        setVoucherValidity(result.status);
+      } else if (result.status === 'valid') {
+        setVoucherValidity(result.status);
+        setVoucherValue(result.value);
+        // setDiscountType(result.discountType);
+        console.log('result value: ', result.value);
+        console.log('discount_type: ', result.discount_type);
+
+        if (result.discount_type === 'percentage') {
+          const discPercentage = result.value / 100;
+          setDiscountPercentage(result.value / 100);
+
+          setTotal(
+            subtotal + shippingFee - subtotal * discPercentage - discountPrice,
+          );
+          setDiscountValue(subtotal * discPercentage - discountPrice);
+          console.log('discount percentage ', discPercentage);
+          console.log(
+            'total: ',
+            subtotal + shippingFee - subtotal * discPercentage - discountPrice,
+          );
+          console.log(
+            'discount value: ',
+            subtotal * discPercentage - discountPrice,
+          );
+        } else if (result.discountType === 'price') {
+          setDiscountPrice(result.value);
+          const discPrice = result.value;
+
+          setTotal(
+            subtotal + shippingFee - subtotal * discountPercentage - discPrice,
+          );
+          setDiscountValue(subtotal * discountPercentage - discPrice);
+        }
+      } else if (result.error) {
+        console.error('Error: ', result.error);
+      }
+    }
+    setClicked(true);
+  };
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch('/api/shipment/', {
@@ -369,22 +473,59 @@ const CheckoutPage = () => {
             </div>
 
             <div className="mt-10 border-t border-neutral-300 pt-6 text-sm">
-              {/* <div>
+              <div>
                 <div className="text-sm">Discount code</div>
                 <div className="mt-1.5 flex">
                   <Input
                     rounded="rounded-lg"
                     sizeClass="h-12 px-4 py-3"
                     className="flex-1 border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+                    value={voucher}
+                    onChange={(e) => setVoucher(e.target.value)}
                   />
                   <button
                     type="button"
                     className="ml-3 flex w-24 items-center justify-center rounded-2xl border border-neutral-300 bg-gray px-4 text-sm font-medium transition-colors hover:bg-neutral-100"
+                    onClick={handleVoucher}
                   >
                     Apply
                   </button>
                 </div>
-              </div> */}
+                {clicked && (
+                  <div>
+                    {(() => {
+                      if (voucherValidity === 'used') {
+                        return (
+                          <div className="text-red-300">
+                            Voucher already used
+                          </div>
+                        );
+                      }
+
+                      if (voucherValidity === 'valid') {
+                        return (
+                          <div className="text-green-300">Voucher applied</div>
+                        );
+                      }
+
+                      return (
+                        <div className="text-red-300">Invalid voucher</div>
+                      );
+                    })()}
+                  </div>
+                )}
+                {/* {clicked ? (
+                  voucherValidity === 'used' ? (
+                    <div className="text-red-300">Voucher already used</div>
+                  ) : voucherValidity === 'valid' ? (
+                    <div className="text-green-300">Voucher applied</div>
+                  ) : (
+                    <div className="text-red-300">Invalid voucher</div>
+                  )
+                ) : (
+                  <></>
+                )} */}
+              </div>
 
               <div className="mt-4 flex justify-between pb-4">
                 <span>Subtotal</span>
@@ -394,10 +535,14 @@ const CheckoutPage = () => {
                 <span>Estimated Delivery & Handling</span>
                 <span className="font-semibold">RM {shippingFee}</span>
               </div>
-              {/* <div className="flex justify-between py-4">
-                <span>Estimated taxes</span>
-                <span className="font-semibold">$24.90</span>
-              </div> */}
+              <div className="flex justify-between py-4">
+                <span>Discount</span>
+                {clicked && voucherValidity === 'valid' ? (
+                  <span className="font-semibold">- RM{discountValue}</span>
+                ) : (
+                  <span className="font-semibold">-</span>
+                )}
+              </div>
               <div className="flex justify-between pt-4 text-base font-semibold">
                 <span>Total</span>
                 <span>RM {total.toFixed(2)}</span>
@@ -420,6 +565,8 @@ const CheckoutPage = () => {
                 phone: contactInfo?.phone || '',
                 email: contactInfo?.email || '',
               }}
+              discountCode={voucher}
+              shippingPrice={shippingFee}
             />
             {/* <ButtonPrimary className="mt-8 w-full">Confirm order</ButtonPrimary> */}
           </div>

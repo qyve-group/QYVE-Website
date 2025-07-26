@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
-import { supabase } from '@/libs/supabaseClient';
+// import { supabase } from '@/libs/supabaseClient';
 import { notifyTelegram } from '@/libs/telegram';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -16,6 +16,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 //     bodyParser: false,
 //   },
 // };
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+  process.env.SUPABASE_SERVICE_ROLE_KEY as string,
+);
 
 export async function POST(req: Request) {
   console.log('Webhook called');
@@ -84,7 +88,7 @@ export async function POST(req: Request) {
     // console.log('userid: ', userId);
 
     // Fetch cart_id from cart table using user_id
-    const { data: cartInfo, error: cartInfoError } = await supabase
+    const { data: cartInfo, error: cartInfoError } = await supabaseAdmin
       .from('carts')
       .select('id')
       .eq('user_id', userId)
@@ -100,10 +104,6 @@ export async function POST(req: Request) {
     const cartId = cartInfo.id;
     // console.log('cartId: ', cartId);
 
-    const supabaseAdmin = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-      process.env.SUPABASE_SERVICE_ROLE_KEY as string,
-    );
     // Fetch cart items using cart_id
     // const { data: cartItems, error: cartItemsError } = await supabaseAdmin
     //   .from('cart_items')
@@ -140,7 +140,7 @@ export async function POST(req: Request) {
     });
 
     try {
-      const { error: orderError } = await supabase
+      const { error: orderError } = await supabaseAdmin
         .from('orders')
         .insert([
           {
@@ -166,7 +166,7 @@ export async function POST(req: Request) {
     // Reduce stock in `product_sizes`
     /* eslint-disable no-await-in-loop */
     for (const item of cartItems) {
-      const { data: productSize, error: fetchError } = await supabase
+      const { data: productSize, error: fetchError } = await supabaseAdmin
         .from('products_sizes')
         .select('stock')
         .eq('id', item.product_size_id)
