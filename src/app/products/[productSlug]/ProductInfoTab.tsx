@@ -55,6 +55,7 @@ const ProductInfoTab: FC<ProductInfoTabProps> = ({
           {activeTab === 'Overview' ? (
             <p>
               {overview.split('\n').map((line, index) => (
+                /* eslint-disable-next-line react/no-array-index-key */
                 <span key={index}>
                   {line}
                   <br />
