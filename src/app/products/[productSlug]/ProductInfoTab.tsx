@@ -66,6 +66,7 @@ const ProductInfoTab: FC<ProductInfoTabProps> = ({
             <div className="grid gap-5 md:grid-cols-2">
               <p>
                 {shipment_details.split('\n').map((line, index) => (
+                  /* eslint-disable-next-line react/no-array-index-key */
                   <span key={index}>
                     {line}
                     <br />
