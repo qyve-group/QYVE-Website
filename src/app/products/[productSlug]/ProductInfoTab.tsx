@@ -33,6 +33,7 @@ const ProductInfoTab: FC<ProductInfoTabProps> = ({
         {tabs.map((tab) => (
           <button
             type="button"
+            /* eslint-disable-next-line react/no-array-index-key */
             key={`tab-${tab}`}
             onClick={() => setActiveTab(tab)}
             className={`py-4 ${
