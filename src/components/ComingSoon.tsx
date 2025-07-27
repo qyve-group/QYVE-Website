@@ -3,22 +3,22 @@
 
 const ComingSoon = () => {
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden">
       {/* Simple Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-primary" />
+      <div className="bg-gradient-primary absolute inset-0" />
 
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 text-center">
-        <div className="max-w-4xl mx-auto space-y-12 animate-fade-in">
+      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 text-center">
+        <div className="animate-fade-in mx-auto max-w-4xl space-y-12">
           {/* Main Heading */}
           <div className="space-y-6">
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold text-foreground">
+            <h1 className="sm:text-7xl lg:text-8xl text-5xl font-bold text-foreground">
               Our Blog is Almost Here!
               {/* <span className="block bg-gradient-to-r from-white to-primary-foreground bg-clip-text text-transparent">
                 Soon
               </span> */}
             </h1>
-            <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="mx-auto max-w-2xl text-xl leading-relaxed text-muted-foreground sm:text-2xl">
               We are working on something worth reading. Stay tuned.
             </p>
           </div>
@@ -47,9 +47,9 @@ const ComingSoon = () => {
       </div>
 
       {/* Subtle Floating Orbs */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-24 h-24 bg-white/10 rounded-full blur-xl animate-pulse" />
-        <div className="absolute top-3/4 right-1/4 w-16 h-16 bg-white/5 rounded-full blur-lg animate-pulse delay-1000" />
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/4 top-1/4 size-24 animate-pulse rounded-full bg-white/10 blur-xl" />
+        <div className="absolute right-1/4 top-3/4 size-16 animate-pulse rounded-full bg-white/5 blur-lg delay-1000" />
       </div>
     </div>
   );

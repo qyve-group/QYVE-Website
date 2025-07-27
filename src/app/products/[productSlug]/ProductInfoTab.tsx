@@ -33,7 +33,7 @@ const ProductInfoTab: FC<ProductInfoTabProps> = ({
         {tabs.map((tab) => (
           <button
             type="button"
-            key={tab}
+            key={`tab-${tab}`}
             onClick={() => setActiveTab(tab)}
             className={`py-4 ${
               activeTab === tab

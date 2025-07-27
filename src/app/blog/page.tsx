@@ -1,16 +1,13 @@
 import React from 'react';
 
 // import Heading from '@/shared/Heading/Heading';
-
 // import SectionBlogs from './SectionBlogs';
 // import SectionBlogsHero from './SectionBlogsHero';
 import ComingSoon from '@/components/ComingSoon';
 
 const page = () => {
   return (
-    <>
-      <ComingSoon />
-    </>
+    <ComingSoon />
     // <div className="container pb-20 pt-10">
 
     //   <Heading
