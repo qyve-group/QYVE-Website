@@ -6,11 +6,12 @@ import ProductInfoTab from './ProductInfoTab';
 
 interface SectionProductInfoProps {
   overview: string;
-  shipment_details: {
-    icon: JSX.Element;
-    title: string;
-    description: string;
-  }[];
+  shipment_details: string;
+  // shipment_details: {
+  //   icon: JSX.Element;
+  //   title: string;
+  //   description: string;
+  // }[];
   // ratings: number;
   // reviews: number;
 }

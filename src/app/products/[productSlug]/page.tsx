@@ -98,8 +98,11 @@ const SingleProductPage = async ({ params }: Props) => {
 
       <div className="mb-28">
         <SectionProductInfo
-          overview={pathOr('', ['overview'], selectedProduct)}
-          shipment_details={pathOr([], ['shipment_details'], selectedProduct)}
+          // product_shots={selectedProduct?.product_shots?.[0]?.images || []}
+          overview={selectedProduct?.overview || ''}
+          shipment_details={selectedProduct?.shipment_details || ''}
+          // overview={pathOr('', ['overview'], selectedProduct)}
+          // shipment_details={pathOr([], ['shipment_details'], selectedProduct)}
           // ratings={pathOr(0, ["rating"], selectedProduct)}
           // reviews={pathOr(0, ["reviews"], selectedProduct)}
         />

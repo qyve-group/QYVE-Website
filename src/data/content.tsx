@@ -46,11 +46,11 @@ export const topNavLinks: NavItemType[] = [
     name: 'Shop',
     href: '/shop',
   },
-  // {
-  //   id: 'eerrrt',
-  //   name: 'Blog',
-  //   href: '/blog',
-  // },
+  {
+    id: 'eerrrt',
+    name: 'Blog',
+    href: '/blog',
+  },
   // {
   //   id: 'eexct',
   //   name: 'Collections',
@@ -89,11 +89,11 @@ export const NavLinks: NavItemType[] = [
     name: 'Shop',
     href: '/shop',
   },
-  // {
-  //   id: 'eerrrt',
-  //   name: 'Blog',
-  //   href: '/blog',
-  // },
+  {
+    id: 'eerrrt',
+    name: 'Blog',
+    href: '/blog',
+  },
   // {
   //   id: 'eexct',
   //   name: 'Collection',

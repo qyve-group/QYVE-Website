@@ -4,16 +4,17 @@ import type { FC } from 'react';
 import React, { useState } from 'react';
 
 // import { note } from '@/data/content';
-import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
+// import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
 import Heading from '@/shared/Heading/Heading';
 
 interface ProductInfoTabProps {
   overview: string;
-  shipment_details: {
-    icon: JSX.Element;
-    title: string;
-    description: string;
-  }[];
+  shipment_details: string;
+  // shipment_details: {
+  //   icon: JSX.Element;
+  //   title: string;
+  //   description: string;
+  // }[];
 }
 
 const tabs = ['Overview', 'Shipment details'];
@@ -22,7 +23,7 @@ const ProductInfoTab: FC<ProductInfoTabProps> = ({
   overview,
   shipment_details,
 }) => {
-  const [activeTab, setActiveTab] = useState('Shipment details');
+  const [activeTab, setActiveTab] = useState('Overview');
 
   return (
     <div>
@@ -51,10 +52,25 @@ const ProductInfoTab: FC<ProductInfoTabProps> = ({
           className={`mb-10 ${activeTab === tab ? 'block' : 'hidden'}`}
         >
           {activeTab === 'Overview' ? (
-            <p>{overview}</p>
+            <p>
+              {overview.split('\n').map((line, index) => (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </p>
           ) : (
             <div className="grid gap-5 md:grid-cols-2">
-              {shipment_details.map((detail) => (
+              <p>
+                {shipment_details.split('\n').map((line, index) => (
+                  <span key={index}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
+              </p>
+              {/* {shipment_details.map((detail) => (
                 <div key={detail.title} className="flex items-center gap-2">
                   <ButtonCircle3 size="w-12 h-12" className="bg-gray">
                     {detail.icon}
@@ -65,7 +81,7 @@ const ProductInfoTab: FC<ProductInfoTabProps> = ({
                     <p>{detail.description}</p>
                   </div>
                 </div>
-              ))}
+              ))} */}
             </div>
           )}
         </div>

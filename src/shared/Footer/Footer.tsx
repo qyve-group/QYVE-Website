@@ -10,6 +10,11 @@ import FooterBanner from './FooterBanner';
 // import Subscribe from './Subscribe';
 
 const Footer: React.FC = () => {
+  const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER!;
+  const waMessage = encodeURIComponent('Hi QYVE team, I have a question');
+  const waLink = `https://wa.me/${waNumber}?text=${waMessage}`;
+
+  console.log('wa link: ', waLink);
   return (
     <div>
       <div className="container mb-10">
@@ -46,8 +51,8 @@ const Footer: React.FC = () => {
                 fgColor="black"
                 url="https://www.tiktok.com/@qyveofficial"
               />
-              <SocialIcon network="whatsapp" />
-              <SocialIcon network="email" />
+              <SocialIcon network="whatsapp" url={waLink} target="_blank" />
+              <SocialIcon network="email" url="mailto:qyveshoe@gmail.com" />
             </div>
             {/* <div className="flex bg-yellow-500">
               <div>Instagram</div>
