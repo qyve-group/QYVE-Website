@@ -70,6 +70,14 @@ export default function CheckoutButton({
     try {
       setLoading(true);
       // console.log*('Checkout button clicked');
+      console.log('Sending checkout body', {
+        userId,
+        cartItems,
+        orderAddress,
+        orderContact,
+        shippingPrice,
+        discountCode,
+      });
 
       const res = await fetch('/api/checkout', {
         method: 'POST',

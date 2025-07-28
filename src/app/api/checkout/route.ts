@@ -20,6 +20,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
   try {
+    const body = await req.json();
+    console.log('Received body', body);
     const {
       userId,
       cartItems,
@@ -28,10 +30,13 @@ export async function POST(req: Request) {
       shippingPrice,
       // discountValue,
       discountCode,
-    } = await req.json(); // Get items from the request
+    } = body; // Get items from the request
 
     if (!userId) {
-      throw new Error('User ID is missing before creating Stripe session');
+      console.error('Missing userId');
+      return new Response(JSON.stringify({ error: 'Missing userId' }), {
+        status: 400,
+      });
     }
 
     // const productSubtotal = cartItems.reduce(
