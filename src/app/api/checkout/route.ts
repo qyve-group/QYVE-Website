@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       orderContact,
       shippingPrice,
       // discountValue,
-      // discountCode,
+      discountCode,
     } = body; // Get items from the request
 
     if (!userId) {
@@ -129,34 +129,34 @@ export async function POST(req: Request) {
     //   : []),
 
     // Step 2: Look up the promotion code (if provided)
-    // const discounts = [];
-    // if (discountCode) {
-    //   const promoCodes = await stripe.promotionCodes.list({
-    //     active: true,
-    //     code: discountCode,
-    //   });
+    const discounts = [];
+    if (discountCode) {
+      const promoCodes = await stripe.promotionCodes.list({
+        active: true,
+        code: discountCode,
+      });
 
-    //   console.log('discountCode entered: ', discountCode);
-    //   console.log('promo codes: ', promoCodes);
+      console.log('discountCode entered: ', discountCode);
+      console.log('promo codes: ', promoCodes);
 
-    //   const matchedCode = promoCodes.data[0];
-    //   if (matchedCode) {
-    //     discounts.push({ promotion_code: matchedCode.id });
-    //     console.log('discounts array: ', discounts);
-    //   } else {
-    //     return NextResponse.json(
-    //       { error: 'Invalid promo code' },
-    //       {
-    //         status: 400,
-    //         headers: {
-    //           'Access-Control-Allow-Origin': 'https://www.qyveofficial.com',
-    //           // 'Access-Control-Allow-Headers': 'Content-Type',
-    //           // 'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    //         },
-    //       },
-    //     );
-    //   }
-    // }
+      const matchedCode = promoCodes.data[0];
+      if (matchedCode) {
+        discounts.push({ promotion_code: matchedCode.id });
+        console.log('discounts array: ', discounts);
+      } else {
+        return NextResponse.json(
+          { error: 'Invalid promo code' },
+          {
+            status: 400,
+            headers: {
+              'Access-Control-Allow-Origin': 'https://www.qyveofficial.com',
+              // 'Access-Control-Allow-Headers': 'Content-Type',
+              // 'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            },
+          },
+        );
+      }
+    }
 
     const shippingOptions = [
       {
@@ -183,7 +183,7 @@ export async function POST(req: Request) {
       payment_method_types: ['card', 'fpx'],
       mode: 'payment',
       line_items: lineItems,
-      // discounts,
+      discounts,
       // success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/home`,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       customer_email: orderContact.email,
