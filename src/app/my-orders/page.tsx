@@ -94,7 +94,7 @@ const ShippingProgress = () => {
   // const [showFull, setShowFull] = useState(false);
 
   useEffect(() => {
-    // console.log*('userId: ', userId?.id);
+    console.log('userId my-orders.tsx: ', userId?.id);
     const fetchOrderIds = async () => {
       const { data, error } = await supabase
         .from('orders')
@@ -176,7 +176,7 @@ const ShippingProgress = () => {
           const { data: productInfo, error: productInfoError } = await supabase
             .from('products')
             .select('image_cover, name')
-            .eq('id', item.product_id)
+            .eq('id', item.product_size_id.product_id)
             .single();
 
           if (productInfoError) {

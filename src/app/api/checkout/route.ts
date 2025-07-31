@@ -16,7 +16,21 @@ import Stripe from 'stripe';
 //   postal_code: string;
 // };
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-06-30.basil',
+});
+
+// Handle preflight CORS requests
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': 'https://www.qyveofficial.com', // Or set to your domain
+      'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
+  });
+}
 
 export async function POST(req: Request) {
   try {
@@ -29,13 +43,16 @@ export async function POST(req: Request) {
       orderContact,
       shippingPrice,
       // discountValue,
-      discountCode,
+      // discountCode,
     } = body; // Get items from the request
 
     if (!userId) {
       console.error('Missing userId');
       return new Response(JSON.stringify({ error: 'Missing userId' }), {
         status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': 'https://www.qyveofficial.com',
+        },
       });
     }
 
@@ -112,27 +129,34 @@ export async function POST(req: Request) {
     //   : []),
 
     // Step 2: Look up the promotion code (if provided)
-    const discounts = [];
-    if (discountCode) {
-      const promoCodes = await stripe.promotionCodes.list({
-        active: true,
-        code: discountCode,
-      });
+    // const discounts = [];
+    // if (discountCode) {
+    //   const promoCodes = await stripe.promotionCodes.list({
+    //     active: true,
+    //     code: discountCode,
+    //   });
 
-      console.log('discountCode entered: ', discountCode);
-      console.log('promo codes: ', promoCodes);
+    //   console.log('discountCode entered: ', discountCode);
+    //   console.log('promo codes: ', promoCodes);
 
-      const matchedCode = promoCodes.data[0];
-      if (matchedCode) {
-        discounts.push({ promotion_code: matchedCode.id });
-        console.log('discounts array: ', discounts);
-      } else {
-        return NextResponse.json(
-          { error: 'Invalid promo code' },
-          { status: 400 },
-        );
-      }
-    }
+    //   const matchedCode = promoCodes.data[0];
+    //   if (matchedCode) {
+    //     discounts.push({ promotion_code: matchedCode.id });
+    //     console.log('discounts array: ', discounts);
+    //   } else {
+    //     return NextResponse.json(
+    //       { error: 'Invalid promo code' },
+    //       {
+    //         status: 400,
+    //         headers: {
+    //           'Access-Control-Allow-Origin': 'https://www.qyveofficial.com',
+    //           // 'Access-Control-Allow-Headers': 'Content-Type',
+    //           // 'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    //         },
+    //       },
+    //     );
+    //   }
+    // }
 
     const shippingOptions = [
       {
@@ -150,7 +174,7 @@ export async function POST(req: Request) {
     // console.log('Line items: ', lineItems);
     console.log('Creating Stripe session with:', {
       lineItems,
-      discounts,
+      // discounts,
       email: orderContact.email,
       shippingPrice,
     });
@@ -159,7 +183,7 @@ export async function POST(req: Request) {
       payment_method_types: ['card', 'fpx'],
       mode: 'payment',
       line_items: lineItems,
-      discounts,
+      // discounts,
       // success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/home`,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       customer_email: orderContact.email,
@@ -172,11 +196,24 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ url: session.url });
+    return NextResponse.json(
+      { url: session.url },
+      {
+        status: 200,
+        headers: {
+          'Access-Control-Allow-Origin': 'https://www.qyveofficial.com',
+        },
+      },
+    );
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message },
-      { status: 500 },
+      {
+        status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': 'https://www.qyveofficial.com',
+        },
+      },
     );
   }
 }
