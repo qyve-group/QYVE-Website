@@ -34,11 +34,27 @@ const MainNav = () => {
   const handleLogOut = async () => {
     setIsLoggingOut(true); // Start loading
 
-    await dispatch(logoutUser()); // Logout process
-    setIsOpen(false); // Close dropdown
+    try {
+      await dispatch(logoutUser()); // Logout process
+      setIsOpen(false);
+    } catch (error) {
+      console.error('error logging out in mainnav.tsx: ', error);
+    } finally {
+      setIsLoggingOut(false);
+    }
+    // Close dropdown
+
+    // setIsLoggingOut(true); // Start loading
+    // try {
+    //   await dispatch(logoutUser()); // Your custom logout logic
+    //   setIsOpen(false); // Close dropdown
+    // } catch (error) {
+    //   console.log('error logging out: ', error);
+    // } finally {
+    //   setIsLoggingOut(false); // ✅ Always reset loading state
+    // }
 
     router.push('/home'); // Redirect after logout
-    // setIsLoggingOut(false);
   };
 
   return (

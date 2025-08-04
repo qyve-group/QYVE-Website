@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import type { CartItem } from '@/store/cartSlice';
 import type { RootState } from '@/store/store';
+import { useRouter } from 'next/navigation';
 
 type ContactInfoData = {
   phone: string;
@@ -42,6 +43,13 @@ export default function CheckoutButton({
   discountCode: string;
 }) {
   const userId = useSelector((state: RootState) => state.auth.user?.id);
+  const router = useRouter();
+
+  if (!userId) {
+    console.log('No logged in user id redirecting to login checkoutbutton.tsx');
+    router.push('/login?redirect=checkout');
+    return;
+  }
 
   const [loading, setLoading] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);

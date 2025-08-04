@@ -99,6 +99,7 @@ const ShippingProgress = () => {
       const { data, error } = await supabase
         .from('orders')
         .select('id, total_price, tracking_no')
+        .order('created_at', { ascending: false })
         .eq('user_id', userId?.id);
 
       if (error) {
@@ -171,31 +172,46 @@ const ShippingProgress = () => {
         return;
       }
 
+      console.log('orderitemssupabase: ', orderItemsSupabase);
+
       const updatedCartItems = await Promise.all(
         orderItemsSupabase.map(async (item) => {
           const { data: productInfo, error: productInfoError } = await supabase
-            .from('products')
-            .select('image_cover, name')
-            .eq('id', item.product_id)
+            // <<<<<<< Updated upstream
+            //             .from('products')
+            //             .select('image_cover, name')
+            //             .eq('id', item.product_id)
+            // =======
+            .from('products_sizes')
+            .select('product_colors(*), description, size')
+            .eq('id', item.product_size_id)
+            // >>>>>>> Stashed changes
             .single();
 
           if (productInfoError) {
             // console.error*('Unable to fetch product info:', productInfoError);
             return null;
           }
+          console.log('productinfo: ', productInfo);
+          console.log('productinfo description: ', productInfo.description);
+          console.log('productcolorid: ', productInfo.product_colors.image);
+          console.log('productinfo size ', productInfo.size);
 
           return {
-            image: productInfo.image_cover,
-            name: productInfo.name,
+            image: productInfo.product_colors.image,
+            name: productInfo.description,
             quantity: item.quantity,
             price: item.price,
           };
         }),
       );
 
+      console.log('updatedCartItems: ', updatedCartItems);
+
       setOrderItems(
         updatedCartItems.filter((item): item is CartItem => item !== null),
       );
+      console.log('orderItems: ', orderItems);
       setLoading(false);
     };
 
@@ -285,6 +301,16 @@ const ShippingProgress = () => {
                 <div className="text-gray-600 mt-2 flex justify-between text-xs">
                   <span>Payment Method</span>
                   <span>Credit / Debit Card</span>
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    className="bg-red-500 text-white p-2 rounded-lg"
+                    onClick={() => {
+                      console.log('Refund clicked');
+                    }}
+                  >
+                    Refund
+                  </button>
                 </div>
               </div>
             </div>

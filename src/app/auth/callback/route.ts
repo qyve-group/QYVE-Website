@@ -5,7 +5,7 @@ import { createClient } from '@/libs/supabaseServer'; // your Supabase helper
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
-  const next = searchParams.get('next') ?? '/home';
+  const redirect = searchParams.get('redirect') ?? '/home';
 
   if (code) {
     const supabase = await createClient(); // make sure this works in server context
@@ -13,9 +13,11 @@ export async function GET(request: Request) {
 
     if (!error) {
       const forwardedHost = request.headers.get('x-forwarded-host');
-      const redirectUrl = forwardedHost
-        ? `https://${forwardedHost}${next}`
-        : `${origin}${next}`;
+      const redirectUrl =
+        forwardedHost &&
+        forwardedHost.endsWith(process.env.NEXT_PUBLIC_BASE_URL!)
+          ? `https://${forwardedHost}${redirect}`
+          : `https://${process.env.NEXT_PUBLIC_BASE_URL}${redirect}`;
 
       return NextResponse.redirect(redirectUrl);
     }
