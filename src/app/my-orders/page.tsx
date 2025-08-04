@@ -304,7 +304,8 @@ const ShippingProgress = () => {
                 </div>
                 <div className="flex justify-end">
                   <button
-                    className="bg-red-500 text-white p-2 rounded-lg"
+                    type="button"
+                    className="rounded-lg bg-red-500 p-2 text-white"
                     onClick={() => {
                       console.log('Refund clicked');
                     }}

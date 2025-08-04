@@ -2,7 +2,6 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { supabase } from '@/libs/supabaseClient';
-import { store } from './store';
 
 interface Profile {
   id: string;

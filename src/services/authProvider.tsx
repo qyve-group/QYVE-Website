@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 
 import { listenForAuthChanges } from '@/store/authListener'; // Import function
+import { store } from '@/store/store';
 
 export default function AuthProvider({
   children,
@@ -10,7 +11,7 @@ export default function AuthProvider({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    const unsubscribe = listenForAuthChanges(); // Start listening for auth changes
+    const unsubscribe = listenForAuthChanges(store.dispatch, store.getState); // Start listening for auth changes
 
     return () => {
       unsubscribe(); // Unsubscribe on component unmount

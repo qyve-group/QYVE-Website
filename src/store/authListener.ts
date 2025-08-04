@@ -1,22 +1,22 @@
 import { supabase } from '@/libs/supabaseClient';
 import { fetchCartFromSupabase } from '@/services/cartService';
+// import { debounce } from '@/utils/debounce';
 import { logout, setUser } from '@/store/authSlice';
 import { clearCart, setCart } from '@/store/cartSlice';
-import { store } from '@/store/store';
-// import { debounce } from '@/utils/debounce';
-import { saveCartToSupabase } from '@/services/cartService';
+// import { store } from '@/store/store';
 import { mergeCarts } from '@/utils/cart';
-import { AppDispatch } from '@/store/store';
+// import { useDispatch } from 'react-redux';
 
-export const listenForAuthChanges = () => {
+export const listenForAuthChanges = (dispatch: any, getState: () => any) => {
   // const debouncedSaveCart = debounce(saveCartToSupabase, 1000); // 1-second delay
+  // const dispatch = useDispatch();
   console.log(
     'listening for authchanges listenforauthchanges in authlistenr.ts',
   );
 
   supabase.auth.getSession().then(({ data }) => {
     // console.log*('Session retrieved from auth getSession: ', data);
-    store.dispatch(
+    dispatch(
       setUser({
         user: data.session?.user || null,
         session: data.session || null,
@@ -27,7 +27,7 @@ export const listenForAuthChanges = () => {
 
     if (data.session) {
       console.log('fetching cart from supabase from authlistener...');
-      fetchCartFromSupabase(data.session?.user.id || null, store.dispatch);
+      fetchCartFromSupabase(data.session?.user.id || null, dispatch);
       // const cart =
       //   await fetchCartFromSupabase(
       //     data.session.user.id || null) ?? [];
@@ -48,17 +48,14 @@ export const listenForAuthChanges = () => {
       if (event === 'SIGNED_IN' && session) {
         setTimeout(async () => {
           try {
-            const guestCart = store.getState().cart.items;
-            store.dispatch(setUser({ user: session.user, session }));
+            const guestCart = getState().cart.items;
+            dispatch(setUser({ user: session.user, session }));
 
-            await fetchCartFromSupabase(
-              session.user.id || null,
-              store.dispatch,
-            );
-            const userCart = store.getState().cart.items;
+            await fetchCartFromSupabase(session.user.id || null, dispatch);
+            const userCart = getState().cart.items;
 
             const mergedCart = mergeCarts(userCart, guestCart);
-            store.dispatch(setCart(mergedCart));
+            dispatch(setCart(mergedCart));
             // await saveCartToSupabase(session.user.id, mergedCart);
 
             console.log('Merged cart:', mergedCart);
@@ -68,8 +65,8 @@ export const listenForAuthChanges = () => {
         }, 0);
       }
       if (event === 'SIGNED_OUT') {
-        store.dispatch(logout());
-        store.dispatch(clearCart());
+        dispatch(logout());
+        dispatch(clearCart());
       }
     },
   );

@@ -1,6 +1,4 @@
-import { updateQuantity } from '@/store/cartSlice';
 // import { RootState } from '@/store/store';
-import { useDispatch } from 'react-redux';
 
 type CartItem = {
   id: number;
