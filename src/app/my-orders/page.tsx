@@ -85,6 +85,14 @@ const ShippingProgress = () => {
   // price: number
 
   // const [orderId, setOrderId] = useState("");
+  // type ProductColor = { image: string };
+  type cartItem = {
+    image: string;
+    name: string;
+    quantity: number;
+    price: number;
+  };
+
   const [orderIds, setOrderIds] = useState<string[]>([]); // Store multiple order IDs
   const [tracking, setTracking] = useState<string[]>([]); // Store multiple order IDs
   const [totalPrice, setTotalPrice] = useState<number[]>([]);
@@ -194,15 +202,34 @@ const ShippingProgress = () => {
           }
           console.log('productinfo: ', productInfo);
           console.log('productinfo description: ', productInfo.description);
-          console.log('productcolorid: ', productInfo.product_colors.image);
+          console.log(
+            'productcolorImage: ',
+            productInfo.product_colors[0]?.image ?? 'undefined',
+          );
+          console.log('productcolors: ', productInfo.product_colors);
+          // console.log('productcolorsid: ', productInfo.product_colors?.id);
           console.log('productinfo size ', productInfo.size);
 
+          const productColor = Array.isArray(productInfo.product_colors)
+            ? productInfo.product_colors[0]
+            : (productInfo.product_colors as { image: string });
+          const imageUrl = productColor?.image ?? '/qyve-white.png';
+
+          // if (Array.isArray(productInfo.product_colors)) {
+          //   imageUrl =
+          //     productInfo.product_colors[0]?.image ?? '/qyve-white.png';
+          // } else {
+          //   imageUrl = productInfo.product_colors?.image ?? '/qyve-white.png';
+          // }
+
           return {
-            image: productInfo.product_colors.image,
+            image: imageUrl,
+            // image: imageUrl,
+
             name: productInfo.description,
             quantity: item.quantity,
             price: item.price,
-          };
+          } as cartItem;
         }),
       );
 
