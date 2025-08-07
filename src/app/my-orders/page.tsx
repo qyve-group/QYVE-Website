@@ -86,12 +86,12 @@ const ShippingProgress = () => {
 
   // const [orderId, setOrderId] = useState("");
   // type ProductColor = { image: string };
-  type cartItem = {
-    image: string;
-    name: string;
-    quantity: number;
-    price: number;
-  };
+  // type TempCartItem = {
+  //   image: string;
+  //   name: string;
+  //   quantity: number;
+  //   price: number;
+  // };
 
   const [orderIds, setOrderIds] = useState<string[]>([]); // Store multiple order IDs
   const [tracking, setTracking] = useState<string[]>([]); // Store multiple order IDs
@@ -229,7 +229,7 @@ const ShippingProgress = () => {
             name: productInfo.description,
             quantity: item.quantity,
             price: item.price,
-          } as cartItem;
+          } as CartItem;
         }),
       );
 
