@@ -60,7 +60,7 @@ import {
   // Eye,
   // EyeOff,
   CreditCard,
-  Download,
+  // Download,
   // Copy,
   // Check,
 } from 'lucide-react';
@@ -275,24 +275,24 @@ const PaymentSuccess = () => {
               ))}
             </div> */}
 
-            <div className="space-y-2 text-sm text-muted-foreground">
+            {/* <div className="space-y-2 text-sm text-muted-foreground">
               <p>✅ Payment processed securely</p>
               <p>📧 Confirmation email sent</p>
               <p>🔒 Your information is protected</p>
-            </div>
+            </div> */}
 
             <div className="space-y-3 pt-4">
-              <Button asChild className="w-full">
+              <Button asChild className="w-full text-black">
                 <Link href="/">
-                  Continue to Dashboard
+                  Back to Home
                   <ArrowRight className="ml-2 size-4" />
                 </Link>
               </Button>
 
-              <Button variant="outline" className="w-full">
+              {/* <Button variant="outline" className="w-full">
                 <Download className="mr-2 size-4" />
                 Download Receipt
-              </Button>
+              </Button> */}
             </div>
           </CardContent>
         </Card>
@@ -388,14 +388,14 @@ const PaymentSuccess = () => {
           )} */}
         {/* </Card> */}
 
-        <div className="text-center">
+        {/* <div className="text-center">
           <p className="text-sm text-muted-foreground">
             Need help?{' '}
             <Link href="/support" className="text-primary hover:underline">
               Contact Support
             </Link>
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -71,8 +71,12 @@ type SupabaseCartItem = {
 export const fetchCartFromSupabase = async (
   userId: string | null,
   dispatch: AppDispatch,
+  // userId: string | null,
 ) => {
-  if (!userId) return;
+  if (!userId) {
+    console.log('No existing userid when adding to cart cartservice.ts');
+    return;
+  }
 
   // const currCart = store.getState().cart;
 
@@ -138,25 +142,27 @@ export const fetchCartFromSupabase = async (
 
     console.log('supabasecartitemsfiltered: ', supabaseCartItemsFiltered);
 
+    // return supabaseCartItemsFiltered || [];
+
     try {
       dispatch(setCart(supabaseCartItemsFiltered));
     } catch (error) {
       console.error('error dispatching to cart from supabase: ', error);
     }
-
-    // console.log(
-    //   'Cart state after setting from Supabase:',
-    //   store.getState().cart,
-    // );
   } catch (error) {
     // console.error*('Error fetching cart:', error);
   }
+  // return [];
 };
 
 export const saveCartToSupabase = async (
   userId: string,
   reduxCartItems: any[],
 ) => {
+  console.log('user id in cartserice.tsx: ', userId);
+  if (userId == null) {
+    return;
+  }
   console.log('trying to savecarttosupabase - cartService.tsx ');
   try {
     // ------------------------- fetching cartid and retrieving items from supabase to put into map   ------------------------------------------------------------

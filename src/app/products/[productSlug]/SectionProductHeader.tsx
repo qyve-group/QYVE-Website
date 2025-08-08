@@ -80,7 +80,9 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const [activeColor, setActiveColor] = useState(0);
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
-  const [selectedColorId, setSelectedColorId] = useState(1);
+  // const [selectedColorId, setSelectedColorId] = useState(0);
+  const [selectedColorId, setSelectedColorId] = useState<number | null>(null);
+
   const [selectedProductSizeId, setSelectedProductSizeId] = useState<number>();
   const [custom, setCustom] = useState('');
 
@@ -88,14 +90,26 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   // console.log('session sectopnproductheader: ', session);
   // console.log('slug -sectionproductheader: ', slug);
 
+  // Set default color ID once when product changes
+  useEffect(() => {
+    if (products_sizes.length > 0 && selectedColorId === null) {
+      const firstColorId = products_sizes[0]?.product_color_id;
+      setSelectedColorId(firstColorId ?? null);
+    }
+  }, [products_sizes, selectedColorId]);
+
   const filteredProductSizes = products_sizes.filter(
     (ps) => ps.product_color_id === selectedColorId,
   );
+
+  console.log('filteredProductSizes: ', filteredProductSizes);
 
   const router = useRouter();
 
   useEffect(() => {
     // console.log(product_shots);
+    // setSelectedColorId(filteredProductSizes[0]?.product_color_id ?? 0);
+
     const fetchShots = () => {
       setShots(product_shots);
 
@@ -106,10 +120,10 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   }, []);
 
   const handleAddToCart = () => {
-    if (!session) {
-      alert('Login to add to cart!');
-      return;
-    }
+    // if (!session) {
+    //   alert('Login to add to cart!');
+    //   return;
+    // }
     if (!selectedSize) {
       alert('Please select a size before adding to cart!');
       return;
@@ -228,7 +242,9 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                           setSelectedColor(pc.color);
                           setSelectedImage(pc.image || '/qyve-black.png');
                           // setChosenColor(colorName || '');
-                          // console.log(`Chosen pId: ${id}-${selectedId}`);
+
+                          console.log('current selectedcolorid: ', pc.id);
+                          console.log('current selectedcolor: ', pc.color);
                         }}
                       >
                         <Image

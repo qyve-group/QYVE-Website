@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { FaGoogle } from 'react-icons/fa6';
 
@@ -13,13 +14,40 @@ import Input from '@/shared/Input/Input';
 const SignUpForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const router = useRouter();
+
+  // const submitForm = async () => {
+  //   try {
+  //     await submitSignUp(email, password);
+  //     // console.log*('Registration successfull: ', data);
+  //   } catch (error) {
+  //     // console.error*('Error in registering user: ', error);
+  //   }
+  // };
 
   const submitForm = async () => {
     try {
-      await submitSignUp(email, password);
-      // console.log*('Registration successfull: ', data);
-    } catch (error) {
-      // console.error*('Error in registering user: ', error);
+      const { user } = await submitSignUp(email, password);
+      alert(
+        'Registration successful. Please check your email to verify your account before logging in.',
+      );
+      console.log('Registration successful');
+      if (user) {
+        // Redirect even if email confirmation is pending
+        router.push('/home'); // or navigate('/home')
+      }
+    } catch (error: any) {
+      if (
+        error.message.includes('already registered') ||
+        error.status === 400
+      ) {
+        alert(
+          'This email is already registered. Please log in or use a different email.',
+        );
+      } else {
+        alert('An error occurred during registration. Please try again.');
+      }
+      console.error('Error in registering user:', error);
     }
   };
 

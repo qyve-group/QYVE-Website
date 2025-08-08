@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import { FaGoogle } from 'react-icons/fa6';
 
@@ -16,12 +16,19 @@ const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [errMessage, setErrMessage] = useState<string>('');
+
+  const redirectTo = searchParams.get('redirect') || '/';
 
   const submitForm = async () => {
     try {
       // const { user, session } = await submitLogin(email, password);
-      await submitLogin(email, password);
+      const { session } = await submitLogin(email, password);
+
+      if (session) {
+        router.push(`${redirectTo}`);
+      }
       // console.log*('Logged in user: ', user);
       // console.log*('Logged in session: ', session);
 
@@ -74,35 +81,16 @@ const LoginForm = () => {
   // };
 
   const handleGoogleSignIn = async () => {
-    // const codeVerifier = randomStr(32);
-    // const codeChallenge = await sha256base64url(codeVerifier);
-
-    // const shaBuffer = await sha256(codeVerifier);
-    // const encoded = bufferToBase64UrlEncoded(shaBuffer);
-    // const state = generateStateToken();
-
-    // // Store verifier in session or encrypted cookie (not in localStorage)
-    // localStorage.setItem('code_verifier', codeVerifier);
-    // localStorage.setItem('oauth_state', state);
-
-    // window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${new URLSearchParams(
-    //   {
-    //     response_type: 'code',
-    //     client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-    //     redirect_uri: 'http://localhost:3000/auth/callback',
-    //     scope: 'openid email profile',
-    //     code_challenge: encoded,
-    //     code_challenge_method: 'S256',
-    //     state: state,
-    //   },
-    // )}`;
-
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
+        redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`,
+        queryParams: {
+          prompt: 'select_account',
+        },
       },
     });
+
     // if (error) // console.error*('Gogole Sign-In error: ', error);
   };
 
