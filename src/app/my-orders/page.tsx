@@ -307,7 +307,10 @@ const ShippingProgress = () => {
             Looks like you haven’t placed any orders yet.
           </p>
           <button
-            onClick={() => (window.location.href = '/shop')}
+            type="button"
+            onClick={() => {
+              window.location.href = '/shop';
+            }}
             className="mt-6 px-4 py-2 rounded-lg bg-primary text-black hover:bg-black hover:text-primary transition"
           >
             Start Shopping
