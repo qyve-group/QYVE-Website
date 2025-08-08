@@ -16,7 +16,9 @@ import Stripe from 'stripe';
 //   postal_code: string;
 // };
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-06-30.basil',
+});
 
 export async function POST(req: Request) {
   try {
