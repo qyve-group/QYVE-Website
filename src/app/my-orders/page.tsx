@@ -99,7 +99,48 @@ const ShippingProgress = () => {
   const userId = useSelector((state: RootState) => state.auth.user);
   const [orderItems, setOrderItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [noOrder, setNoOrder] = useState(false);
   // const [showFull, setShowFull] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedReason, setSelectedReason] = useState('');
+  const [customReason, setCustomReason] = useState('');
+
+  const predefinedReasons = [
+    'Wrong item received',
+    'Item not delivered',
+    'Damaged item',
+    'Changed my mind',
+    'Other',
+  ];
+
+  const handleRefund = async (orderId: string) => {
+    const reason = selectedReason === 'Other' ? customReason : selectedReason;
+
+    try {
+      const res = await fetch('/api/refund', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId: orderId,
+          userId: userId,
+          reason: reason, // make sure `reason` is defined somewhere in your component
+          status: 'pending', // assuming you want to set it as a string literal "pending"
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Refund request failed');
+      }
+
+      console.log('Refund successful:', data);
+    } catch (error) {
+      console.error('Refund error:', error);
+    }
+  };
+
+  console.log('noOrder initial: ', noOrder);
 
   useEffect(() => {
     // console.log*('userId: ', userId?.id);
@@ -114,10 +155,11 @@ const ShippingProgress = () => {
         console.error('Error fetching order ID my-orders:', error);
         return;
       }
-      console.log(data);
+      console.log('data: ', data);
 
       if (!data || data.length === 0) {
-        // console.log*('No orders found for this user.');
+        console.log('No orders found for this user.');
+        setNoOrder(true);
         setLoading(false);
         return;
       }
@@ -166,7 +208,9 @@ const ShippingProgress = () => {
   // }, [orderIds]);
 
   useEffect(() => {
-    if (!orderIds.length) return; // Ensure orderId is available
+    if (!orderIds.length) {
+      return;
+    } // Ensure orderId is available
 
     const fetchOrderItems = async () => {
       setLoading(true); // Step 2: Set loading to true before fetching
@@ -176,7 +220,7 @@ const ShippingProgress = () => {
 
       if (orderItemsError) {
         // console.error*('Unable to fetch order items: ', orderItemsError);
-        setLoading(false);
+        // setLoading(false);
         return;
       }
 
@@ -249,102 +293,179 @@ const ShippingProgress = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen py-10">
-      <div className="mx-auto max-w-4xl space-y-6 px-4">
-        {/* Back Button */}
-        <div>
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="flex items-center text-sm text-blue-600 hover:underline"
-          >
-            ← Back
-          </button>
-        </div>
-
-        {/* Orders Section */}
-        {loading ? (
-          <Loading />
-        ) : (
-          orderIds.map((orderId, idx) => (
-            <div
-              key={orderId}
-              className="border-gray-200 space-y-6 rounded-lg border bg-white p-6 shadow-md"
+      {!noOrder ? (
+        <div className="mx-auto max-w-4xl space-y-6 px-4">
+          {/* Back Button */}
+          <div>
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="flex items-center text-sm text-blue-600 hover:underline"
             >
-              {/* Order Header */}
-              <div className="border-b pb-4">
-                <p className="text-gray-700 text-sm font-semibold">
-                  Order ID:{' '}
-                  <span className="italic text-customGray-800">{orderId}</span>
-                </p>
-                <p className="text-gray-700 mt-2 text-sm font-semibold">
-                  Tracking Number:{}
-                  <span className="italic text-customGray-800">
-                    {tracking[idx] !== '' ? ` ${tracking[idx]}` : ' Processing'}
-                  </span>
-                </p>
-              </div>
+              ← Back
+            </button>
+          </div>
 
-              {/* Items */}
-              <div className="space-y-4">
-                {orderItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center justify-between gap-4"
-                  >
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      width={400}
-                      height={400}
-                      className="size-16 rounded-md border object-cover"
-                    />
+          {/* Orders Section */}
+          {loading ? (
+            <Loading />
+          ) : (
+            orderIds.map((orderId, idx) => (
+              <div
+                key={orderId}
+                className="border-gray-200 space-y-6 rounded-lg border bg-white p-6 shadow-md"
+              >
+                {/* Order Header */}
+                <div className="border-b pb-4">
+                  <p className="text-gray-700 text-sm font-semibold">
+                    Order ID:{' '}
+                    <span className="italic text-customGray-800">
+                      {orderId}
+                    </span>
+                  </p>
+                  <p className="text-gray-700 mt-2 text-sm font-semibold">
+                    Tracking Number:{}
+                    <span className="italic text-customGray-800">
+                      {tracking[idx] !== ''
+                        ? ` ${tracking[idx]}`
+                        : ' Processing'}
+                    </span>
+                  </p>
+                </div>
 
-                    <div className="flex-1">
-                      <p className="text-gray-800 font-medium">{item.name}</p>
+                {/* Items */}
+                <div className="space-y-4">
+                  {orderItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between gap-4"
+                    >
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        width={400}
+                        height={400}
+                        className="size-16 rounded-md border object-cover"
+                      />
+
+                      <div className="flex-1">
+                        <p className="text-gray-800 font-medium">{item.name}</p>
+                      </div>
+
+                      <div className="text-right text-sm">
+                        <p className="text-gray-600">Qty: {item.quantity}</p>
+                        <p className="text-gray-900 font-bold">
+                          RM {item.price}
+                        </p>
+                      </div>
                     </div>
+                  ))}
+                </div>
 
-                    <div className="text-right text-sm">
-                      <p className="text-gray-600">Qty: {item.quantity}</p>
-                      <p className="text-gray-900 font-bold">RM {item.price}</p>
-                    </div>
+                {/* Summary */}
+                <div className="text-gray-700 space-y-2 border-t pt-4 text-sm">
+                  <div className="flex justify-between font-semibold">
+                    <span>Merchandise Subtotal</span>
+                    <span>RM {totalPrice[idx]}</span>
                   </div>
-                ))}
-              </div>
+                  <div className="flex justify-between">
+                    <span>Shipping Fee + SST</span>
+                    <span>RM 5</span>
+                  </div>
+                  <div className="flex justify-between text-base font-bold">
+                    <span>Order Total</span>
+                    <span>RM {(totalPrice[idx] ?? 0) + 5}</span>
+                  </div>
+                  <div className="text-gray-600 mt-2 flex justify-between text-xs">
+                    <span>Payment Method</span>
+                    <span>Credit / Debit Card</span>
+                  </div>
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      className="rounded-lg bg-red-500 p-2 text-white"
+                      onClick={() => setShowModal(true)}
+                    >
+                      Refund
+                    </button>
+                  </div>
 
-              {/* Summary */}
-              <div className="text-gray-700 space-y-2 border-t pt-4 text-sm">
-                <div className="flex justify-between font-semibold">
-                  <span>Merchandise Subtotal</span>
-                  <span>RM {totalPrice[idx]}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Shipping Fee + SST</span>
-                  <span>RM 5</span>
-                </div>
-                <div className="flex justify-between text-base font-bold">
-                  <span>Order Total</span>
-                  <span>RM {(totalPrice[idx] ?? 0) + 5}</span>
-                </div>
-                <div className="text-gray-600 mt-2 flex justify-between text-xs">
-                  <span>Payment Method</span>
-                  <span>Credit / Debit Card</span>
-                </div>
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    className="rounded-lg bg-red-500 p-2 text-white"
-                    onClick={() => {
-                      console.log('Refund clicked');
-                    }}
-                  >
-                    Refund
-                  </button>
+                  {showModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                      <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
+                        <h2 className="text-lg font-semibold mb-4">
+                          Select Refund Reason
+                        </h2>
+
+                        <div className="space-y-2">
+                          {predefinedReasons.map((reason) => (
+                            <label
+                              key={reason}
+                              className="block cursor-pointer"
+                            >
+                              <input
+                                type="radio"
+                                name="refundReason"
+                                value={reason}
+                                className={`mr-2 ${selectedReason === reason ? 'bg-black' : ''}`}
+                                checked={selectedReason === reason}
+                                onChange={(e) =>
+                                  setSelectedReason(e.target.value)
+                                }
+                              />
+                              {reason}
+                            </label>
+                          ))}
+
+                          {selectedReason === 'Other' && (
+                            <textarea
+                              placeholder="Enter your reason..."
+                              className="w-full p-2 border rounded"
+                              rows={3}
+                              value={customReason}
+                              onChange={(e) => setCustomReason(e.target.value)}
+                            />
+                          )}
+                        </div>
+
+                        <div className="flex justify-end space-x-2 mt-6">
+                          <button
+                            className="bg-gray-300 hover:bg-gray-400 text-black rounded px-4 py-2"
+                            onClick={() => setShowModal(false)}
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            className="bg-red-500 hover:bg-red-600 text-white rounded px-4 py-2"
+                            onClick={() => handleRefund(orderId)}
+                            disabled={
+                              !selectedReason ||
+                              (selectedReason === 'Other' && !customReason)
+                            }
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-          ))
-        )}
-      </div>
+            ))
+          )}
+        </div>
+      ) : (
+        <div className="flex items-center justify-center min-h-[300px]">
+          <div className="bg-gray-100 border border-gray-300 rounded-xl p-8 text-center shadow-sm">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              No Orders Found
+            </h2>
+            <p className="text-gray-600">
+              Looks like you haven’t placed any orders yet.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 
