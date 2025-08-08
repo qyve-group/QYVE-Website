@@ -665,8 +665,8 @@ export const footerData = {
       title: 'Main Pages',
       links: [
         { href: '/home', name: 'Home' },
-        { href: '/about-us', name: 'About Us' },
-        { href: '/products', name: 'Products' },
+        // { href: '/about-us', name: 'About Us' },
+        { href: '/shop', name: 'Shop' },
         { href: '/cart', name: 'Cart' },
         // { href: '/checkout', name: 'Checkout' },
         // { href: '/blog', name: 'Blogs' },

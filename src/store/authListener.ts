@@ -65,6 +65,7 @@ export const listenForAuthChanges = (dispatch: any, getState: () => any) => {
         }, 0);
       }
       if (event === 'SIGNED_OUT') {
+        console.log('dispatch(logout) called from authListener');
         dispatch(logout());
         dispatch(clearCart());
       }

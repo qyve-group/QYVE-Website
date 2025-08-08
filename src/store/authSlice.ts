@@ -45,7 +45,7 @@ const authSlice = createSlice({
 export const { setUser, logout, setLoading } = authSlice.actions;
 export default authSlice.reducer;
 
-export const logoutUser = () => async (dispatch: any) => {
+export const logoutUser = () => async () => {
   // await supabase.auth.signOut(); // ✅ Clears session from Supabase
   // dispatch(logout()); // ✅ Clears user from Redux state
 
@@ -60,9 +60,7 @@ export const logoutUser = () => async (dispatch: any) => {
       console.error('[logoutUser] Supabase error:', error);
       throw error;
     }
-    dispatch(logout()); // ✅ Clears user from Redux state
-    // const ses = store.getState().auth.session;
-    // console.log('session authslice.ts logoutUser: ', ses);
+    // dispatch(logout());
     console.log('[logoutUser] Logout successful, state cleared.');
     console.log('After signOut...');
   } catch (err) {

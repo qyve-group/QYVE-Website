@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 // import { supabase } from '@/libs/supabaseClient';
 import { notifyTelegram } from '@/libs/telegram';
+// import { subtle } from 'crypto';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-06-30.basil',
@@ -147,8 +148,10 @@ export async function POST(req: Request) {
             id: orderId,
             user_id: userId,
             status: 'Paid',
-            total_price: formattedTotalPrice,
+            total_price: session.amount_total! / 100,
             stripe_session_id: session.id,
+            tracking_no: 'Processing',
+            subtotal: session.amount_subtotal! / 100,
           },
         ])
         .select()
