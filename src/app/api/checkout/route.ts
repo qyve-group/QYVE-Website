@@ -129,34 +129,67 @@ export async function POST(req: Request) {
     //   : []),
 
     // Step 2: Look up the promotion code (if provided)
+    // Step 2: Look up the promotion code (only if provided)
     const discounts = [];
-    if (discountCode) {
-      const promoCodes = await stripe.promotionCodes.list({
-        active: true,
-        code: discountCode,
-      });
 
-      console.log('discountCode entered: ', discountCode);
-      console.log('promo codes: ', promoCodes);
+    if (discountCode && discountCode.trim() !== '') {
+      try {
+        const promoCodes = await stripe.promotionCodes.list({
+          active: true,
+          code: discountCode.trim(),
+        });
 
-      const matchedCode = promoCodes.data[0];
-      if (matchedCode) {
-        discounts.push({ promotion_code: matchedCode.id });
-        console.log('discounts array: ', discounts);
-      } else {
+        console.log('discountCode entered:', discountCode);
+        console.log('promo codes from Stripe:', promoCodes);
+
+        const matchedCode = promoCodes.data[0];
+
+        if (matchedCode) {
+          discounts.push({ promotion_code: matchedCode.id });
+          console.log('Applied discounts:', discounts);
+        } else {
+          return NextResponse.json(
+            { error: 'Invalid promo code' },
+            { status: 400 },
+          );
+        }
+      } catch (err) {
+        console.error('Error checking promo code:', err);
         return NextResponse.json(
-          { error: 'Invalid promo code' },
-          {
-            status: 400,
-            headers: {
-              'Access-Control-Allow-Origin': 'https://www.qyveofficial.com',
-              // 'Access-Control-Allow-Headers': 'Content-Type',
-              // 'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            },
-          },
+          { error: 'Could not validate promo code' },
+          { status: 500 },
         );
       }
     }
+
+    // const discounts = [];
+    // if (discountCode) {
+    //   const promoCodes = await stripe.promotionCodes.list({
+    //     active: true,
+    //     code: discountCode,
+    //   });
+
+    //   console.log('discountCode entered: ', discountCode);
+    //   console.log('promo codes: ', promoCodes);
+
+    //   const matchedCode = promoCodes.data[0];
+    //   if (matchedCode) {
+    //     discounts.push({ promotion_code: matchedCode.id });
+    //     console.log('discounts array: ', discounts);
+    //   } else {
+    //     return NextResponse.json(
+    //       { error: 'Invalid promo code' },
+    //       {
+    //         status: 400,
+    //         headers: {
+    //           'Access-Control-Allow-Origin': 'https://www.qyveofficial.com',
+    //           // 'Access-Control-Allow-Headers': 'Content-Type',
+    //           // 'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    //         },
+    //       },
+    //     );
+    //   }
+    // }
 
     const shippingOptions = [
       {
