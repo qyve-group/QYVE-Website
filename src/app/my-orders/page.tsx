@@ -402,11 +402,17 @@ const ShippingProgress = () => {
                       <span>Subtotal</span>
                       <span>RM {subTotal[idx]}</span>
                     </div>
-                    <div className="flex justify-between">
+                    {/* <div className="flex justify-between">
                       <span>Shipping Fee</span>
                       <span>
                         RM {(totalPrice[idx] ?? 0) - (subTotal[idx] ?? 0)}
                       </span>
+                    </div> */}
+                    <div className="flex justify-end">
+                      <span>+ Shipping Fee</span>
+                      {/* <span>
+                        RM {(totalPrice[idx] ?? 0) - (subTotal[idx] ?? 0)}
+                      </span> */}
                     </div>
                     <div className="flex justify-between text-base font-bold">
                       <span>Order Total</span>
