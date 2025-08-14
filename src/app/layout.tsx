@@ -1,7 +1,10 @@
 import '@/styles/global.css';
 
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import React from 'react';
+
+import Analytics from '@/components/Analytics';
 
 // import Header from "@/components/Header/Header";
 // import Footer from "@/shared/Footer/Footer";
@@ -72,6 +75,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="">
+        {/* Google Analytics Global Scripts */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-L21TDRCCGP"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-L21TDRCCGP', {
+              send_page_view: false
+            });
+          `}
+        </Script>
+        {/* Custom Analytics for SPA Navigation */}
+        <Analytics />
         <LayoutClient>{children}</LayoutClient>
 
         {/* <Providers>

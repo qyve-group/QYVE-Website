@@ -286,9 +286,9 @@ const ShippingProgress = () => {
   return (
     <div className="bg-gray-100 min-h-screen py-10">
       {!hasOrderItems ? (
-        <div className="text-center mx-auto p-8 bg-white rounded-2xl shadow-md max-w-sm w-full">
+        <div className="mx-auto w-full max-w-sm rounded-2xl bg-white p-8 text-center shadow-md">
           <svg
-            className="mx-auto h-12 w-12 text-gray-400"
+            className="text-gray-400 mx-auto size-12"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -300,10 +300,10 @@ const ShippingProgress = () => {
               d="M3 3h18M9 3v18m6-18v18M4 21h16"
             />
           </svg>
-          <h2 className="mt-4 text-lg font-semibold text-gray-800">
+          <h2 className="text-gray-800 mt-4 text-lg font-semibold">
             You have no orders
           </h2>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="text-gray-500 mt-2 text-sm">
             Looks like you haven’t placed any orders yet.
           </p>
           <button
@@ -311,7 +311,7 @@ const ShippingProgress = () => {
             onClick={() => {
               window.location.href = '/shop';
             }}
-            className="mt-6 px-4 py-2 rounded-lg bg-primary text-black hover:bg-black hover:text-primary transition"
+            className="mt-6 rounded-lg bg-primary px-4 py-2 text-black transition hover:bg-black hover:text-primary"
           >
             Start Shopping
           </button>
@@ -322,7 +322,7 @@ const ShippingProgress = () => {
             <button
               type="button"
               onClick={() => router.back()}
-              className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-customGray-300 hover:shadow-md"
+              className="text-gray-700 flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium shadow-sm transition-all hover:bg-customGray-300 hover:shadow-md"
             >
               <span className="text-lg">←</span>
               Back

@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import ImageShowCase from '@/components/ImageShowCase';
 import ShoeSizeButton from '@/components/ShoeSizeButton';
+import { event } from '@/lib/gtag';
 // import { shoeSizes } from "@/data/content";
 // import nike_profile from '@/images/nike_profile.jpg';
 // import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
@@ -128,6 +129,24 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       alert('Please select a size before adding to cart!');
       return;
     }
+
+    event('add_to_cart', {
+      currency: 'MYR',
+      value: price,
+      items: [
+        {
+          item_id: selectedProductSizeId,
+          item_name: `${selectedColor}`,
+          price,
+          quantity: 1,
+          item_variant: selectedSize,
+          // item_brand: 'YourBrandName', // optional but recommended
+          // item_category: 'Shoes', // or your product category
+          image_url: selectedImage, // optional for reports
+        },
+      ],
+    });
+
     dispatch(
       addToCart({
         id: selectedProductSizeId!,
@@ -151,6 +170,23 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       alert('Please select a size before adding to cart!');
       return;
     }
+
+    event('add_to_cart', {
+      currency: 'MYR',
+      value: price,
+      items: [
+        {
+          item_id: selectedProductSizeId,
+          item_name: `${selectedColor}`,
+          price,
+          quantity: 1,
+          item_variant: selectedSize,
+          // item_brand: 'YourBrandName', // optional but recommended
+          // item_category: 'Shoes', // or your product category
+          image_url: selectedImage, // optional for reports
+        },
+      ],
+    });
 
     dispatch(
       addToCart({
