@@ -257,7 +257,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         </div>
 
         <div className="flex flex-col">
-          {slug === 'jersey' ? (
+          {slug?.includes('jersey') ? (
             <div className="flex flex-col md:flex-row">
               <div className="basis-2/5">
                 <p className="mb-5 text-xl">Available colors</p>
