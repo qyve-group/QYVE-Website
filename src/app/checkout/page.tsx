@@ -24,6 +24,7 @@ import type { RootState } from '@/store/store';
 
 // import InputNumber from '@/shared/InputNumber/InputNumber';
 import ContactInfo from './ContactInfo';
+import StreamlinedCheckout from './StreamlinedCheckout';
 // import PaymentMethod from './PaymentMethod';
 import ShippingAddress from './ShippingAddress';
 
@@ -57,6 +58,7 @@ type ShippingAddressData = {
 };
 
 const CheckoutPage = () => {
+  const [useStreamlinedCheckout, setUseStreamlinedCheckout] = useState(true);
   const [tabActive, setTabActive] = useState<
     'ContactInfo' | 'ShippingAddress' | 'PaymentMethod'
   >('ShippingAddress');
