@@ -122,8 +122,17 @@ export default function CheckoutButton({
       
       if (data.url) {
         console.log('Redirecting to Stripe:', data.url);
-        // Try opening in new tab instead of redirect (better for Replit)
-        window.open(data.url, '_blank');
+        // Try copying URL to clipboard as backup
+        navigator.clipboard?.writeText(data.url).catch(() => {});
+        
+        // Try opening in new tab
+        const newWindow = window.open(data.url, '_blank');
+        
+        if (!newWindow) {
+          // Fallback if popup blocked
+          console.warn('Popup blocked. Please copy this URL manually:', data.url);
+          alert(`Please copy this URL and open it in a new tab:\n\n${data.url}`);
+        }
       } else {
         console.error('No URL returned from Stripe:', data);
       }
