@@ -35,20 +35,31 @@ const MainNav = () => {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  // Close dropdown when clicking outside
+  // Close dropdown when mouse moves away from the dropdown area
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!dropdownRef.current || !isOpen) return;
+
+      const rect = dropdownRef.current.getBoundingClientRect();
+      const buffer = 50; // pixels of buffer area around dropdown
+      
+      const isOutsideDropdown = 
+        event.clientX < rect.left - buffer ||
+        event.clientX > rect.right + buffer ||
+        event.clientY < rect.top - buffer ||
+        event.clientY > rect.bottom + buffer;
+
+      if (isOutsideDropdown) {
         setIsOpen(false);
       }
     };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousemove', handleMouseMove);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousemove', handleMouseMove);
     };
   }, [isOpen]);
 
@@ -110,6 +121,9 @@ const MainNav = () => {
           <div
             ref={dropdownRef}
             className="relative cursor-pointer"
+            onMouseEnter={() => {
+              // Keep dropdown open when hovering over the area
+            }}
           >
             {auth.user ? (
               <div className="flex items-center gap-2 pl-5">
