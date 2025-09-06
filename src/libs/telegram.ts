@@ -9,13 +9,20 @@ export async function notifyTelegram(
   cartItems?: any[],
 ) {
   console.log('calling notifyTelegram with items:', cartItems);
+  console.log('Items count:', cartItems?.length);
+  console.log('First item structure:', cartItems?.[0]);
 
   let itemsText = '';
   
   if (cartItems && cartItems.length > 0) {
     // Use cart items directly (for guest checkout)
     itemsText = cartItems
-      .map(item => `${item.name} (${item.product_size}) x ${item.quantity}`)
+      .map(item => {
+        const size = item.product_size || 'Free Size';
+        const name = item.name || 'Product';
+        const quantity = item.quantity || 1;
+        return `${name} (${size}) x ${quantity}`;
+      })
       .join('\n');
   } else {
     // Fallback to database lookup (for authenticated users)
