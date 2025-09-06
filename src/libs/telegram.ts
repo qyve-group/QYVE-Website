@@ -16,11 +16,23 @@ export async function notifyTelegram(
   
   if (cartItems && cartItems.length > 0) {
     // Use cart items directly (for guest checkout)
+    console.log('🔍 Processing cart items for Telegram:');
+    cartItems.forEach((item, index) => {
+      console.log(`🔍 Item ${index}:`, {
+        name: item.name,
+        product_size: item.product_size,
+        quantity: item.quantity,
+        id: item.id,
+        price: item.price
+      });
+    });
+    
     itemsText = cartItems
-      .map(item => {
-        const size = item.product_size || 'Free Size';
-        const name = item.name || 'Product';
+      .map((item, index) => {
+        const size = item.product_size || item.size || 'Free Size';
+        const name = item.name || item.product_name || item.title || `Product ${item.id || index + 1}`;
         const quantity = item.quantity || 1;
+        console.log(`🔍 Formatted item ${index}: "${name} (${size}) x ${quantity}"`);
         return `${name} (${size}) x ${quantity}`;
       })
       .join('\n');
