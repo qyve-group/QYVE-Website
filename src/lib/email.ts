@@ -24,16 +24,19 @@ const createTransporter = () => {
     });
   }
   
-  // Check if using custom SMTP
+  // Check if using custom SMTP (Brevo)
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
     return nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_PORT === '465', // true for 465, false for other ports
+      port: 587,
+      secure: false, // Use TLS
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
+      tls: {
+        ciphers: 'SSLv3'
+      }
     });
   }
 
@@ -58,7 +61,7 @@ export async function sendPaymentConfirmationEmail({
     const transporter = createTransporter();
     console.log('📧 Transporter created successfully');
     
-    const fromEmail = process.env.GMAIL_USER || process.env.SMTP_FROM || process.env.SMTP_USER;
+    const fromEmail = process.env.SMTP_USER;
     const companyName = process.env.COMPANY_NAME || 'QYVE';
     
     console.log('📧 From email:', fromEmail);
