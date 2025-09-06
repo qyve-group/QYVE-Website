@@ -18,6 +18,26 @@ const LoginForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [errMessage, setErrMessage] = useState<string>('');
+  
+  // Check for OAuth errors from URL
+  React.useEffect(() => {
+    const error = searchParams.get('error');
+    if (error) {
+      switch (error) {
+        case 'auth_failed':
+          setErrMessage('Google authentication failed. Please try again.');
+          break;
+        case 'unexpected':
+          setErrMessage('An unexpected error occurred during authentication.');
+          break;
+        case 'no_code':
+          setErrMessage('Authentication was cancelled or incomplete.');
+          break;
+        default:
+          setErrMessage('Authentication error occurred.');
+      }
+    }
+  }, [searchParams]);
 
   const redirectTo = searchParams.get('redirect') || '/';
 
@@ -80,18 +100,41 @@ const LoginForm = () => {
   //   return randomStr(32);
   // };
 
-  const handleGoogleSignIn = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`,
-        queryParams: {
-          prompt: 'select_account',
-        },
-      },
-    });
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-    // if (error) // console.error*('Gogole Sign-In error: ', error);
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsGoogleLoading(true);
+      setErrMessage('');
+      
+      // Get the current domain dynamically for Replit
+      const currentDomain = window.location.origin;
+      const callbackUrl = `${currentDomain}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`;
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: callbackUrl,
+          queryParams: {
+            prompt: 'select_account',
+            access_type: 'offline'
+          },
+        },
+      });
+
+      if (error) {
+        console.error('Google Sign-In error:', error);
+        setErrMessage(`Google sign-in failed: ${error.message}`);
+        setIsGoogleLoading(false);
+        return;
+      }
+      
+      // OAuth redirect will happen automatically
+    } catch (error) {
+      console.error('Unexpected error during Google sign-in:', error);
+      setErrMessage('An unexpected error occurred during Google sign-in');
+      setIsGoogleLoading(false);
+    }
   };
 
   return (
@@ -104,10 +147,20 @@ const LoginForm = () => {
           <div className="space-y-6">
             <div className="">
               <ButtonSecondary
-                className="flex w-full items-center gap-3 border-2 border-black text-black hover:bg-black hover:text-primary"
+                className="flex w-full items-center gap-3 border-2 border-black text-black hover:bg-black hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleGoogleSignIn}
+                disabled={isGoogleLoading}
               >
-                <FaGoogle className="text-2xl" /> Continue with Google
+                {isGoogleLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
+                    Connecting to Google...
+                  </>
+                ) : (
+                  <>
+                    <FaGoogle className="text-2xl" /> Continue with Google
+                  </>
+                )}
               </ButtonSecondary>
             </div>
             <div className="relative text-center">
