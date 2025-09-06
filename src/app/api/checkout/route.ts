@@ -236,6 +236,8 @@ export async function POST(req: Request) {
         customer_name: `${orderAddress.fname} ${orderAddress.lname}`,
         order_items: cartItems.map((item: any) => `${item.name} (${item.product_size}) x${item.quantity}`).join(', '),
         order_id: `ORDER_${Date.now()}`,
+        // Store cart items in metadata for guest users
+        cart_items: isGuestCheckout ? JSON.stringify(cartItems) : '',
       },
     });
 

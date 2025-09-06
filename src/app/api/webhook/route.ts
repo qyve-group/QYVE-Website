@@ -107,40 +107,52 @@ export async function POST(req: Request) {
 
     // console.log('userid: ', userId);
 
-    // Fetch cart_id from cart table using user_id
-    const { data: cartInfo, error: cartInfoError } = await supabaseAdmin
-      .from('carts')
-      .select('id')
-      .eq('user_id', userId)
-      .single();
+    let cartItems: any[] = [];
 
-    if (cartInfoError || !cartInfo) {
-      return NextResponse.json(
-        { error: 'Active cart not found' },
-        { status: 404 },
-      );
+    if (isGuestCheckout) {
+      // For guest checkout, get cart items from Stripe metadata
+      try {
+        const cartItemsString = session.metadata?.cart_items || '[]';
+        cartItems = JSON.parse(cartItemsString);
+        console.log('Guest cart items from metadata:', cartItems);
+      } catch (parseError) {
+        console.error('❌ Error parsing guest cart items:', parseError);
+        return NextResponse.json({ error: 'Invalid cart items format' }, { status: 400 });
+      }
+    } else {
+      // For authenticated users, fetch from database as before
+      // Fetch cart_id from cart table using user_id
+      const { data: cartInfo, error: cartInfoError } = await supabaseAdmin
+        .from('carts')
+        .select('id')
+        .eq('user_id', userId)
+        .single();
+
+      if (cartInfoError || !cartInfo) {
+        return NextResponse.json(
+          { error: 'Active cart not found' },
+          { status: 404 },
+        );
+      }
+
+      const cartId = cartInfo.id;
+      // console.log('cartId: ', cartId);
+
+      // Fetch cart items using cart_id
+      const { data: dbCartItems, error: cartItemsError } = await supabaseAdmin
+        .from('cart_items')
+        .select('*, products_sizes(*, product_colors(*))')
+        .eq('cart_id', cartId);
+
+      if (cartItemsError || !dbCartItems.length) {
+        return NextResponse.json(
+          { error: 'Cart items not found' },
+          { status: 404 },
+        );
+      }
+      cartItems = dbCartItems;
     }
 
-    const cartId = cartInfo.id;
-    // console.log('cartId: ', cartId);
-
-    // Fetch cart items using cart_id
-    // const { data: cartItems, error: cartItemsError } = await supabaseAdmin
-    //   .from('cart_items')
-    //   .select('*')
-    //   .eq('cart_id', cartId);
-
-    const { data: cartItems, error: cartItemsError } = await supabaseAdmin
-      .from('cart_items')
-      .select('*, products_sizes(*, product_colors(*))')
-      .eq('cart_id', cartId);
-
-    if (cartItemsError || !cartItems.length) {
-      return NextResponse.json(
-        { error: 'Cart items not found' },
-        { status: 404 },
-      );
-    }
     console.log('cartItems: -webhook', cartItems);
 
     // Create an order linked to cart_id
@@ -449,10 +461,21 @@ export async function POST(req: Request) {
       const customerEmail = contactInfo.email;
       const customerName = `${orderAddress.fname} ${orderAddress.lname}`;
       
-      // Format order items for email
-      const orderItemsText = cartItems.map((item: any) => 
-        `${item.name} (${item.product_size}) x${item.quantity} - RM${item.price}`
-      ).join('\n');
+      // Format order items for email - handle both guest and authenticated cart formats
+      let orderItemsText = '';
+      if (isGuestCheckout) {
+        // Guest cart items are simple objects from Redux
+        orderItemsText = cartItems.map((item: any) => 
+          `${item.name} (${item.product_size || 'N/A'}) x${item.quantity} - RM${item.price}`
+        ).join('\n');
+      } else {
+        // Authenticated cart items have complex database relations
+        orderItemsText = cartItems.map((item: any) => {
+          const colorName = item.products_sizes?.product_colors?.color || 'N/A';
+          const size = item.products_sizes?.size || 'N/A';
+          return `${colorName} (${size}) x${item.quantity} - RM${item.price}`;
+        }).join('\n');
+      }
       
       if (customerEmail) {
         await sendPaymentConfirmationEmail(
