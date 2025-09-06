@@ -61,6 +61,9 @@ export async function POST(req: Request) {
     const webhookSecret = isReplit 
       ? process.env.STRIPE_TEST_WEBHOOK_SECRET || process.env.STRIPE_WEBHOOK_SECRET
       : process.env.STRIPE_WEBHOOK_SECRET;
+    
+    console.log('🔑 Using webhook secret environment:', isReplit ? 'REPLIT (test)' : 'PRODUCTION');
+    console.log('🔑 Webhook secret exists:', !!webhookSecret);
       
     event = stripe.webhooks.constructEvent(
       rawBody,
