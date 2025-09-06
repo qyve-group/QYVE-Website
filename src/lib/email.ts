@@ -1,0 +1,187 @@
+import nodemailer from 'nodemailer';
+
+interface PaymentConfirmationProps {
+  email: string;
+  customerName: string;
+  amount: number;
+  currency: string;
+  paymentIntentId?: string;
+  sessionId?: string;
+  orderItems?: string;
+  orderId: string;
+}
+
+// Create transporter - supports multiple email services
+const createTransporter = () => {
+  // Check if using Gmail
+  if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+    return nodemailer.createTransporter({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    });
+  }
+  
+  // Check if using custom SMTP
+  if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+    return nodemailer.createTransporter({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_PORT === '465', // true for 465, false for other ports
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+  }
+
+  throw new Error('Email configuration not found. Please set up Gmail or SMTP credentials.');
+};
+
+export async function sendPaymentConfirmationEmail({
+  email,
+  customerName,
+  amount,
+  currency,
+  paymentIntentId,
+  sessionId,
+  orderItems,
+  orderId,
+}: PaymentConfirmationProps) {
+  try {
+    const transporter = createTransporter();
+    
+    const fromEmail = process.env.GMAIL_USER || process.env.SMTP_FROM || process.env.SMTP_USER;
+    const companyName = process.env.COMPANY_NAME || 'QYVE';
+    
+    await transporter.sendMail({
+      from: `"${companyName}" <${fromEmail}>`,
+      to: email,
+      subject: `Payment Confirmation - Thank You ${customerName}!`,
+      html: generateEmailHTML({
+        customerName,
+        amount,
+        currency,
+        paymentIntentId,
+        sessionId,
+        orderItems,
+        orderId,
+        companyName,
+      }),
+    });
+
+    console.log('Payment confirmation email sent to:', email);
+    return true;
+  } catch (error) {
+    console.error('Failed to send confirmation email:', error);
+    return false;
+  }
+}
+
+function generateEmailHTML({
+  customerName,
+  amount,
+  currency,
+  paymentIntentId,
+  sessionId,
+  orderItems,
+  orderId,
+  companyName,
+}: {
+  customerName: string;
+  amount: number;
+  currency: string;
+  paymentIntentId?: string;
+  sessionId?: string;
+  orderItems?: string;
+  orderId: string;
+  companyName: string;
+}) {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Payment Confirmation</title>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #007bff; color: white; text-align: center; padding: 20px; border-radius: 8px 8px 0 0; }
+        .content { background-color: #f8f9fa; padding: 30px; border-radius: 0 0 8px 8px; }
+        .payment-details { background-color: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #dee2e6; }
+        .amount { font-size: 24px; font-weight: bold; color: #28a745; text-align: center; margin: 20px 0; }
+        .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6; font-size: 14px; color: #6c757d; }
+        .btn { display: inline-block; padding: 12px 24px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin: 10px 0; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🎉 Payment Successful!</h1>
+          <p>Thank you for your purchase, ${customerName}</p>
+        </div>
+        
+        <div class="content">
+          <p>Great news! Your payment has been processed successfully. We're excited to get your order ready!</p>
+          
+          <div class="payment-details">
+            <h3>📋 Order Details:</h3>
+            <div class="amount">RM ${(amount / 100).toFixed(2)} ${currency.toUpperCase()}</div>
+            
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr style="border-bottom: 1px solid #dee2e6;">
+                <td style="padding: 10px 0;"><strong>Order ID:</strong></td>
+                <td style="padding: 10px 0;">${orderId}</td>
+              </tr>
+              ${paymentIntentId ? `
+              <tr style="border-bottom: 1px solid #dee2e6;">
+                <td style="padding: 10px 0;"><strong>Payment ID:</strong></td>
+                <td style="padding: 10px 0;">${paymentIntentId}</td>
+              </tr>
+              ` : ''}
+              ${sessionId ? `
+              <tr style="border-bottom: 1px solid #dee2e6;">
+                <td style="padding: 10px 0;"><strong>Session ID:</strong></td>
+                <td style="padding: 10px 0;">${sessionId}</td>
+              </tr>
+              ` : ''}
+              <tr style="border-bottom: 1px solid #dee2e6;">
+                <td style="padding: 10px 0;"><strong>Date:</strong></td>
+                <td style="padding: 10px 0;">${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0;"><strong>Items:</strong></td>
+                <td style="padding: 10px 0;">${orderItems}</td>
+              </tr>
+            </table>
+          </div>
+          
+          <h3>📦 What's Next?</h3>
+          <ul>
+            <li><strong>Processing:</strong> We'll prepare your order within 1-2 business days</li>
+            <li><strong>Shipping:</strong> You'll receive tracking information via email</li>
+            <li><strong>Delivery:</strong> Estimated delivery within Malaysia: 3-5 business days</li>
+          </ul>
+          
+          <p>You'll receive another email with tracking information once your order ships.</p>
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <p><strong>Need help?</strong> We're here for you!</p>
+            <p>Contact us at <a href="mailto:support@qyve.com" style="color: #007bff;">support@qyve.com</a></p>
+            <p>or visit our website</p>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <p>This is an automated confirmation email from ${companyName}.</p>
+          <p>Please keep this email for your records.</p>
+          <p>&copy; ${new Date().getFullYear()} ${companyName}. All rights reserved.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
