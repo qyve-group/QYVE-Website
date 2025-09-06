@@ -122,7 +122,8 @@ export default function CheckoutButton({
       
       if (data.url) {
         console.log('Redirecting to Stripe:', data.url);
-        window.location.href = data.url;
+        // Try opening in new tab instead of redirect (better for Replit)
+        window.open(data.url, '_blank');
       } else {
         console.error('No URL returned from Stripe:', data);
       }
