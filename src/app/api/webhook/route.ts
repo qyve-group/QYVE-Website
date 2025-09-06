@@ -516,7 +516,7 @@ export async function POST(req: Request) {
         orderItemsText = cartItems
           .map(
             (item: any) =>
-              `${item.name} (${item.product_size || 'N/A'}) x${item.quantity} - RM${item.price}`,
+              `${item.name} (${item.products_sizes.size || 'N/A'}) x${item.quantity} - RM${item.price}`,
           )
           .join('\n');
       } else {
@@ -537,39 +537,39 @@ export async function POST(req: Request) {
 
       console.log('📨 Formatted order items text:', orderItemsText);
 
-      const emailSent = await sendPaymentConfirmationEmail({
-        email: customerEmail,
-        customerName,
-        amount: session.amount_total || 0,
-        currency: 'myr',
-        paymentIntentId: session.payment_intent as string,
-        sessionId: session.id,
-        orderItems: orderItemsText,
-        orderId: orderId,
-      });
+      // const emailSent = await sendPaymentConfirmationEmail({
+      //   email: customerEmail,
+      //   customerName,
+      //   amount: session.amount_total || 0,
+      //   currency: 'myr',
+      //   paymentIntentId: session.payment_intent as string,
+      //   sessionId: session.id,
+      //   orderItems: orderItemsText,
+      //   orderId: orderId,
+      // });
 
-      if (emailSent) {
-        console.log('✅ Email receipt sent successfully to:', customerEmail);
-      } else {
-        console.error('❌ Failed to send email to:', customerEmail);
-      }
-
-      // if (customerEmail) {
-      //   console.log('📨 Calling sendPaymentConfirmationEmail function...');
-      //   await sendPaymentConfirmationEmail({
-      //     email: customerEmail,
-      //     customerName: customerName,
-      //     amount: session.amount_total || 0,
-      //     currency: 'myr',
-      //     paymentIntentId: session.payment_intent as string,
-      //     sessionId: session.id,
-      //     orderItems: orderItemsText,
-      //     orderId: orderId,
-      //   });
+      // if (emailSent) {
       //   console.log('✅ Email receipt sent successfully to:', customerEmail);
       // } else {
-      //   console.log('⚠️ No customer email found, skipping email send');
+      //   console.error('❌ Failed to send email to:', customerEmail);
       // }
+
+      if (customerEmail) {
+        console.log('📨 Calling sendPaymentConfirmationEmail function...');
+        await sendPaymentConfirmationEmail({
+          email: customerEmail,
+          customerName: customerName,
+          amount: session.amount_total || 0,
+          currency: 'myr',
+          paymentIntentId: session.payment_intent as string,
+          sessionId: session.id,
+          orderItems: orderItemsText,
+          orderId: orderId,
+        });
+        console.log('✅ Email receipt sent successfully to:', customerEmail);
+      } else {
+        console.log('⚠️ No customer email found, skipping email send');
+      }
     } catch (emailError) {
       console.error('❌ Email receipt failed (non-critical):', emailError);
       console.error('❌ Email error stack:', (emailError as Error).stack);

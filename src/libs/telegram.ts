@@ -15,26 +15,29 @@ export async function notifyTelegram(
   let itemsText = '';
 
   if (cartItems && cartItems.length > 0) {
-    // Use cart items directly (for guest checkout)
     console.log('🔍 Processing cart items for Telegram:');
     cartItems.forEach((item, index) => {
-      console.log(`🔍 Item ${index}:`, {
-        name: item.remarks,
-        product_size: item.product_size_id,
-        quantity: item.quantity,
-        id: item.id,
-        price: item.price,
-      });
+      console.log(`🔍 Item ${index} raw:`, item);
     });
 
     itemsText = cartItems
       .map((item, index) => {
-        const size = item.products_sizes.size;
-        const name = item.remarks;
-        const quantity = item.quantity || 1;
-        console.log(
-          `🔍 Formatted item ${index}: "${name} (${size}) x ${quantity}"`,
-        );
+        // Handle both guest checkout (simple structure) and authenticated (database structure)
+        let name, size, quantity;
+        
+        if (item.products_sizes && item.products_sizes.description) {
+          // Authenticated user cart items (from database)
+          name = item.products_sizes.description;
+          size = item.products_sizes.size || 'Free Size';
+          quantity = item.quantity || 1;
+        } else {
+          // Guest checkout cart items (from Redux/metadata)
+          name = item.description || item.name || `Product ${item.id || index + 1}`;
+          size = item.product_size || item.size || 'Free Size';
+          quantity = item.quantity || 1;
+        }
+        
+        console.log(`🔍 Formatted item ${index}: "${name} (${size}) x ${quantity}"`);
         return `${name} (${size}) x ${quantity}`;
       })
       .join('\n');
