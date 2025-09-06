@@ -100,8 +100,12 @@ const MainNav = () => {
             // }}
           >
             {auth.loading !== true ? (
-              // {auth.user?.id !== null ? (
               <div className="flex items-center gap-2 pl-5">
+                {auth.user?.email && (
+                  <span className="hidden md:block text-sm text-gray-700 font-medium mr-2">
+                    Hi, {auth.user.email.split('@')[0]}
+                  </span>
+                )}
                 <ButtonCircle3
                   onClick={() => {
                     setIsOpen(!isOpen);
