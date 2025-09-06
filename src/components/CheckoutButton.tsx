@@ -118,13 +118,16 @@ export default function CheckoutButton({
       if (!res.ok) throw new Error('Failed to create checkout session');
 
       const data = await res.json();
-      // console.log*('Redirecting to:', data.url);
-      // console.log*('API Response:', data); // Debugging output
+      console.log('Stripe response:', data);
+      
       if (data.url) {
+        console.log('Redirecting to Stripe:', data.url);
         window.location.href = data.url;
+      } else {
+        console.error('No URL returned from Stripe:', data);
       }
     } catch (error) {
-      // console.error*('Checkout error: ', error);
+      console.error('Checkout error:', error);
     } finally {
       setLoading(false);
     }
