@@ -353,17 +353,42 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                     
                     {/* Preview Section */}
                     <div className="bg-white p-4 rounded-lg border-2 border-dashed border-gray-200">
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Preview</h4>
-                      <div className="bg-gray-900 text-white p-4 rounded-lg text-center">
-                        <div className="text-lg font-bold tracking-wide" id="name-preview">
-                          PLAYER NAME
+                      <h4 className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+                        <span>Live Preview</span>
+                        <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">REAL-TIME</span>
+                      </h4>
+                      
+                      {/* Jersey Back Simulation */}
+                      <div className="relative mx-auto w-48 h-60 rounded-lg overflow-hidden" style={{background: 'linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)'}}>
+                        {/* Jersey Texture */}
+                        <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.1) 2px, rgba(255,255,255,0.1) 4px)'}}></div>
+                        
+                        {/* Jersey Seams */}
+                        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gray-600 transform -translate-x-px opacity-30"></div>
+                        <div className="absolute left-0 right-0 top-1/3 h-px bg-gray-600 opacity-20"></div>
+                        
+                        {/* Player Name */}
+                        <div className="absolute top-8 left-0 right-0 text-center">
+                          <div className="text-white font-bold text-sm tracking-[0.2em] drop-shadow-lg" id="name-preview" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>
+                            PLAYER NAME
+                          </div>
                         </div>
-                        <div className="text-3xl font-black mt-1" id="number-preview">
-                          00
+                        
+                        {/* Jersey Number */}
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                          <div className="text-white font-black text-6xl leading-none drop-shadow-2xl" id="number-preview" style={{textShadow: '3px 3px 6px rgba(0,0,0,0.9), 0 0 20px rgba(255,255,255,0.1)'}}>
+                            00
+                          </div>
+                        </div>
+                        
+                        {/* Jersey Brand/Logo Area */}
+                        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                          <div className="text-xs text-gray-400 opacity-60 tracking-wider">QYVE</div>
                         </div>
                       </div>
-                      <p className="text-xs text-gray-500 mt-2 text-center">
-                        This is how your customization will appear on the jersey back
+                      
+                      <p className="text-xs text-gray-500 mt-3 text-center">
+                        🏆 Exactly how it will look on your jersey back
                       </p>
                     </div>
                   </div>
