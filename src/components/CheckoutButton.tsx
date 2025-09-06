@@ -72,10 +72,16 @@ export default function CheckoutButton({
   );
 
   const handleCheckout = async () => {
-    // console.log * 'Checkout button clicked';
+    console.log('=== CHECKOUT DEBUG ===');
+    console.log('User ID:', userId);
+    console.log('Has Empty Address:', hasEmptyAddress);
+    console.log('Has Empty Contact:', hasEmptyContact);
+    console.log('Order Address:', orderAddress);
+    console.log('Order Contact:', orderContact);
     setHasAttemptedSubmit(true);
 
     if (hasEmptyAddress || hasEmptyContact) {
+      console.log('BLOCKING: Empty address or contact info');
       return;
     }
 
