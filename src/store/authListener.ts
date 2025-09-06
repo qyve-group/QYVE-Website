@@ -18,7 +18,7 @@ export const listenForAuthChanges = (dispatch: any, getState: () => any) => {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || 
       process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')) {
     console.log('Supabase not configured - skipping auth listener');
-    return;
+    return () => {}; // Return empty cleanup function
   }
 
   try {

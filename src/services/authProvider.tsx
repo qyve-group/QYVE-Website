@@ -14,7 +14,9 @@ export default function AuthProvider({
     const unsubscribe = listenForAuthChanges(store.dispatch, store.getState); // Start listening for auth changes
 
     return () => {
-      unsubscribe(); // Unsubscribe on component unmount
+      if (unsubscribe && typeof unsubscribe === 'function') {
+        unsubscribe(); // Unsubscribe on component unmount
+      }
     };
   }, []);
 
