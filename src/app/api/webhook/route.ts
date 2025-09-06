@@ -42,10 +42,8 @@ export async function POST(req: Request) {
     );
   }
 
-  const body = await req.arrayBuffer();
-  const rawBody = Buffer.from(body);
+  const rawBody = await req.text();
 
-  // let rawBody = await req.arrayBuffer(); // This is the only way to get raw body in App Router
 
   let event: Stripe.Event;
   try {
@@ -117,6 +115,7 @@ export async function POST(req: Request) {
     // console.log('userid: ', userId);
 
     let cartItems: any[] = [];
+    let cartId: string | null = null;
 
     if (isGuestCheckout) {
       // For guest checkout, get cart items from Stripe metadata
@@ -144,7 +143,7 @@ export async function POST(req: Request) {
         );
       }
 
-      const cartId = cartInfo.id;
+      cartId = cartInfo.id;
       // console.log('cartId: ', cartId);
 
       // Fetch cart items using cart_id
@@ -487,13 +486,16 @@ export async function POST(req: Request) {
       }
       
       if (customerEmail) {
-        await sendPaymentConfirmationEmail(
-          customerEmail,
-          customerName,
-          orderId,
-          orderItemsText,
-          session.amount_total ? (session.amount_total / 100).toString() : '0'
-        );
+        await sendPaymentConfirmationEmail({
+          email: customerEmail,
+          customerName: customerName,
+          amount: session.amount_total || 0,
+          currency: 'myr',
+          paymentIntentId: session.payment_intent as string,
+          sessionId: session.id,
+          orderItems: orderItemsText,
+          orderId: orderId,
+        });
         console.log('✅ Email receipt sent to:', customerEmail);
       }
     } catch (emailError) {
