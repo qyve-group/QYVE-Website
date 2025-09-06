@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FaRegCircleUser } from 'react-icons/fa6';
 import { TbTruckDelivery } from 'react-icons/tb';
-import { MdPayment, MdExpandMore, MdExpandLess } from 'react-icons/md';
+import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { FiCheck, FiAlertCircle } from 'react-icons/fi';
 
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
@@ -59,7 +59,9 @@ const CollapsibleCheckout = ({
   onShippingAddressChange,
   cartItems,
 }: CollapsibleCheckoutProps) => {
-  const userEmail = useSelector((state: RootState) => state.auth.user?.email);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const userEmail = user?.email;
+  const userId = user?.id;
 
   // Form states
   const [email, setEmail] = useState<string>(userEmail || '');
@@ -137,7 +139,7 @@ const CollapsibleCheckout = ({
     }
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     setHasSubmit(true);
     
     const contactValid = contactInfo || validateContactInfo();
@@ -153,8 +155,35 @@ const CollapsibleCheckout = ({
       return;
     }
     
-    // Proceed with checkout
-    console.log('Checkout ready!');
+    // Proceed with checkout - call the actual Stripe API
+    console.log('Checkout ready! Calling Stripe...');
+    
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: userId,
+          cartItems,
+          orderAddress: { fname, lname, shippingAddress1, shippingAddress2, no, city, state, postalCode },
+          orderContact: { phone, email },
+          shippingPrice: shippingFee,
+          discountCode: voucher,
+        }),
+      });
+
+      if (!res.ok) throw new Error('Failed to create checkout session');
+
+      const data = await res.json();
+      console.log('Stripe response:', data);
+      
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('There was an error processing your order. Please try again.');
+    }
   };
 
   // Status indicators
