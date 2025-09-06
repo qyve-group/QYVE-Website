@@ -83,6 +83,7 @@ const CheckoutPage = () => {
     useState<ShippingAddressData | null>(null);
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const isCartEmpty = !cartItems || cartItems.length === 0;
   const [shippingFee, setShippingFee] = useState(0);
   const [voucher, setVoucher] = useState('');
   const [voucherValidity, setVoucherValidity] = useState('');
@@ -461,7 +462,19 @@ const CheckoutPage = () => {
           </h2>
         </div>
 
-        {useCollapsibleCheckout ? (
+        {isCartEmpty ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="mb-6 text-6xl">🛒</div>
+            <h2 className="mb-4 text-2xl font-semibold text-gray-800">Your cart is empty</h2>
+            <p className="mb-8 text-gray-600">Add some items to your cart before proceeding to checkout</p>
+            <button
+              onClick={() => router.push('/shop')}
+              className="rounded-lg bg-primary px-8 py-3 text-white transition-colors hover:bg-primary/90"
+            >
+              Continue Shopping
+            </button>
+          </div>
+        ) : useCollapsibleCheckout ? (
           <CollapsibleCheckout
             subtotal={subtotal}
             shippingFee={shippingFee}
