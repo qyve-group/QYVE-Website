@@ -8,6 +8,7 @@ import { Package, CreditCard, Truck, CheckCircle, Clock, XCircle } from 'lucide-
 
 import { supabase } from '@/libs/supabaseClient';
 import type { RootState } from '@/store/store';
+import { getShippingStepIndex, getStatusDescription } from '@/utils/orderStatusMapper';
 
 import Loading from '../loading';
 
@@ -35,8 +36,9 @@ interface Order {
   delivered_at?: string;
 }
 
-const ShippingProgress = ({ shippingStatus, createdAt, deliveredAt }: { 
+const ShippingProgress = ({ shippingStatus, orderStatus, createdAt, deliveredAt }: { 
   shippingStatus: string; 
+  orderStatus: string;
   createdAt: string;
   deliveredAt?: string;
 }) => {
@@ -73,12 +75,9 @@ const ShippingProgress = ({ shippingStatus, createdAt, deliveredAt }: {
     }
   ];
 
-  const getCurrentStepIndex = () => {
-    const index = steps.findIndex(step => step.status === shippingStatus);
-    return index !== -1 ? index : 0;
-  };
-
-  const currentStepIndex = getCurrentStepIndex();
+  // Get current step index using the status mapper utility
+  const currentStepIndex = getShippingStepIndex(orderStatus, shippingStatus);
+  const statusDescription = getStatusDescription(orderStatus, shippingStatus);
 
   return (
     <div className="bg-gray-50 p-4 rounded-lg">
@@ -107,6 +106,7 @@ const ShippingProgress = ({ shippingStatus, createdAt, deliveredAt }: {
         ))}
       </div>
       <div className="mt-4 text-sm text-gray-600">
+        <p className="font-medium text-gray-700 mb-2">{statusDescription}</p>
         <p>Order placed: {new Date(createdAt).toLocaleDateString()}</p>
         {deliveredAt && (
           <p>Delivered: {new Date(deliveredAt).toLocaleDateString()}</p>
@@ -256,7 +256,9 @@ export default function MyOrders() {
           color: (productData as any)?.product_colors?.color || 'N/A'
         };
 
-        groupedItems[item.order_id].push(enrichedItem);
+        if (enrichedItem) {
+          groupedItems[item.order_id].push(enrichedItem);
+        }
       }
 
       setOrderItems(groupedItems);
@@ -349,6 +351,7 @@ export default function MyOrders() {
                 {/* Shipping Progress */}
                 <ShippingProgress 
                   shippingStatus={order.shipping_status}
+                  orderStatus={order.status}
                   createdAt={order.created_at}
                   deliveredAt={order.delivered_at}
                 />
