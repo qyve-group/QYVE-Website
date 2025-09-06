@@ -226,6 +226,10 @@ export async function POST(req: Request) {
         order_address: JSON.stringify(orderAddress),
         order_contact: JSON.stringify(orderContact),
         is_guest_checkout: isGuestCheckout ? 'true' : 'false',
+        customer_email: orderContact.email,
+        customer_name: `${orderAddress.fname} ${orderAddress.lname}`,
+        order_items: cartItems.map((item: any) => `${item.name} (${item.product_size}) x${item.quantity}`).join(', '),
+        order_id: `ORDER_${Date.now()}`,
       },
     });
 
