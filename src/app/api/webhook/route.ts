@@ -23,12 +23,12 @@ const supabaseAdmin = createClient(
 );
 
 export async function POST(req: Request) {
-  console.log('Webhook called');
+  console.log('Webhook called at:', new Date().toISOString());
 
   const sig = req.headers.get('stripe-signature');
 
   if (!sig) {
-    // console.error*('❌ Missing Stripe Signature');
+    console.error('❌ Missing Stripe Signature');
     return NextResponse.json(
       { error: 'Missing Stripe Signature' },
       { status: 400 },
@@ -68,16 +68,24 @@ export async function POST(req: Request) {
   // // console.log*('✅ Webhook received:', event);
 
   if (event.type === 'checkout.session.completed') {
+    console.log('✅ Processing checkout.session.completed event');
     const session = event.data.object;
-    // const userId = "1c2e85d0-410f-4019-88f3-c380ec3abc24";
     const userId = session.metadata?.user_id || '';
-    // // console.log*('✅ Checkout Session Object:', session);
-    // // console.log*('userid: ', userId);
-    const orderAddressString = session.metadata?.order_address || '{}';
-    const orderAddress = JSON.parse(orderAddressString);
-
-    const contactInfoString = session.metadata?.order_contact || '{}';
-    const contactInfo = JSON.parse(contactInfoString);
+    const isGuestCheckout = userId === 'guest' || session.metadata?.is_guest_checkout === 'true';
+    
+    console.log('Processing order for user:', userId, isGuestCheckout ? '(guest)' : '(authenticated)');
+    
+    let orderAddress, contactInfo;
+    try {
+      const orderAddressString = session.metadata?.order_address || '{}';
+      orderAddress = JSON.parse(orderAddressString);
+      
+      const contactInfoString = session.metadata?.order_contact || '{}';
+      contactInfo = JSON.parse(contactInfoString);
+    } catch (parseError) {
+      console.error('❌ Error parsing metadata:', parseError);
+      return NextResponse.json({ error: 'Invalid metadata format' }, { status: 400 });
+    }
 
     // console.log('orderAddress: ', orderAddress);
     // console.log('contactInfo ', contactInfo);
@@ -141,12 +149,12 @@ export async function POST(req: Request) {
     });
 
     try {
-      const { error: orderError } = await supabaseAdmin
+      const { data: orderData, error: orderError } = await supabaseAdmin
         .from('orders')
         .insert([
           {
             id: orderId,
-            user_id: userId,
+            user_id: isGuestCheckout ? null : userId,
             status: 'Paid',
             total_price: session.amount_total! / 100,
             stripe_session_id: session.id,
@@ -158,58 +166,54 @@ export async function POST(req: Request) {
         .single();
 
       if (orderError) {
-        console.error('❌ Insert error:', orderError);
+        console.error('❌ Order insert error:', orderError);
+        return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
       } else {
-        // console.log('✅ Order inserted:', orderData);
+        console.log('✅ Order inserted successfully:', orderData?.id);
       }
     } catch (err) {
-      // console.error('❌ Unexpected error:', err);
+      console.error('❌ Unexpected order creation error:', err);
+      return NextResponse.json({ error: 'Order creation failed' }, { status: 500 });
     }
 
-    // Reduce stock in `product_sizes`
-    /* eslint-disable no-await-in-loop */
+    // Process stock updates and order items with better error handling
+    const stockUpdatePromises = [];
+    const orderItemPromises = [];
+    
     for (const item of cartItems) {
-      const { data: productSize, error: fetchError } = await supabaseAdmin
-        .from('products_sizes')
-        .select('stock')
-        .eq('id', item.product_size_id)
-        .single();
-
-      if (fetchError) {
-        console.error('Error fetching stock:', fetchError);
-        continue; // Skip to the next item if there's an error
-      }
-
-      // Ensure stock exists before updating
-      if (!productSize || productSize.stock === undefined) {
-        console.error('Stock not found for item:', item);
-        continue;
-      }
-
-      // Calculate new stock
-      const newStock = productSize.stock - item.quantity;
-      console.log(`newStock for item ${item.id}: ${newStock}`);
-
-      console.log('Updating stock for item:', item);
-
-      const { error: stockError } = await supabaseAdmin
-        .from('products_sizes')
-        .update({ stock: newStock })
-        .eq('id', item.product_size_id);
-
-      if (stockError) {
-        throw stockError;
-      }
-
-      console.log('stock updated at ');
-
-      // Adding ordered items into order_items
-      const orderItemsId = uuidv4();
-
-      console.log('created orderItemsId: ', orderItemsId);
-
       try {
-        const { error: orderItemsError } = await supabaseAdmin
+        // Fetch current stock
+        const { data: productSize, error: fetchError } = await supabaseAdmin
+          .from('products_sizes')
+          .select('stock')
+          .eq('id', item.product_size_id)
+          .single();
+
+        if (fetchError) {
+          console.error('Error fetching stock for item:', item.product_size_id, fetchError);
+          continue;
+        }
+
+        if (!productSize || productSize.stock === undefined) {
+          console.error('Stock not found for item:', item);
+          continue;
+        }
+
+        // Calculate new stock
+        const newStock = Math.max(0, productSize.stock - item.quantity);
+        console.log(`Updating stock for item ${item.product_size_id}: ${productSize.stock} -> ${newStock}`);
+
+        // Update stock
+        const stockUpdatePromise = supabaseAdmin
+          .from('products_sizes')
+          .update({ stock: newStock })
+          .eq('id', item.product_size_id);
+        
+        stockUpdatePromises.push(stockUpdatePromise);
+
+        // Create order item
+        const orderItemsId = uuidv4();
+        const orderItemPromise = supabaseAdmin
           .from('order_items')
           .insert({
             id: orderItemsId,
@@ -218,63 +222,98 @@ export async function POST(req: Request) {
             quantity: item.quantity,
             price: item.price,
           });
-
-        if (orderItemsError) {
-          console.error('Insert error: ', orderItemsError);
-        }
+        
+        orderItemPromises.push(orderItemPromise);
+        
       } catch (error) {
-        console.error('Unexpected insert failure: ', error);
+        console.error('Error processing item:', item.product_size_id, error);
       }
     }
-
-    const { error: orderAddressesError } = await supabaseAdmin
-      .from('order_addresses')
-      .insert({
-        house_no: orderAddress.no,
-        city: orderAddress.city,
-        state: orderAddress.state,
-        postal_code: orderAddress.postal_code,
-        address_line_1: orderAddress.shipping_address_1,
-        address_line_2: orderAddress.shipping_address_2,
-        first_name: orderAddress.fname,
-        last_name: orderAddress.lname,
-        order_id: orderId,
-      })
-      .select()
-      .single();
-
-    if (orderAddressesError) {
-      // console.error('orderAddressesError: ', orderAddressesError);
+    
+    // Execute all stock updates and order item insertions in parallel
+    try {
+      const stockResults = await Promise.allSettled(stockUpdatePromises);
+      const orderItemResults = await Promise.allSettled(orderItemPromises);
+      
+      // Log any failures
+      stockResults.forEach((result, index) => {
+        if (result.status === 'rejected') {
+          console.error(`Stock update ${index} failed:`, result.reason);
+        }
+      });
+      
+      orderItemResults.forEach((result, index) => {
+        if (result.status === 'rejected') {
+          console.error(`Order item ${index} failed:`, result.reason);
+        }
+      });
+      
+      console.log('✅ Stock updates and order items processed');
+    } catch (error) {
+      console.error('❌ Error in bulk operations:', error);
     }
-    // console.log('returned ordercontact from supabase: ', orderAdd);
 
-    const { error: orderContactInfoData } = await supabaseAdmin
-      .from('order_contact_info')
-      .insert({
-        phone: contactInfo.phone,
-        email: contactInfo.email,
-        order_id: orderId,
-      })
-      .select()
-      .single();
-
-    if (orderContactInfoData) {
-      // console.error('orderContactInfo: ', orderContactInfoData);
+    // Insert order address and contact info in parallel
+    try {
+      const [addressResult, contactResult] = await Promise.allSettled([
+        supabaseAdmin
+          .from('order_addresses')
+          .insert({
+            house_no: orderAddress.no,
+            city: orderAddress.city,
+            state: orderAddress.state,
+            postal_code: orderAddress.postal_code,
+            address_line_1: orderAddress.shipping_address_1,
+            address_line_2: orderAddress.shipping_address_2,
+            first_name: orderAddress.fname,
+            last_name: orderAddress.lname,
+            order_id: orderId,
+          }),
+        supabaseAdmin
+          .from('order_contact_info')
+          .insert({
+            phone: contactInfo.phone,
+            email: contactInfo.email,
+            order_id: orderId,
+          })
+      ]);
+      
+      if (addressResult.status === 'rejected') {
+        console.error('❌ Order address insert failed:', addressResult.reason);
+      } else {
+        console.log('✅ Order address inserted');
+      }
+      
+      if (contactResult.status === 'rejected') {
+        console.error('❌ Order contact info insert failed:', contactResult.reason);
+      } else {
+        console.log('✅ Order contact info inserted');
+      }
+    } catch (error) {
+      console.error('❌ Error inserting order details:', error);
     }
 
     // console.log('returned ordercontact from supabase: ', orderContactInfo);
 
-    // Clear the cart after payment
-    // console.log*('Clearing cart items for cart ID:', cartId);
-    const { error: clearCartError } = await supabaseAdmin
-      .from('cart_items')
-      .delete()
-      .eq('cart_id', cartId);
+    // Clear the cart after payment (only for authenticated users)
+    if (!isGuestCheckout && cartId) {
+      try {
+        console.log('🧹 Clearing cart items for cart ID:', cartId);
+        const { error: clearCartError } = await supabaseAdmin
+          .from('cart_items')
+          .delete()
+          .eq('cart_id', cartId);
 
-    if (clearCartError) {
-      // console.error*('❌ Error clearing cart items:', clearCartError);
-    } else {
-      // console.log*(`✅ Cart items cleared for cart ID: ${cartId}`);
+        if (clearCartError) {
+          console.error('❌ Error clearing cart items:', clearCartError);
+        } else {
+          console.log(`✅ Cart items cleared for cart ID: ${cartId}`);
+        }
+      } catch (error) {
+        console.error('❌ Unexpected error clearing cart:', error);
+      }
+    } else if (isGuestCheckout) {
+      console.log('ℹ️ Guest checkout - no cart clearing needed');
     }
 
     // await fetch('/api/shipment/', {
@@ -385,7 +424,16 @@ export async function POST(req: Request) {
 
     // return NextResponse.json(data);
 
-    await notifyTelegram(orderId, orderAddress, contactInfo);
+    // Send Telegram notification (non-blocking)
+    try {
+      await notifyTelegram(orderId, orderAddress, contactInfo);
+      console.log('✅ Telegram notification sent');
+    } catch (telegramError) {
+      console.error('❌ Telegram notification failed (non-critical):', telegramError);
+      // Don't fail the webhook for notification errors
+    }
+    
+    console.log('✅ Webhook processing completed successfully for order:', orderId);
   }
 
   return NextResponse.json({ received: true });

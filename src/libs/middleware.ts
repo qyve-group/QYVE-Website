@@ -47,10 +47,17 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // Allow guest access to checkout and cart pages
+  const guestAllowedPaths = ['/checkout', '/cart', '/home', '/products', '/success', '/failed'];
+  const isGuestAllowedPath = guestAllowedPaths.some(path => 
+    request.nextUrl.pathname.startsWith(path)
+  );
+
   if (
     !user &&
     !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/auth')
+    !request.nextUrl.pathname.startsWith('/auth') &&
+    !isGuestAllowedPath
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();

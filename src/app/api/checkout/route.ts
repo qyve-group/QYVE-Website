@@ -46,14 +46,13 @@ export async function POST(req: Request) {
       discountCode,
     } = body; // Get items from the request
 
-    if (!userId) {
-      console.error('Missing userId');
-      return new Response(JSON.stringify({ error: 'Missing userId' }), {
-        status: 400,
-        headers: {
-          'Access-Control-Allow-Origin': 'https://www.qyveofficial.com',
-        },
-      });
+    // Allow guest checkout - userId can be null for guest users
+    const isGuestCheckout = !userId || userId === 'guest';
+    
+    if (isGuestCheckout) {
+      console.log('Processing guest checkout');
+    } else {
+      console.log('Processing authenticated user checkout for userId:', userId);
     }
 
     // const productSubtotal = cartItems.reduce(
@@ -223,9 +222,10 @@ export async function POST(req: Request) {
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/failed`,
       shipping_options: shippingOptions,
       metadata: {
-        user_id: userId ?? 'unknown user',
+        user_id: userId ?? 'guest',
         order_address: JSON.stringify(orderAddress),
         order_contact: JSON.stringify(orderContact),
+        is_guest_checkout: isGuestCheckout ? 'true' : 'false',
       },
     });
 

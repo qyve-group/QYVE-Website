@@ -71,6 +71,7 @@ const CheckoutPage = () => {
   const router = useRouter();
 
   const userId = useSelector((state: RootState) => state.auth.user?.id);
+  const isAuthenticated = !!userId;
   const [products, setProducts] = useState<CartDisplay[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [, setTotalPrice] = useState<number>(0);
@@ -249,67 +250,78 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     const fetchCartId = async () => {
-      const { data: cartIdData } = await supabase
-        .from('carts')
-        .select('id')
-        .eq('user_id', userId)
-        .single();
-
-      const cartId = cartIdData?.id;
-
-      console.log('userId: ', userId);
-      console.log('cartId: ', cartId);
-
-      const { data: cartItemsData } = await supabase
-        .from('cart_items')
-        .select('product_id, size_id, quantity, price')
-        .eq('cart_id', cartId);
-
-      const fetchedProducts: CartDisplay[] = [];
-
-      for (const product of cartItemsData || []) {
-        const productId = product.product_id;
-        const sizeId = product.size_id;
-        const productQty = product.quantity;
-
-        // eslint-disable-next-line no-await-in-loop
-        const { data: productInfoData } = await supabase
-          .from('products_sizes')
-          .select('size')
-          .eq('id', sizeId)
-          .single();
-
-        const productSize = productInfoData?.size;
-        // console.log('productSize: ', productSize);
-
-        // eslint-disable-next-line no-await-in-loop
-        const { data: productData } = await supabase
-          .from('products')
-          .select('name, slug, image_cover')
-          .eq('id', productId)
-          .single();
-
-        fetchedProducts.push({
-          id: productId,
-          name: productData?.name,
-          price: product.price,
-          product_size: productSize,
-          quantity: productQty,
-          slug: productData?.slug,
-          image: productData?.image_cover,
-        });
+      // Skip Supabase fetch if user is not authenticated or if Supabase is not configured
+      if (!userId || !process.env.NEXT_PUBLIC_SUPABASE_URL || 
+          process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')) {
+        console.log('Skipping Supabase cart fetch - using Redux cart only');
+        return;
       }
-      const totalFp = fetchedProducts.reduce(
-        (acc, item) => acc + item.price,
-        0,
-      );
 
-      setProducts(fetchedProducts);
-      setTotalPrice(totalFp);
+      try {
+        const { data: cartIdData } = await supabase
+          .from('carts')
+          .select('id')
+          .eq('user_id', userId)
+          .single();
+
+        const cartId = cartIdData?.id;
+
+        console.log('userId: ', userId);
+        console.log('cartId: ', cartId);
+
+        const { data: cartItemsData } = await supabase
+          .from('cart_items')
+          .select('product_id, size_id, quantity, price')
+          .eq('cart_id', cartId);
+
+        const fetchedProducts: CartDisplay[] = [];
+
+        for (const product of cartItemsData || []) {
+          const productId = product.product_id;
+          const sizeId = product.size_id;
+          const productQty = product.quantity;
+
+          // eslint-disable-next-line no-await-in-loop
+          const { data: productInfoData } = await supabase
+            .from('products_sizes')
+            .select('size')
+            .eq('id', sizeId)
+            .single();
+
+          const productSize = productInfoData?.size;
+          // console.log('productSize: ', productSize);
+
+          // eslint-disable-next-line no-await-in-loop
+          const { data: productData } = await supabase
+            .from('products')
+            .select('name, slug, image_cover')
+            .eq('id', productId)
+            .single();
+
+          fetchedProducts.push({
+            id: productId,
+            name: productData?.name,
+            price: product.price,
+            product_size: productSize,
+            quantity: productQty,
+            slug: productData?.slug,
+            image: productData?.image_cover,
+          });
+        }
+        const totalFp = fetchedProducts.reduce(
+          (acc, item) => acc + item.price,
+          0,
+        );
+
+        setProducts(fetchedProducts);
+        setTotalPrice(totalFp);
+      } catch (error) {
+        console.error('Error fetching cart from Supabase:', error);
+      }
     };
 
     fetchCartId();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if (

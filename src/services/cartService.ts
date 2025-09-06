@@ -78,6 +78,13 @@ export const fetchCartFromSupabase = async (
     return;
   }
 
+  // Check if we have valid Supabase credentials
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || 
+      process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')) {
+    console.log('Supabase not configured - skipping cart fetch');
+    return;
+  }
+
   // const currCart = store.getState().cart;
 
   try {
@@ -146,11 +153,14 @@ export const fetchCartFromSupabase = async (
 
     try {
       dispatch(setCart(supabaseCartItemsFiltered));
+      console.log('Successfully synced cart from Supabase to Redux:', supabaseCartItemsFiltered.length, 'items');
     } catch (error) {
       console.error('error dispatching to cart from supabase: ', error);
     }
   } catch (error) {
-    // console.error*('Error fetching cart:', error);
+    console.error('Error fetching cart from Supabase:', error);
+    // Ensure we don't leave the cart in an inconsistent state
+    dispatch(setCart([]));
   }
   // return [];
 };
@@ -163,6 +173,14 @@ export const saveCartToSupabase = async (
   if (userId == null) {
     return;
   }
+
+  // Check if we have valid Supabase credentials
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || 
+      process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')) {
+    console.log('Supabase not configured - skipping cart save');
+    return;
+  }
+
   console.log('trying to savecarttosupabase - cartService.tsx ');
   try {
     // ------------------------- fetching cartid and retrieving items from supabase to put into map   ------------------------------------------------------------
@@ -370,7 +388,8 @@ export const saveCartToSupabase = async (
 
     console.log('Cart successfully updated in Supabase.');
   } catch (error) {
-    // console.error*('Error saving cart:', error);
+    console.error('Error saving cart to Supabase:', error);
+    // Don't throw the error to prevent UI disruption, but log it for debugging
   }
 };
 
