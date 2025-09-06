@@ -169,10 +169,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   };
 
   const handleBuyNow = () => {
-    if (!session) {
-      alert('Login to add to cart!');
-      return;
-    }
+    // Allow guest users to buy now - no authentication required
     if (!selectedSize) {
       alert('Please select a size before adding to cart!');
       return;
