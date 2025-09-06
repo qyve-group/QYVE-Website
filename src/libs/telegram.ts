@@ -6,19 +6,30 @@ export async function notifyTelegram(
   orderId: string,
   orderAddress: any,
   contactInfo: any,
+  cartItems?: any[],
 ) {
-  const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-    process.env.SUPABASE_SERVICE_ROLE_KEY as string,
-  );
-  console.log('calling notifyTelegram');
+  console.log('calling notifyTelegram with items:', cartItems);
 
-  const { data } = await supabaseAdmin
-    .from('order_items')
-    .select('quantity, products_sizes(description)')
-    .eq('order_id', orderId);
-  const itemsText =
-    data
+  let itemsText = '';
+  
+  if (cartItems && cartItems.length > 0) {
+    // Use cart items directly (for guest checkout)
+    itemsText = cartItems
+      .map(item => `${item.name} (${item.product_size}) x ${item.quantity}`)
+      .join('\n');
+  } else {
+    // Fallback to database lookup (for authenticated users)
+    const supabaseAdmin = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+      process.env.SUPABASE_SERVICE_ROLE_KEY as string,
+    );
+    
+    const { data } = await supabaseAdmin
+      .from('order_items')
+      .select('quantity, products_sizes(description)')
+      .eq('order_id', orderId);
+      
+    itemsText = data
       ?.map((item) => {
         const itemDescription = Array.isArray(item.products_sizes)
           ? item.products_sizes[0]
@@ -30,6 +41,7 @@ export async function notifyTelegram(
         return `${finalDescription} x ${item.quantity}`;
       })
       .join('\n') || '';
+  }
 
   console.log('itemtext: ', itemsText);
 
@@ -48,7 +60,7 @@ export async function notifyTelegram(
         text:
           `📦 New Paid Order\n\nOrder ID: ${orderId}\nCustomer: ${orderAddress.fname} ${orderAddress.lname}\n` +
           `Email: ${contactInfo.email}\nPhone: ${contactInfo.phone}\n\n` +
-          `Shipping Address:\n${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}\n\n` +
+          `Shipping Address:\n${orderAddress.shippingAddress1 || orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postalCode || orderAddress.postal_code}\n\n` +
           `Items:\n${itemsText}`,
       }),
     },

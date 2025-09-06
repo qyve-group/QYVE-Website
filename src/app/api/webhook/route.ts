@@ -458,7 +458,7 @@ export async function POST(req: Request) {
 
     // Send Telegram notification (non-blocking)
     try {
-      await notifyTelegram(orderId, orderAddress, contactInfo);
+      await notifyTelegram(orderId, orderAddress, contactInfo, cartItems);
       console.log('✅ Telegram notification sent');
     } catch (telegramError) {
       console.error('❌ Telegram notification failed (non-critical):', telegramError);
