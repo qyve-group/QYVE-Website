@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 // import avatar from '@/images/avatar.png';
 import { RiAccountCircleFill } from 'react-icons/ri';
 // import { FaRegBell } from 'react-icons/fa6';
@@ -25,6 +25,7 @@ const MainNav = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Debug logs
   console.log('Auth state:', { user: auth.user, loading: auth.loading });
@@ -33,6 +34,23 @@ const MainNav = () => {
   }
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
 
   const handleLogOut = async () => {
     setIsLoggingOut(true); // Start loading
@@ -90,17 +108,8 @@ const MainNav = () => {
         <div className="flex items-center divide-x divide-neutral-300">
           <CartSideBar />
           <div
-            // role="button"
-            // tabIndex={0}
+            ref={dropdownRef}
             className="relative cursor-pointer"
-            // onClick={() => {
-            //   setIsOpen(!isOpen);
-            // }}
-            // onKeyDown={(e) => {
-            //   if (e.key === 'Enter' || e.key === ' ') {
-            //     setIsOpen(!isOpen);
-            //   }
-            // }}
           >
             {auth.user ? (
               <div className="flex items-center gap-2 pl-5">
