@@ -449,6 +449,18 @@ const CollapsibleCheckout = ({
                   </FormItem>
                 </div>
 
+                <FormItem label="Country">
+                  <Input
+                    value="Malaysia"
+                    rounded="rounded-lg"
+                    sizeClass="h-12 px-4 py-3"
+                    className="border-2 border-gray-300 bg-gray-100 text-gray-600 cursor-not-allowed"
+                    disabled
+                    readOnly
+                  />
+                  <p className="text-xs text-gray-500 mt-1">We currently only ship within Malaysia</p>
+                </FormItem>
+
                 <div className="flex gap-3 pt-4">
                   <ButtonPrimary onClick={handleSaveShipping}>
                     Save Shipping Address
