@@ -35,13 +35,15 @@ const MainNav = () => {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  // Close dropdown when mouse moves away from the dropdown area
+  // Close dropdown when mouse moves away with delay to prevent accidental closes
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
     const handleMouseMove = (event: MouseEvent) => {
       if (!dropdownRef.current || !isOpen) return;
 
       const rect = dropdownRef.current.getBoundingClientRect();
-      const buffer = 50; // pixels of buffer area around dropdown
+      const buffer = 80; // increased buffer area around dropdown
       
       const isOutsideDropdown = 
         event.clientX < rect.left - buffer ||
@@ -50,7 +52,15 @@ const MainNav = () => {
         event.clientY > rect.bottom + buffer;
 
       if (isOutsideDropdown) {
-        setIsOpen(false);
+        // Add delay before closing to prevent accidental closes
+        timeoutId = setTimeout(() => {
+          setIsOpen(false);
+        }, 300); // 300ms delay
+      } else {
+        // Clear timeout if mouse comes back into area
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
       }
     };
 
@@ -60,6 +70,9 @@ const MainNav = () => {
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
     };
   }, [isOpen]);
 
@@ -123,6 +136,22 @@ const MainNav = () => {
             className="relative cursor-pointer"
             onMouseEnter={() => {
               // Keep dropdown open when hovering over the area
+            }}
+            onMouseLeave={(e) => {
+              // Only close if really moving far away
+              const rect = dropdownRef.current?.getBoundingClientRect();
+              if (rect) {
+                const buffer = 80;
+                const isReallyOutside = 
+                  e.clientX < rect.left - buffer ||
+                  e.clientX > rect.right + buffer ||
+                  e.clientY < rect.top - buffer ||
+                  e.clientY > rect.bottom + buffer;
+                
+                if (isReallyOutside) {
+                  setTimeout(() => setIsOpen(false), 500);
+                }
+              }
             }}
           >
             {auth.user ? (
