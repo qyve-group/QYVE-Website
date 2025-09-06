@@ -11,7 +11,7 @@ import { sendPaymentConfirmationEmail } from '@/lib/email';
 
 // Use test keys in Replit (development), production keys in GitHub/Vercel
 const isReplit = !!process.env.REPLIT_DEV_DOMAIN;
-const stripeSecretKey = isReplit 
+const stripeSecretKey = isReplit
   ? process.env.STRIPE_TEST_SECRET_KEY || process.env.STRIPE_SECRET_KEY
   : process.env.STRIPE_SECRET_KEY;
 
@@ -46,18 +46,21 @@ export async function POST(req: Request) {
 
   const rawBody = await req.text();
 
-
   let event: Stripe.Event;
   try {
-    const webhookSecret = isReplit 
-      ? process.env.STRIPE_TEST_WEBHOOK_SECRET || process.env.STRIPE_WEBHOOK_SECRET
+    const webhookSecret = isReplit
+      ? process.env.STRIPE_TEST_WEBHOOK_SECRET ||
+        process.env.STRIPE_WEBHOOK_SECRET
       : process.env.STRIPE_WEBHOOK_SECRET;
-    
-    console.log('🔑 Using webhook secret environment:', isReplit ? 'REPLIT (test)' : 'PRODUCTION');
+
+    console.log(
+      '🔑 Using webhook secret environment:',
+      isReplit ? 'REPLIT (test)' : 'PRODUCTION',
+    );
     console.log('🔑 Webhook secret exists:', !!webhookSecret);
     console.log('🔑 Signature header:', sig?.substring(0, 20) + '...');
     console.log('🔑 Body length:', rawBody.length);
-    
+
     // TEMPORARY: Skip signature verification for debugging
     if (!webhookSecret) {
       console.log('⚠️ No webhook secret - parsing body directly');
@@ -91,20 +94,28 @@ export async function POST(req: Request) {
     console.log('✅ Processing checkout.session.completed event');
     const session = event.data.object;
     const userId = session.metadata?.user_id || '';
-    const isGuestCheckout = userId === 'guest' || session.metadata?.is_guest_checkout === 'true';
-    
-    console.log('Processing order for user:', userId, isGuestCheckout ? '(guest)' : '(authenticated)');
-    
+    const isGuestCheckout =
+      userId === 'guest' || session.metadata?.is_guest_checkout === 'true';
+
+    console.log(
+      'Processing order for user:',
+      userId,
+      isGuestCheckout ? '(guest)' : '(authenticated)',
+    );
+
     let orderAddress, contactInfo;
     try {
       const orderAddressString = session.metadata?.order_address || '{}';
       orderAddress = JSON.parse(orderAddressString);
-      
+
       const contactInfoString = session.metadata?.order_contact || '{}';
       contactInfo = JSON.parse(contactInfoString);
     } catch (parseError) {
       console.error('❌ Error parsing metadata:', parseError);
-      return NextResponse.json({ error: 'Invalid metadata format' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid metadata format' },
+        { status: 400 },
+      );
     }
 
     // console.log('orderAddress: ', orderAddress);
@@ -127,7 +138,10 @@ export async function POST(req: Request) {
         console.log('Guest cart items from metadata:', cartItems);
       } catch (parseError) {
         console.error('❌ Error parsing guest cart items:', parseError);
-        return NextResponse.json({ error: 'Invalid cart items format' }, { status: 400 });
+        return NextResponse.json(
+          { error: 'Invalid cart items format' },
+          { status: 400 },
+        );
       }
     } else {
       // For authenticated users, fetch from database as before
@@ -200,19 +214,25 @@ export async function POST(req: Request) {
 
       if (orderError) {
         console.error('❌ Order insert error:', orderError);
-        return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
+        return NextResponse.json(
+          { error: 'Failed to create order' },
+          { status: 500 },
+        );
       } else {
         console.log('✅ Order inserted successfully:', orderData?.id);
       }
     } catch (err) {
       console.error('❌ Unexpected order creation error:', err);
-      return NextResponse.json({ error: 'Order creation failed' }, { status: 500 });
+      return NextResponse.json(
+        { error: 'Order creation failed' },
+        { status: 500 },
+      );
     }
 
     // Process stock updates and order items with better error handling
     const stockUpdatePromises = [];
     const orderItemPromises = [];
-    
+
     for (const item of cartItems) {
       try {
         // Fetch current stock
@@ -223,7 +243,11 @@ export async function POST(req: Request) {
           .single();
 
         if (fetchError) {
-          console.error('Error fetching stock for item:', item.product_size_id, fetchError);
+          console.error(
+            'Error fetching stock for item:',
+            item.product_size_id,
+            fetchError,
+          );
           continue;
         }
 
@@ -234,53 +258,52 @@ export async function POST(req: Request) {
 
         // Calculate new stock
         const newStock = Math.max(0, productSize.stock - item.quantity);
-        console.log(`Updating stock for item ${item.product_size_id}: ${productSize.stock} -> ${newStock}`);
+        console.log(
+          `Updating stock for item ${item.product_size_id}: ${productSize.stock} -> ${newStock}`,
+        );
 
         // Update stock
         const stockUpdatePromise = supabaseAdmin
           .from('products_sizes')
           .update({ stock: newStock })
           .eq('id', item.product_size_id);
-        
+
         stockUpdatePromises.push(stockUpdatePromise);
 
         // Create order item
         const orderItemsId = uuidv4();
-        const orderItemPromise = supabaseAdmin
-          .from('order_items')
-          .insert({
-            id: orderItemsId,
-            order_id: orderId,
-            product_size_id: item.product_size_id,
-            quantity: item.quantity,
-            price: item.price,
-          });
-        
+        const orderItemPromise = supabaseAdmin.from('order_items').insert({
+          id: orderItemsId,
+          order_id: orderId,
+          product_size_id: item.product_size_id,
+          quantity: item.quantity,
+          price: item.price,
+        });
+
         orderItemPromises.push(orderItemPromise);
-        
       } catch (error) {
         console.error('Error processing item:', item.product_size_id, error);
       }
     }
-    
+
     // Execute all stock updates and order item insertions in parallel
     try {
       const stockResults = await Promise.allSettled(stockUpdatePromises);
       const orderItemResults = await Promise.allSettled(orderItemPromises);
-      
+
       // Log any failures
       stockResults.forEach((result, index) => {
         if (result.status === 'rejected') {
           console.error(`Stock update ${index} failed:`, result.reason);
         }
       });
-      
+
       orderItemResults.forEach((result, index) => {
         if (result.status === 'rejected') {
           console.error(`Order item ${index} failed:`, result.reason);
         }
       });
-      
+
       console.log('✅ Stock updates and order items processed');
     } catch (error) {
       console.error('❌ Error in bulk operations:', error);
@@ -289,36 +312,35 @@ export async function POST(req: Request) {
     // Insert order address and contact info in parallel
     try {
       const [addressResult, contactResult] = await Promise.allSettled([
-        supabaseAdmin
-          .from('order_addresses')
-          .insert({
-            house_no: orderAddress.no,
-            city: orderAddress.city,
-            state: orderAddress.state,
-            postal_code: orderAddress.postal_code,
-            address_line_1: orderAddress.shipping_address_1,
-            address_line_2: orderAddress.shipping_address_2,
-            first_name: orderAddress.fname,
-            last_name: orderAddress.lname,
-            order_id: orderId,
-          }),
-        supabaseAdmin
-          .from('order_contact_info')
-          .insert({
-            phone: contactInfo.phone,
-            email: contactInfo.email,
-            order_id: orderId,
-          })
+        supabaseAdmin.from('order_addresses').insert({
+          house_no: orderAddress.no,
+          city: orderAddress.city,
+          state: orderAddress.state,
+          postal_code: orderAddress.postal_code,
+          address_line_1: orderAddress.shipping_address_1,
+          address_line_2: orderAddress.shipping_address_2,
+          first_name: orderAddress.fname,
+          last_name: orderAddress.lname,
+          order_id: orderId,
+        }),
+        supabaseAdmin.from('order_contact_info').insert({
+          phone: contactInfo.phone,
+          email: contactInfo.email,
+          order_id: orderId,
+        }),
       ]);
-      
+
       if (addressResult.status === 'rejected') {
         console.error('❌ Order address insert failed:', addressResult.reason);
       } else {
         console.log('✅ Order address inserted');
       }
-      
+
       if (contactResult.status === 'rejected') {
-        console.error('❌ Order contact info insert failed:', contactResult.reason);
+        console.error(
+          '❌ Order contact info insert failed:',
+          contactResult.reason,
+        );
       } else {
         console.log('✅ Order contact info inserted');
       }
@@ -466,7 +488,10 @@ export async function POST(req: Request) {
       await notifyTelegram(orderId, orderAddress, contactInfo, cartItems);
       console.log('✅ Telegram notification sent successfully');
     } catch (telegramError) {
-      console.error('❌ Telegram notification failed (non-critical):', telegramError);
+      console.error(
+        '❌ Telegram notification failed (non-critical):',
+        telegramError,
+      );
       console.error('❌ Telegram error stack:', (telegramError as Error).stack);
       // Don't fail the webhook for notification errors
     }
@@ -478,54 +503,83 @@ export async function POST(req: Request) {
     try {
       const customerEmail = contactInfo.email;
       const customerName = `${orderAddress.fname} ${orderAddress.lname}`;
-      
+
       console.log('📨 Customer email:', customerEmail);
       console.log('📨 Customer name:', customerName);
       console.log('📨 Is guest checkout:', isGuestCheckout);
-      
+
       // Format order items for email - handle both guest and authenticated cart formats
       let orderItemsText = '';
       if (isGuestCheckout) {
         // Guest cart items are simple objects from Redux
         console.log('📨 Processing guest cart items for email:', cartItems);
-        orderItemsText = cartItems.map((item: any) => 
-          `${item.name} (${item.product_size || 'N/A'}) x${item.quantity} - RM${item.price}`
-        ).join('\n');
+        orderItemsText = cartItems
+          .map(
+            (item: any) =>
+              `${item.name} (${item.product_size || 'N/A'}) x${item.quantity} - RM${item.price}`,
+          )
+          .join('\n');
       } else {
         // Authenticated cart items have complex database relations
-        console.log('📨 Processing authenticated cart items for email:', cartItems);
-        orderItemsText = cartItems.map((item: any) => {
-          const colorName = item.products_sizes?.product_colors?.color || 'N/A';
-          const size = item.products_sizes?.size || 'N/A';
-          return `${colorName} (${size}) x${item.quantity} - RM${item.price}`;
-        }).join('\n');
+        console.log(
+          '📨 Processing authenticated cart items for email:',
+          cartItems,
+        );
+        orderItemsText = cartItems
+          .map((item: any) => {
+            const colorName =
+              item.products_sizes?.product_colors?.color || 'N/A';
+            const size = item.products_sizes?.size || 'N/A';
+            return `${colorName} (${size}) x${item.quantity} - RM${item.price}`;
+          })
+          .join('\n');
       }
-      
+
       console.log('📨 Formatted order items text:', orderItemsText);
-      
-      if (customerEmail) {
-        console.log('📨 Calling sendPaymentConfirmationEmail function...');
-        await sendPaymentConfirmationEmail({
-          email: customerEmail,
-          customerName: customerName,
-          amount: session.amount_total || 0,
-          currency: 'myr',
-          paymentIntentId: session.payment_intent as string,
-          sessionId: session.id,
-          orderItems: orderItemsText,
-          orderId: orderId,
-        });
+
+      const emailSent = await sendPaymentConfirmationEmail({
+        email: customerEmail,
+        customerName,
+        amount: session.amount_total || 0,
+        currency: 'myr',
+        paymentIntentId: session.payment_intent as string,
+        sessionId: session.id,
+        orderItems: orderItemsText,
+        orderId: orderId,
+      });
+
+      if (emailSent) {
         console.log('✅ Email receipt sent successfully to:', customerEmail);
       } else {
-        console.log('⚠️ No customer email found, skipping email send');
+        console.error('❌ Failed to send email to:', customerEmail);
       }
+
+      // if (customerEmail) {
+      //   console.log('📨 Calling sendPaymentConfirmationEmail function...');
+      //   await sendPaymentConfirmationEmail({
+      //     email: customerEmail,
+      //     customerName: customerName,
+      //     amount: session.amount_total || 0,
+      //     currency: 'myr',
+      //     paymentIntentId: session.payment_intent as string,
+      //     sessionId: session.id,
+      //     orderItems: orderItemsText,
+      //     orderId: orderId,
+      //   });
+      //   console.log('✅ Email receipt sent successfully to:', customerEmail);
+      // } else {
+      //   console.log('⚠️ No customer email found, skipping email send');
+      // }
     } catch (emailError) {
       console.error('❌ Email receipt failed (non-critical):', emailError);
       console.error('❌ Email error stack:', (emailError as Error).stack);
       // Don't fail the webhook for email errors
     }
-    
-    console.log('✅ Webhook processing completed successfully for order:', orderId);
+
+    console.log(
+      '✅ Webhook processing completed successfully for order:',
+      orderId,
+    );
   }
 
   return NextResponse.json({ received: true });

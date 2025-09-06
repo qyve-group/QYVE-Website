@@ -1,6 +1,6 @@
 // lib/telegram.ts (or utils/telegram.ts)
 // import { supabase } from './supabaseClient';
-import { createClient } from '@supabase/supabase-js';
+// import { createClient } from '@supabase/supabase-js';
 
 export async function notifyTelegram(
   orderId: string,
@@ -13,56 +13,60 @@ export async function notifyTelegram(
   console.log('First item structure:', cartItems?.[0]);
 
   let itemsText = '';
-  
+
   if (cartItems && cartItems.length > 0) {
     // Use cart items directly (for guest checkout)
     console.log('🔍 Processing cart items for Telegram:');
     cartItems.forEach((item, index) => {
       console.log(`🔍 Item ${index}:`, {
-        name: item.name,
-        product_size: item.product_size,
+        name: item.remarks,
+        product_size: item.product_size_id,
         quantity: item.quantity,
         id: item.id,
-        price: item.price
+        price: item.price,
       });
     });
-    
+
     itemsText = cartItems
       .map((item, index) => {
-        const size = item.product_size || item.size || 'Free Size';
-        const name = item.description || item.name || item.product_name || item.title || `Product ${item.id || index + 1}`;
+        const size = item.products_sizes.size;
+        const name = item.remarks;
         const quantity = item.quantity || 1;
-        console.log(`🔍 Formatted item ${index}: "${name} (${size}) x ${quantity}"`);
+        console.log(
+          `🔍 Formatted item ${index}: "${name} (${size}) x ${quantity}"`,
+        );
         return `${name} (${size}) x ${quantity}`;
       })
       .join('\n');
-  } else {
-    // Fallback to database lookup (for authenticated users)
-    const supabaseAdmin = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-      process.env.SUPABASE_SERVICE_ROLE_KEY as string,
-    );
-    
-    const { data } = await supabaseAdmin
-      .from('order_items')
-      .select('quantity, products_sizes(description)')
-      .eq('order_id', orderId);
-      
-    itemsText = data
-      ?.map((item) => {
-        const itemDescription = Array.isArray(item.products_sizes)
-          ? item.products_sizes[0]
-          : (item.products_sizes as { description: string });
-
-        const finalDescription =
-          itemDescription?.description ?? 'Check Supabase';
-
-        return `${finalDescription} x ${item.quantity}`;
-      })
-      .join('\n') || '';
   }
 
-  console.log('itemtext: ', itemsText);
+  // else {
+  //   // Fallback to database lookup (for authenticated users)
+  //   const supabaseAdmin = createClient(
+  //     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+  //     process.env.SUPABASE_SERVICE_ROLE_KEY as string,
+  //   );
+
+  //   const { data } = await supabaseAdmin
+  //     .from('order_items')
+  //     .select('quantity, products_sizes(description)')
+  //     .eq('order_id', orderId);
+
+  //   itemsText = data
+  //     ?.map((item) => {
+  //       const itemDescription = Array.isArray(item.products_sizes)
+  //         ? item.products_sizes[0]
+  //         : (item.products_sizes as { description: string });
+
+  //       const finalDescription =
+  //         itemDescription?.description ?? 'Check Supabase';
+
+  //       return `${finalDescription} x ${item.quantity}`;
+  //     })
+  //     .join('\n') || '';
+  // }
+
+  // console.log('itemtext: ', itemsText);
 
   // const itemDescription= Array.isArray(item.product_sizes)
   //       ? item.product_sizes[0]
