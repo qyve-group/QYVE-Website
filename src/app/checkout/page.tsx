@@ -474,6 +474,7 @@ const CheckoutPage = () => {
             shippingAddress={shippingAddress}
             onContactInfoChange={handleContactInfo}
             onShippingAddressChange={handleShippingInfo}
+            cartItems={cartItems}
           />
         ) : (
           <div className="flex flex-col lg:flex-row">

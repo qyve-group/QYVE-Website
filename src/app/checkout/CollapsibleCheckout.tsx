@@ -42,6 +42,7 @@ interface CollapsibleCheckoutProps {
   shippingAddress: ShippingAddressData | null;
   onContactInfoChange: (data: ContactInfoData) => void;
   onShippingAddressChange: (data: ShippingAddressData) => void;
+  cartItems: any[];
 }
 
 const CollapsibleCheckout = ({
@@ -56,6 +57,7 @@ const CollapsibleCheckout = ({
   shippingAddress,
   onContactInfoChange,
   onShippingAddressChange,
+  cartItems,
 }: CollapsibleCheckoutProps) => {
   const userEmail = useSelector((state: RootState) => state.auth.user?.email);
 
@@ -460,76 +462,109 @@ const CollapsibleCheckout = ({
           </div>
         </div>
 
-        {/* Right Column - Order Summary */}
+        {/* Right Column - Order Summary (Original Design) */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl border border-gray-200 p-6 sticky top-6">
-            <div className="flex items-center gap-3 mb-6">
-              <MdPayment className="text-2xl text-primary" />
-              <h2 className="text-xl font-semibold text-gray-800">Order Summary</h2>
-            </div>
+          <div className="flex justify-between">
+            <h3 className="py-2 text-lg font-semibold">Order summary</h3>
+            <ButtonSecondary
+              sizeClass="py-2 px-4"
+              className="border-2 border-primary text-primary"
+              onClick={() => {
+                window.location.href = '../cart';
+              }}
+            >
+              Edit
+            </ButtonSecondary>
+          </div>
 
-            {/* Voucher */}
-            <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-              <div className="flex gap-3">
+          <div className="mt-8 divide-y divide-neutral-300">
+            {cartItems.map((item) => (
+              <div key={item.id} className="flex justify-between py-4">
+                <div className="flex items-center space-x-4">
+                  <div className="relative h-20 w-20 overflow-hidden rounded-xl">
+                    <img
+                      src={item.image || '/qyve-black.png'}
+                      alt={item.name}
+                      className="h-full w-full object-cover object-center"
+                    />
+                  </div>
+                  <div>
+                    <h4 className="font-medium">{item.name}</h4>
+                    <div className="text-sm text-neutral-500">
+                      Size: {item.product_size} | Qty: {item.quantity}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <span className="font-semibold">RM {(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 border-t border-neutral-300 pt-6 text-sm">
+            <div>
+              <div className="text-sm">Discount code</div>
+              <div className="mt-1.5 flex">
                 <Input
-                  value={voucher}
                   rounded="rounded-lg"
-                  sizeClass="h-10 px-3 py-2"
-                  className="border-gray-300 bg-white placeholder:text-gray-400"
-                  placeholder="Enter voucher code"
+                  sizeClass="h-12 px-4 py-3"
+                  className="flex-1 border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+                  value={voucher}
                   onChange={(e) => onVoucherChange(e.target.value)}
                 />
-                <ButtonPrimary
-                  sizeClass="px-4 py-2"
+                <button
+                  type="button"
+                  className="ml-3 flex w-24 items-center justify-center rounded-2xl border border-neutral-300 bg-gray px-4 text-sm font-medium transition-colors hover:bg-neutral-100"
                   onClick={onVoucherApply}
                 >
                   Apply
-                </ButtonPrimary>
+                </button>
               </div>
               {voucherValidity && (
-                <p className={`text-sm mt-2 ${
-                  voucherValidity.includes('Valid') ? 'text-green-600' : 'text-red-600'
-                }`}>
-                  {voucherValidity}
-                </p>
-              )}
-            </div>
-
-            {/* Order Summary */}
-            <div className="space-y-3 mb-6">
-              <div className="flex justify-between">
-                <span>Subtotal:</span>
-                <span>RM {subtotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Shipping:</span>
-                <span>RM {shippingFee.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between font-bold text-lg border-t pt-3">
-                <span>Total:</span>
-                <span>RM {total.toFixed(2)}</span>
-              </div>
-            </div>
-
-            {/* Checkout Button */}
-            <div>
-              <ButtonPrimary
-                className="w-full py-4 text-lg font-semibold"
-                onClick={handleCheckout}
-              >
-                Complete Order - RM {total.toFixed(2)}
-              </ButtonPrimary>
-              
-              {/* Error messaging */}
-              {hasSubmit && (!contactInfo || !shippingAddress) && (
-                <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-red-600 text-sm font-medium flex items-center gap-2">
-                    <FiAlertCircle />
-                    Please complete all required sections above
-                  </p>
+                <div className="mt-1 text-sm">
+                  <span className={voucherValidity.includes('Valid') ? 'text-green-600' : 'text-red-600'}>
+                    {voucherValidity}
+                  </span>
                 </div>
               )}
             </div>
+
+            <div className="mt-4 divide-y divide-neutral-300">
+              <div className="mt-4 flex justify-between pb-4">
+                <span>Subtotal</span>
+                <span className="font-semibold">RM {subtotal.toFixed(2)}</span>
+              </div>
+              <div className="mt-4 flex justify-between pb-4">
+                <span>Estimated Delivery & Handling</span>
+                <span className="font-semibold">RM {shippingFee}</span>
+              </div>
+              <div className="flex justify-between py-4">
+                <span>Discount</span>
+                <span className="font-semibold">-</span>
+              </div>
+              <div className="flex justify-between pt-4 text-base font-semibold">
+                <span>Total</span>
+                <span>RM {total.toFixed(2)}</span>
+              </div>
+            </div>
+            
+            <ButtonPrimary 
+              className="mt-8 w-full"
+              onClick={handleCheckout}
+            >
+              Confirm order
+            </ButtonPrimary>
+            
+            {/* Error messaging */}
+            {hasSubmit && (!contactInfo || !shippingAddress) && (
+              <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-red-600 text-sm font-medium flex items-center gap-2">
+                  <FiAlertCircle />
+                  Please complete all required sections above
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
