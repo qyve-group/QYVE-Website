@@ -14,7 +14,15 @@ export const listenForAuthChanges = (dispatch: any, getState: () => any) => {
     'listening for authchanges listenforauthchanges in authlistenr.ts',
   );
 
-  supabase.auth.getSession().then(({ data }) => {
+  // Check if we have valid Supabase credentials
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || 
+      process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')) {
+    console.log('Supabase not configured - skipping auth listener');
+    return;
+  }
+
+  try {
+    supabase.auth.getSession().then(({ data }) => {
     // console.log*('Session retrieved from auth getSession: ', data);
     dispatch(
       setUser({
@@ -38,9 +46,11 @@ export const listenForAuthChanges = (dispatch: any, getState: () => any) => {
     } else {
       console.log('No current user session authlistener.tsx');
     }
-  });
+    }).catch((error) => {
+      console.error('Error getting Supabase session:', error);
+    });
 
-  const { data: authListener } = supabase.auth.onAuthStateChange(
+    const { data: authListener } = supabase.auth.onAuthStateChange(
     async (event, session) => {
       console.log('onAuthStateChange is being called.');
       console.log('[AUTH] Event:', event); // ⬅️ this will show SIGNED_IN or SIGNED_OUT
@@ -72,7 +82,11 @@ export const listenForAuthChanges = (dispatch: any, getState: () => any) => {
     },
   );
 
-  return () => {
-    authListener.subscription.unsubscribe();
-  };
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  } catch (error) {
+    console.error('Error setting up auth listener:', error);
+    return () => {}; // Return empty cleanup function
+  }
 };

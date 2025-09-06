@@ -11,6 +11,20 @@ export default bundleAnalyzer({
     dirs: ['.'],
   },
   swcMinify: false,
+  // Replit configuration - allow all hosts for proxy support
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN',
+          },
+        ],
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
