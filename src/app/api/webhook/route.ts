@@ -456,28 +456,42 @@ export async function POST(req: Request) {
     // return NextResponse.json(data);
 
     // Send Telegram notification (non-blocking)
+    console.log('🚀 Starting Telegram notification process...');
+    console.log('🚀 Order ID:', orderId);
+    console.log('🚀 Cart items for Telegram:', cartItems);
     try {
+      console.log('🚀 Calling notifyTelegram function...');
       await notifyTelegram(orderId, orderAddress, contactInfo, cartItems);
-      console.log('✅ Telegram notification sent');
+      console.log('✅ Telegram notification sent successfully');
     } catch (telegramError) {
       console.error('❌ Telegram notification failed (non-critical):', telegramError);
+      console.error('❌ Telegram error stack:', (telegramError as Error).stack);
       // Don't fail the webhook for notification errors
     }
 
     // Send email receipt (non-blocking)
+    console.log('📨 Starting email notification process...');
+    console.log('📨 Contact info:', contactInfo);
+    console.log('📨 Order address:', orderAddress);
     try {
       const customerEmail = contactInfo.email;
       const customerName = `${orderAddress.fname} ${orderAddress.lname}`;
+      
+      console.log('📨 Customer email:', customerEmail);
+      console.log('📨 Customer name:', customerName);
+      console.log('📨 Is guest checkout:', isGuestCheckout);
       
       // Format order items for email - handle both guest and authenticated cart formats
       let orderItemsText = '';
       if (isGuestCheckout) {
         // Guest cart items are simple objects from Redux
+        console.log('📨 Processing guest cart items for email:', cartItems);
         orderItemsText = cartItems.map((item: any) => 
           `${item.name} (${item.product_size || 'N/A'}) x${item.quantity} - RM${item.price}`
         ).join('\n');
       } else {
         // Authenticated cart items have complex database relations
+        console.log('📨 Processing authenticated cart items for email:', cartItems);
         orderItemsText = cartItems.map((item: any) => {
           const colorName = item.products_sizes?.product_colors?.color || 'N/A';
           const size = item.products_sizes?.size || 'N/A';
@@ -485,7 +499,10 @@ export async function POST(req: Request) {
         }).join('\n');
       }
       
+      console.log('📨 Formatted order items text:', orderItemsText);
+      
       if (customerEmail) {
+        console.log('📨 Calling sendPaymentConfirmationEmail function...');
         await sendPaymentConfirmationEmail({
           email: customerEmail,
           customerName: customerName,
@@ -496,10 +513,13 @@ export async function POST(req: Request) {
           orderItems: orderItemsText,
           orderId: orderId,
         });
-        console.log('✅ Email receipt sent to:', customerEmail);
+        console.log('✅ Email receipt sent successfully to:', customerEmail);
+      } else {
+        console.log('⚠️ No customer email found, skipping email send');
       }
     } catch (emailError) {
       console.error('❌ Email receipt failed (non-critical):', emailError);
+      console.error('❌ Email error stack:', (emailError as Error).stack);
       // Don't fail the webhook for email errors
     }
     
