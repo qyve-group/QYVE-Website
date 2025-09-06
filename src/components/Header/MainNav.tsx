@@ -25,6 +25,7 @@ const MainNav = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isNavigatingToLogin, setIsNavigatingToLogin] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Debug logs
@@ -171,12 +172,24 @@ const MainNav = () => {
               </div>
             ) : (
               <div className="flex items-center gap-2 pl-5">
-                <Link
-                  href="/login"
-                  className="text-gray-700 hover:bg-gray-100 block px-4 py-2"
-                >
-                  Login
-                </Link>
+                {auth.loading || isNavigatingToLogin ? (
+                  <div className="flex items-center gap-2 px-4 py-2 text-gray-500">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500"></div>
+                    <span className="text-sm">Loading...</span>
+                  </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="text-gray-700 hover:bg-gray-100 block px-4 py-2 transition-colors rounded-md"
+                    onClick={() => {
+                      setIsNavigatingToLogin(true);
+                      // Reset after navigation starts
+                      setTimeout(() => setIsNavigatingToLogin(false), 2000);
+                    }}
+                  >
+                    Login
+                  </Link>
+                )}
               </div>
             )}
             {isOpen && (
