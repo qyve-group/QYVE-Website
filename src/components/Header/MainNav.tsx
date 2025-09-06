@@ -26,8 +26,11 @@ const MainNav = () => {
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  // console.log*('Auth: ', auth);
-  // console.log*('User: ', auth.user?.email);
+  // Debug logs
+  console.log('Auth state:', { user: auth.user, loading: auth.loading });
+  if (auth.user) {
+    console.log('User email:', auth.user.email);
+  }
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -99,13 +102,11 @@ const MainNav = () => {
             //   }
             // }}
           >
-            {auth.loading !== true ? (
+            {auth.user ? (
               <div className="flex items-center gap-2 pl-5">
-                {auth.user?.email && (
-                  <span className="hidden md:block text-sm text-gray-700 font-medium mr-2">
-                    Hi, {auth.user.email.split('@')[0]}
-                  </span>
-                )}
+                <span className="hidden md:block text-sm text-gray-700 font-medium mr-2">
+                  Hi, {auth.user.email?.split('@')[0] || 'User'}
+                </span>
                 <ButtonCircle3
                   onClick={() => {
                     setIsOpen(!isOpen);
