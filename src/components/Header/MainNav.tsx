@@ -172,7 +172,7 @@ const MainNav = () => {
               </div>
             ) : (
               <div className="flex items-center gap-2 pl-5">
-                {auth.loading || isNavigatingToLogin ? (
+                {isNavigatingToLogin ? (
                   <div className="flex items-center gap-2 px-4 py-2 text-gray-500">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500"></div>
                     <span className="text-sm">Loading...</span>
@@ -184,7 +184,7 @@ const MainNav = () => {
                     onClick={() => {
                       setIsNavigatingToLogin(true);
                       // Reset after navigation starts
-                      setTimeout(() => setIsNavigatingToLogin(false), 2000);
+                      setTimeout(() => setIsNavigatingToLogin(false), 1500);
                     }}
                   >
                     Login
