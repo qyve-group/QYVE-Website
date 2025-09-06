@@ -30,7 +30,9 @@ const supabaseAdmin = createClient(
 );
 
 export async function POST(req: Request) {
-  console.log('Webhook called at:', new Date().toISOString());
+  console.log('🚨 WEBHOOK CALLED AT:', new Date().toISOString());
+  console.log('🚨 Webhook URL:', req.url);
+  console.log('🚨 Webhook method:', req.method);
 
   const sig = req.headers.get('stripe-signature');
 

@@ -30,7 +30,7 @@ export async function notifyTelegram(
     itemsText = cartItems
       .map((item, index) => {
         const size = item.product_size || item.size || 'Free Size';
-        const name = item.name || item.product_name || item.title || `Product ${item.id || index + 1}`;
+        const name = item.description || item.name || item.product_name || item.title || `Product ${item.id || index + 1}`;
         const quantity = item.quantity || 1;
         console.log(`🔍 Formatted item ${index}: "${name} (${size}) x ${quantity}"`);
         return `${name} (${size}) x ${quantity}`;
