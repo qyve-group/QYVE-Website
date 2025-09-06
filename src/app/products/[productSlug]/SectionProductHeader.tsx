@@ -299,14 +299,69 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                 </div>
               </div>
               <div className="basis-3/5">
-                <p className="mb-5 text-xl">Customization</p>
-
-                <textarea
-                  id="custom"
-                  className="border-gray-300 w-3/4 resize-none rounded-md border p-2 placeholder:text-sm md:w-full"
-                  placeholder="Name - Number e.g Max - 7"
-                  onChange={(e) => setCustom(e.target.value)}
-                />
+                <div className="bg-gray-50 p-6 rounded-lg border">
+                  <div className="flex items-center gap-2 mb-4">
+                    <h3 className="text-xl font-semibold text-gray-800">Jersey Customization</h3>
+                    <span className="text-xs bg-primary text-black px-2 py-1 rounded-full font-medium">FREE</span>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="player-name" className="block text-sm font-medium text-gray-700 mb-2">
+                        Player Name
+                      </label>
+                      <input
+                        type="text"
+                        id="player-name"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors placeholder:text-gray-400"
+                        placeholder="Enter player name"
+                        maxLength={15}
+                        onChange={(e) => {
+                          const name = e.target.value.toUpperCase();
+                          const number = (document.getElementById('player-number') as HTMLInputElement)?.value || '';
+                          setCustom(name && number ? `${name} - ${number}` : name || number);
+                        }}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Max 15 characters</p>
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="player-number" className="block text-sm font-medium text-gray-700 mb-2">
+                        Jersey Number
+                      </label>
+                      <input
+                        type="number"
+                        id="player-number"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors placeholder:text-gray-400"
+                        placeholder="Enter number (0-99)"
+                        min="0"
+                        max="99"
+                        onChange={(e) => {
+                          const number = e.target.value;
+                          const name = (document.getElementById('player-name') as HTMLInputElement)?.value.toUpperCase() || '';
+                          setCustom(name && number ? `${name} - ${number}` : name || number);
+                        }}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Numbers 0-99 only</p>
+                    </div>
+                    
+                    {/* Preview Section */}
+                    <div className="bg-white p-4 rounded-lg border-2 border-dashed border-gray-200">
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">Preview</h4>
+                      <div className="bg-gray-900 text-white p-4 rounded-lg text-center">
+                        <div className="text-lg font-bold tracking-wide" id="name-preview">
+                          {/* Name will appear here */}
+                        </div>
+                        <div className="text-3xl font-black mt-1" id="number-preview">
+                          {/* Number will appear here */}
+                        </div>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-2 text-center">
+                        This is how your customization will appear on the jersey back
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           ) : (
