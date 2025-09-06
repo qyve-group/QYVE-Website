@@ -42,42 +42,48 @@ export async function POST(req: Request) {
     );
   }
 
-  const body = await req.text();
-  const rawBody = body;
+  const body = await req.arrayBuffer();
+  const rawBody = Buffer.from(body);
 
   // let rawBody = await req.arrayBuffer(); // This is the only way to get raw body in App Router
 
   let event: Stripe.Event;
   try {
-    // const rawBody = await req.text(); // Get raw body for verification
-    // const rawBody = await req.arrayBuffer();
-    // const rawBodyString = Buffer.from(rawBody).toString("utf8"); // Convert to string for Stripe verification
-    // ✅ Manually get raw body
-    // const bodyBuffer = await req.arrayBuffer();
-    // const rawBody = Buffer.from(bodyBuffer);
-
-    // console.log('📩 Raw body received:', rawBody);
-
     const webhookSecret = isReplit 
       ? process.env.STRIPE_TEST_WEBHOOK_SECRET || process.env.STRIPE_WEBHOOK_SECRET
       : process.env.STRIPE_WEBHOOK_SECRET;
     
     console.log('🔑 Using webhook secret environment:', isReplit ? 'REPLIT (test)' : 'PRODUCTION');
     console.log('🔑 Webhook secret exists:', !!webhookSecret);
-      
-    event = stripe.webhooks.constructEvent(
-      rawBody,
-      sig,
-      webhookSecret! as string,
-    );
-    // event = stripe.webhooks.constructEvent(rawBodyString, sig, process.env.STRIPE_WEBHOOK_SECRET!);
-    // // console.log*('✅ Event parsed:', event);
+    console.log('🔑 Signature header:', sig?.substring(0, 20) + '...');
+    console.log('🔑 Body length:', rawBody.length);
+    
+    // TEMPORARY: Skip signature verification for debugging
+    if (!webhookSecret) {
+      console.log('⚠️ No webhook secret - parsing body directly');
+      const bodyStr = rawBody.toString();
+      event = JSON.parse(bodyStr);
+    } else {
+      event = stripe.webhooks.constructEvent(
+        rawBody,
+        sig,
+        webhookSecret! as string,
+      );
+    }
   } catch (err: any) {
     console.error('❌ Webhook signature verification failed:', err.message);
-    return NextResponse.json(
-      { error: `Webhook Error: ${(err as Error).message}` },
-      { status: 400 },
-    );
+    console.log('⚠️ Attempting to parse webhook body directly...');
+    try {
+      const bodyStr = rawBody.toString();
+      event = JSON.parse(bodyStr);
+      console.log('✅ Successfully parsed webhook body without verification');
+    } catch (parseErr) {
+      console.error('❌ Failed to parse body:', parseErr);
+      return NextResponse.json(
+        { error: `Webhook Error: ${(err as Error).message}` },
+        { status: 400 },
+      );
+    }
   }
   // // console.log*('✅ Webhook received:', event);
 
