@@ -461,12 +461,27 @@ const CheckoutPage = () => {
           </h2>
         </div>
 
-        <div className="flex flex-col lg:flex-row">
-          <div className="flex-1">{renderLeft()}</div>
+        {useCollapsibleCheckout ? (
+          <CollapsibleCheckout
+            subtotal={subtotal}
+            shippingFee={shippingFee}
+            total={total}
+            voucher={voucher}
+            voucherValidity={voucherValidity}
+            onVoucherChange={setVoucher}
+            onVoucherApply={handleVoucher}
+            contactInfo={contactInfo}
+            shippingAddress={shippingAddress}
+            onContactInfoChange={handleContactInfo}
+            onShippingAddressChange={handleShippingInfo}
+          />
+        ) : (
+          <div className="flex flex-col lg:flex-row">
+            <div className="flex-1">{renderLeft()}</div>
 
-          <div className="my-10 shrink-0 border-t border-neutral-300 lg:mx-10 lg:my-0 lg:border-l lg:border-t-0 xl:lg:mx-14 2xl:mx-16 " />
+            <div className="my-10 shrink-0 border-t border-neutral-300 lg:mx-10 lg:my-0 lg:border-l lg:border-t-0 xl:lg:mx-14 2xl:mx-16 " />
 
-          <div className="w-full lg:w-[36%]">
+            <div className="w-full lg:w-[36%]">
             <div className="flex justify-between">
               <h3 className="py-2 text-lg font-semibold">Order summary</h3>
               <ButtonSecondary
@@ -584,8 +599,9 @@ const CheckoutPage = () => {
               shippingPrice={shippingFee}
             />
             {/* <ButtonPrimary className="mt-8 w-full">Confirm order</ButtonPrimary> */}
+            </div>
           </div>
-        </div>
+        )}
       </main>
     </div>
   );
