@@ -91,13 +91,20 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   // console.log('session sectopnproductheader: ', session);
   // console.log('slug -sectionproductheader: ', slug);
 
-  // Set default color ID once when product changes
+  // Set default color ID and image once when product changes
   useEffect(() => {
     if (products_sizes.length > 0 && selectedColorId === null) {
       const firstColorId = products_sizes[0]?.product_color_id;
       setSelectedColorId(firstColorId ?? null);
+      
+      // Set default image from the first color
+      const firstColor = product_colors.find(pc => pc.id === firstColorId);
+      if (firstColor && !selectedImage) {
+        setSelectedImage(firstColor.image || '/qyve-black.png');
+        setSelectedColor(firstColor.color);
+      }
     }
-  }, [products_sizes, selectedColorId]);
+  }, [products_sizes, selectedColorId, product_colors, selectedImage]);
 
   const filteredProductSizes = products_sizes.filter(
     (ps) => ps.product_color_id === selectedColorId,
