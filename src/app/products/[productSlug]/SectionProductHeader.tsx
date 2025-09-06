@@ -258,7 +258,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
         <div className="flex flex-col">
           {slug?.includes('jersey') ? (
-            <div className="flex flex-col md:flex-row">
+            <div className="flex flex-col lg:flex-row gap-6">
               <div className="basis-2/5">
                 <p className="mb-5 text-xl">Available colors</p>
                 <div className="mb-5 flex flex-wrap gap-2">
@@ -320,6 +320,9 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                           const name = e.target.value.toUpperCase();
                           const number = (document.getElementById('player-number') as HTMLInputElement)?.value || '';
                           setCustom(name && number ? `${name} - ${number}` : name || number);
+                          // Update preview
+                          const namePreview = document.getElementById('name-preview');
+                          if (namePreview) namePreview.textContent = name || 'PLAYER NAME';
                         }}
                       />
                       <p className="text-xs text-gray-500 mt-1">Max 15 characters</p>
@@ -340,6 +343,9 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                           const number = e.target.value;
                           const name = (document.getElementById('player-name') as HTMLInputElement)?.value.toUpperCase() || '';
                           setCustom(name && number ? `${name} - ${number}` : name || number);
+                          // Update preview
+                          const numberPreview = document.getElementById('number-preview');
+                          if (numberPreview) numberPreview.textContent = number || '00';
                         }}
                       />
                       <p className="text-xs text-gray-500 mt-1">Numbers 0-99 only</p>
@@ -350,10 +356,10 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                       <h4 className="text-sm font-medium text-gray-700 mb-2">Preview</h4>
                       <div className="bg-gray-900 text-white p-4 rounded-lg text-center">
                         <div className="text-lg font-bold tracking-wide" id="name-preview">
-                          {/* Name will appear here */}
+                          PLAYER NAME
                         </div>
                         <div className="text-3xl font-black mt-1" id="number-preview">
-                          {/* Number will appear here */}
+                          00
                         </div>
                       </div>
                       <p className="text-xs text-gray-500 mt-2 text-center">
