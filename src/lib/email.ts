@@ -51,31 +51,53 @@ export async function sendPaymentConfirmationEmail({
   orderId,
 }: PaymentConfirmationProps) {
   try {
+    console.log('📧 Starting email send process...');
+    console.log('📧 Target email:', email);
+    console.log('📧 Customer name:', customerName);
+    
     const transporter = createTransporter();
+    console.log('📧 Transporter created successfully');
     
     const fromEmail = process.env.GMAIL_USER || process.env.SMTP_FROM || process.env.SMTP_USER;
     const companyName = process.env.COMPANY_NAME || 'QYVE';
     
-    await transporter.sendMail({
+    console.log('📧 From email:', fromEmail);
+    console.log('📧 Company name:', companyName);
+    
+    const emailContent = generateEmailHTML({
+      customerName,
+      amount,
+      currency,
+      paymentIntentId,
+      sessionId,
+      orderItems,
+      orderId,
+      companyName,
+    });
+    
+    console.log('📧 Email HTML generated, length:', emailContent.length);
+    
+    const mailOptions = {
       from: `"${companyName}" <${fromEmail}>`,
       to: email,
       subject: `Payment Confirmation - Thank You ${customerName}!`,
-      html: generateEmailHTML({
-        customerName,
-        amount,
-        currency,
-        paymentIntentId,
-        sessionId,
-        orderItems,
-        orderId,
-        companyName,
-      }),
+      html: emailContent,
+    };
+    
+    console.log('📧 Sending email with options:', {
+      from: mailOptions.from,
+      to: mailOptions.to,
+      subject: mailOptions.subject,
     });
-
-    console.log('Payment confirmation email sent to:', email);
+    
+    const result = await transporter.sendMail(mailOptions);
+    console.log('📧 ✅ Email sent successfully! Result:', result);
+    console.log('📧 Message ID:', result.messageId);
+    
     return true;
   } catch (error) {
-    console.error('Failed to send confirmation email:', error);
+    console.error('📧 ❌ Failed to send confirmation email:', error);
+    console.error('📧 ❌ Error stack:', (error as Error).stack);
     return false;
   }
 }
