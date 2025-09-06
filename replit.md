@@ -31,12 +31,30 @@ To fully run this application, you'll need to configure:
 2. **Stripe** (Payments):
    - STRIPE_SECRET_KEY
    - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+   - STRIPE_WEBHOOK_SECRET (for automated email receipts)
 
-3. **Other APIs** (Optional):
+3. **Email Service** (for automated receipts):
+   Option A - Gmail:
+   - GMAIL_USER (your Gmail address)
+   - GMAIL_APP_PASSWORD (generate from Google Account settings)
+   
+   Option B - Custom SMTP:
+   - SMTP_HOST
+   - SMTP_PORT (usually 587)
+   - SMTP_USER
+   - SMTP_PASS
+
+4. **Other APIs** (Optional):
    - Telegram Bot Token (for notifications)
    - Google Analytics ID
 
 ## Recent Changes
+- 2025-09-06: Implemented automated Stripe webhook system for payment confirmations
+- 2025-09-06: Added email service integration for sending automated payment receipts
+- 2025-09-06: Enhanced checkout process to pass customer metadata to Stripe
+- 2025-09-06: Fixed cart image loading issues with proper selectedImage initialization
+- 2025-09-06: Implemented collapsible checkout sections with smart validation
+- 2025-09-06: Added Malaysia-only shipping restrictions
 - 2025-01-07: Configured Next.js for Replit environment
 - 2025-01-07: Set up development workflow on port 5000
 - 2025-01-07: Added graceful fallbacks for missing Supabase credentials
