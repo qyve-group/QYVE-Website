@@ -2,11 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { sendPaymentConfirmationEmail } from '@/lib/email';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+// Use test keys in Replit (development), production keys in GitHub/Vercel
+const isReplit = !!process.env.REPLIT_DEV_DOMAIN;
+const stripeSecretKey = isReplit 
+  ? process.env.STRIPE_TEST_SECRET_KEY || process.env.STRIPE_SECRET_KEY
+  : process.env.STRIPE_SECRET_KEY;
+
+const stripe = new Stripe(stripeSecretKey!, {
   apiVersion: '2024-11-20.acacia',
 });
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+const webhookSecret = isReplit 
+  ? process.env.STRIPE_TEST_WEBHOOK_SECRET || process.env.STRIPE_WEBHOOK_SECRET
+  : process.env.STRIPE_WEBHOOK_SECRET;
 
 export async function POST(req: NextRequest) {
   try {

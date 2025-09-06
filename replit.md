@@ -28,10 +28,18 @@ To fully run this application, you'll need to configure:
    - NEXT_PUBLIC_SUPABASE_ANON_KEY
    - SUPABASE_SERVICE_ROLE_KEY
 
-2. **Stripe** (Payments):
-   - STRIPE_SECRET_KEY
-   - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-   - STRIPE_WEBHOOK_SECRET (for automated email receipts)
+2. **Stripe** (Environment-Aware Setup):
+   
+   **For Replit (Development/Testing):**
+   - STRIPE_TEST_SECRET_KEY (Stripe test secret key)
+   - NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY (Stripe test publishable key)
+   - STRIPE_TEST_WEBHOOK_SECRET (Stripe test webhook secret)
+   
+   **For GitHub/Vercel (Production):**
+   - STRIPE_SECRET_KEY (Stripe live secret key)
+   - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY (Stripe live publishable key)
+   - STRIPE_WEBHOOK_SECRET (Stripe live webhook secret)
+   - NEXT_PUBLIC_BASE_URL (your production domain)
 
 3. **Email Service** (for automated receipts):
    Option A - Gmail:
@@ -49,6 +57,8 @@ To fully run this application, you'll need to configure:
    - Google Analytics ID
 
 ## Recent Changes
+- 2025-09-06: Set up environment-aware Stripe configuration (test keys for Replit, production for Vercel)
+- 2025-09-06: Fixed CollapsibleCheckout component to properly call Stripe API
 - 2025-09-06: Implemented automated Stripe webhook system for payment confirmations
 - 2025-09-06: Added email service integration for sending automated payment receipts
 - 2025-09-06: Enhanced checkout process to pass customer metadata to Stripe

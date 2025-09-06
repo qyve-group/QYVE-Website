@@ -16,7 +16,13 @@ import Stripe from 'stripe';
 //   postal_code: string;
 // };
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+// Use test keys in Replit (development), production keys in GitHub/Vercel
+const isReplit = !!process.env.REPLIT_DEV_DOMAIN;
+const stripeSecretKey = isReplit 
+  ? process.env.STRIPE_TEST_SECRET_KEY || process.env.STRIPE_SECRET_KEY
+  : process.env.STRIPE_SECRET_KEY;
+
+const stripe = new Stripe(stripeSecretKey!, {
   apiVersion: '2025-06-30.basil',
 });
 
