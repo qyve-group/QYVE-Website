@@ -42,8 +42,8 @@ export async function POST(req: Request) {
     );
   }
 
-  const body = await req.arrayBuffer();
-  const rawBody = Buffer.from(body);
+  const body = await req.text();
+  const rawBody = body;
 
   // let rawBody = await req.arrayBuffer(); // This is the only way to get raw body in App Router
 
