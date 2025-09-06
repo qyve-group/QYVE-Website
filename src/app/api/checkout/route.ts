@@ -217,9 +217,9 @@ export async function POST(req: Request) {
       line_items: lineItems,
       discounts,
       // success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/home`,
-      success_url: `https://${process.env.REPLIT_DEV_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL || `https://${process.env.REPLIT_DEV_DOMAIN}`}/success?session_id={CHECKOUT_SESSION_ID}`,
       customer_email: orderContact.email,
-      cancel_url: `https://${process.env.REPLIT_DEV_DOMAIN}/failed`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || `https://${process.env.REPLIT_DEV_DOMAIN}`}/failed`,
       shipping_options: shippingOptions,
       metadata: {
         user_id: userId ?? 'guest',
