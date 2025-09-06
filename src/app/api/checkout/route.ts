@@ -227,7 +227,7 @@ export async function POST(req: Request) {
     });
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'], // Simplify to just card for testing
+      payment_method_types: ['card', 'fpx'], // Support both card and FPX payments
       mode: 'payment',
       line_items: lineItems,
       discounts,
