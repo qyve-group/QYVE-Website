@@ -29,15 +29,44 @@ const ShopProducts = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data, error } = await supabase.from('products').select();
+      // Check if Supabase is configured
+      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || 
+          process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')) {
+        console.log('Using demo products - Supabase not configured');
+        // Use demo products
+        const demoProducts = [
+          { id: 7, name: 'Classic Black Socks', description: 'Premium cotton blend socks in classic black', price: 25, stock: 10, category_id: 1, created_at: new Date(), slug: 'classic-black-socks', previous_price: 30, image_cover: '/socks_black.png', colors: ['black'] },
+          { id: 9, name: 'Essential White Socks', description: 'Comfortable white socks for everyday wear', price: 25, stock: 5, category_id: 1, created_at: new Date(), slug: 'essential-white-socks', previous_price: 30, image_cover: '/socks_white.png', colors: ['white'] },
+          { id: 6, name: 'QYVE Jersey', description: 'Premium sport jersey with QYVE branding', price: 85, stock: 8, category_id: 1, created_at: new Date(), slug: 'qyve-jersey', previous_price: 100, image_cover: '/jersey_pic.jpg', colors: ['blue'] }
+        ];
+        setProducts(demoProducts);
+        return;
+      }
 
-      // console.log*('Fetched products:', data);
-      // console.log*('Supabase error:', error);
+      try {
+        const { data, error } = await supabase.from('products').select();
 
-      if (error) {
-        // console.error*('Error fetching products: ', error);
-      } else {
-        setProducts(data);
+        if (error) {
+          console.error('Error fetching products from Supabase:', error);
+          // Fallback to demo products if Supabase fails
+          const demoProducts = [
+            { id: 7, name: 'Classic Black Socks', description: 'Premium cotton blend socks in classic black', price: 25, stock: 10, category_id: 1, created_at: new Date(), slug: 'classic-black-socks', previous_price: 30, image_cover: '/socks_black.png', colors: ['black'] },
+            { id: 9, name: 'Essential White Socks', description: 'Comfortable white socks for everyday wear', price: 25, stock: 5, category_id: 1, created_at: new Date(), slug: 'essential-white-socks', previous_price: 30, image_cover: '/socks_white.png', colors: ['white'] },
+            { id: 6, name: 'QYVE Jersey', description: 'Premium sport jersey with QYVE branding', price: 85, stock: 8, category_id: 1, created_at: new Date(), slug: 'qyve-jersey', previous_price: 100, image_cover: '/jersey_pic.jpg', colors: ['blue'] }
+          ];
+          setProducts(demoProducts);
+        } else {
+          setProducts(data);
+        }
+      } catch (error) {
+        console.error('Network error fetching products:', error);
+        // Fallback to demo products on network error
+        const demoProducts = [
+          { id: 7, name: 'Classic Black Socks', description: 'Premium cotton blend socks in classic black', price: 25, stock: 10, category_id: 1, created_at: new Date(), slug: 'classic-black-socks', previous_price: 30, image_cover: '/socks_black.png', colors: ['black'] },
+          { id: 9, name: 'Essential White Socks', description: 'Comfortable white socks for everyday wear', price: 25, stock: 5, category_id: 1, created_at: new Date(), slug: 'essential-white-socks', previous_price: 30, image_cover: '/socks_white.png', colors: ['white'] },
+          { id: 6, name: 'QYVE Jersey', description: 'Premium sport jersey with QYVE branding', price: 85, stock: 8, category_id: 1, created_at: new Date(), slug: 'qyve-jersey', previous_price: 100, image_cover: '/jersey_pic.jpg', colors: ['blue'] }
+        ];
+        setProducts(demoProducts);
       }
     };
 
