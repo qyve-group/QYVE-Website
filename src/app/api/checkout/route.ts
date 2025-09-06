@@ -52,6 +52,15 @@ export async function POST(req: Request) {
       discountCode,
     } = body; // Get items from the request
 
+    // Validate cart items
+    if (!cartItems || cartItems.length === 0) {
+      console.error('❌ Cart is empty');
+      return NextResponse.json(
+        { error: 'Cart is empty. Please add items to your cart before checkout.' },
+        { status: 400 }
+      );
+    }
+
     // Allow guest checkout - userId can be null for guest users
     const isGuestCheckout = !userId || userId === 'guest';
     

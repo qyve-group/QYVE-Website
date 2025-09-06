@@ -202,7 +202,11 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         image: selectedImage,
       }),
     );
-    router.push('../checkout');
+    
+    // Small delay to ensure Redux state is updated before navigation
+    setTimeout(() => {
+      router.push('../checkout');
+    }, 100);
   };
 
   const handleSelectSize = ({
