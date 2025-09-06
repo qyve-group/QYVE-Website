@@ -6,9 +6,16 @@ import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 // import { supabase } from '@/libs/supabaseClient';
 import { notifyTelegram } from '@/libs/telegram';
+import { sendPaymentConfirmationEmail } from '@/lib/email';
 // import { subtle } from 'crypto';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+// Use test keys in Replit (development), production keys in GitHub/Vercel
+const isReplit = !!process.env.REPLIT_DEV_DOMAIN;
+const stripeSecretKey = isReplit 
+  ? process.env.STRIPE_TEST_SECRET_KEY || process.env.STRIPE_SECRET_KEY
+  : process.env.STRIPE_SECRET_KEY;
+
+const stripe = new Stripe(stripeSecretKey!, {
   apiVersion: '2025-06-30.basil',
 });
 
@@ -51,10 +58,14 @@ export async function POST(req: Request) {
 
     // console.log('📩 Raw body received:', rawBody);
 
+    const webhookSecret = isReplit 
+      ? process.env.STRIPE_TEST_WEBHOOK_SECRET || process.env.STRIPE_WEBHOOK_SECRET
+      : process.env.STRIPE_WEBHOOK_SECRET;
+      
     event = stripe.webhooks.constructEvent(
       rawBody,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET! as string,
+      webhookSecret! as string,
     );
     // event = stripe.webhooks.constructEvent(rawBodyString, sig, process.env.STRIPE_WEBHOOK_SECRET!);
     // // console.log*('✅ Event parsed:', event);
@@ -431,6 +442,31 @@ export async function POST(req: Request) {
     } catch (telegramError) {
       console.error('❌ Telegram notification failed (non-critical):', telegramError);
       // Don't fail the webhook for notification errors
+    }
+
+    // Send email receipt (non-blocking)
+    try {
+      const customerEmail = contactInfo.email;
+      const customerName = `${orderAddress.fname} ${orderAddress.lname}`;
+      
+      // Format order items for email
+      const orderItemsText = cartItems.map((item: any) => 
+        `${item.name} (${item.product_size}) x${item.quantity} - RM${item.price}`
+      ).join('\n');
+      
+      if (customerEmail) {
+        await sendPaymentConfirmationEmail(
+          customerEmail,
+          customerName,
+          orderId,
+          orderItemsText,
+          session.amount_total ? (session.amount_total / 100).toString() : '0'
+        );
+        console.log('✅ Email receipt sent to:', customerEmail);
+      }
+    } catch (emailError) {
+      console.error('❌ Email receipt failed (non-critical):', emailError);
+      // Don't fail the webhook for email errors
     }
     
     console.log('✅ Webhook processing completed successfully for order:', orderId);
