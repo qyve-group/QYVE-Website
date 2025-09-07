@@ -9,6 +9,7 @@ export async function GET(request: Request) {
 
   console.log('Auth callback - Code:', code ? 'present' : 'missing');
   console.log('Auth callback - Redirect:', redirect);
+  console.log('Auth callback - Origin:', origin);
 
   if (code) {
     try {
@@ -18,8 +19,16 @@ export async function GET(request: Request) {
       if (!error && data.session) {
         console.log('Auth callback - Session created successfully');
 
-        // Use origin for Replit environment
-        const redirectUrl = `${origin}${redirect}`;
+        // Fix: Handle both relative paths and full URLs
+        let redirectUrl: string;
+        if (redirect.startsWith('http://') || redirect.startsWith('https://')) {
+          // If redirect is already a full URL, use it as-is
+          redirectUrl = redirect;
+        } else {
+          // If redirect is a path, combine with origin
+          redirectUrl = `${origin}${redirect.startsWith('/') ? '' : '/'}${redirect}`;
+        }
+        
         console.log('Auth callback - Redirecting to:', redirectUrl);
 
         return NextResponse.redirect(redirectUrl);
