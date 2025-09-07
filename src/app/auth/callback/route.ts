@@ -28,7 +28,6 @@ export async function GET(request: Request) {
           // If redirect is a path, combine with origin
           redirectUrl = `${origin}${redirect.startsWith('/') ? '' : '/'}${redirect}`;
         }
-        
         console.log('Auth callback - Redirecting to:', redirectUrl);
 
         return NextResponse.redirect(redirectUrl);
