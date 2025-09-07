@@ -34,7 +34,9 @@ const LoginForm = () => {
           setErrMessage('Authentication was cancelled or incomplete.');
           break;
         case 'implicit_flow_detected':
-          setErrMessage('OAuth configuration error: implicit flow detected. Please check Google Cloud Console settings.');
+          setErrMessage(
+            'OAuth configuration error: implicit flow detected. Please check Google Cloud Console settings.',
+          );
           break;
         default:
           setErrMessage('Authentication error occurred.');
