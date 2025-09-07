@@ -542,27 +542,6 @@ export async function POST(req: Request) {
 
 
 
-
-      
-      const email = new SendSmtpEmail();
-      email.templateId = 4; // 👈 replace with your Brevo template ID
-      email.to = [{ email: customerEmail as string }];
-      email.params = {
-        subject: "Your Order Confirmation",
-        // parameter: "Thanks for your order!", // maps to {{params.parameter}} in template
-        orderId: orderId,
-        customerName: customerName,
-        customerAddress: `${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}`,
-        // amount: session.amount_total ? session.amount_total / 100 : "N/A",
-      };
-
-      try {
-        await brevoClient.sendTransacEmail(email);
-        console.log("✅ Order confirmation email sent to:", session.customer_email);
-      } catch (error) {
-        console.error("❌ Failed to send Brevo email:", error);
-      }
-
       // const emailSent = await sendPaymentConfirmationEmail({
       //   email: customerEmail,
       //   customerName,
@@ -596,18 +575,55 @@ export async function POST(req: Request) {
     //   } else {
     //     console.log('⚠️ No customer email found, skipping email send');
     //   }
-    // } catch (emailError) {
-    //   console.error('❌ Email receipt failed (non-critical):', emailError);
-    //   console.error('❌ Email error stack:', (emailError as Error).stack);
-    //   // Don't fail the webhook for email errors
-    // }
+      const email = new SendSmtpEmail();
+      email.templateId = 4; // 👈 replace with your Brevo template ID
+      email.to = [{ email: customerEmail as string }];
+      email.params = {
+        subject: "Your Order Confirmation",
+        // parameter: "Thanks for your order!", // maps to {{params.parameter}} in template
+        orderId: orderId,
+        customerName: customerName,
+        customerAddress: `${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}`,
+        // amount: session.amount_total ? session.amount_total / 100 : "N/A",
+      };
+
+      try {
+        await brevoClient.sendTransacEmail(email);
+        console.log("✅ Order confirmation email sent to:", session.customer_email);
+      } catch (error) {
+        console.error("❌ Failed to send Brevo email:", error);
+      } const email = new SendSmtpEmail();
+      email.templateId = 4; // 👈 replace with your Brevo template ID
+      email.to = [{ email: customerEmail as string }];
+      email.params = {
+        subject: "Your Order Confirmation",
+        // parameter: "Thanks for your order!", // maps to {{params.parameter}} in template
+        orderId: orderId,
+        customerName: customerName,
+        customerAddress: `${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}`,
+        // amount: session.amount_total ? session.amount_total / 100 : "N/A",
+      };
+
+      try {
+        await brevoClient.sendTransacEmail(email);
+        console.log("✅ Order confirmation email sent to:", session.customer_email);
+      } catch (error) {
+        console.error("❌ Failed to send Brevo email:", error);
+      }
+
+
+      
+    } catch (emailError) {
+      console.error('❌ Email receipt failed (non-critical):', emailError);
+      console.error('❌ Email error stack:', (emailError as Error).stack);
+      // Don't fail the webhook for email errors
+    }
 
     console.log(
       '✅ Webhook processing completed successfully for order:',
       orderId,
     );
   }
-    
 
   return NextResponse.json({ received: true });
 }
