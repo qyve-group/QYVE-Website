@@ -76,7 +76,7 @@ const StreamlinedCheckout = ({
         isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length > 0;
         break;
       case 'phone':
-        isValid = value.length >= 10 && /^[\d\+\-\s\(\)]*$/.test(value);
+        isValid = value.length >= 10 && /^[\d+\-\s()]*$/.test(value);
         break;
       default:
         isValid = value.trim().length > 0;

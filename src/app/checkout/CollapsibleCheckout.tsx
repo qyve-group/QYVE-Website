@@ -91,7 +91,7 @@ const CollapsibleCheckout = ({
         isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length > 0;
         break;
       case 'phone':
-        isValid = value.length >= 10 && /^[\d\+\-\s\(\)]*$/.test(value);
+        isValid = value.length >= 10 && /^[\d+\-\s()]*$/.test(value);
         break;
       default:
         isValid = value.trim().length > 0;
@@ -250,6 +250,16 @@ const CollapsibleCheckout = ({
               onClick={() =>
                 setActiveSection(activeSection === 'contact' ? null : 'contact')
               }
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setActiveSection(
+                    activeSection === 'contact' ? null : 'contact',
+                  );
+                }
+              }}
+              role="button"
+              tabIndex={0}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -360,6 +370,16 @@ const CollapsibleCheckout = ({
                   activeSection === 'shipping' ? null : 'shipping',
                 )
               }
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setActiveSection(
+                    activeSection === 'shipping' ? null : 'shipping',
+                  );
+                }
+              }}
+              role="button"
+              tabIndex={0}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">

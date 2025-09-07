@@ -296,11 +296,11 @@ export async function POST(req: Request) {
 
     // Execute all stock updates and order item insertions in parallel
     try {
-      const stockResults = await Promise.allSettled(stockUpdatePromises);
+      const stockUpdateResults = await Promise.allSettled(stockUpdatePromises);
       const orderItemResults = await Promise.allSettled(orderItemPromises);
 
       // Log any failures
-      stockResults.forEach((result, index) => {
+      stockUpdateResults.forEach((result, index) => {
         if (result.status === 'rejected') {
           console.error(`Stock update ${index} failed:`, result.reason);
         }

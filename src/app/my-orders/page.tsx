@@ -188,6 +188,7 @@ const RefundButton = ({
       {isRefundable() ? (
         <div>
           <button
+            type="button"
             onClick={handleRefund}
             className="rounded-lg bg-red-500 px-4 py-2 text-sm text-white transition-colors hover:bg-red-600"
           >

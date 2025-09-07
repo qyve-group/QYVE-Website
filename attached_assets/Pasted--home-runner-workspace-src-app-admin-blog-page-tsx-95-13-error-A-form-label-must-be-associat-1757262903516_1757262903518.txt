@@ -1,0 +1,355 @@
+
+/home/runner/workspace/src/app/admin/blog/page.tsx
+   95:13  error  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  113:13  error  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  134:11  error  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  154:11  error  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  175:13  error  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  194:13  error  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+  226:11  error  A form label must be associated with a control  jsx-a11y/label-has-associated-control
+
+/home/runner/workspace/src/app/api/check-voucher/route.ts
+   7:3  warning  Unexpected console statement  no-console
+  13:3  warning  Unexpected console statement  no-console
+  22:3  warning  Unexpected console statement  no-console
+  37:5  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/app/api/checkout/route.ts
+   44:5   warning  Unexpected console statement  no-console
+   57:7   warning  Unexpected console statement  no-console
+   71:7   warning  Unexpected console statement  no-console
+   73:7   warning  Unexpected console statement  no-console
+  159:9   warning  Unexpected console statement  no-console
+  160:9   warning  Unexpected console statement  no-console
+  166:11  warning  Unexpected console statement  no-console
+  174:9   warning  Unexpected console statement  no-console
+  225:5   warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/app/api/shipment/route.ts
+  63:5  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/app/api/stripe-success/route.ts
+  37:5  warning  Unexpected console statement  no-console
+  38:5  warning  Unexpected console statement  no-console
+  57:5  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/app/api/telegram-webhook/route.ts
+   8:5  warning  Unexpected console statement  no-console
+  12:5  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/app/api/webhook/route.ts
+   34:3   warning  Unexpected console statement                                                 no-console
+   35:3   warning  Unexpected console statement                                                 no-console
+   36:3   warning  Unexpected console statement                                                 no-console
+   41:5   warning  Unexpected console statement                                                 no-console
+   57:5   warning  Unexpected console statement                                                 no-console
+   61:5   warning  Unexpected console statement                                                 no-console
+   62:5   warning  Unexpected console statement                                                 no-console
+   63:5   warning  Unexpected console statement                                                 no-console
+   67:7   warning  Unexpected console statement                                                 no-console
+   78:5   warning  Unexpected console statement                                                 no-console
+   79:5   warning  Unexpected console statement                                                 no-console
+   83:7   warning  Unexpected console statement                                                 no-console
+   85:7   warning  Unexpected console statement                                                 no-console
+   95:5   warning  Unexpected console statement                                                 no-console
+  101:5   warning  Unexpected console statement                                                 no-console
+  116:7   warning  Unexpected console statement                                                 no-console
+  140:9   warning  Unexpected console statement                                                 no-console
+  142:9   warning  Unexpected console statement                                                 no-console
+  182:5   warning  Unexpected console statement                                                 no-console
+  193:5   warning  Unexpected console statement                                                 no-console
+  218:9   warning  Unexpected console statement                                                 no-console
+  224:7   warning  Unexpected console statement                                                 no-console
+  226:7   warning  Unexpected console statement                                                 no-console
+  254:11  warning  Unexpected console statement                                                 no-console
+  263:11  warning  Unexpected console statement                                                 no-console
+  269:9   warning  Unexpected console statement                                                 no-console
+  293:9   warning  Unexpected console statement                                                 no-console
+  299:13  error    'stockResults' is already declared in the upper scope on line 247 column 11  @typescript-eslint/no-shadow
+  305:11  warning  Unexpected console statement                                                 no-console
+  311:11  warning  Unexpected console statement                                                 no-console
+  315:7   warning  Unexpected console statement                                                 no-console
+  317:7   warning  Unexpected console statement                                                 no-console
+  342:9   warning  Unexpected console statement                                                 no-console
+  344:9   warning  Unexpected console statement                                                 no-console
+  348:9   warning  Unexpected console statement                                                 no-console
+  353:9   warning  Unexpected console statement                                                 no-console
+  356:7   warning  Unexpected console statement                                                 no-console
+  364:9   warning  Unexpected console statement                                                 no-console
+  371:11  warning  Unexpected console statement                                                 no-console
+  373:11  warning  Unexpected console statement                                                 no-console
+  376:9   warning  Unexpected console statement                                                 no-console
+  379:7   warning  Unexpected console statement                                                 no-console
+  491:5   warning  Unexpected console statement                                                 no-console
+  492:5   warning  Unexpected console statement                                                 no-console
+  493:5   warning  Unexpected console statement                                                 no-console
+  495:7   warning  Unexpected console statement                                                 no-console
+  497:7   warning  Unexpected console statement                                                 no-console
+  499:7   warning  Unexpected console statement                                                 no-console
+  503:7   warning  Unexpected console statement                                                 no-console
+  508:5   warning  Unexpected console statement                                                 no-console
+  509:5   warning  Unexpected console statement                                                 no-console
+  510:5   warning  Unexpected console statement                                                 no-console
+  515:7   warning  Unexpected console statement                                                 no-console
+  516:7   warning  Unexpected console statement                                                 no-console
+  517:7   warning  Unexpected console statement                                                 no-console
+  523:9   warning  Unexpected console statement                                                 no-console
+  532:9   warning  Unexpected console statement                                                 no-console
+  546:7   warning  Unexpected console statement                                                 no-console
+  562:7   warning  Unexpected console statement                                                 no-console
+  569:7   warning  Unexpected console statement                                                 no-console
+  570:7   warning  Unexpected console statement                                                 no-console
+  574:5   warning  Unexpected console statement                                                 no-console
+
+/home/runner/workspace/src/app/auth/callback/route.ts
+  10:3  warning  Unexpected console statement  no-console
+  11:3  warning  Unexpected console statement  no-console
+  19:9  warning  Unexpected console statement  no-console
+  23:9  warning  Unexpected console statement  no-console
+  27:7  warning  Unexpected console statement  no-console
+  30:7  warning  Unexpected console statement  no-console
+  35:3  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/app/blog/[slug]/page.tsx
+   33:7   warning  Unexpected console statement                        no-console
+   39:5   warning  Unexpected console statement                        no-console
+  117:11  warning  Dangerous property 'dangerouslySetInnerHTML' found  react/no-danger
+
+/home/runner/workspace/src/app/blog/page.tsx
+  27:7  warning  Unexpected console statement  no-console
+  33:5  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/app/checkout/CollapsibleCheckout.tsx
+   94:46  error    Unnecessary escape character: \+                                                                                                                                                                                                                                no-useless-escape
+   94:52  error    Unnecessary escape character: \(                                                                                                                                                                                                                                no-useless-escape
+   94:54  error    Unnecessary escape character: \)                                                                                                                                                                                                                                no-useless-escape
+  177:5   warning  Unexpected console statement                                                                                                                                                                                                                                    no-console
+  205:7   warning  Unexpected console statement                                                                                                                                                                                                                                    no-console
+  211:7   warning  Unexpected console statement                                                                                                                                                                                                                                    no-console
+  212:7   warning  Unexpected alert                                                                                                                                                                                                                                                no-alert
+  246:13  error    Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                                                                                  jsx-a11y/click-events-have-key-events
+  246:13  error    Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element                                                               jsx-a11y/no-static-element-interactions
+  354:13  error    Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                                                                                  jsx-a11y/click-events-have-key-events
+  354:13  error    Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element                                                               jsx-a11y/no-static-element-interactions
+  603:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/home/runner/workspace/src/app/checkout/StreamlinedCheckout.tsx
+   79:46  error    Unnecessary escape character: \+  no-useless-escape
+   79:52  error    Unnecessary escape character: \(  no-useless-escape
+   79:54  error    Unnecessary escape character: \)  no-useless-escape
+  147:5   warning  Unexpected console statement      no-console
+
+/home/runner/workspace/src/app/checkout/page.tsx
+  115:3   warning  Unexpected console statement                   no-console
+  144:5   warning  Unexpected console statement                   no-console
+  157:7   warning  Unexpected console statement                   no-console
+  161:7   warning  Unexpected console statement                   no-console
+  169:9   warning  Unexpected console statement                   no-console
+  170:9   warning  Unexpected console statement                   no-console
+  180:11  warning  Unexpected console statement                   no-console
+  181:11  warning  Unexpected console statement                   no-console
+  185:11  warning  Unexpected console statement                   no-console
+  199:9   warning  Unexpected console statement                   no-console
+  229:9   warning  Unexpected console statement                   no-console
+  237:9   warning  Unexpected console statement                   no-console
+  240:11  warning  Unexpected console statement                   no-console
+  242:11  warning  Unexpected console statement                   no-console
+  262:9   warning  Unexpected console statement                   no-console
+  275:9   warning  Unexpected console statement                   no-console
+  276:9   warning  Unexpected console statement                   no-console
+  325:9   warning  Unexpected console statement                   no-console
+  354:5   warning  Unexpected console statement                   no-console
+  467:10  error    Do not nest ternary expressions                no-nested-ternary
+  476:13  error    Missing an explicit type attribute for button  react/button-has-type
+
+/home/runner/workspace/src/app/failed/page.tsx
+  26:5  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/app/home/MainBanner.tsx
+  18:12  warning  Classname 'bg-opacity-50' should be replaced by an opacity suffix (eg. '/50')                 tailwindcss/migration-from-tailwind-2
+  22:9   warning  The arbitrary class 'w-[50%]' could be replaced by 'w-1/2' or 'w-2/4' or 'w-3/6' or 'w-6/12'  tailwindcss/no-unnecessary-arbitrary-value
+
+/home/runner/workspace/src/app/home/SectionProducts.tsx
+   42:9   warning  Unexpected console statement  no-console
+   95:11  warning  Unexpected console statement  no-console
+  102:9   warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/app/home/Values.tsx
+  60:15  warning  Classname 'bg-opacity-30' should be replaced by an opacity suffix (eg. '/30')              tailwindcss/migration-from-tailwind-2
+  60:15  warning  Classname 'group-hover:bg-opacity-70' should be replaced by an opacity suffix (eg. '/70')  tailwindcss/migration-from-tailwind-2
+
+/home/runner/workspace/src/app/my-orders/page.tsx
+  166:7   warning  Unexpected alert                                                 no-alert
+  188:8   error    Do not nest ternary expressions                                  no-nested-ternary
+  190:11  error    Missing an explicit type attribute for button                    react/button-has-type
+  239:9   warning  Unexpected console statement                                     no-console
+  260:9   warning  Unexpected console statement                                     no-console
+  274:39  error    Unexpected `await` inside a loop                                 no-await-in-loop
+  332:33  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+/home/runner/workspace/src/app/products/[productSlug]/SectionProductHeader.tsx
+  110:3   warning  Unexpected console statement                                                                                                                                                                                                                                               no-console
+  125:6   warning  React Hook useEffect has a missing dependency: 'product_shots'. Either include it or remove the dependency array. If 'setShots' needs the current value of 'product_shots', you can also switch to useReducer instead of useState and read 'product_shots' in the reducer  react-hooks/exhaustive-deps
+  133:7   warning  Unexpected alert                                                                                                                                                                                                                                                           no-alert
+  171:7   warning  Unexpected alert                                                                                                                                                                                                                                                           no-alert
+  287:27  warning  Unexpected console statement                                                                                                                                                                                                                                               no-console
+  288:27  warning  Unexpected console statement                                                                                                                                                                                                                                               no-console
+  319:23  error    A form label must be associated with a control                                                                                                                                                                                                                             jsx-a11y/label-has-associated-control
+  332:33  error    'name' is already declared in the upper scope on line 60 column 3                                                                                                                                                                                                          @typescript-eslint/no-shadow
+  357:23  error    A form label must be associated with a control                                                                                                                                                                                                                             jsx-a11y/label-has-associated-control
+  372:33  error    'name' is already declared in the upper scope on line 60 column 3                                                                                                                                                                                                          @typescript-eslint/no-shadow
+
+/home/runner/workspace/src/app/products/[productSlug]/page.tsx
+   30:3   warning  Unexpected console statement                        no-console
+   42:7   warning  Unexpected console statement                        no-console
+   47:14  error    'createDemoProduct' was used before it was defined  @typescript-eslint/no-use-before-define
+   52:5   warning  Unexpected console statement                        no-console
+   54:12  error    'createDemoProduct' was used before it was defined  @typescript-eslint/no-use-before-define
+  132:3   warning  Unexpected console statement                        no-console
+
+/home/runner/workspace/src/app/shop/ShopHeader.tsx
+  118:20  warning  Classname 'bg-opacity-50' should be replaced by an opacity suffix (eg. '/50')   tailwindcss/migration-from-tailwind-2
+  255:11  warning  The arbitrary class 'left-[50%]' could be replaced by 'left-1/2' or 'left-2/4'  tailwindcss/no-unnecessary-arbitrary-value
+
+/home/runner/workspace/src/app/shop/ShopProducts.tsx
+   37:9   warning  Unexpected console statement  no-console
+   88:11  warning  Unexpected console statement  no-console
+  136:9   warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/components/CartSideBar.tsx
+  50:3  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/components/CheckoutButton.tsx
+   59:7   warning  Unexpected console statement  no-console
+   75:5   warning  Unexpected console statement  no-console
+   76:5   warning  Unexpected console statement  no-console
+   77:5   warning  Unexpected console statement  no-console
+   78:5   warning  Unexpected console statement  no-console
+   79:5   warning  Unexpected console statement  no-console
+   80:5   warning  Unexpected console statement  no-console
+   84:7   warning  Unexpected console statement  no-console
+   96:7   warning  Unexpected console statement  no-console
+  121:7   warning  Unexpected console statement  no-console
+  124:9   warning  Unexpected console statement  no-console
+  133:11  warning  Unexpected console statement  no-console
+  137:11  warning  Unexpected alert              no-alert
+  142:9   warning  Unexpected console statement  no-console
+  145:7   warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/components/GoogleOneTap.tsx
+  77:6  warning  React Hook useEffect has a missing dependency: 'router'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/home/runner/workspace/src/components/Header/MainNav.tsx
+  32:3  warning  Unexpected console statement                          no-console
+  34:5  warning  Unexpected console statement                          no-console
+  62:9  error    Unexpected if as the only statement in an else block  no-lonely-if
+  87:7  warning  Unexpected console statement                          no-console
+
+/home/runner/workspace/src/components/ImageShowCase.tsx
+  17:3  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/components/LoginForm.tsx
+  126:9  warning  Unexpected console statement  no-console
+  133:7  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/components/SignUpForm.tsx
+  31:7  warning  Unexpected alert              no-alert
+  34:7  warning  Unexpected console statement  no-console
+  44:9  warning  Unexpected alert              no-alert
+  48:9  warning  Unexpected alert              no-alert
+  50:7  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/lib/email.ts
+  40:26  error    'generateEmailHTML' was used before it was defined  @typescript-eslint/no-use-before-define
+  58:5   warning  Unexpected console statement                        no-console
+  61:5   warning  Unexpected console statement                        no-console
+  65:5   warning  Unexpected console statement                        no-console
+
+/home/runner/workspace/src/libs/telegram.ts
+   11:3  warning  Unexpected console statement  no-console
+   12:3  warning  Unexpected console statement  no-console
+   13:3  warning  Unexpected console statement  no-console
+   18:5  warning  Unexpected console statement  no-console
+   20:7  warning  Unexpected console statement  no-console
+   43:9  warning  Unexpected console statement  no-console
+  102:5  warning  Unexpected console statement  no-console
+  104:5  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/services/cartProvider.tsx
+  14:3  warning  Unexpected console statement                                                                                  no-console
+  23:5  warning  Unexpected console statement                                                                                  no-console
+  24:5  warning  Unexpected console statement                                                                                  no-console
+  29:7  warning  Unexpected console statement                                                                                  no-console
+  31:6  warning  React Hook useEffect has a missing dependency: 'auth.user'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/home/runner/workspace/src/services/cartService.ts
+   77:5  warning  Unexpected console statement  no-console
+   86:5  warning  Unexpected console statement  no-console
+   93:5  warning  Unexpected console statement  no-console
+  128:5  warning  Unexpected console statement  no-console
+  129:5  warning  Unexpected console statement  no-console
+  149:7  warning  Unexpected console statement  no-console
+  152:5  warning  Unexpected console statement  no-console
+  158:7  warning  Unexpected console statement  no-console
+  164:7  warning  Unexpected console statement  no-console
+  167:5  warning  Unexpected console statement  no-console
+  178:3  warning  Unexpected console statement  no-console
+  188:5  warning  Unexpected console statement  no-console
+  192:3  warning  Unexpected console statement  no-console
+  223:5  warning  Unexpected console statement  no-console
+  224:5  warning  Unexpected console statement  no-console
+  247:5  warning  Unexpected console statement  no-console
+  323:9  warning  Unexpected console statement  no-console
+  347:9  warning  Unexpected console statement  no-console
+  368:5  warning  Unexpected console statement  no-console
+  397:5  warning  Unexpected console statement  no-console
+  399:5  warning  Unexpected console statement  no-console
+  446:5  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/shared/Footer/Footer.tsx
+  17:3  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/store/authListener.ts
+  13:3   warning  Unexpected console statement  no-console
+  22:5   warning  Unexpected console statement  no-console
+  38:9   warning  Unexpected console statement  no-console
+  44:11  warning  Unexpected console statement  no-console
+  54:11  warning  Unexpected console statement  no-console
+  58:9   warning  Unexpected console statement  no-console
+  63:9   warning  Unexpected console statement  no-console
+  64:9   warning  Unexpected console statement  no-console
+  79:15  warning  Unexpected console statement  no-console
+  81:15  warning  Unexpected console statement  no-console
+  86:11  warning  Unexpected console statement  no-console
+  97:5   warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/store/authSlice.ts
+  37:7  warning  Unexpected console statement  no-console
+  52:3  warning  Unexpected console statement  no-console
+  55:3  warning  Unexpected console statement  no-console
+  60:7  warning  Unexpected console statement  no-console
+  64:5  warning  Unexpected console statement  no-console
+  65:5  warning  Unexpected console statement  no-console
+  67:5  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/store/cartSlice.ts
+  55:7  warning  Unexpected console statement  no-console
+  77:7  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/utils/cart.ts
+  30:3  warning  Unexpected console statement  no-console
+  32:3  warning  Unexpected console statement  no-console
+  36:7  warning  Unexpected console statement  no-console
+  43:7  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/utils/orderStatusMapper.ts
+  153:5  warning  Unexpected console statement  no-console
+
+/home/runner/workspace/src/utils/updateOrderDemo.ts
+  11:5  warning  Unexpected console statement  no-console
+  15:5  warning  Unexpected console statement  no-console
+  19:5  warning  Unexpected console statement  no-console
+  23:5  warning  Unexpected console statement  no-console
+  27:5  warning  Unexpected console statement  no-console
+  29:5  warning  Unexpected console statement  no-console
+  31:5  warning  Unexpected console statement  no-console
