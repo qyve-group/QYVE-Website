@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.24.1",
+    "@getbrevo/brevo": "^3.0.1",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.3.1",

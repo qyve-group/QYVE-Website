@@ -8,6 +8,8 @@ import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 import { notifyTelegram } from '@/libs/telegram';
 import { sendPaymentConfirmationEmail } from '@/lib/email';
 // import { subtle } from 'crypto';
+import { brevoClient, SendSmtpEmail } from "@/libs/brevo";
+
 
 // Use test keys in Replit (development), production keys in GitHub/Vercel
 const isReplit = !!process.env.REPLIT_DEV_DOMAIN;
@@ -537,6 +539,30 @@ export async function POST(req: Request) {
 
       console.log('📨 Formatted order items text:', orderItemsText);
 
+
+
+
+
+      
+      const email = new SendSmtpEmail();
+      email.templateId = 4; // 👈 replace with your Brevo template ID
+      email.to = [{ email: customerEmail as string }];
+      email.params = {
+        subject: "Your Order Confirmation",
+        // parameter: "Thanks for your order!", // maps to {{params.parameter}} in template
+        orderId: orderId,
+        customerName: customerName,
+        customerAddress: `${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}`,
+        // amount: session.amount_total ? session.amount_total / 100 : "N/A",
+      };
+
+      try {
+        await brevoClient.sendTransacEmail(email);
+        console.log("✅ Order confirmation email sent to:", session.customer_email);
+      } catch (error) {
+        console.error("❌ Failed to send Brevo email:", error);
+      }
+
       // const emailSent = await sendPaymentConfirmationEmail({
       //   email: customerEmail,
       //   customerName,
@@ -554,33 +580,34 @@ export async function POST(req: Request) {
       //   console.error('❌ Failed to send email to:', customerEmail);
       // }
 
-      if (customerEmail) {
-        console.log('📨 Calling sendPaymentConfirmationEmail function...');
-        await sendPaymentConfirmationEmail({
-          email: customerEmail,
-          customerName: customerName,
-          amount: session.amount_total || 0,
-          currency: 'myr',
-          paymentIntentId: session.payment_intent as string,
-          sessionId: session.id,
-          orderItems: orderItemsText,
-          orderId: orderId,
-        });
-        console.log('✅ Email receipt sent successfully to:', customerEmail);
-      } else {
-        console.log('⚠️ No customer email found, skipping email send');
-      }
-    } catch (emailError) {
-      console.error('❌ Email receipt failed (non-critical):', emailError);
-      console.error('❌ Email error stack:', (emailError as Error).stack);
-      // Don't fail the webhook for email errors
-    }
+    //   if (customerEmail) {
+    //     console.log('📨 Calling sendPaymentConfirmationEmail function...');
+    //     await sendPaymentConfirmationEmail({
+    //       email: customerEmail,
+    //       customerName: customerName,
+    //       amount: session.amount_total || 0,
+    //       currency: 'myr',
+    //       paymentIntentId: session.payment_intent as string,
+    //       sessionId: session.id,
+    //       orderItems: orderItemsText,
+    //       orderId: orderId,
+    //     });
+    //     console.log('✅ Email receipt sent successfully to:', customerEmail);
+    //   } else {
+    //     console.log('⚠️ No customer email found, skipping email send');
+    //   }
+    // } catch (emailError) {
+    //   console.error('❌ Email receipt failed (non-critical):', emailError);
+    //   console.error('❌ Email error stack:', (emailError as Error).stack);
+    //   // Don't fail the webhook for email errors
+    // }
 
     console.log(
       '✅ Webhook processing completed successfully for order:',
       orderId,
     );
   }
+    
 
   return NextResponse.json({ received: true });
 }
