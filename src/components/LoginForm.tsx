@@ -33,6 +33,9 @@ const LoginForm = () => {
         case 'no_code':
           setErrMessage('Authentication was cancelled or incomplete.');
           break;
+        case 'implicit_flow_detected':
+          setErrMessage('OAuth configuration error: implicit flow detected. Please check Google Cloud Console settings.');
+          break;
         default:
           setErrMessage('Authentication error occurred.');
       }
@@ -133,6 +136,7 @@ const LoginForm = () => {
           queryParams: {
             prompt: 'select_account',
             access_type: 'offline',
+            response_type: 'code', // Force authorization code flow
           },
         },
       });

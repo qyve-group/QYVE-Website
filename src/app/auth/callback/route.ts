@@ -3,13 +3,23 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/libs/supabaseServer'; // your Supabase helper
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams, origin, hash } = new URL(request.url);
   const code = searchParams.get('code');
   const redirect = searchParams.get('redirect') ?? '/home';
 
+  console.log('Auth callback - Full URL:', request.url);
   console.log('Auth callback - Code:', code ? 'present' : 'missing');
+  console.log('Auth callback - Hash:', hash);
+  console.log('Auth callback - All search params:', Object.fromEntries(searchParams));
   console.log('Auth callback - Redirect:', redirect);
   console.log('Auth callback - Origin:', origin);
+
+  // Check for access_token in hash (implicit flow)
+  if (hash && hash.includes('access_token')) {
+    console.log('⚠️ Detected implicit flow (access_token in hash) - OAuth misconfigured!');
+    console.log('Hash:', hash);
+    return NextResponse.redirect(`${origin}/login?error=implicit_flow_detected`);
+  }
 
   if (code) {
     try {
