@@ -59,6 +59,7 @@ const MainNav = () => {
         }, 300); // 300ms delay
       } else {
         // Clear timeout if mouse comes back into area
+        /* eslint-disable no-lonely-if */
         if (timeoutId) {
           clearTimeout(timeoutId);
         }

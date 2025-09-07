@@ -37,6 +37,7 @@ export async function sendPaymentConfirmationEmail({
     const fromEmail = process.env.SMTP_USER;
     const companyName = process.env.COMPANY_NAME || 'QYVE';
 
+    /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
     const emailContent = generateEmailHTML({
       customerName,
       amount,

@@ -321,33 +321,35 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                         className="text-gray-700 mb-2 block text-sm font-medium"
                       >
                         Player Name
+                        <input
+                          type="text"
+                          id="player-name"
+                          className="border-gray-300 placeholder:text-gray-400 w-full rounded-lg border px-4 py-3 transition-colors focus:border-primary focus:ring-2 focus:ring-primary"
+                          placeholder="Enter player name"
+                          maxLength={15}
+                          onChange={(e) => {
+                            const nameTemp = e.target.value.toUpperCase();
+                            const number =
+                              (
+                                document.getElementById(
+                                  'player-number',
+                                ) as HTMLInputElement
+                              )?.value || '';
+                            setCustom(
+                              nameTemp && number
+                                ? `${nameTemp} - ${number}`
+                                : nameTemp || number,
+                            );
+                            // Update preview
+                            const namePreview =
+                              document.getElementById('name-preview');
+                            if (namePreview)
+                              namePreview.textContent =
+                                nameTemp || 'PLAYER NAME';
+                          }}
+                        />
                       </label>
-                      <input
-                        type="text"
-                        id="player-name"
-                        className="border-gray-300 placeholder:text-gray-400 w-full rounded-lg border px-4 py-3 transition-colors focus:border-primary focus:ring-2 focus:ring-primary"
-                        placeholder="Enter player name"
-                        maxLength={15}
-                        onChange={(e) => {
-                          const name = e.target.value.toUpperCase();
-                          const number =
-                            (
-                              document.getElementById(
-                                'player-number',
-                              ) as HTMLInputElement
-                            )?.value || '';
-                          setCustom(
-                            name && number
-                              ? `${name} - ${number}`
-                              : name || number,
-                          );
-                          // Update preview
-                          const namePreview =
-                            document.getElementById('name-preview');
-                          if (namePreview)
-                            namePreview.textContent = name || 'PLAYER NAME';
-                        }}
-                      />
+
                       <p className="text-gray-500 mt-1 text-xs">
                         Max 15 characters
                       </p>
@@ -359,34 +361,35 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                         className="text-gray-700 mb-2 block text-sm font-medium"
                       >
                         Jersey Number
+                        <input
+                          type="number"
+                          id="player-number"
+                          className="border-gray-300 placeholder:text-gray-400 w-full rounded-lg border px-4 py-3 transition-colors focus:border-primary focus:ring-2 focus:ring-primary"
+                          placeholder="Enter number (0-99)"
+                          min="0"
+                          max="99"
+                          onChange={(e) => {
+                            const number = e.target.value;
+                            const nameTempTwo =
+                              (
+                                document.getElementById(
+                                  'player-name',
+                                ) as HTMLInputElement
+                              )?.value.toUpperCase() || '';
+                            setCustom(
+                              nameTempTwo && number
+                                ? `${nameTempTwo} - ${number}`
+                                : nameTempTwo || number,
+                            );
+                            // Update preview
+                            const numberPreview =
+                              document.getElementById('number-preview');
+                            if (numberPreview)
+                              numberPreview.textContent = number || '00';
+                          }}
+                        />
                       </label>
-                      <input
-                        type="number"
-                        id="player-number"
-                        className="border-gray-300 placeholder:text-gray-400 w-full rounded-lg border px-4 py-3 transition-colors focus:border-primary focus:ring-2 focus:ring-primary"
-                        placeholder="Enter number (0-99)"
-                        min="0"
-                        max="99"
-                        onChange={(e) => {
-                          const number = e.target.value;
-                          const name =
-                            (
-                              document.getElementById(
-                                'player-name',
-                              ) as HTMLInputElement
-                            )?.value.toUpperCase() || '';
-                          setCustom(
-                            name && number
-                              ? `${name} - ${number}`
-                              : name || number,
-                          );
-                          // Update preview
-                          const numberPreview =
-                            document.getElementById('number-preview');
-                          if (numberPreview)
-                            numberPreview.textContent = number || '00';
-                        }}
-                      />
+
                       <p className="text-gray-500 mt-1 text-xs">
                         Numbers 0-99 only
                       </p>

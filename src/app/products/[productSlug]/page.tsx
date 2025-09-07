@@ -44,6 +44,7 @@ const getProductData = async (productSlug: string) => {
         productSlug,
       );
       // Return demo product data based on slug
+      /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
       return createDemoProduct(productSlug);
     }
 
@@ -51,6 +52,7 @@ const getProductData = async (productSlug: string) => {
   } catch (error) {
     console.error('Error fetching product from Supabase:', error);
     // Return demo product on any error
+    /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
     return createDemoProduct(productSlug);
   }
 };

@@ -185,6 +185,7 @@ const RefundButton = ({
 
   return (
     <div className="mt-4">
+      {/* eslint-disable no-nested-ternary */}
       {isRefundable() ? (
         <div>
           <button
@@ -272,6 +273,7 @@ export default function MyOrders() {
         }
 
         // Fetch product details
+        /* eslint-disable no-await-in-loop */
         const { data: productData } = await supabase
           .from('products_sizes')
           .select(
@@ -330,7 +332,7 @@ export default function MyOrders() {
             You have no orders
           </h2>
           <p className="text-gray-500 mt-2 text-sm">
-            Looks like you haven't placed any orders yet.
+            Looks like you haven&apos;t placed any orders yet.
           </p>
           <button
             type="button"

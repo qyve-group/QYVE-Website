@@ -463,7 +463,7 @@ const CheckoutPage = () => {
             Checkout
           </h2>
         </div>
-
+        {/* eslint-disable no-nested-ternary */}
         {isCartEmpty ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <div className="mb-6 text-6xl">🛒</div>
@@ -474,6 +474,7 @@ const CheckoutPage = () => {
               Add some items to your cart before proceeding to checkout
             </p>
             <button
+              type="button"
               onClick={() => router.push('/shop')}
               className="rounded-lg bg-primary px-8 py-3 text-white transition-colors hover:bg-primary/90"
             >

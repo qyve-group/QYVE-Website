@@ -97,16 +97,16 @@ const AdminBlogPage = () => {
               className="text-gray-700 mb-2 block text-sm font-medium"
             >
               Title *
+              <input
+                type="text"
+                id="title"
+                value={formData.title}
+                onChange={(e) => handleTitleChange(e.target.value)}
+                required
+                className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                placeholder="Enter blog post title"
+              />
             </label>
-            <input
-              type="text"
-              id="title"
-              value={formData.title}
-              onChange={(e) => handleTitleChange(e.target.value)}
-              required
-              className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="Enter blog post title"
-            />
           </div>
 
           <div>
@@ -115,18 +115,18 @@ const AdminBlogPage = () => {
               className="text-gray-700 mb-2 block text-sm font-medium"
             >
               Slug *
+              <input
+                type="text"
+                id="slug"
+                value={formData.slug}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, slug: e.target.value }))
+                }
+                required
+                className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                placeholder="url-friendly-title"
+              />
             </label>
-            <input
-              type="text"
-              id="slug"
-              value={formData.slug}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, slug: e.target.value }))
-              }
-              required
-              className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="url-friendly-title"
-            />
           </div>
         </div>
 
@@ -136,18 +136,18 @@ const AdminBlogPage = () => {
             className="text-gray-700 mb-2 block text-sm font-medium"
           >
             Excerpt *
+            <textarea
+              id="excerpt"
+              value={formData.excerpt}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, excerpt: e.target.value }))
+              }
+              required
+              rows={3}
+              className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              placeholder="Brief description of the blog post..."
+            />
           </label>
-          <textarea
-            id="excerpt"
-            value={formData.excerpt}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, excerpt: e.target.value }))
-            }
-            required
-            rows={3}
-            className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            placeholder="Brief description of the blog post..."
-          />
         </div>
 
         <div>
@@ -156,18 +156,18 @@ const AdminBlogPage = () => {
             className="text-gray-700 mb-2 block text-sm font-medium"
           >
             Content *
+            <textarea
+              id="content"
+              value={formData.content}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, content: e.target.value }))
+              }
+              required
+              rows={15}
+              className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              placeholder={`Write your blog post content here...\n\nUse markdown formatting:\n# Main heading\n## Subheading\n\nRegular text with line breaks.`}
+            />
           </label>
-          <textarea
-            id="content"
-            value={formData.content}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, content: e.target.value }))
-            }
-            required
-            rows={15}
-            className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            placeholder={`Write your blog post content here...\n\nUse markdown formatting:\n# Main heading\n## Subheading\n\nRegular text with line breaks.`}
-          />
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -177,17 +177,17 @@ const AdminBlogPage = () => {
               className="text-gray-700 mb-2 block text-sm font-medium"
             >
               Author
+              <input
+                type="text"
+                id="author"
+                value={formData.author}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, author: e.target.value }))
+                }
+                className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                placeholder="Author name"
+              />
             </label>
-            <input
-              type="text"
-              id="author"
-              value={formData.author}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, author: e.target.value }))
-              }
-              className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="Author name"
-            />
           </div>
 
           <div>
@@ -196,37 +196,40 @@ const AdminBlogPage = () => {
               className="text-gray-700 mb-2 block text-sm font-medium"
             >
               Featured Image URL
+              <input
+                type="url"
+                id="featured_image"
+                value={formData.featured_image}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    featured_image: e.target.value,
+                  }))
+                }
+                className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                placeholder="https://example.com/image.jpg"
+              />
             </label>
-            <input
-              type="url"
-              id="featured_image"
-              value={formData.featured_image}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  featured_image: e.target.value,
-                }))
-              }
-              className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="https://example.com/image.jpg"
-            />
           </div>
         </div>
 
         <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="published"
-            checked={formData.published}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, published: e.target.checked }))
-            }
-            className="border-gray-300 size-4 rounded text-primary focus:ring-primary"
-          />
           <label
             htmlFor="published"
             className="text-gray-900 ml-2 block text-sm"
           >
+            <input
+              type="checkbox"
+              id="published"
+              checked={formData.published}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  published: e.target.checked,
+                }))
+              }
+              className="border-gray-300 size-4 rounded text-primary focus:ring-primary"
+            />
             Publish immediately
           </label>
         </div>
