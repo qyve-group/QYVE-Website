@@ -111,6 +111,11 @@ const LoginForm = () => {
       const currentDomain = window.location.origin;
       const callbackUrl = `${currentDomain}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`;
 
+      console.log('🔍 Google OAuth Debug Info:');
+      console.log('Current domain:', currentDomain);
+      console.log('Callback URL:', callbackUrl);
+      console.log('Redirect to after login:', redirectTo);
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
