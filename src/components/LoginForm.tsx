@@ -108,17 +108,15 @@ const LoginForm = () => {
       setErrMessage('');
 
       // Get the current domain dynamically for Replit
-      let currentDomain = window.location.origin;
-      
+      const currentDomain = window.location.origin;
       // Force consistent domain for production (remove/add www as needed)
       if (process.env.NODE_ENV === 'production') {
         // Option A: Force www version
         // currentDomain = currentDomain.replace('https://', 'https://www.');
-        
         // Option B: Force non-www version
         // currentDomain = currentDomain.replace('https://www.', 'https://');
       }
-      
+
       const callbackUrl = `${currentDomain}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`;
 
       console.log('🔍 Google OAuth Debug Info:');
