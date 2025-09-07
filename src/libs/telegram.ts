@@ -23,8 +23,10 @@ export async function notifyTelegram(
     itemsText = cartItems
       .map((item, index) => {
         // Handle both guest checkout (simple structure) and authenticated (database structure)
-        let name, size, quantity;
-        
+        let name;
+        let size;
+        let quantity;
+
         if (item.products_sizes && item.products_sizes.description) {
           // Authenticated user cart items (from database)
           name = item.products_sizes.description;
@@ -32,12 +34,15 @@ export async function notifyTelegram(
           quantity = item.quantity || 1;
         } else {
           // Guest checkout cart items (from Redux/metadata)
-          name = item.description || item.name || `Product ${item.id || index + 1}`;
+          name =
+            item.description || item.name || `Product ${item.id || index + 1}`;
           size = item.product_size || item.size || 'Free Size';
           quantity = item.quantity || 1;
         }
-        
-        console.log(`🔍 Formatted item ${index}: "${name} (${size}) x ${quantity}"`);
+
+        console.log(
+          `🔍 Formatted item ${index}: "${name} (${size}) x ${quantity}"`,
+        );
         return `${name} (${size}) x ${quantity}`;
       })
       .join('\n');

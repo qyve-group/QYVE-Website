@@ -4,11 +4,11 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
-// import { supabase } from '@/libs/supabaseClient';
-import { notifyTelegram } from '@/libs/telegram';
 // import { sendPaymentConfirmationEmail } from '@/lib/email';
 // import { subtle } from 'crypto';
 import { brevoClient, SendSmtpEmail } from '@/libs/brevo';
+// import { supabase } from '@/libs/supabaseClient';
+import { notifyTelegram } from '@/libs/telegram';
 
 // Use test keys in Replit (development), production keys in GitHub/Vercel
 const isReplit = !!process.env.REPLIT_DEV_DOMAIN;
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       isReplit ? 'REPLIT (test)' : 'PRODUCTION',
     );
     console.log('🔑 Webhook secret exists:', !!webhookSecret);
-    console.log('🔑 Signature header:', sig?.substring(0, 20) + '...');
+    console.log('🔑 Signature header:', `${sig?.substring(0, 20)}...`);
     console.log('🔑 Body length:', rawBody.length);
 
     // TEMPORARY: Skip signature verification for debugging
@@ -104,7 +104,8 @@ export async function POST(req: Request) {
       isGuestCheckout ? '(guest)' : '(authenticated)',
     );
 
-    let orderAddress, contactInfo;
+    let orderAddress;
+    let contactInfo;
     try {
       const orderAddressString = session.metadata?.order_address || '{}';
       orderAddress = JSON.parse(orderAddressString);
@@ -219,9 +220,8 @@ export async function POST(req: Request) {
           { error: 'Failed to create order' },
           { status: 500 },
         );
-      } else {
-        console.log('✅ Order inserted successfully:', orderData?.id);
       }
+      console.log('✅ Order inserted successfully:', orderData?.id);
     } catch (err) {
       console.error('❌ Unexpected order creation error:', err);
       return NextResponse.json(
@@ -234,14 +234,21 @@ export async function POST(req: Request) {
     const stockUpdatePromises = [];
     const orderItemPromises = [];
 
-    for (const item of cartItems) {
+    // Fetch all stock data first
+    const stockPromises = cartItems.map((item) =>
+      supabaseAdmin
+        .from('products_sizes')
+        .select('stock')
+        .eq('id', item.product_size_id)
+        .single()
+        .then((result) => ({ item, result })),
+    );
+
+    const stockResults = await Promise.all(stockPromises);
+
+    for (const { item, result } of stockResults) {
       try {
-        // Fetch current stock
-        const { data: productSize, error: fetchError } = await supabaseAdmin
-          .from('products_sizes')
-          .select('stock')
-          .eq('id', item.product_size_id)
-          .single();
+        const { data: productSize, error: fetchError } = result;
 
         if (fetchError) {
           console.error(
@@ -544,8 +551,8 @@ export async function POST(req: Request) {
       email.params = {
         subject: 'Your Order Confirmation',
         // parameter: "Thanks for your order!", // maps to {{params.parameter}} in template
-        orderId: orderId,
-        customerName: customerName,
+        orderId,
+        customerName,
         customerAddress: `${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}`,
         // amount: session.amount_total ? session.amount_total / 100 : "N/A",
       };

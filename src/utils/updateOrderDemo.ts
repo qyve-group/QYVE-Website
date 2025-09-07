@@ -2,6 +2,7 @@
 // This demonstrates the shipping status progression workflow
 
 import { supabase } from '@/libs/supabaseClient';
+
 import { updateOrderStatus } from './orderStatusMapper';
 
 // Example: How to update order status through the shipping flow
@@ -17,7 +18,7 @@ export const progressOrderStatus = async (orderId: number) => {
     await updateOrderStatus(orderId, 'pending', 'processing', supabase);
     console.log('✅ Step 2: Order processing');
 
-    // Step 3: Processing → Shipped  
+    // Step 3: Processing → Shipped
     await updateOrderStatus(orderId, 'processing', 'shipped', supabase);
     console.log('✅ Step 3: Order shipped');
 
@@ -32,14 +33,14 @@ export const progressOrderStatus = async (orderId: number) => {
 };
 
 // Individual status update functions for admin use
-export const markOrderAsPaid = (orderId: number) => 
+export const markOrderAsPaid = (orderId: number) =>
   updateOrderStatus(orderId, 'pending', 'payment_confirmed', supabase);
 
-export const markOrderAsProcessing = (orderId: number) => 
+export const markOrderAsProcessing = (orderId: number) =>
   updateOrderStatus(orderId, 'pending', 'processing', supabase);
 
-export const markOrderAsShipped = (orderId: number) => 
+export const markOrderAsShipped = (orderId: number) =>
   updateOrderStatus(orderId, 'processing', 'shipped', supabase);
 
-export const markOrderAsDelivered = (orderId: number) => 
+export const markOrderAsDelivered = (orderId: number) =>
   updateOrderStatus(orderId, 'completed', 'delivered', supabase);

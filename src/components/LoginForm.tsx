@@ -18,7 +18,7 @@ const LoginForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [errMessage, setErrMessage] = useState<string>('');
-  
+
   // Check for OAuth errors from URL
   React.useEffect(() => {
     const error = searchParams.get('error');
@@ -106,18 +106,18 @@ const LoginForm = () => {
     try {
       setIsGoogleLoading(true);
       setErrMessage('');
-      
+
       // Get the current domain dynamically for Replit
       const currentDomain = window.location.origin;
       const callbackUrl = `${currentDomain}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`;
-      
-      const { data, error } = await supabase.auth.signInWithOAuth({
+
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: callbackUrl,
           queryParams: {
             prompt: 'select_account',
-            access_type: 'offline'
+            access_type: 'offline',
           },
         },
       });
@@ -126,9 +126,8 @@ const LoginForm = () => {
         console.error('Google Sign-In error:', error);
         setErrMessage(`Google sign-in failed: ${error.message}`);
         setIsGoogleLoading(false);
-        return;
       }
-      
+
       // OAuth redirect will happen automatically
     } catch (error) {
       console.error('Unexpected error during Google sign-in:', error);
@@ -147,13 +146,13 @@ const LoginForm = () => {
           <div className="space-y-6">
             <div className="">
               <ButtonSecondary
-                className="flex w-full items-center gap-3 border-2 border-black text-black hover:bg-black hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex w-full items-center gap-3 border-2 border-black text-black hover:bg-black hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                 onClick={handleGoogleSignIn}
                 disabled={isGoogleLoading}
               >
                 {isGoogleLoading ? (
                   <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
+                    <div className="size-5 animate-spin rounded-full border-b-2 border-current" />
                     Connecting to Google...
                   </>
                 ) : (

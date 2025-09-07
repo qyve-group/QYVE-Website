@@ -45,7 +45,7 @@ const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   });
 };
 
@@ -59,12 +59,22 @@ const BlogPostPage = async ({ params }: Props) => {
   return (
     <div className="container max-w-4xl pb-20 pt-10">
       {/* Back to Blog */}
-      <Link 
-        href="/blog" 
-        className="mb-8 inline-flex items-center text-primary hover:text-primary-600 transition-colors"
+      <Link
+        href="/blog"
+        className="hover:text-primary-600 mb-8 inline-flex items-center text-primary transition-colors"
       >
-        <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        <svg
+          className="mr-2 size-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
         Back to Blog
       </Link>
@@ -83,11 +93,11 @@ const BlogPostPage = async ({ params }: Props) => {
 
       {/* Article Header */}
       <header className="mb-8">
-        <h1 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl lg:text-5xl">
+        <h1 className="text-gray-900 mb-4 text-3xl font-bold md:text-4xl lg:text-5xl">
           {post.title}
         </h1>
-        
-        <div className="flex items-center gap-4 text-gray-500">
+
+        <div className="text-gray-500 flex items-center gap-4">
           <span className="font-medium">{post.author}</span>
           <span>•</span>
           <span>{formatDate(post.created_at)}</span>
@@ -102,29 +112,43 @@ const BlogPostPage = async ({ params }: Props) => {
 
       {/* Article Content */}
       <article className="prose prose-lg max-w-none">
-        <div 
+        <div
           className="blog-content"
-          dangerouslySetInnerHTML={{ 
-            __html: post.content.replace(/\n/g, '<br>').replace(/## /g, '<h2>').replace(/# /g, '<h1>') 
-          }} 
+          dangerouslySetInnerHTML={{
+            __html: post.content
+              .replace(/\n/g, '<br>')
+              .replace(/## /g, '<h2>')
+              .replace(/# /g, '<h1>'),
+          }}
         />
       </article>
 
       {/* Call to Action */}
-      <div className="mt-16 rounded-3xl bg-gray-50 p-8 text-center">
-        <h3 className="mb-4 text-2xl font-bold text-gray-900">
+      <div className="bg-gray-50 mt-16 rounded-3xl p-8 text-center">
+        <h3 className="text-gray-900 mb-4 text-2xl font-bold">
           Ready to Experience QYVE?
         </h3>
-        <p className="mb-6 text-gray-600">
-          Discover our premium recovery gear designed for comfort and performance.
+        <p className="text-gray-600 mb-6">
+          Discover our premium recovery gear designed for comfort and
+          performance.
         </p>
-        <Link 
+        <Link
           href="/shop"
-          className="inline-flex items-center rounded-full bg-primary px-6 py-3 text-white font-medium transition-colors hover:bg-primary-600"
+          className="hover:bg-primary-600 inline-flex items-center rounded-full bg-primary px-6 py-3 font-medium text-white transition-colors"
         >
           Shop Now
-          <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg
+            className="ml-2 size-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </Link>
       </div>

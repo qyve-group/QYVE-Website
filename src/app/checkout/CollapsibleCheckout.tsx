@@ -1,16 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { FaRegCircleUser } from 'react-icons/fa6';
+import { FiAlertCircle, FiCheck } from 'react-icons/fi';
+import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import { TbTruckDelivery } from 'react-icons/tb';
-import { MdExpandMore, MdExpandLess } from 'react-icons/md';
-import { FiCheck, FiAlertCircle } from 'react-icons/fi';
+import { useSelector } from 'react-redux';
 
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
-import Input from '@/shared/Input/Input';
 import FormItem from '@/shared/FormItem';
+import Input from '@/shared/Input/Input';
 // import CheckoutButton from '@/components/CheckoutButton';
 import type { RootState } from '@/store/store';
 
@@ -76,14 +76,16 @@ const CollapsibleCheckout = ({
   const [postalCode, setPcode] = useState('');
 
   // UI states
-  const [activeSection, setActiveSection] = useState<'contact' | 'shipping' | null>(null);
+  const [activeSection, setActiveSection] = useState<
+    'contact' | 'shipping' | null
+  >(null);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [hasSubmit, setHasSubmit] = useState(false);
 
   // Validation
   const validateField = (field: string, value: string): boolean => {
     let isValid = true;
-    
+
     switch (field) {
       case 'email':
         isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length > 0;
@@ -96,30 +98,39 @@ const CollapsibleCheckout = ({
         break;
     }
 
-    setErrors(prev => ({ ...prev, [field]: !isValid }));
+    setErrors((prev) => ({ ...prev, [field]: !isValid }));
     return isValid;
   };
 
   const validateContactInfo = () => {
     const contactErrors: Record<string, boolean> = {};
-    
+
     if (!validateField('email', email)) contactErrors.email = true;
     if (!validateField('phone', phone)) contactErrors.phone = true;
-    
+
     return Object.keys(contactErrors).length === 0;
   };
 
   const validateShippingAddress = () => {
     const shippingErrors: Record<string, boolean> = {};
-    
-    const fields = { fname, lname, shippingAddress1, shippingAddress2, no, city, state, postalCode };
-    
+
+    const fields = {
+      fname,
+      lname,
+      shippingAddress1,
+      shippingAddress2,
+      no,
+      city,
+      state,
+      postalCode,
+    };
+
     Object.entries(fields).forEach(([field, value]) => {
       if (!validateField(field, value)) {
         shippingErrors[field] = true;
       }
     });
-    
+
     return Object.keys(shippingErrors).length === 0;
   };
 
@@ -133,7 +144,14 @@ const CollapsibleCheckout = ({
   const handleSaveShipping = () => {
     if (validateShippingAddress()) {
       onShippingAddressChange({
-        fname, lname, shippingAddress1, shippingAddress2, no, city, state, postalCode
+        fname,
+        lname,
+        shippingAddress1,
+        shippingAddress2,
+        no,
+        city,
+        state,
+        postalCode,
       });
       setActiveSection(null);
     }
@@ -141,31 +159,40 @@ const CollapsibleCheckout = ({
 
   const handleCheckout = async () => {
     setHasSubmit(true);
-    
+
     const contactValid = contactInfo || validateContactInfo();
     const shippingValid = shippingAddress || validateShippingAddress();
-    
+
     if (!contactValid) {
       setActiveSection('contact');
       return;
     }
-    
+
     if (!shippingValid) {
       setActiveSection('shipping');
       return;
     }
-    
+
     // Proceed with checkout - call the actual Stripe API
     console.log('Checkout ready! Calling Stripe...');
-    
+
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userId: userId,
+          userId,
           cartItems,
-          orderAddress: { fname, lname, shippingAddress1, shippingAddress2, no, city, state, postalCode },
+          orderAddress: {
+            fname,
+            lname,
+            shippingAddress1,
+            shippingAddress2,
+            no,
+            city,
+            state,
+            postalCode,
+          },
           orderContact: { phone, email },
           shippingPrice: shippingFee,
           discountCode: voucher,
@@ -176,7 +203,7 @@ const CollapsibleCheckout = ({
 
       const data = await res.json();
       console.log('Stripe response:', data);
-      
+
       if (data.url) {
         window.location.href = data.url;
       }
@@ -189,54 +216,78 @@ const CollapsibleCheckout = ({
   // Status indicators
   const getContactStatus = () => {
     if (contactInfo) return 'complete';
-    if (Object.keys(errors).some(key => ['email', 'phone'].includes(key) && errors[key])) return 'error';
+    if (
+      Object.keys(errors).some(
+        (key) => ['email', 'phone'].includes(key) && errors[key],
+      )
+    )
+      return 'error';
     return 'incomplete';
   };
 
   const getShippingStatus = () => {
     if (shippingAddress) return 'complete';
-    if (Object.keys(errors).some(key => !['email', 'phone'].includes(key) && errors[key])) return 'error';
+    if (
+      Object.keys(errors).some(
+        (key) => !['email', 'phone'].includes(key) && errors[key],
+      )
+    )
+      return 'error';
     return 'incomplete';
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <div className="grid lg:grid-cols-3 gap-8">
+    <div className="mx-auto max-w-6xl p-6">
+      <div className="grid gap-8 lg:grid-cols-3">
         {/* Left Column - Forms */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="space-y-6 lg:col-span-2">
           {/* Contact Information Section */}
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div 
-              className={`p-6 cursor-pointer transition-colors ${
+          <div className="border-gray-200 overflow-hidden rounded-xl border bg-white">
+            <div
+              className={`cursor-pointer p-6 transition-colors ${
                 activeSection === 'contact' ? 'bg-blue-50' : 'hover:bg-gray-50'
               }`}
-              onClick={() => setActiveSection(activeSection === 'contact' ? null : 'contact')}
+              onClick={() =>
+                setActiveSection(activeSection === 'contact' ? null : 'contact')
+              }
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <FaRegCircleUser className="text-2xl text-primary" />
                   <div>
-                    <h2 className="text-lg font-semibold text-gray-800">Contact Information</h2>
+                    <h2 className="text-gray-800 text-lg font-semibold">
+                      Contact Information
+                    </h2>
                     {contactInfo ? (
-                      <p className="text-sm text-gray-600">
+                      <p className="text-gray-600 text-sm">
                         {contactInfo.email} • {contactInfo.phone}
                       </p>
                     ) : (
-                      <p className="text-sm text-gray-500">Click to add contact details</p>
+                      <p className="text-gray-500 text-sm">
+                        Click to add contact details
+                      </p>
                     )}
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  {getContactStatus() === 'complete' && <FiCheck className="text-green-600 text-xl" />}
-                  {getContactStatus() === 'error' && <FiAlertCircle className="text-red-600 text-xl" />}
-                  {activeSection === 'contact' ? <MdExpandLess className="text-xl" /> : <MdExpandMore className="text-xl" />}
+                  {getContactStatus() === 'complete' && (
+                    <FiCheck className="text-xl text-green-600" />
+                  )}
+                  {getContactStatus() === 'error' && (
+                    <FiAlertCircle className="text-xl text-red-600" />
+                  )}
+                  {activeSection === 'contact' ? (
+                    <MdExpandLess className="text-xl" />
+                  ) : (
+                    <MdExpandMore className="text-xl" />
+                  )}
                 </div>
               </div>
             </div>
 
             {activeSection === 'contact' && (
-              <div className="border-t bg-gray-50 p-6 space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-gray-50 space-y-4 border-t p-6">
+                <div className="grid gap-4 md:grid-cols-2">
                   <FormItem label="Email Address *">
                     <Input
                       type="email"
@@ -244,10 +295,10 @@ const CollapsibleCheckout = ({
                       rounded="rounded-lg"
                       sizeClass="h-12 px-4 py-3"
                       className={`border-2 transition-colors ${
-                        hasSubmit && errors.email 
-                          ? 'border-red-500 bg-red-50' 
+                        hasSubmit && errors.email
+                          ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
-                      } bg-white placeholder:text-gray-400`}
+                      } placeholder:text-gray-400 bg-white`}
                       placeholder="your.email@example.com"
                       onChange={(e) => {
                         setEmail(e.target.value);
@@ -255,7 +306,9 @@ const CollapsibleCheckout = ({
                       }}
                     />
                     {hasSubmit && errors.email && (
-                      <p className="text-red-500 text-sm mt-1">Please enter a valid email address</p>
+                      <p className="mt-1 text-sm text-red-500">
+                        Please enter a valid email address
+                      </p>
                     )}
                   </FormItem>
 
@@ -266,10 +319,10 @@ const CollapsibleCheckout = ({
                       rounded="rounded-lg"
                       sizeClass="h-12 px-4 py-3"
                       className={`border-2 transition-colors ${
-                        hasSubmit && errors.phone 
-                          ? 'border-red-500 bg-red-50' 
+                        hasSubmit && errors.phone
+                          ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
-                      } bg-white placeholder:text-gray-400`}
+                      } placeholder:text-gray-400 bg-white`}
                       placeholder="+60123456789"
                       onChange={(e) => {
                         setPhone(e.target.value);
@@ -277,7 +330,9 @@ const CollapsibleCheckout = ({
                       }}
                     />
                     {hasSubmit && errors.phone && (
-                      <p className="text-red-500 text-sm mt-1">Please enter a valid phone number</p>
+                      <p className="mt-1 text-sm text-red-500">
+                        Please enter a valid phone number
+                      </p>
                     )}
                   </FormItem>
                 </div>
@@ -295,48 +350,65 @@ const CollapsibleCheckout = ({
           </div>
 
           {/* Shipping Address Section */}
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div 
-              className={`p-6 cursor-pointer transition-colors ${
+          <div className="border-gray-200 overflow-hidden rounded-xl border bg-white">
+            <div
+              className={`cursor-pointer p-6 transition-colors ${
                 activeSection === 'shipping' ? 'bg-blue-50' : 'hover:bg-gray-50'
               }`}
-              onClick={() => setActiveSection(activeSection === 'shipping' ? null : 'shipping')}
+              onClick={() =>
+                setActiveSection(
+                  activeSection === 'shipping' ? null : 'shipping',
+                )
+              }
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <TbTruckDelivery className="text-2xl text-primary" />
                   <div>
-                    <h2 className="text-lg font-semibold text-gray-800">Shipping Address</h2>
+                    <h2 className="text-gray-800 text-lg font-semibold">
+                      Shipping Address
+                    </h2>
                     {shippingAddress ? (
-                      <p className="text-sm text-gray-600">
-                        {shippingAddress.fname} {shippingAddress.lname}, {shippingAddress.city}
+                      <p className="text-gray-600 text-sm">
+                        {shippingAddress.fname} {shippingAddress.lname},{' '}
+                        {shippingAddress.city}
                       </p>
                     ) : (
-                      <p className="text-sm text-gray-500">Click to add shipping address</p>
+                      <p className="text-gray-500 text-sm">
+                        Click to add shipping address
+                      </p>
                     )}
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  {getShippingStatus() === 'complete' && <FiCheck className="text-green-600 text-xl" />}
-                  {getShippingStatus() === 'error' && <FiAlertCircle className="text-red-600 text-xl" />}
-                  {activeSection === 'shipping' ? <MdExpandLess className="text-xl" /> : <MdExpandMore className="text-xl" />}
+                  {getShippingStatus() === 'complete' && (
+                    <FiCheck className="text-xl text-green-600" />
+                  )}
+                  {getShippingStatus() === 'error' && (
+                    <FiAlertCircle className="text-xl text-red-600" />
+                  )}
+                  {activeSection === 'shipping' ? (
+                    <MdExpandLess className="text-xl" />
+                  ) : (
+                    <MdExpandMore className="text-xl" />
+                  )}
                 </div>
               </div>
             </div>
 
             {activeSection === 'shipping' && (
-              <div className="border-t bg-gray-50 p-6 space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-gray-50 space-y-4 border-t p-6">
+                <div className="grid gap-4 md:grid-cols-2">
                   <FormItem label="First Name *">
                     <Input
                       value={fname}
                       rounded="rounded-lg"
                       sizeClass="h-12 px-4 py-3"
                       className={`border-2 transition-colors ${
-                        hasSubmit && errors.fname 
-                          ? 'border-red-500 bg-red-50' 
+                        hasSubmit && errors.fname
+                          ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
-                      } bg-white placeholder:text-gray-400`}
+                      } placeholder:text-gray-400 bg-white`}
                       placeholder="John"
                       onChange={(e) => {
                         setFname(e.target.value);
@@ -351,10 +423,10 @@ const CollapsibleCheckout = ({
                       rounded="rounded-lg"
                       sizeClass="h-12 px-4 py-3"
                       className={`border-2 transition-colors ${
-                        hasSubmit && errors.lname 
-                          ? 'border-red-500 bg-red-50' 
+                        hasSubmit && errors.lname
+                          ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
-                      } bg-white placeholder:text-gray-400`}
+                      } placeholder:text-gray-400 bg-white`}
                       placeholder="Doe"
                       onChange={(e) => {
                         setLname(e.target.value);
@@ -364,17 +436,17 @@ const CollapsibleCheckout = ({
                   </FormItem>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-4">
+                <div className="grid gap-4 md:grid-cols-3">
                   <FormItem label="Unit/House No. *">
                     <Input
                       value={no}
                       rounded="rounded-lg"
                       sizeClass="h-12 px-4 py-3"
                       className={`border-2 transition-colors ${
-                        hasSubmit && errors.no 
-                          ? 'border-red-500 bg-red-50' 
+                        hasSubmit && errors.no
+                          ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
-                      } bg-white placeholder:text-gray-400`}
+                      } placeholder:text-gray-400 bg-white`}
                       placeholder="123A"
                       onChange={(e) => {
                         setNo(e.target.value);
@@ -390,14 +462,15 @@ const CollapsibleCheckout = ({
                         rounded="rounded-lg"
                         sizeClass="h-12 px-4 py-3"
                         className={`border-2 transition-colors ${
-                          hasSubmit && errors.shippingAddress1 
-                            ? 'border-red-500 bg-red-50' 
+                          hasSubmit && errors.shippingAddress1
+                            ? 'border-red-500 bg-red-50'
                             : 'border-gray-300 focus:border-primary'
-                        } bg-white placeholder:text-gray-400`}
+                        } placeholder:text-gray-400 bg-white`}
                         placeholder="Jalan Example"
                         onChange={(e) => {
                           setShippingAddress1(e.target.value);
-                          if (hasSubmit) validateField('shippingAddress1', e.target.value);
+                          if (hasSubmit)
+                            validateField('shippingAddress1', e.target.value);
                         }}
                       />
                     </FormItem>
@@ -410,29 +483,30 @@ const CollapsibleCheckout = ({
                     rounded="rounded-lg"
                     sizeClass="h-12 px-4 py-3"
                     className={`border-2 transition-colors ${
-                      hasSubmit && errors.shippingAddress2 
-                        ? 'border-red-500 bg-red-50' 
+                      hasSubmit && errors.shippingAddress2
+                        ? 'border-red-500 bg-red-50'
                         : 'border-gray-300 focus:border-primary'
-                    } bg-white placeholder:text-gray-400`}
+                    } placeholder:text-gray-400 bg-white`}
                     placeholder="Apartment, suite, etc."
                     onChange={(e) => {
                       setShippingAddress2(e.target.value);
-                      if (hasSubmit) validateField('shippingAddress2', e.target.value);
+                      if (hasSubmit)
+                        validateField('shippingAddress2', e.target.value);
                     }}
                   />
                 </FormItem>
 
-                <div className="grid md:grid-cols-3 gap-4">
+                <div className="grid gap-4 md:grid-cols-3">
                   <FormItem label="City *">
                     <Input
                       value={city}
                       rounded="rounded-lg"
                       sizeClass="h-12 px-4 py-3"
                       className={`border-2 transition-colors ${
-                        hasSubmit && errors.city 
-                          ? 'border-red-500 bg-red-50' 
+                        hasSubmit && errors.city
+                          ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
-                      } bg-white placeholder:text-gray-400`}
+                      } placeholder:text-gray-400 bg-white`}
                       placeholder="Kuala Lumpur"
                       onChange={(e) => {
                         setCity(e.target.value);
@@ -447,10 +521,10 @@ const CollapsibleCheckout = ({
                       rounded="rounded-lg"
                       sizeClass="h-12 px-4 py-3"
                       className={`border-2 transition-colors ${
-                        hasSubmit && errors.state 
-                          ? 'border-red-500 bg-red-50' 
+                        hasSubmit && errors.state
+                          ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
-                      } bg-white placeholder:text-gray-400`}
+                      } placeholder:text-gray-400 bg-white`}
                       placeholder="Selangor"
                       onChange={(e) => {
                         setState(e.target.value);
@@ -465,14 +539,15 @@ const CollapsibleCheckout = ({
                       rounded="rounded-lg"
                       sizeClass="h-12 px-4 py-3"
                       className={`border-2 transition-colors ${
-                        hasSubmit && errors.postalCode 
-                          ? 'border-red-500 bg-red-50' 
+                        hasSubmit && errors.postalCode
+                          ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
-                      } bg-white placeholder:text-gray-400`}
+                      } placeholder:text-gray-400 bg-white`}
                       placeholder="50000"
                       onChange={(e) => {
                         setPcode(e.target.value);
-                        if (hasSubmit) validateField('postalCode', e.target.value);
+                        if (hasSubmit)
+                          validateField('postalCode', e.target.value);
                       }}
                     />
                   </FormItem>
@@ -483,11 +558,13 @@ const CollapsibleCheckout = ({
                     value="Malaysia"
                     rounded="rounded-lg"
                     sizeClass="h-12 px-4 py-3"
-                    className="border-2 border-gray-300 bg-gray-100 text-gray-600 cursor-not-allowed"
+                    className="border-gray-300 bg-gray-100 text-gray-600 cursor-not-allowed border-2"
                     disabled
                     readOnly
                   />
-                  <p className="text-xs text-gray-500 mt-1">We currently only ship within Malaysia</p>
+                  <p className="text-gray-500 mt-1 text-xs">
+                    We currently only ship within Malaysia
+                  </p>
                 </FormItem>
 
                 <div className="flex gap-3 pt-4">
@@ -522,11 +599,11 @@ const CollapsibleCheckout = ({
             {cartItems.map((item) => (
               <div key={item.id} className="flex justify-between py-4">
                 <div className="flex items-center space-x-4">
-                  <div className="relative h-20 w-20 overflow-hidden rounded-xl">
+                  <div className="relative size-20 overflow-hidden rounded-xl">
                     <img
                       src={item.image || '/qyve-black.png'}
                       alt={item.name}
-                      className="h-full w-full object-cover object-center"
+                      className="size-full object-cover object-center"
                     />
                   </div>
                   <div>
@@ -537,7 +614,9 @@ const CollapsibleCheckout = ({
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <span className="font-semibold">RM {(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="font-semibold">
+                    RM {(item.price * item.quantity).toFixed(2)}
+                  </span>
                 </div>
               </div>
             ))}
@@ -564,7 +643,13 @@ const CollapsibleCheckout = ({
               </div>
               {voucherValidity && (
                 <div className="mt-1 text-sm">
-                  <span className={voucherValidity.includes('Valid') ? 'text-green-600' : 'text-red-600'}>
+                  <span
+                    className={
+                      voucherValidity.includes('Valid')
+                        ? 'text-green-600'
+                        : 'text-red-600'
+                    }
+                  >
                     {voucherValidity}
                   </span>
                 </div>
@@ -589,18 +674,15 @@ const CollapsibleCheckout = ({
                 <span>RM {total.toFixed(2)}</span>
               </div>
             </div>
-            
-            <ButtonPrimary 
-              className="mt-8 w-full"
-              onClick={handleCheckout}
-            >
+
+            <ButtonPrimary className="mt-8 w-full" onClick={handleCheckout}>
               Confirm order
             </ButtonPrimary>
-            
+
             {/* Error messaging */}
             {hasSubmit && (!contactInfo || !shippingAddress) && (
-              <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-600 text-sm font-medium flex items-center gap-2">
+              <div className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3">
+                <p className="flex items-center gap-2 text-sm font-medium text-red-600">
                   <FiAlertCircle />
                   Please complete all required sections above
                 </p>

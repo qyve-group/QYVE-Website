@@ -28,7 +28,7 @@ type ProductColor = {
 export const fetchCache = 'force-no-store'; // Prevents caching
 const getProductData = async (productSlug: string) => {
   console.log('productSlug: ', productSlug);
-  
+
   try {
     const { data: product, error: productError } = await supabase
       .from('products')
@@ -39,7 +39,10 @@ const getProductData = async (productSlug: string) => {
       .single();
 
     if (productError || !product) {
-      console.log('Product not found in database, creating demo product for:', productSlug);
+      console.log(
+        'Product not found in database, creating demo product for:',
+        productSlug,
+      );
       // Return demo product data based on slug
       return createDemoProduct(productSlug);
     }
@@ -61,16 +64,20 @@ const createDemoProduct = (productSlug: string) => {
       price: 25,
       previous_price: 30,
       image_cover: '/socks_black.png',
-      overview: 'Premium cotton blend socks in classic black. Perfect for everyday wear with superior comfort and durability.',
-      shipment_details: 'Free shipping on orders over RM50. Estimated delivery: 3-5 business days.',
+      overview:
+        'Premium cotton blend socks in classic black. Perfect for everyday wear with superior comfort and durability.',
+      shipment_details:
+        'Free shipping on orders over RM50. Estimated delivery: 3-5 business days.',
       colors: ['black'],
       product_shots: [{ images: ['/socks_black.png'] }],
-      product_colors: [{ id: 1, color: 'black', product_id: 7, image: '/socks_black.png' }],
+      product_colors: [
+        { id: 1, color: 'black', product_id: 7, image: '/socks_black.png' },
+      ],
       products_sizes: [
         { id: 1, size: 'S', stock: 10, product_id: 7, product_color_id: 1 },
         { id: 2, size: 'M', stock: 15, product_id: 7, product_color_id: 1 },
-        { id: 3, size: 'L', stock: 12, product_id: 7, product_color_id: 1 }
-      ]
+        { id: 3, size: 'L', stock: 12, product_id: 7, product_color_id: 1 },
+      ],
     },
     'essential-white-socks': {
       id: 9,
@@ -78,16 +85,20 @@ const createDemoProduct = (productSlug: string) => {
       price: 25,
       previous_price: 30,
       image_cover: '/socks_white.png',
-      overview: 'Comfortable white socks for everyday wear. Made with high-quality materials for long-lasting comfort.',
-      shipment_details: 'Free shipping on orders over RM50. Estimated delivery: 3-5 business days.',
+      overview:
+        'Comfortable white socks for everyday wear. Made with high-quality materials for long-lasting comfort.',
+      shipment_details:
+        'Free shipping on orders over RM50. Estimated delivery: 3-5 business days.',
       colors: ['white'],
       product_shots: [{ images: ['/socks_white.png'] }],
-      product_colors: [{ id: 2, color: 'white', product_id: 9, image: '/socks_white.png' }],
+      product_colors: [
+        { id: 2, color: 'white', product_id: 9, image: '/socks_white.png' },
+      ],
       products_sizes: [
         { id: 4, size: 'S', stock: 8, product_id: 9, product_color_id: 2 },
         { id: 5, size: 'M', stock: 12, product_id: 9, product_color_id: 2 },
-        { id: 6, size: 'L', stock: 10, product_id: 9, product_color_id: 2 }
-      ]
+        { id: 6, size: 'L', stock: 10, product_id: 9, product_color_id: 2 },
+      ],
     },
     'qyve-jersey': {
       id: 6,
@@ -95,18 +106,22 @@ const createDemoProduct = (productSlug: string) => {
       price: 85,
       previous_price: 100,
       image_cover: '/jersey_pic.jpg',
-      overview: 'Premium sport jersey with QYVE branding. Designed for performance and style with moisture-wicking technology.',
-      shipment_details: 'Free shipping on orders over RM50. Estimated delivery: 3-5 business days.',
+      overview:
+        'Premium sport jersey with QYVE branding. Designed for performance and style with moisture-wicking technology.',
+      shipment_details:
+        'Free shipping on orders over RM50. Estimated delivery: 3-5 business days.',
       colors: ['blue'],
       product_shots: [{ images: ['/jersey_pic.jpg'] }],
-      product_colors: [{ id: 3, color: 'blue', product_id: 6, image: '/jersey_pic.jpg' }],
+      product_colors: [
+        { id: 3, color: 'blue', product_id: 6, image: '/jersey_pic.jpg' },
+      ],
       products_sizes: [
         { id: 7, size: 'S', stock: 5, product_id: 6, product_color_id: 3 },
         { id: 8, size: 'M', stock: 8, product_id: 6, product_color_id: 3 },
         { id: 9, size: 'L', stock: 6, product_id: 6, product_color_id: 3 },
-        { id: 10, size: 'XL', stock: 4, product_id: 6, product_color_id: 3 }
-      ]
-    }
+        { id: 10, size: 'XL', stock: 4, product_id: 6, product_color_id: 3 },
+      ],
+    },
   };
 
   return demoProducts[productSlug] || null;

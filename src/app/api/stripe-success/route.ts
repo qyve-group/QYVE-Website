@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 
 // Use test keys in Replit (development), production keys in GitHub/Vercel
 const isReplit = !!process.env.REPLIT_DEV_DOMAIN;
-const stripeSecretKey = isReplit 
+const stripeSecretKey = isReplit
   ? process.env.STRIPE_TEST_SECRET_KEY || process.env.STRIPE_SECRET_KEY
   : process.env.STRIPE_SECRET_KEY;
 

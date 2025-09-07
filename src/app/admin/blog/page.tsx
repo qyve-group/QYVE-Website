@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+
 import { supabase } from '@/libs/supabaseClient';
 
 interface BlogFormData {
@@ -70,8 +71,8 @@ const AdminBlogPage = () => {
   return (
     <div className="container max-w-4xl pb-20 pt-10">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Blog Admin</h1>
-        <p className="mt-2 text-gray-600">
+        <h1 className="text-gray-900 text-3xl font-bold">Blog Admin</h1>
+        <p className="text-gray-600 mt-2">
           Create and manage blog posts for your QYVE store.
         </p>
       </div>
@@ -80,8 +81,8 @@ const AdminBlogPage = () => {
         <div
           className={`mb-6 rounded-lg p-4 ${
             message.type === 'success'
-              ? 'bg-green-50 border border-green-200 text-green-800'
-              : 'bg-red-50 border border-red-200 text-red-800'
+              ? 'border border-green-200 bg-green-50 text-green-800'
+              : 'border border-red-200 bg-red-50 text-red-800'
           }`}
         >
           {message.text}
@@ -93,7 +94,7 @@ const AdminBlogPage = () => {
           <div>
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="text-gray-700 mb-2 block text-sm font-medium"
             >
               Title *
             </label>
@@ -103,7 +104,7 @@ const AdminBlogPage = () => {
               value={formData.title}
               onChange={(e) => handleTitleChange(e.target.value)}
               required
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               placeholder="Enter blog post title"
             />
           </div>
@@ -111,7 +112,7 @@ const AdminBlogPage = () => {
           <div>
             <label
               htmlFor="slug"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="text-gray-700 mb-2 block text-sm font-medium"
             >
               Slug *
             </label>
@@ -123,7 +124,7 @@ const AdminBlogPage = () => {
                 setFormData((prev) => ({ ...prev, slug: e.target.value }))
               }
               required
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               placeholder="url-friendly-title"
             />
           </div>
@@ -132,7 +133,7 @@ const AdminBlogPage = () => {
         <div>
           <label
             htmlFor="excerpt"
-            className="block text-sm font-medium text-gray-700 mb-2"
+            className="text-gray-700 mb-2 block text-sm font-medium"
           >
             Excerpt *
           </label>
@@ -144,7 +145,7 @@ const AdminBlogPage = () => {
             }
             required
             rows={3}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             placeholder="Brief description of the blog post..."
           />
         </div>
@@ -152,7 +153,7 @@ const AdminBlogPage = () => {
         <div>
           <label
             htmlFor="content"
-            className="block text-sm font-medium text-gray-700 mb-2"
+            className="text-gray-700 mb-2 block text-sm font-medium"
           >
             Content *
           </label>
@@ -164,7 +165,7 @@ const AdminBlogPage = () => {
             }
             required
             rows={15}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             placeholder={`Write your blog post content here...\n\nUse markdown formatting:\n# Main heading\n## Subheading\n\nRegular text with line breaks.`}
           />
         </div>
@@ -173,7 +174,7 @@ const AdminBlogPage = () => {
           <div>
             <label
               htmlFor="author"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="text-gray-700 mb-2 block text-sm font-medium"
             >
               Author
             </label>
@@ -184,7 +185,7 @@ const AdminBlogPage = () => {
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, author: e.target.value }))
               }
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               placeholder="Author name"
             />
           </div>
@@ -192,7 +193,7 @@ const AdminBlogPage = () => {
           <div>
             <label
               htmlFor="featured_image"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="text-gray-700 mb-2 block text-sm font-medium"
             >
               Featured Image URL
             </label>
@@ -206,7 +207,7 @@ const AdminBlogPage = () => {
                   featured_image: e.target.value,
                 }))
               }
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="border-gray-300 w-full rounded-lg border px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               placeholder="https://example.com/image.jpg"
             />
           </div>
@@ -220,11 +221,11 @@ const AdminBlogPage = () => {
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, published: e.target.checked }))
             }
-            className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+            className="border-gray-300 size-4 rounded text-primary focus:ring-primary"
           />
           <label
             htmlFor="published"
-            className="ml-2 block text-sm text-gray-900"
+            className="text-gray-900 ml-2 block text-sm"
           >
             Publish immediately
           </label>
@@ -234,7 +235,7 @@ const AdminBlogPage = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-lg bg-primary px-6 py-3 text-white font-medium transition-colors hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="hover:bg-primary-600 rounded-lg bg-primary px-6 py-3 font-medium text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSubmitting ? 'Creating...' : 'Create Blog Post'}
           </button>
@@ -252,18 +253,18 @@ const AdminBlogPage = () => {
                 published: false,
               })
             }
-            className="rounded-lg border border-gray-300 px-6 py-3 text-gray-700 font-medium transition-colors hover:bg-gray-50"
+            className="border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg border px-6 py-3 font-medium transition-colors"
           >
             Clear Form
           </button>
         </div>
       </form>
 
-      <div className="mt-12 rounded-lg bg-gray-50 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">
+      <div className="bg-gray-50 mt-12 rounded-lg p-6">
+        <h3 className="text-gray-900 mb-3 text-lg font-semibold">
           Quick Tips:
         </h3>
-        <ul className="space-y-2 text-sm text-gray-600">
+        <ul className="text-gray-600 space-y-2 text-sm">
           <li>
             • Use <strong>markdown formatting</strong> in content: # for
             headings, ## for subheadings

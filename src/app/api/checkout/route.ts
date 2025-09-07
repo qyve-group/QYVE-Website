@@ -18,7 +18,7 @@ import Stripe from 'stripe';
 
 // Use test keys in Replit (development), production keys in GitHub/Vercel
 const isReplit = !!process.env.REPLIT_DEV_DOMAIN;
-const stripeSecretKey = isReplit 
+const stripeSecretKey = isReplit
   ? process.env.STRIPE_TEST_SECRET_KEY || process.env.STRIPE_SECRET_KEY
   : process.env.STRIPE_SECRET_KEY;
 
@@ -56,14 +56,17 @@ export async function POST(req: Request) {
     if (!cartItems || cartItems.length === 0) {
       console.error('❌ Cart is empty');
       return NextResponse.json(
-        { error: 'Cart is empty. Please add items to your cart before checkout.' },
-        { status: 400 }
+        {
+          error:
+            'Cart is empty. Please add items to your cart before checkout.',
+        },
+        { status: 400 },
       );
     }
 
     // Allow guest checkout - userId can be null for guest users
     const isGuestCheckout = !userId || userId === 'guest';
-    
+
     if (isGuestCheckout) {
       console.log('Processing guest checkout');
     } else {
@@ -243,7 +246,12 @@ export async function POST(req: Request) {
         is_guest_checkout: isGuestCheckout ? 'true' : 'false',
         customer_email: orderContact.email,
         customer_name: `${orderAddress.fname} ${orderAddress.lname}`,
-        order_items: cartItems.map((item: any) => `${item.name} (${item.product_size}) x${item.quantity}`).join(', '),
+        order_items: cartItems
+          .map(
+            (item: any) =>
+              `${item.name} (${item.product_size}) x${item.quantity}`,
+          )
+          .join(', '),
         order_id: `ORDER_${Date.now()}`,
         // Store cart items in metadata for guest users
         cart_items: isGuestCheckout ? JSON.stringify(cartItems) : '',

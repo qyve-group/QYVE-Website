@@ -39,7 +39,7 @@ const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   });
 };
 
@@ -56,26 +56,34 @@ const BlogCard = ({ post }: { post: BlogPost }) => {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
-        
+
         <div className="p-6">
-          <div className="mb-3 flex items-center gap-4 text-sm text-gray-500">
+          <div className="text-gray-500 mb-3 flex items-center gap-4 text-sm">
             <span>{post.author}</span>
             <span>•</span>
             <span>{formatDate(post.created_at)}</span>
           </div>
-          
-          <h2 className="mb-3 text-xl font-bold text-gray-900 transition-colors group-hover:text-primary">
+
+          <h2 className="text-gray-900 mb-3 text-xl font-bold transition-colors group-hover:text-primary">
             {post.title}
           </h2>
-          
-          <p className="text-gray-600 line-clamp-3">
-            {post.excerpt}
-          </p>
-          
-          <div className="mt-4 inline-flex items-center text-primary font-medium transition-colors group-hover:text-primary-600">
+
+          <p className="text-gray-600 line-clamp-3">{post.excerpt}</p>
+
+          <div className="group-hover:text-primary-600 mt-4 inline-flex items-center font-medium text-primary transition-colors">
             Read More
-            <svg className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg
+              className="ml-2 size-4 transition-transform group-hover:translate-x-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </div>
         </div>
@@ -104,7 +112,9 @@ const BlogPage = async () => {
         </div>
       ) : (
         <div className="mt-12 text-center">
-          <p className="text-gray-500">No blog posts available at the moment.</p>
+          <p className="text-gray-500">
+            No blog posts available at the moment.
+          </p>
         </div>
       )}
     </div>

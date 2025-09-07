@@ -22,10 +22,10 @@ import Input from '@/shared/Input/Input';
 import type { CartItem } from '@/store/cartSlice';
 import type { RootState } from '@/store/store';
 
-// import InputNumber from '@/shared/InputNumber/InputNumber';
-import ContactInfo from './ContactInfo';
 // import StreamlinedCheckout from './StreamlinedCheckout';
 import CollapsibleCheckout from './CollapsibleCheckout';
+// import InputNumber from '@/shared/InputNumber/InputNumber';
+import ContactInfo from './ContactInfo';
 // import PaymentMethod from './PaymentMethod';
 import ShippingAddress from './ShippingAddress';
 
@@ -59,7 +59,7 @@ type ShippingAddressData = {
 };
 
 const CheckoutPage = () => {
-  const [useCollapsibleCheckout, setUseCollapsibleCheckout] = useState(true);
+  const [useCollapsibleCheckout] = useState(true);
   const [tabActive, setTabActive] = useState<
     'ContactInfo' | 'ShippingAddress' | 'PaymentMethod'
   >('ShippingAddress');
@@ -74,7 +74,6 @@ const CheckoutPage = () => {
   const router = useRouter();
 
   const userId = useSelector((state: RootState) => state.auth.user?.id);
-  const isAuthenticated = !!userId;
   const [products, setProducts] = useState<CartDisplay[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [, setTotalPrice] = useState<number>(0);
@@ -468,10 +467,10 @@ const CheckoutPage = () => {
         {isCartEmpty ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <div className="mb-6 text-6xl">🛒</div>
-            <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+            <h2 className="text-gray-800 mb-4 text-2xl font-semibold">
               Your cart is empty
             </h2>
-            <p className="mb-8 text-gray-600">
+            <p className="text-gray-600 mb-8">
               Add some items to your cart before proceeding to checkout
             </p>
             <button

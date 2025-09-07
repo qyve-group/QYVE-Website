@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // import avatar from '@/images/avatar.png';
 import { RiAccountCircleFill } from 'react-icons/ri';
 // import { FaRegBell } from 'react-icons/fa6';
@@ -39,14 +39,14 @@ const MainNav = () => {
   // Close dropdown when mouse moves away with delay to prevent accidental closes
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
-    
+
     const handleMouseMove = (event: MouseEvent) => {
       if (!dropdownRef.current || !isOpen) return;
 
       const rect = dropdownRef.current.getBoundingClientRect();
       const buffer = 80; // increased buffer area around dropdown
-      
-      const isOutsideDropdown = 
+
+      const isOutsideDropdown =
         event.clientX < rect.left - buffer ||
         event.clientX > rect.right + buffer ||
         event.clientY < rect.top - buffer ||
@@ -143,12 +143,12 @@ const MainNav = () => {
               const rect = dropdownRef.current?.getBoundingClientRect();
               if (rect) {
                 const buffer = 80;
-                const isReallyOutside = 
+                const isReallyOutside =
                   e.clientX < rect.left - buffer ||
                   e.clientX > rect.right + buffer ||
                   e.clientY < rect.top - buffer ||
                   e.clientY > rect.bottom + buffer;
-                
+
                 if (isReallyOutside) {
                   setTimeout(() => setIsOpen(false), 500);
                 }
@@ -157,7 +157,7 @@ const MainNav = () => {
           >
             {auth.user ? (
               <div className="flex items-center gap-2 pl-5">
-                <span className="hidden md:block text-sm text-gray-700 font-medium mr-2">
+                <span className="text-gray-700 mr-2 hidden text-sm font-medium md:block">
                   Hi, {auth.user.email?.split('@')[0] || 'User'}
                 </span>
                 <ButtonCircle3
@@ -173,14 +173,14 @@ const MainNav = () => {
             ) : (
               <div className="flex items-center gap-2 pl-5">
                 {isNavigatingToLogin ? (
-                  <div className="flex items-center gap-2 px-4 py-2 text-gray-500">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500"></div>
+                  <div className="text-gray-500 flex items-center gap-2 px-4 py-2">
+                    <div className="border-gray-500 size-4 animate-spin rounded-full border-b-2" />
                     <span className="text-sm">Loading...</span>
                   </div>
                 ) : (
                   <Link
                     href="/login"
-                    className="text-gray-700 hover:bg-gray-100 block px-4 py-2 transition-colors rounded-md"
+                    className="text-gray-700 hover:bg-gray-100 block rounded-md px-4 py-2 transition-colors"
                     onClick={() => {
                       setIsNavigatingToLogin(true);
                       // Reset after navigation starts

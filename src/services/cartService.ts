@@ -79,8 +79,10 @@ export const fetchCartFromSupabase = async (
   }
 
   // Check if we have valid Supabase credentials
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || 
-      process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')) {
+  if (
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')
+  ) {
     console.log('Supabase not configured - skipping cart fetch');
     return;
   }
@@ -153,7 +155,11 @@ export const fetchCartFromSupabase = async (
 
     try {
       dispatch(setCart(supabaseCartItemsFiltered));
-      console.log('Successfully synced cart from Supabase to Redux:', supabaseCartItemsFiltered.length, 'items');
+      console.log(
+        'Successfully synced cart from Supabase to Redux:',
+        supabaseCartItemsFiltered.length,
+        'items',
+      );
     } catch (error) {
       console.error('error dispatching to cart from supabase: ', error);
     }
@@ -175,8 +181,10 @@ export const saveCartToSupabase = async (
   }
 
   // Check if we have valid Supabase credentials
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || 
-      process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')) {
+  if (
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')
+  ) {
     console.log('Supabase not configured - skipping cart save');
     return;
   }
