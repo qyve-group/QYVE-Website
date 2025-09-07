@@ -35,7 +35,8 @@ const LoginForm = () => {
           break;
         case 'implicit_flow_detected':
           setErrMessage(
-            'OAuth configuration error: implicit flow detected. Please check Google Cloud Console settings.',
+            'OAuth configuration error: implicit flow detected. ' +
+              'Please check Google Cloud Console settings.',
           );
           break;
         default:
