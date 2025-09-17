@@ -2,9 +2,15 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-// Use test keys in Replit (development), production keys in GitHub/Vercel
-const isReplit = !!process.env.REPLIT_DEV_DOMAIN;
-const stripeSecretKey = isReplit
+// Universal environment detection for test vs production keys
+// Checks: NODE_ENV, APP_ENV, Replit domain, or key availability
+const isDevEnvironment = 
+  process.env.NODE_ENV === 'development' || 
+  process.env.APP_ENV === 'development' || 
+  !!process.env.REPLIT_DEV_DOMAIN ||
+  (!process.env.STRIPE_SECRET_KEY && !!process.env.STRIPE_TEST_SECRET_KEY);
+
+const stripeSecretKey = isDevEnvironment
   ? process.env.STRIPE_TEST_SECRET_KEY || process.env.STRIPE_SECRET_KEY
   : process.env.STRIPE_SECRET_KEY;
 

@@ -10,9 +10,15 @@ import { brevoClient, SendSmtpEmail } from '@/libs/brevo';
 // import { supabase } from '@/libs/supabaseClient';
 import { notifyTelegram } from '@/libs/telegram';
 
-// Use test keys in Replit (development), production keys in GitHub/Vercel
-const isReplit = !!process.env.REPLIT_DEV_DOMAIN;
-const stripeSecretKey = isReplit
+// Universal environment detection for test vs production keys
+// Checks: NODE_ENV, APP_ENV, Replit domain, or key availability
+const isDevEnvironment = 
+  process.env.NODE_ENV === 'development' || 
+  process.env.APP_ENV === 'development' || 
+  !!process.env.REPLIT_DEV_DOMAIN ||
+  (!process.env.STRIPE_SECRET_KEY && !!process.env.STRIPE_TEST_SECRET_KEY);
+
+const stripeSecretKey = isDevEnvironment
   ? process.env.STRIPE_TEST_SECRET_KEY || process.env.STRIPE_SECRET_KEY
   : process.env.STRIPE_SECRET_KEY;
 
@@ -49,14 +55,14 @@ export async function POST(req: Request) {
 
   let event: Stripe.Event;
   try {
-    const webhookSecret = isReplit
+    const webhookSecret = isDevEnvironment
       ? process.env.STRIPE_TEST_WEBHOOK_SECRET ||
         process.env.STRIPE_WEBHOOK_SECRET
       : process.env.STRIPE_WEBHOOK_SECRET;
 
     console.log(
       '🔑 Using webhook secret environment:',
-      isReplit ? 'REPLIT (test)' : 'PRODUCTION',
+      isDevEnvironment ? 'DEVELOPMENT (test)' : 'PRODUCTION',
     );
     console.log('🔑 Webhook secret exists:', !!webhookSecret);
     console.log('🔑 Signature header:', `${sig?.substring(0, 20)}...`);
