@@ -18,9 +18,9 @@ import Stripe from 'stripe';
 
 // Universal environment detection for test vs production keys
 // Checks: NODE_ENV, APP_ENV, Replit domain, or key availability
-const isDevEnvironment = 
-  process.env.NODE_ENV === 'development' || 
-  process.env.APP_ENV === 'development' || 
+const isDevEnvironment =
+  process.env.NODE_ENV === 'development' ||
+  process.env.APP_ENV === 'development' ||
   !!process.env.REPLIT_DEV_DOMAIN ||
   (!process.env.STRIPE_SECRET_KEY && !!process.env.STRIPE_TEST_SECRET_KEY);
 
