@@ -14,6 +14,9 @@ import LayoutClient from './layoutClient';
 
 export const metadata: Metadata = {
   title: 'QYVE',
+  description:
+    'QYVE is Malaysia&apos;s futsal-first performance brand — built to help players & teams improve, grow together, & elevate the game.',
+
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
     { media: '(prefers-color-scheme: dark)', color: '#000000' },
