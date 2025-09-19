@@ -19,19 +19,20 @@ export const metadata: Metadata = {
       rel: 'icon',
       type: 'image/png',
       sizes: '16x16',
-      url: '/qyve-white-16x16.png',
+      url: '/favicon-16x16.png',
     },
     {
       rel: 'icon',
       type: 'image/png',
       sizes: '32x32',
-      url: '/qyve-white-32x32.png',
+      url: '/favicon-32x32.png',
     },
     {
       rel: 'apple-touch-icon',
       sizes: '180x180',
-      url: '/qyve-white-apple.png',
+      url: '/apple-touch-icon.png',
     },
+    { rel: 'manifest', url: '/site.webmanifest' },
   ],
   // icons: {
   //   icon: '/qyve-white.png', // This will be used as the favicon
