@@ -72,10 +72,16 @@ export default function CheckoutButton({
   );
 
   const handleCheckout = async () => {
-    // console.log * 'Checkout button clicked';
+    console.log('=== CHECKOUT DEBUG ===');
+    console.log('User ID:', userId);
+    console.log('Has Empty Address:', hasEmptyAddress);
+    console.log('Has Empty Contact:', hasEmptyContact);
+    console.log('Order Address:', orderAddress);
+    console.log('Order Contact:', orderContact);
     setHasAttemptedSubmit(true);
 
     if (hasEmptyAddress || hasEmptyContact) {
+      console.log('BLOCKING: Empty address or contact info');
       return;
     }
 
@@ -112,13 +118,31 @@ export default function CheckoutButton({
       if (!res.ok) throw new Error('Failed to create checkout session');
 
       const data = await res.json();
-      // console.log*('Redirecting to:', data.url);
-      // console.log*('API Response:', data); // Debugging output
+      console.log('Stripe response:', data);
+
       if (data.url) {
-        window.location.href = data.url;
+        console.log('Redirecting to Stripe:', data.url);
+        // Try copying URL to clipboard as backup
+        navigator.clipboard?.writeText(data.url).catch(() => {});
+
+        // Try opening in new tab
+        const newWindow = window.open(data.url, '_blank');
+
+        if (!newWindow) {
+          // Fallback if popup blocked
+          console.warn(
+            'Popup blocked. Please copy this URL manually:',
+            data.url,
+          );
+          alert(
+            `Please copy this URL and open it in a new tab:\n\n${data.url}`,
+          );
+        }
+      } else {
+        console.error('No URL returned from Stripe:', data);
       }
     } catch (error) {
-      // console.error*('Checkout error: ', error);
+      console.error('Checkout error:', error);
     } finally {
       setLoading(false);
     }

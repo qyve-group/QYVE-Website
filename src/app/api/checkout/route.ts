@@ -16,7 +16,19 @@ import Stripe from 'stripe';
 //   postal_code: string;
 // };
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+// Universal environment detection for test vs production keys
+// Checks: NODE_ENV, APP_ENV, Replit domain, or key availability
+const isDevEnvironment = 
+  process.env.NODE_ENV === 'development' || 
+  process.env.APP_ENV === 'development' || 
+  !!process.env.REPLIT_DEV_DOMAIN ||
+  (!process.env.STRIPE_SECRET_KEY && !!process.env.STRIPE_TEST_SECRET_KEY);
+
+const stripeSecretKey = isDevEnvironment
+  ? process.env.STRIPE_TEST_SECRET_KEY || process.env.STRIPE_SECRET_KEY
+  : process.env.STRIPE_SECRET_KEY;
+
+const stripe = new Stripe(stripeSecretKey!, {
   apiVersion: '2025-06-30.basil',
 });
 
@@ -46,14 +58,25 @@ export async function POST(req: Request) {
       discountCode,
     } = body; // Get items from the request
 
-    if (!userId) {
-      console.error('Missing userId');
-      return new Response(JSON.stringify({ error: 'Missing userId' }), {
-        status: 400,
-        headers: {
-          'Access-Control-Allow-Origin': 'https://www.qyveofficial.com',
+    // Validate cart items
+    if (!cartItems || cartItems.length === 0) {
+      console.error('❌ Cart is empty');
+      return NextResponse.json(
+        {
+          error:
+            'Cart is empty. Please add items to your cart before checkout.',
         },
-      });
+        { status: 400 },
+      );
+    }
+
+    // Allow guest checkout - userId can be null for guest users
+    const isGuestCheckout = !userId || userId === 'guest';
+
+    if (isGuestCheckout) {
+      console.log('Processing guest checkout');
+    } else {
+      console.log('Processing authenticated user checkout for userId:', userId);
     }
 
     // const productSubtotal = cartItems.reduce(
@@ -213,19 +236,31 @@ export async function POST(req: Request) {
     });
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card', 'fpx'],
+      payment_method_types: ['card', 'fpx'], // Support both card and FPX payments
       mode: 'payment',
       line_items: lineItems,
       discounts,
       // success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/home`,
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL || `https://${process.env.REPLIT_DEV_DOMAIN}`}/success?session_id={CHECKOUT_SESSION_ID}`,
       customer_email: orderContact.email,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/failed`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || `https://${process.env.REPLIT_DEV_DOMAIN}`}/failed`,
       shipping_options: shippingOptions,
       metadata: {
-        user_id: userId ?? 'unknown user',
+        user_id: userId ?? 'guest',
         order_address: JSON.stringify(orderAddress),
         order_contact: JSON.stringify(orderContact),
+        is_guest_checkout: isGuestCheckout ? 'true' : 'false',
+        customer_email: orderContact.email,
+        customer_name: `${orderAddress.fname} ${orderAddress.lname}`,
+        order_items: cartItems
+          .map(
+            (item: any) =>
+              `${item.name} (${item.product_size}) x${item.quantity}`,
+          )
+          .join(', '),
+        order_id: `ORDER_${Date.now()}`,
+        // Store cart items in metadata for guest users
+        cart_items: isGuestCheckout ? JSON.stringify(cartItems) : '',
       },
     });
 

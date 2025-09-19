@@ -10,7 +10,7 @@ import { BsBag } from 'react-icons/bs';
 import { LuInfo } from 'react-icons/lu';
 // import { MdStar } from 'react-icons/md';
 // import { PiSealCheckFill } from 'react-icons/pi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import ImageShowCase from '@/components/ImageShowCase';
 import ShoeSizeButton from '@/components/ShoeSizeButton';
@@ -22,7 +22,6 @@ import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import Heading from '@/shared/Heading/Heading';
 import { addToCart } from '@/store/cartSlice';
-import type { RootState } from '@/store/store';
 // import { supabase } from "@/libs/supabaseClient";
 
 interface SectionProductHeaderProps {
@@ -87,17 +86,22 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   const [selectedProductSizeId, setSelectedProductSizeId] = useState<number>();
   const [custom, setCustom] = useState('');
 
-  const session = useSelector((state: RootState) => state.auth.session);
-  // console.log('session sectopnproductheader: ', session);
   // console.log('slug -sectionproductheader: ', slug);
 
-  // Set default color ID once when product changes
+  // Set default color ID and image once when product changes
   useEffect(() => {
     if (products_sizes.length > 0 && selectedColorId === null) {
       const firstColorId = products_sizes[0]?.product_color_id;
       setSelectedColorId(firstColorId ?? null);
+
+      // Set default image from the first color
+      const firstColor = product_colors.find((pc) => pc.id === firstColorId);
+      if (firstColor && !selectedImage) {
+        setSelectedImage(firstColor.image || '/qyve-black.png');
+        setSelectedColor(firstColor.color);
+      }
     }
-  }, [products_sizes, selectedColorId]);
+  }, [products_sizes, selectedColorId, product_colors, selectedImage]);
 
   const filteredProductSizes = products_sizes.filter(
     (ps) => ps.product_color_id === selectedColorId,
@@ -162,10 +166,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   };
 
   const handleBuyNow = () => {
-    if (!session) {
-      alert('Login to add to cart!');
-      return;
-    }
+    // Allow guest users to buy now - no authentication required
     if (!selectedSize) {
       alert('Please select a size before adding to cart!');
       return;
@@ -198,7 +199,11 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         image: selectedImage,
       }),
     );
-    router.push('../checkout');
+
+    // Small delay to ensure Redux state is updated before navigation
+    setTimeout(() => {
+      router.push('../checkout');
+    }, 100);
   };
 
   const handleSelectSize = ({
@@ -258,7 +263,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
         <div className="flex flex-col">
           {slug?.includes('jersey') ? (
-            <div className="flex flex-col md:flex-row">
+            <div className="flex flex-col gap-6 lg:flex-row">
               <div className="basis-2/5">
                 <p className="mb-5 text-xl">Available colors</p>
                 <div className="mb-5 flex flex-wrap gap-2">
@@ -299,14 +304,168 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
                 </div>
               </div>
               <div className="basis-3/5">
-                <p className="mb-5 text-xl">Customization</p>
+                <div className="bg-gray-50 rounded-lg border p-6">
+                  <div className="mb-4 flex items-center gap-2">
+                    <h3 className="text-gray-800 text-xl font-semibold">
+                      Jersey Customization
+                    </h3>
+                    <span className="rounded-full bg-primary px-2 py-1 text-xs font-medium text-black">
+                      FREE
+                    </span>
+                  </div>
 
-                <textarea
-                  id="custom"
-                  className="border-gray-300 w-3/4 resize-none rounded-md border p-2 placeholder:text-sm md:w-full"
-                  placeholder="Name - Number e.g Max - 7"
-                  onChange={(e) => setCustom(e.target.value)}
-                />
+                  <div className="space-y-4">
+                    <div>
+                      <label
+                        htmlFor="player-name"
+                        className="text-gray-700 mb-2 block text-sm font-medium"
+                      >
+                        Player Name
+                        <input
+                          type="text"
+                          id="player-name"
+                          className="border-gray-300 placeholder:text-gray-400 w-full rounded-lg border px-4 py-3 transition-colors focus:border-primary focus:ring-2 focus:ring-primary"
+                          placeholder="Enter player name"
+                          maxLength={15}
+                          onChange={(e) => {
+                            const nameTemp = e.target.value.toUpperCase();
+                            const number =
+                              (
+                                document.getElementById(
+                                  'player-number',
+                                ) as HTMLInputElement
+                              )?.value || '';
+                            setCustom(
+                              nameTemp && number
+                                ? `${nameTemp} - ${number}`
+                                : nameTemp || number,
+                            );
+                            // Update preview
+                            const namePreview =
+                              document.getElementById('name-preview');
+                            if (namePreview)
+                              namePreview.textContent =
+                                nameTemp || 'PLAYER NAME';
+                          }}
+                        />
+                      </label>
+
+                      <p className="text-gray-500 mt-1 text-xs">
+                        Max 15 characters
+                      </p>
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="player-number"
+                        className="text-gray-700 mb-2 block text-sm font-medium"
+                      >
+                        Jersey Number
+                        <input
+                          type="number"
+                          id="player-number"
+                          className="border-gray-300 placeholder:text-gray-400 w-full rounded-lg border px-4 py-3 transition-colors focus:border-primary focus:ring-2 focus:ring-primary"
+                          placeholder="Enter number (0-99)"
+                          min="0"
+                          max="99"
+                          onChange={(e) => {
+                            const number = e.target.value;
+                            const nameTempTwo =
+                              (
+                                document.getElementById(
+                                  'player-name',
+                                ) as HTMLInputElement
+                              )?.value.toUpperCase() || '';
+                            setCustom(
+                              nameTempTwo && number
+                                ? `${nameTempTwo} - ${number}`
+                                : nameTempTwo || number,
+                            );
+                            // Update preview
+                            const numberPreview =
+                              document.getElementById('number-preview');
+                            if (numberPreview)
+                              numberPreview.textContent = number || '00';
+                          }}
+                        />
+                      </label>
+
+                      <p className="text-gray-500 mt-1 text-xs">
+                        Numbers 0-99 only
+                      </p>
+                    </div>
+
+                    {/* Preview Section */}
+                    <div className="border-gray-200 rounded-lg border-2 border-dashed bg-white p-4">
+                      <h4 className="text-gray-700 mb-3 flex items-center gap-2 text-sm font-medium">
+                        <span>Live Preview</span>
+                        <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-800">
+                          REAL-TIME
+                        </span>
+                      </h4>
+
+                      {/* Jersey Back Simulation */}
+                      <div
+                        className="relative mx-auto h-60 w-48 overflow-hidden rounded-lg"
+                        style={{
+                          background:
+                            'linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
+                        }}
+                      >
+                        {/* Jersey Texture */}
+                        <div
+                          className="absolute inset-0 opacity-10"
+                          style={{
+                            backgroundImage:
+                              'repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.1) 2px, rgba(255,255,255,0.1) 4px)',
+                          }}
+                        />
+
+                        {/* Jersey Seams */}
+                        <div className="bg-gray-600 absolute inset-y-0 left-1/2 w-px -translate-x-px opacity-30" />
+                        <div className="bg-gray-600 absolute inset-x-0 top-1/3 h-px opacity-20" />
+
+                        {/* Player Name */}
+                        <div className="absolute inset-x-0 top-8 text-center">
+                          <div
+                            className="text-sm font-bold tracking-[0.2em] text-white drop-shadow-lg"
+                            id="name-preview"
+                            style={{
+                              textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
+                            }}
+                          >
+                            PLAYER NAME
+                          </div>
+                        </div>
+
+                        {/* Jersey Number */}
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                          <div
+                            className="text-6xl font-black leading-none text-white drop-shadow-2xl"
+                            id="number-preview"
+                            style={{
+                              textShadow:
+                                '3px 3px 6px rgba(0,0,0,0.9), 0 0 20px rgba(255,255,255,0.1)',
+                            }}
+                          >
+                            00
+                          </div>
+                        </div>
+
+                        {/* Jersey Brand/Logo Area */}
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
+                          <div className="text-gray-400 text-xs tracking-wider opacity-60">
+                            QYVE
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-gray-500 mt-3 text-center text-xs">
+                        🏆 Exactly how it will look on your jersey back
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           ) : (

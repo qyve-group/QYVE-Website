@@ -12,13 +12,13 @@ const LoginPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!auth.loading) {
+    if (auth.user && !auth.loading) {
       router.push('/home'); // Redirect to home if logged in
     }
-  }, [auth.loading, router]);
+  }, [auth.user, auth.loading, router]);
 
   // Prevent rendering LoginForm if user is logged in
-  if (!auth.loading) return null;
+  if (auth.user && !auth.loading) return null;
 
   return <LoginForm />;
 };

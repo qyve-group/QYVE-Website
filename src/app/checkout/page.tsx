@@ -22,6 +22,8 @@ import Input from '@/shared/Input/Input';
 import type { CartItem } from '@/store/cartSlice';
 import type { RootState } from '@/store/store';
 
+// import StreamlinedCheckout from './StreamlinedCheckout';
+import CollapsibleCheckout from './CollapsibleCheckout';
 // import InputNumber from '@/shared/InputNumber/InputNumber';
 import ContactInfo from './ContactInfo';
 // import PaymentMethod from './PaymentMethod';
@@ -57,6 +59,7 @@ type ShippingAddressData = {
 };
 
 const CheckoutPage = () => {
+  const [useCollapsibleCheckout] = useState(true);
   const [tabActive, setTabActive] = useState<
     'ContactInfo' | 'ShippingAddress' | 'PaymentMethod'
   >('ShippingAddress');
@@ -79,6 +82,7 @@ const CheckoutPage = () => {
     useState<ShippingAddressData | null>(null);
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const isCartEmpty = !cartItems || cartItems.length === 0;
   const [shippingFee, setShippingFee] = useState(0);
   const [voucher, setVoucher] = useState('');
   const [voucherValidity, setVoucherValidity] = useState('');
@@ -249,67 +253,81 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     const fetchCartId = async () => {
-      const { data: cartIdData } = await supabase
-        .from('carts')
-        .select('id')
-        .eq('user_id', userId)
-        .single();
-
-      const cartId = cartIdData?.id;
-
-      console.log('userId: ', userId);
-      console.log('cartId: ', cartId);
-
-      const { data: cartItemsData } = await supabase
-        .from('cart_items')
-        .select('product_id, size_id, quantity, price')
-        .eq('cart_id', cartId);
-
-      const fetchedProducts: CartDisplay[] = [];
-
-      for (const product of cartItemsData || []) {
-        const productId = product.product_id;
-        const sizeId = product.size_id;
-        const productQty = product.quantity;
-
-        // eslint-disable-next-line no-await-in-loop
-        const { data: productInfoData } = await supabase
-          .from('products_sizes')
-          .select('size')
-          .eq('id', sizeId)
-          .single();
-
-        const productSize = productInfoData?.size;
-        // console.log('productSize: ', productSize);
-
-        // eslint-disable-next-line no-await-in-loop
-        const { data: productData } = await supabase
-          .from('products')
-          .select('name, slug, image_cover')
-          .eq('id', productId)
-          .single();
-
-        fetchedProducts.push({
-          id: productId,
-          name: productData?.name,
-          price: product.price,
-          product_size: productSize,
-          quantity: productQty,
-          slug: productData?.slug,
-          image: productData?.image_cover,
-        });
+      // Skip Supabase fetch if user is not authenticated or if Supabase is not configured
+      if (
+        !userId ||
+        !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+        process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')
+      ) {
+        console.log('Skipping Supabase cart fetch - using Redux cart only');
+        return;
       }
-      const totalFp = fetchedProducts.reduce(
-        (acc, item) => acc + item.price,
-        0,
-      );
 
-      setProducts(fetchedProducts);
-      setTotalPrice(totalFp);
+      try {
+        const { data: cartIdData } = await supabase
+          .from('carts')
+          .select('id')
+          .eq('user_id', userId)
+          .single();
+
+        const cartId = cartIdData?.id;
+
+        console.log('userId: ', userId);
+        console.log('cartId: ', cartId);
+
+        const { data: cartItemsData } = await supabase
+          .from('cart_items')
+          .select('product_id, size_id, quantity, price')
+          .eq('cart_id', cartId);
+
+        const fetchedProducts: CartDisplay[] = [];
+
+        for (const product of cartItemsData || []) {
+          const productId = product.product_id;
+          const sizeId = product.size_id;
+          const productQty = product.quantity;
+
+          // eslint-disable-next-line no-await-in-loop
+          const { data: productInfoData } = await supabase
+            .from('products_sizes')
+            .select('size')
+            .eq('id', sizeId)
+            .single();
+
+          const productSize = productInfoData?.size;
+          // console.log('productSize: ', productSize);
+
+          // eslint-disable-next-line no-await-in-loop
+          const { data: productData } = await supabase
+            .from('products')
+            .select('name, slug, image_cover')
+            .eq('id', productId)
+            .single();
+
+          fetchedProducts.push({
+            id: productId,
+            name: productData?.name,
+            price: product.price,
+            product_size: productSize,
+            quantity: productQty,
+            slug: productData?.slug,
+            image: productData?.image_cover,
+          });
+        }
+        const totalFp = fetchedProducts.reduce(
+          (acc, item) => acc + item.price,
+          0,
+        );
+
+        setProducts(fetchedProducts);
+        setTotalPrice(totalFp);
+      } catch (error) {
+        console.error('Error fetching cart from Supabase:', error);
+      }
     };
 
     fetchCartId();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if (
@@ -445,76 +463,111 @@ const CheckoutPage = () => {
             Checkout
           </h2>
         </div>
+        {/* eslint-disable no-nested-ternary */}
+        {isCartEmpty ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="mb-6 text-6xl">🛒</div>
+            <h2 className="text-gray-800 mb-4 text-2xl font-semibold">
+              Your cart is empty
+            </h2>
+            <p className="text-gray-600 mb-8">
+              Add some items to your cart before proceeding to checkout
+            </p>
+            <button
+              type="button"
+              onClick={() => router.push('/shop')}
+              className="rounded-lg bg-primary px-8 py-3 text-white transition-colors hover:bg-primary/90"
+            >
+              Continue Shopping
+            </button>
+          </div>
+        ) : useCollapsibleCheckout ? (
+          <CollapsibleCheckout
+            subtotal={subtotal}
+            shippingFee={shippingFee}
+            total={total}
+            voucher={voucher}
+            voucherValidity={voucherValidity}
+            onVoucherChange={setVoucher}
+            onVoucherApply={handleVoucher}
+            contactInfo={contactInfo}
+            shippingAddress={shippingAddress}
+            onContactInfoChange={handleContactInfo}
+            onShippingAddressChange={handleShippingInfo}
+            cartItems={cartItems}
+          />
+        ) : (
+          <div className="flex flex-col lg:flex-row">
+            <div className="flex-1">{renderLeft()}</div>
 
-        <div className="flex flex-col lg:flex-row">
-          <div className="flex-1">{renderLeft()}</div>
+            <div className="my-10 shrink-0 border-t border-neutral-300 lg:mx-10 lg:my-0 lg:border-l lg:border-t-0 xl:lg:mx-14 2xl:mx-16 " />
 
-          <div className="my-10 shrink-0 border-t border-neutral-300 lg:mx-10 lg:my-0 lg:border-l lg:border-t-0 xl:lg:mx-14 2xl:mx-16 " />
+            <div className="w-full lg:w-[36%]">
+              <div className="flex justify-between">
+                <h3 className="py-2 text-lg font-semibold">Order summary</h3>
+                <ButtonSecondary
+                  sizeClass="py-2 px-4"
+                  className="border-2 border-primary text-primary"
+                  onClick={() => {
+                    router.push('../cart');
+                  }}
+                >
+                  Edit
+                </ButtonSecondary>
+              </div>
 
-          <div className="w-full lg:w-[36%]">
-            <div className="flex justify-between">
-              <h3 className="py-2 text-lg font-semibold">Order summary</h3>
-              <ButtonSecondary
-                sizeClass="py-2 px-4"
-                className="border-2 border-primary text-primary"
-                onClick={() => {
-                  router.push('../cart');
-                }}
-              >
-                Edit
-              </ButtonSecondary>
-            </div>
-
-            {/* <div className="mt-8 divide-y divide-neutral-300">
+              {/* <div className="mt-8 divide-y divide-neutral-300">
               {products.map((prod) => renderProduct(prod))}
             </div> */}
-            <div className="mt-8 divide-y divide-neutral-300">
-              {cartItems.map((item) => renderProduct(item))}
-            </div>
+              <div className="mt-8 divide-y divide-neutral-300">
+                {cartItems.map((item) => renderProduct(item))}
+              </div>
 
-            <div className="mt-10 border-t border-neutral-300 pt-6 text-sm">
-              <div>
-                <div className="text-sm">Discount code</div>
-                <div className="mt-1.5 flex">
-                  <Input
-                    rounded="rounded-lg"
-                    sizeClass="h-12 px-4 py-3"
-                    className="flex-1 border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
-                    value={voucher}
-                    onChange={(e) => setVoucher(e.target.value)}
-                  />
-                  <button
-                    type="button"
-                    className="ml-3 flex w-24 items-center justify-center rounded-2xl border border-neutral-300 bg-gray px-4 text-sm font-medium transition-colors hover:bg-neutral-100"
-                    onClick={handleVoucher}
-                  >
-                    Apply
-                  </button>
-                </div>
-                {clicked && (
-                  <div>
-                    {(() => {
-                      if (voucherValidity === 'used') {
-                        return (
-                          <div className="text-red-300">
-                            Voucher already used
-                          </div>
-                        );
-                      }
-
-                      if (voucherValidity === 'valid') {
-                        return (
-                          <div className="text-green-300">Voucher applied</div>
-                        );
-                      }
-
-                      return (
-                        <div className="text-red-300">Invalid voucher</div>
-                      );
-                    })()}
+              <div className="mt-10 border-t border-neutral-300 pt-6 text-sm">
+                <div>
+                  <div className="text-sm">Discount code</div>
+                  <div className="mt-1.5 flex">
+                    <Input
+                      rounded="rounded-lg"
+                      sizeClass="h-12 px-4 py-3"
+                      className="flex-1 border-neutral-300 bg-transparent placeholder:text-neutral-500 focus:border-primary"
+                      value={voucher}
+                      onChange={(e) => setVoucher(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="ml-3 flex w-24 items-center justify-center rounded-2xl border border-neutral-300 bg-gray px-4 text-sm font-medium transition-colors hover:bg-neutral-100"
+                      onClick={handleVoucher}
+                    >
+                      Apply
+                    </button>
                   </div>
-                )}
-                {/* {clicked ? (
+                  {clicked && (
+                    <div>
+                      {(() => {
+                        if (voucherValidity === 'used') {
+                          return (
+                            <div className="text-red-300">
+                              Voucher already used
+                            </div>
+                          );
+                        }
+
+                        if (voucherValidity === 'valid') {
+                          return (
+                            <div className="text-green-300">
+                              Voucher applied
+                            </div>
+                          );
+                        }
+
+                        return (
+                          <div className="text-red-300">Invalid voucher</div>
+                        );
+                      })()}
+                    </div>
+                  )}
+                  {/* {clicked ? (
                   voucherValidity === 'used' ? (
                     <div className="text-red-300">Voucher already used</div>
                   ) : voucherValidity === 'valid' ? (
@@ -525,52 +578,55 @@ const CheckoutPage = () => {
                 ) : (
                   <></>
                 )} */}
-              </div>
+                </div>
 
-              <div className="mt-4 flex justify-between pb-4">
-                <span>Subtotal</span>
-                <span className="font-semibold">RM {subtotal.toFixed(2)}</span>
+                <div className="mt-4 flex justify-between pb-4">
+                  <span>Subtotal</span>
+                  <span className="font-semibold">
+                    RM {subtotal.toFixed(2)}
+                  </span>
+                </div>
+                <div className="mt-4 flex justify-between pb-4">
+                  <span>Estimated Delivery & Handling</span>
+                  <span className="font-semibold">RM {shippingFee}</span>
+                </div>
+                <div className="flex justify-between py-4">
+                  <span>Discount</span>
+                  {clicked && voucherValidity === 'valid' ? (
+                    <span className="font-semibold">- RM{discountValue}</span>
+                  ) : (
+                    <span className="font-semibold">-</span>
+                  )}
+                </div>
+                <div className="flex justify-between pt-4 text-base font-semibold">
+                  <span>Total</span>
+                  <span>RM {total.toFixed(2)}</span>
+                </div>
               </div>
-              <div className="mt-4 flex justify-between pb-4">
-                <span>Estimated Delivery & Handling</span>
-                <span className="font-semibold">RM {shippingFee}</span>
-              </div>
-              <div className="flex justify-between py-4">
-                <span>Discount</span>
-                {clicked && voucherValidity === 'valid' ? (
-                  <span className="font-semibold">- RM{discountValue}</span>
-                ) : (
-                  <span className="font-semibold">-</span>
-                )}
-              </div>
-              <div className="flex justify-between pt-4 text-base font-semibold">
-                <span>Total</span>
-                <span>RM {total.toFixed(2)}</span>
-              </div>
+              <CheckoutButton
+                cartItems={cartItems}
+                // orderAddress={shippingAddress}
+                orderAddress={{
+                  fname: shippingAddress?.fname || '',
+                  lname: shippingAddress?.lname || '',
+                  shipping_address_1: shippingAddress?.shippingAddress1 || '',
+                  shipping_address_2: shippingAddress?.shippingAddress2 || '',
+                  no: shippingAddress?.no || '',
+                  city: shippingAddress?.city || '',
+                  postal_code: shippingAddress?.postalCode || '',
+                  state: shippingAddress?.state || '',
+                }}
+                orderContact={{
+                  phone: contactInfo?.phone || '',
+                  email: contactInfo?.email || '',
+                }}
+                discountCode={voucher}
+                shippingPrice={shippingFee}
+              />
+              {/* <ButtonPrimary className="mt-8 w-full">Confirm order</ButtonPrimary> */}
             </div>
-            <CheckoutButton
-              cartItems={cartItems}
-              // orderAddress={shippingAddress}
-              orderAddress={{
-                fname: shippingAddress?.fname || '',
-                lname: shippingAddress?.lname || '',
-                shipping_address_1: shippingAddress?.shippingAddress1 || '',
-                shipping_address_2: shippingAddress?.shippingAddress2 || '',
-                no: shippingAddress?.no || '',
-                city: shippingAddress?.city || '',
-                postal_code: shippingAddress?.postalCode || '',
-                state: shippingAddress?.state || '',
-              }}
-              orderContact={{
-                phone: contactInfo?.phone || '',
-                email: contactInfo?.email || '',
-              }}
-              discountCode={voucher}
-              shippingPrice={shippingFee}
-            />
-            {/* <ButtonPrimary className="mt-8 w-full">Confirm order</ButtonPrimary> */}
           </div>
-        </div>
+        )}
       </main>
     </div>
   );

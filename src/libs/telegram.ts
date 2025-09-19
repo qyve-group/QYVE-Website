@@ -1,37 +1,80 @@
 // lib/telegram.ts (or utils/telegram.ts)
 // import { supabase } from './supabaseClient';
-import { createClient } from '@supabase/supabase-js';
+// import { createClient } from '@supabase/supabase-js';
 
 export async function notifyTelegram(
   orderId: string,
   orderAddress: any,
   contactInfo: any,
+  cartItems?: any[],
 ) {
-  const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-    process.env.SUPABASE_SERVICE_ROLE_KEY as string,
-  );
-  console.log('calling notifyTelegram');
+  console.log('calling notifyTelegram with items:', cartItems);
+  console.log('Items count:', cartItems?.length);
+  console.log('First item structure:', cartItems?.[0]);
 
-  const { data } = await supabaseAdmin
-    .from('order_items')
-    .select('quantity, products_sizes(description)')
-    .eq('order_id', orderId);
-  const itemsText =
-    data
-      ?.map((item) => {
-        const itemDescription = Array.isArray(item.products_sizes)
-          ? item.products_sizes[0]
-          : (item.products_sizes as { description: string });
+  let itemsText = '';
 
-        const finalDescription =
-          itemDescription?.description ?? 'Check Supabase';
+  if (cartItems && cartItems.length > 0) {
+    console.log('🔍 Processing cart items for Telegram:');
+    cartItems.forEach((item, index) => {
+      console.log(`🔍 Item ${index} raw:`, item);
+    });
 
-        return `${finalDescription} x ${item.quantity}`;
+    itemsText = cartItems
+      .map((item, index) => {
+        // Handle both guest checkout (simple structure) and authenticated (database structure)
+        let name;
+        let size;
+        let quantity;
+
+        if (item.products_sizes && item.products_sizes.description) {
+          // Authenticated user cart items (from database)
+          name = item.products_sizes.description;
+          size = item.products_sizes.size || 'Free Size';
+          quantity = item.quantity || 1;
+        } else {
+          // Guest checkout cart items (from Redux/metadata)
+          name =
+            item.description || item.name || `Product ${item.id || index + 1}`;
+          size = item.product_size || item.size || 'Free Size';
+          quantity = item.quantity || 1;
+        }
+
+        console.log(
+          `🔍 Formatted item ${index}: "${name} (${size}) x ${quantity}"`,
+        );
+        return `${name} (${size}) x ${quantity}`;
       })
-      .join('\n') || '';
+      .join('\n');
+  }
 
-  console.log('itemtext: ', itemsText);
+  // else {
+  //   // Fallback to database lookup (for authenticated users)
+  //   const supabaseAdmin = createClient(
+  //     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+  //     process.env.SUPABASE_SERVICE_ROLE_KEY as string,
+  //   );
+
+  //   const { data } = await supabaseAdmin
+  //     .from('order_items')
+  //     .select('quantity, products_sizes(description)')
+  //     .eq('order_id', orderId);
+
+  //   itemsText = data
+  //     ?.map((item) => {
+  //       const itemDescription = Array.isArray(item.products_sizes)
+  //         ? item.products_sizes[0]
+  //         : (item.products_sizes as { description: string });
+
+  //       const finalDescription =
+  //         itemDescription?.description ?? 'Check Supabase';
+
+  //       return `${finalDescription} x ${item.quantity}`;
+  //     })
+  //     .join('\n') || '';
+  // }
+
+  // console.log('itemtext: ', itemsText);
 
   // const itemDescription= Array.isArray(item.product_sizes)
   //       ? item.product_sizes[0]
@@ -48,7 +91,7 @@ export async function notifyTelegram(
         text:
           `📦 New Paid Order\n\nOrder ID: ${orderId}\nCustomer: ${orderAddress.fname} ${orderAddress.lname}\n` +
           `Email: ${contactInfo.email}\nPhone: ${contactInfo.phone}\n\n` +
-          `Shipping Address:\n${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}\n\n` +
+          `Shipping Address:\n${orderAddress.shippingAddress1 || orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postalCode || orderAddress.postal_code}\n\n` +
           `Items:\n${itemsText}`,
       }),
     },

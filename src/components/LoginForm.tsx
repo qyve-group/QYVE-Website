@@ -19,6 +19,32 @@ const LoginForm = () => {
   const searchParams = useSearchParams();
   const [errMessage, setErrMessage] = useState<string>('');
 
+  // Check for OAuth errors from URL
+  React.useEffect(() => {
+    const error = searchParams.get('error');
+    if (error) {
+      switch (error) {
+        case 'auth_failed':
+          setErrMessage('Google authentication failed. Please try again.');
+          break;
+        case 'unexpected':
+          setErrMessage('An unexpected error occurred during authentication.');
+          break;
+        case 'no_code':
+          setErrMessage('Authentication was cancelled or incomplete.');
+          break;
+        case 'implicit_flow_detected':
+          setErrMessage(
+            'OAuth configuration error: implicit flow detected. ' +
+              'Please check Google Cloud Console settings.',
+          );
+          break;
+        default:
+          setErrMessage('Authentication error occurred.');
+      }
+    }
+  }, [searchParams]);
+
   const redirectTo = searchParams.get('redirect') || '/';
 
   const submitForm = async () => {
@@ -80,18 +106,56 @@ const LoginForm = () => {
   //   return randomStr(32);
   // };
 
-  const handleGoogleSignIn = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`,
-        queryParams: {
-          prompt: 'select_account',
-        },
-      },
-    });
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-    // if (error) // console.error*('Gogole Sign-In error: ', error);
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsGoogleLoading(true);
+      setErrMessage('');
+
+      // Get the current domain dynamically for Replit
+      const currentDomain = window.location.origin;
+      // Force consistent domain for production (remove/add www as needed)
+      if (process.env.NODE_ENV === 'production') {
+        // Option A: Force www version
+        // currentDomain = currentDomain.replace('https://', 'https://www.');
+        // Option B: Force non-www version
+        // currentDomain = currentDomain.replace('https://www.', 'https://');
+      }
+
+      const callbackUrl = `${currentDomain}/auth/callback?redirect=${encodeURIComponent(redirectTo)}`;
+
+      console.log('🔍 Google OAuth Debug Info:');
+      console.log('Environment:', process.env.NODE_ENV);
+      console.log('Current domain:', currentDomain);
+      console.log('Callback URL:', callbackUrl);
+      console.log('Redirect to after login:', redirectTo);
+      console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: callbackUrl,
+          queryParams: {
+            prompt: 'select_account',
+            access_type: 'offline',
+            response_type: 'code', // Force authorization code flow
+          },
+        },
+      });
+
+      if (error) {
+        console.error('Google Sign-In error:', error);
+        setErrMessage(`Google sign-in failed: ${error.message}`);
+        setIsGoogleLoading(false);
+      }
+
+      // OAuth redirect will happen automatically
+    } catch (error) {
+      console.error('Unexpected error during Google sign-in:', error);
+      setErrMessage('An unexpected error occurred during Google sign-in');
+      setIsGoogleLoading(false);
+    }
   };
 
   return (
@@ -104,10 +168,20 @@ const LoginForm = () => {
           <div className="space-y-6">
             <div className="">
               <ButtonSecondary
-                className="flex w-full items-center gap-3 border-2 border-black text-black hover:bg-black hover:text-primary"
+                className="flex w-full items-center gap-3 border-2 border-black text-black hover:bg-black hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                 onClick={handleGoogleSignIn}
+                disabled={isGoogleLoading}
               >
-                <FaGoogle className="text-2xl" /> Continue with Google
+                {isGoogleLoading ? (
+                  <>
+                    <div className="size-5 animate-spin rounded-full border-b-2 border-current" />
+                    Connecting to Google...
+                  </>
+                ) : (
+                  <>
+                    <FaGoogle className="text-2xl" /> Continue with Google
+                  </>
+                )}
               </ButtonSecondary>
             </div>
             <div className="relative text-center">

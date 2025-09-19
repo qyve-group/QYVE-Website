@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // import avatar from '@/images/avatar.png';
 import { RiAccountCircleFill } from 'react-icons/ri';
 // import { FaRegBell } from 'react-icons/fa6';
@@ -25,11 +25,58 @@ const MainNav = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isNavigatingToLogin, setIsNavigatingToLogin] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // console.log*('Auth: ', auth);
-  // console.log*('User: ', auth.user?.email);
+  // Debug logs
+  console.log('Auth state:', { user: auth.user, loading: auth.loading });
+  if (auth.user) {
+    console.log('User email:', auth.user.email);
+  }
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  // Close dropdown when mouse moves away with delay to prevent accidental closes
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!dropdownRef.current || !isOpen) return;
+
+      const rect = dropdownRef.current.getBoundingClientRect();
+      const buffer = 80; // increased buffer area around dropdown
+
+      const isOutsideDropdown =
+        event.clientX < rect.left - buffer ||
+        event.clientX > rect.right + buffer ||
+        event.clientY < rect.top - buffer ||
+        event.clientY > rect.bottom + buffer;
+
+      if (isOutsideDropdown) {
+        // Add delay before closing to prevent accidental closes
+        timeoutId = setTimeout(() => {
+          setIsOpen(false);
+        }, 300); // 300ms delay
+      } else {
+        // Clear timeout if mouse comes back into area
+        /* eslint-disable no-lonely-if */
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousemove', handleMouseMove);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [isOpen]);
 
   const handleLogOut = async () => {
     setIsLoggingOut(true); // Start loading
@@ -87,21 +134,33 @@ const MainNav = () => {
         <div className="flex items-center divide-x divide-neutral-300">
           <CartSideBar />
           <div
-            // role="button"
-            // tabIndex={0}
+            ref={dropdownRef}
             className="relative cursor-pointer"
-            // onClick={() => {
-            //   setIsOpen(!isOpen);
-            // }}
-            // onKeyDown={(e) => {
-            //   if (e.key === 'Enter' || e.key === ' ') {
-            //     setIsOpen(!isOpen);
-            //   }
-            // }}
+            onMouseEnter={() => {
+              // Keep dropdown open when hovering over the area
+            }}
+            onMouseLeave={(e) => {
+              // Only close if really moving far away
+              const rect = dropdownRef.current?.getBoundingClientRect();
+              if (rect) {
+                const buffer = 80;
+                const isReallyOutside =
+                  e.clientX < rect.left - buffer ||
+                  e.clientX > rect.right + buffer ||
+                  e.clientY < rect.top - buffer ||
+                  e.clientY > rect.bottom + buffer;
+
+                if (isReallyOutside) {
+                  setTimeout(() => setIsOpen(false), 500);
+                }
+              }
+            }}
           >
-            {auth.loading !== true ? (
-              // {auth.user?.id !== null ? (
+            {auth.user ? (
               <div className="flex items-center gap-2 pl-5">
+                <span className="text-gray-700 mr-2 hidden text-sm font-medium md:block">
+                  Hi, {auth.user.email?.split('@')[0] || 'User'}
+                </span>
                 <ButtonCircle3
                   onClick={() => {
                     setIsOpen(!isOpen);
@@ -114,12 +173,24 @@ const MainNav = () => {
               </div>
             ) : (
               <div className="flex items-center gap-2 pl-5">
-                <Link
-                  href="/login"
-                  className="text-gray-700 hover:bg-gray-100 block px-4 py-2"
-                >
-                  Login
-                </Link>
+                {isNavigatingToLogin ? (
+                  <div className="text-gray-500 flex items-center gap-2 px-4 py-2">
+                    <div className="border-gray-500 size-4 animate-spin rounded-full border-b-2" />
+                    <span className="text-sm">Loading...</span>
+                  </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="text-gray-700 hover:bg-gray-100 block rounded-md px-4 py-2 transition-colors"
+                    onClick={() => {
+                      setIsNavigatingToLogin(true);
+                      // Reset after navigation starts
+                      setTimeout(() => setIsNavigatingToLogin(false), 1500);
+                    }}
+                  >
+                    Login
+                  </Link>
+                )}
               </div>
             )}
             {isOpen && (

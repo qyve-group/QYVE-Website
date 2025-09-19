@@ -1,287 +1,315 @@
 'use client';
 
-// import { CheckCircle, CreditCard, Package, Truck } from 'lucide-react';
+import {
+  CheckCircle,
+  Clock,
+  CreditCard,
+  Package,
+  Truck,
+  XCircle,
+} from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-// import { CheckCircle, Truck, Package, Star, CreditCard } from "lucide-react";
-// import Button from "@/shared/Button/Button";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { supabase } from '@/libs/supabaseClient';
-// import type { CartItem } from '@/store/cartSlice';
 import type { RootState } from '@/store/store';
+import {
+  getShippingStepIndex,
+  getStatusDescription,
+} from '@/utils/orderStatusMapper';
 
 import Loading from '../loading';
-// import { forEach } from 'ramda';
 
-// export default function MyOrders() {
-const ShippingProgress = () => {
-  // const steps = [
-  //   {
-  //     icon: <Package size={32} />,
-  //     label: 'Order Placed',
-  //     date: 'Mar 25, 2025',
-  //     id: 1,
-  //   },
-  //   {
-  //     icon: <CreditCard size={32} />,
-  //     label: 'Paid',
-  //     date: 'Mar 26, 2025',
-  //     id: 2,
-  //   },
-  //   {
-  //     icon: <Truck size={32} />,
-  //     label: 'Shipped Out',
-  //     date: 'Mar 27, 2025',
-  //     id: 3,
-  //   },
-  //   {
-  //     icon: <CheckCircle size={32} />,
-  //     label: 'Order Received',
-  //     date: 'Mar 30, 2025',
-  //     id: 4,
-  //   },
-  //   // { icon: <Star size={32} />, label: "To Rate", date: null },
-  // ];
+interface OrderItem {
+  id: number;
+  order_id: number;
+  product_id: number;
+  product_size_id: number;
+  quantity: number;
+  price: number;
+  name?: string;
+  image?: string;
+  size?: string;
+  color?: string;
+}
 
-  //   export interface CartItem {
-  //     id: number; // product_id
-  //     name: string;
-  //     price: number;
-  //     // image: string;
-  //     product_size: string | null;
-  //     quantity: number;
-  //     image: string;
-  //   }
+interface Order {
+  id: number;
+  total_price: number;
+  subtotal: number;
+  tracking_no: string;
+  status: string;
+  shipping_status: string;
+  created_at: string;
+  delivered_at?: string;
+}
 
-  //   export interface CartState {
-  //     items: CartItem[];
-  //     totalQuantity: number;
-  //     totalPrice: number;
-  //   }
+const ShippingProgress = ({
+  shippingStatus,
+  orderStatus,
+  createdAt,
+  deliveredAt,
+}: {
+  shippingStatus: string;
+  orderStatus: string;
+  createdAt: string;
+  deliveredAt?: string;
+}) => {
+  const steps = [
+    {
+      icon: <Package size={20} />,
+      label: 'Order Placed',
+      status: 'order_placed',
+      color: 'bg-green-500',
+    },
+    {
+      icon: <CreditCard size={20} />,
+      label: 'Payment Confirmed',
+      status: 'payment_confirmed',
+      color: 'bg-blue-500',
+    },
+    {
+      icon: <Package size={20} />,
+      label: 'Processing',
+      status: 'processing',
+      color: 'bg-yellow-500',
+    },
+    {
+      icon: <Truck size={20} />,
+      label: 'Shipped',
+      status: 'shipped',
+      color: 'bg-purple-500',
+    },
+    {
+      icon: <CheckCircle size={20} />,
+      label: 'Delivered',
+      status: 'delivered',
+      color: 'bg-green-600',
+    },
+  ];
 
-  // const info = {
-  //   name: 'Adam Yaqin',
-  //   phone: '0123456789',
-  //   street: '1, Lorong Dahlia, Kg. Sg. Kayu Ara',
-  //   city: 'Petaling Jaya',
-  //   pcode: '46201',
-  //   state: 'Selangor',
-  // };
+  // Get current step index using the status mapper utility
+  const currentStepIndex = getShippingStepIndex(orderStatus, shippingStatus);
+  const statusDescription = getStatusDescription(orderStatus, shippingStatus);
 
-  // const [orderItems, setOrderItems] = useState([
-  //     { image: "image_name", name: "Beige Slides", quantity: 2, price: 70 },
-  //     { image: "image_name_2", name: "Black Jersey", quantity: 3, price: 150 },
-  //     { image: "image_name_3", name: "Black Slides", quantity: 1, price: 35 },
-  //     { image: "image_name_4", name: "Sub-Zero", quantity: 1, price: 200 },
-  // ]);
+  return (
+    <div className="bg-gray-50 rounded-lg p-4">
+      <h4 className="text-gray-800 mb-4 font-semibold">Shipping Progress</h4>
+      <div className="flex items-center justify-between">
+        {steps.map((step, index) => (
+          <div key={step.status} className="flex flex-col items-center">
+            <div
+              className={`flex size-10 items-center justify-center rounded-full text-white transition-colors ${
+                index <= currentStepIndex ? step.color : 'bg-gray-300'
+              }`}
+            >
+              {step.icon}
+            </div>
+            <span
+              className={`mt-2 max-w-16 text-center text-xs ${
+                index <= currentStepIndex
+                  ? 'text-gray-800 font-medium'
+                  : 'text-gray-400'
+              }`}
+            >
+              {step.label}
+            </span>
+            {index < steps.length - 1 && (
+              <div
+                className={`mt-2 h-0.5 w-12 ${
+                  index < currentStepIndex ? 'bg-green-500' : 'bg-gray-300'
+                }`}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="text-gray-600 mt-4 text-sm">
+        <p className="text-gray-700 mb-2 font-medium">{statusDescription}</p>
+        <p>Order placed: {new Date(createdAt).toLocaleDateString()}</p>
+        {deliveredAt && (
+          <p>Delivered: {new Date(deliveredAt).toLocaleDateString()}</p>
+        )}
+      </div>
+    </div>
+  );
+};
 
-  // supabase order_items col
-  // orderItemID: uuid,
-  // order_id: uuid,
-  // product_id: Number,
-  // quantity: Number,
-  // price: number
+const RefundButton = ({
+  orderId,
+  orderStatus,
+  createdAt,
+}: {
+  orderId: number;
+  orderStatus: string;
+  createdAt: string;
+}) => {
+  const isRefundable = () => {
+    // Can only refund delivered orders
+    if (orderStatus !== 'delivered') return false;
 
-  // const [orderId, setOrderId] = useState("");
-  // type ProductColor = { image: string };
-  // type TempCartItem = {
-  //   image: string;
-  //   name: string;
-  //   quantity: number;
-  //   price: number;
-  // };
+    // Calculate days since delivery
+    const deliveryDate = new Date(createdAt);
+    const currentDate = new Date();
+    const daysDifference = Math.floor(
+      (currentDate.getTime() - deliveryDate.getTime()) / (1000 * 3600 * 24),
+    );
 
-  type OrderItem = {
-    id: string; // primary key of order_items table
-    order_id: string;
-    product_size_id: number;
-    quantity: number;
-    price: number;
-    // Add any other columns your `order_items` table has
+    // Allow refund within 7 days of delivery
+    return daysDifference <= 7;
   };
 
-  type ProductSizeDetails = {
-    description: string;
-    size: string;
-    product_colors: {
-      id: number;
-      name: string;
-      image: string;
-    };
-  };
-
-  type OrderItemWithDetails = OrderItem & {
-    product_details: ProductSizeDetails | null;
-  };
-
-  const [orderIds, setOrderIds] = useState<string[]>([]); // Store multiple order IDs
-  const [tracking, setTracking] = useState<string[]>([]); // Store multiple order IDs
-  const [totalPrice, setTotalPrice] = useState<number[]>([]);
-  const [subTotal, setSubTotal] = useState<number[]>([]);
-  const userId = useSelector((state: RootState) => state.auth.user);
-  // const [orderItems, setOrderItems] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const [, setReversedOrderItemsSupabase] = useState<OrderItem[]>([]);
-  const [updatedCartItems, setUpdatedCartItems] = useState<
-    OrderItemWithDetails[]
-  >([]);
-  const [hasOrderItems, setHasOrderItems] = useState(false);
-
-  // const [showFull, setShowFull] = useState(false);
-
-  useEffect(() => {
-    console.log('userId my-order: ', userId?.id);
-    const fetchOrderIds = async () => {
-      const { data, error } = await supabase
-        .from('orders')
-        .select('id, total_price, tracking_no, subtotal')
-        .order('created_at', { ascending: false })
-        .eq('user_id', userId?.id);
-
-      if (error) {
-        console.error('Error fetching order ID my-orders:', error);
-        return;
-      }
-      console.log(data);
-
-      if (!data || data.length === 0) {
-        console.log('No orders found for this user.');
-        setLoading(false);
-        return;
-      }
-      setHasOrderItems(true);
-
-      // setOrderId(data?.id);
-      setOrderIds(data.map((order) => order.id)); // Store multiple order IDs
-      setTracking(data.map((order) => order.tracking_no)); // Store multiple order IDs
-      setTotalPrice(data.map((order) => order.total_price));
-      setSubTotal(data.map((order) => order.subtotal));
-    };
-    // console.log*('totalPrice: ', totalPrice);
-
-    fetchOrderIds();
-  }, []);
-
-  // const [currentStep, setCurrentStep] = useState(0);
-
-  // useEffect(() => {
-  //   const fetchOrderStatus = async () => {
-  //     const { data, error } = await supabase
-  //       .from('orders')
-  //       .select('status')
-  //       .in('id', orderIds);
-
-  //     if (error) {
-  //       // console.error*('Error fetching order status:', error);
-  //       return;
-  //     }
-
-  //     // // Map status to step index
-  //     // const statusIndex = steps.findIndex((step) => step.label === data.status);
-  //     // if (statusIndex !== -1) {
-  //     //     setCurrentStep(statusIndex);
-  //     // }
-  //     // let highestStep = 0;
-  //     // data.forEach((order) => {
-  //     //   const statusIndex = steps.findIndex(
-  //     //     (step) => step.label === order.status,
-  //     //   );
-  //     //   if (statusIndex > highestStep) highestStep = statusIndex;
-  //     // });
-
-  //     // setCurrentStep(highestStep); // Update progress based on highest status
-  //   };
-
-  //   fetchOrderStatus();
-  // }, [orderIds]);
-
-  useEffect(() => {
-    if (!orderIds.length) return; // Ensure orderId is available
-
-    const fetchOrderItems = async () => {
-      setLoading(true); // Step 2: Set loading to true before fetching
-
-      const { data: orderItemsSupabase, error: orderItemsError } =
-        await supabase.from('order_items').select('*').in('order_id', orderIds); // ✅ Fix: Use .in() instead of .eq()
-      if (orderItemsError) {
-        // console.error*('Unable to fetch order items: ', orderItemsError);
-        setLoading(false);
-        return;
-      }
-
-      console.log('orderitemssupabase: ', orderItemsSupabase);
-      const reversedOrderItemsSupabase = [...orderItemsSupabase].reverse();
-      setReversedOrderItemsSupabase([...orderItemsSupabase].reverse());
-
-      const toUpdateCartItems = await Promise.all(
-        reversedOrderItemsSupabase.map(async (item) => {
-          const { data: productInfo, error: productInfoError } = await supabase
-            // <<<<<<< Updated upstream
-            //             .from('products')
-            //             .select('image_cover, name')
-            //             .eq('id', item.product_id)
-            // =======
-            .from('products_sizes')
-            .select('product_colors(*), description, size')
-            .eq('id', item.product_size_id)
-            // >>>>>>> Stashed changes
-            // .single();
-            .maybeSingle();
-
-          if (productInfoError) {
-            // console.error*('Unable to fetch product info:', productInfoError);
-            // return null;
-          }
-          // console.log('productinfo: ', productInfo);
-          // console.log('productinfo description: ', productInfo.description);
-          // console.log(
-          //   'productcolorImage: ',
-          //   productInfo.product_colors[0]?.image ?? 'undefined',
-          // );
-          // console.log('productcolors: ', productInfo.product_colors);
-          // // console.log('productcolorsid: ', productInfo.product_colors?.id);
-          // console.log('productinfo size ', productInfo.size);
-
-          // const productColor = Array.isArray(productInfo.product_colors)
-          //   ? productInfo.product_colors[0]
-          //   : (productInfo.product_colors as { image: string });
-          // const imageUrl = productColor?.image ?? '/qyve-white.png';
-
-          // return {
-          //   image: imageUrl,
-          //   // image: imageUrl,
-
-          //   name: productInfo.description,
-          //   quantity: item.quantity,
-          //   price: item.price,
-          // } as CartItem;
-          return {
-            ...item,
-            product_details: productInfo || null,
-          };
-        }),
+  const handleRefund = () => {
+    if (!isRefundable()) {
+      alert(
+        'Refund period has expired. Refunds are only available within 7 days of delivery.',
       );
+      return;
+    }
 
-      console.log('updatedCartItems: ', toUpdateCartItems);
-      setUpdatedCartItems(toUpdateCartItems);
+    const message = `Hi QYVE team, I would like to request a refund for Order ID: ${orderId}. Please assist me with the refund process.`;
+    const whatsappUrl = `https://wa.me/60123456789?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
 
-      // setOrderItems(
-      //   updatedCartItems.filter((item): item is CartItem => item !== null),
-      // );
-      // console.log(
-      //   'orderItems: ',
-      //   updatedCartItems.filter((item): item is CartItem => item !== null),
-      // );
+  const getDaysRemaining = () => {
+    const deliveryDate = new Date(createdAt);
+    const currentDate = new Date();
+    const daysDifference = Math.floor(
+      (currentDate.getTime() - deliveryDate.getTime()) / (1000 * 3600 * 24),
+    );
+    return Math.max(0, 7 - daysDifference);
+  };
+
+  return (
+    <div className="mt-4">
+      {/* eslint-disable no-nested-ternary */}
+      {isRefundable() ? (
+        <div>
+          <button
+            type="button"
+            onClick={handleRefund}
+            className="rounded-lg bg-red-500 px-4 py-2 text-sm text-white transition-colors hover:bg-red-600"
+          >
+            Request Refund
+          </button>
+          <p className="text-gray-500 mt-1 text-xs">
+            {getDaysRemaining()} days remaining for refund
+          </p>
+        </div>
+      ) : orderStatus === 'delivered' ? (
+        <div className="text-gray-500 flex items-center gap-2">
+          <XCircle size={16} />
+          <span className="text-sm">Refund period expired</span>
+        </div>
+      ) : (
+        <div className="text-gray-500 flex items-center gap-2">
+          <Clock size={16} />
+          <span className="text-sm">Refund available after delivery</span>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default function MyOrders() {
+  const userId = useSelector((state: RootState) => state.auth.user);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [orderItems, setOrderItems] = useState<{ [key: number]: OrderItem[] }>(
+    {},
+  );
+  const [loading, setLoading] = useState(true);
+  const [hasOrderItems, setHasOrderItems] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!userId?.id) return;
+
+    const fetchOrders = async () => {
+      setLoading(true);
+
+      // Fetch orders
+      const { data: ordersData, error: ordersError } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('user_id', userId.id)
+        .order('created_at', { ascending: false });
+
+      if (ordersError) {
+        console.error('Error fetching orders:', ordersError);
+        setLoading(false);
+        return;
+      }
+
+      if (!ordersData || ordersData.length === 0) {
+        setLoading(false);
+        return;
+      }
+
+      setHasOrderItems(true);
+      setOrders(ordersData);
+
+      // Fetch order items for each order
+      const orderIds = ordersData.map((order) => order.id);
+      const { data: itemsData, error: itemsError } = await supabase
+        .from('order_items')
+        .select('*')
+        .in('order_id', orderIds);
+
+      if (itemsError) {
+        console.error('Error fetching order items:', itemsError);
+        setLoading(false);
+        return;
+      }
+
+      // Group items by order_id and fetch product details
+      const groupedItems: { [key: number]: OrderItem[] } = {};
+
+      for (const item of itemsData || []) {
+        if (!groupedItems[item.order_id]) {
+          groupedItems[item.order_id] = [];
+        }
+
+        // Fetch product details
+        /* eslint-disable no-await-in-loop */
+        const { data: productData } = await supabase
+          .from('products_sizes')
+          .select(
+            `
+            size,
+            product_colors!inner(color, image),
+            products!inner(name, image_cover)
+          `,
+          )
+          .eq('id', item.product_size_id)
+          .single();
+
+        const enrichedItem = {
+          ...item,
+          name: (productData as any)?.products?.name || 'Unknown Product',
+          image:
+            (productData as any)?.product_colors?.image ||
+            (productData as any)?.products?.image_cover ||
+            '/placeholder.jpg',
+          size: (productData as any)?.size || 'N/A',
+          color: (productData as any)?.product_colors?.color || 'N/A',
+        };
+
+        if (enrichedItem) {
+          groupedItems[item.order_id]?.push(enrichedItem);
+        }
+      }
+
+      setOrderItems(groupedItems);
       setLoading(false);
     };
 
-    fetchOrderItems();
-  }, [orderIds]);
+    fetchOrders();
+  }, [userId?.id]);
 
-  const router = useRouter();
+  if (loading) return <Loading />;
 
   return (
     <div className="bg-gray-100 min-h-screen py-10">
@@ -304,13 +332,11 @@ const ShippingProgress = () => {
             You have no orders
           </h2>
           <p className="text-gray-500 mt-2 text-sm">
-            Looks like you haven’t placed any orders yet.
+            Looks like you haven&apos;t placed any orders yet.
           </p>
           <button
             type="button"
-            onClick={() => {
-              window.location.href = '/shop';
-            }}
+            onClick={() => router.push('/shop')}
             className="mt-6 rounded-lg bg-primary px-4 py-2 text-black transition hover:bg-black hover:text-primary"
           >
             Start Shopping
@@ -322,301 +348,119 @@ const ShippingProgress = () => {
             <button
               type="button"
               onClick={() => router.back()}
-              className="text-gray-700 flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium shadow-sm transition-all hover:bg-customGray-300 hover:shadow-md"
+              className="text-gray-700 hover:bg-gray-300 flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium shadow-sm transition-all hover:shadow-md"
             >
               <span className="text-lg">←</span>
               Back
             </button>
           </div>
 
-          {loading ? (
-            <Loading />
-          ) : (
-            orderIds.map((orderId, idx) => {
-              const itemsForOrder = updatedCartItems.filter(
-                (item) => item.order_id === orderId,
-              );
+          <h1 className="text-gray-900 text-2xl font-bold">My Orders</h1>
 
-              return (
-                <div
-                  key={orderId}
-                  className="border-gray-200 space-y-6 rounded-lg border bg-white p-6 shadow-md"
-                >
-                  {/* Order Header */}
-                  <div className="border-b pb-4">
-                    <p className="text-gray-700 text-sm font-semibold">
-                      Order ID:{' '}
-                      <span className="italic text-customGray-800">
-                        {orderId}
-                      </span>
-                    </p>
-                    <p className="text-gray-700 mt-2 text-sm font-semibold">
-                      Tracking Number:{' '}
-                      <span className="italic text-customGray-800">
-                        {tracking[idx] && tracking[idx].trim() !== ''
-                          ? tracking[idx]
-                          : 'Processing'}
-                      </span>
-                    </p>
-                  </div>
+          {orders.map((order) => {
+            const items = orderItems[order.id] || [];
 
-                  {/* Items */}
-                  <div className="space-y-4">
-                    {itemsForOrder.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center justify-between gap-4"
-                      >
-                        <Image
-                          src={
-                            item.product_details?.product_colors.image ??
-                            '/qyve-black.png'
-                          }
-                          alt={
-                            item.product_details?.description ?? 'Product Image'
-                          }
-                          width={400}
-                          height={400}
-                          className="size-16 rounded-md border object-cover"
-                        />
-
-                        <div className="flex-1">
-                          <p className="text-gray-800 font-medium">
-                            {item.product_details?.description}
-                          </p>
-                        </div>
-
-                        <div className="text-right text-sm">
-                          <p className="text-gray-600">Qty: {item.quantity}</p>
-                          <p className="text-gray-900 font-bold">
-                            RM {item.price}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Summary */}
-                  <div className="text-gray-700 space-y-2 border-t pt-4 text-sm">
-                    <div className="flex justify-between font-semibold">
-                      <span>Subtotal</span>
-                      <span>RM {subTotal[idx]}</span>
+            return (
+              <div
+                key={order.id}
+                className="border-gray-200 space-y-6 rounded-lg border bg-white p-6 shadow-md"
+              >
+                {/* Order Header */}
+                <div className="border-b pb-4">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-gray-700 text-sm font-semibold">
+                        Order ID:{' '}
+                        <span className="text-gray-800 italic">{order.id}</span>
+                      </p>
+                      {order.tracking_no && (
+                        <p className="text-gray-700 mt-1 text-sm font-semibold">
+                          Tracking Number:{' '}
+                          <span className="text-gray-800 italic">
+                            {order.tracking_no}
+                          </span>
+                        </p>
+                      )}
                     </div>
-                    {/* <div className="flex justify-between">
-                      <span>Shipping Fee</span>
-                      <span>
-                        RM {(totalPrice[idx] ?? 0) - (subTotal[idx] ?? 0)}
-                      </span>
-                    </div> */}
-                    <div className="flex justify-end">
-                      <span>+ Shipping Fee</span>
-                      {/* <span>
-                        RM {(totalPrice[idx] ?? 0) - (subTotal[idx] ?? 0)}
-                      </span> */}
-                    </div>
-                    <div className="flex justify-between text-base font-bold">
-                      <span>Order Total</span>
-                      <span>RM {totalPrice[idx] ?? 0}</span>
-                    </div>
-
-                    {/* Refund Button */}
-                    <div className="mt-4 flex justify-end">
-                      <button
-                        type="button"
-                        className="rounded-lg bg-red-500 p-2 text-white"
-                        onClick={() => {
-                          alert(
-                            'You will now be redirected to WhatsApp to request a refund.',
-                          );
-                          window.open(
-                            `https://wa.me/601160974239?text=Hi,%20I%20would%20like%20to%20request%20a%20refund%20for%20my%20order:%20${orderId}`,
-                            '_blank',
-                          );
-                        }}
-                      >
-                        Refund
-                      </button>
+                    <div className="text-right">
+                      <p className="text-gray-900 text-lg font-bold">
+                        RM {order.total_price}
+                      </p>
+                      <p className="text-gray-500 text-sm">
+                        {new Date(order.created_at).toLocaleDateString()}
+                      </p>
                     </div>
                   </div>
                 </div>
-              );
-            })
-          )}
+
+                {/* Shipping Progress */}
+                <ShippingProgress
+                  shippingStatus={order.shipping_status}
+                  orderStatus={order.status}
+                  createdAt={order.created_at}
+                  deliveredAt={order.delivered_at}
+                />
+
+                {/* Order Items */}
+                <div className="space-y-4">
+                  <h4 className="text-gray-800 font-semibold">Items Ordered</h4>
+                  {items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="bg-gray-50 flex items-center gap-4 rounded-lg p-4"
+                    >
+                      <div className="relative size-16 overflow-hidden rounded-lg">
+                        <Image
+                          src={item.image || '/placeholder.jpg'}
+                          alt={item.name || 'Product'}
+                          fill
+                          className="object-cover"
+                          sizes="64px"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <h5 className="text-gray-900 font-medium">
+                          {item.name}
+                        </h5>
+                        <p className="text-gray-600 text-sm">
+                          Size: {item.size} | Color: {item.color}
+                        </p>
+                        <p className="text-gray-600 text-sm">
+                          Quantity: {item.quantity}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-gray-900 font-semibold">
+                          RM {item.price}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Order Summary */}
+                <div className="border-t pt-4">
+                  <div className="flex justify-between text-sm">
+                    <span>Subtotal:</span>
+                    <span>RM {order.subtotal}</span>
+                  </div>
+                  <div className="mt-2 flex justify-between text-lg font-bold">
+                    <span>Total:</span>
+                    <span>RM {order.total_price}</span>
+                  </div>
+                </div>
+
+                {/* Refund Button */}
+                <RefundButton
+                  orderId={order.id}
+                  orderStatus={order.shipping_status}
+                  createdAt={order.delivered_at || order.created_at}
+                />
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
   );
-
-  // return (
-  //   <div className="max-h-900 space-y-3 overflow-y-auto bg-gray">
-  //     <div className="px-6 pt-4">
-  //       <button
-  //         type="button"
-  //         onClick={() => router.back()}
-  //         className="flex items-center text-sm text-blue-600 hover:underline"
-  //       >
-  //         ← Back
-  //       </button>
-  //     </div>
-  //     <section className="px-6 pt-3">
-  //       <div className="relative mx-auto flex max-h-[120px] max-w-md flex-row items-center justify-between rounded-xl bg-white p-6 shadow-lg">
-  //         <div className="bg-gray-400 absolute left-0 top-[45px] z-0 h-[3px] w-full -translate-y-[200%] border-2 sm:size-[5px] sm:h-full sm:translate-y-0" />
-
-  //         <div
-  //           className="absolute left-0 top-[45px] h-[3px] -translate-y-[200%] bg-green-300 transition-all duration-300 sm:h-[5px] sm:translate-y-0"
-  //           style={{
-  //             width: `${(currentStep / (steps.length - 1)) * 100 + 1}%`,
-  //           }}
-  //         >
-
-  //         </div>
-
-  //         {steps.map((step, index) => (
-  //           <div
-  //             key={step.id}
-  //             className="relative flex min-h-[70px] w-[50px] flex-col items-center"
-  //           >
-  //             <div
-  //               className={`md:w-13 md:h-13 flex size-8 items-center justify-center rounded-full p-2 transition-all duration-300
-
-  //                           ${index <= currentStep ? 'bg-green-600 text-white' : 'border-gray-400 border-2 bg-white text-customGray-400'}`}
-  //             >
-  //               {step.icon}
-  //             </div>
-
-  //             <div
-  //               className={`mt-1 text-center text-xs font-semibold
-  //                           ${index <= currentStep ? 'text-green-500' : 'text-customGray-400'}`}
-  //             >
-  //               {step.label}
-  //             </div>
-  //           </div>
-  //         ))}
-  //       </div>
-  //     </section>
-
-  //     <section className="px-6 text-black">
-  //       <div className="mx-auto flex w-full max-w-md flex-row gap-20 rounded-lg bg-white px-6 py-2 shadow-lg">
-  //         <div className="flex flex-col text-sm">
-  //           <p className="font-bold">Flash Express</p>
-  //           <div className="mt-2 flex items-center gap-2">
-  //             <p>{trackingCode}</p>
-  //             <button
-  //               type="button"
-  //               onClick={handleCopy}
-  //               className="text-gray-500 text-xs hover:text-black"
-  //               title="Copy tracking code"
-  //             >
-  //               📋
-  //             </button>
-  //             {copied && (
-  //               <span className="text-xs text-green-500">Copied!</span>
-  //             )}
-  //           </div>
-  //         </div>
-
-  //         <div className="flex flex-col justify-end">
-  //           <p className="cursor-pointer text-sm text-blue-600">
-  //             See shipping details
-  //           </p>
-  //         </div>
-  //       </div>
-  //     </section>
-
-  //     <section className="px-6 text-black">
-  //       <div className="border-gray-200 mx-auto grid w-full max-w-md grid-cols-2 gap-6 rounded-xl border bg-white p-6 shadow-md">
-  //         <div className="flex flex-col justify-start">
-  //           <p className="mb-2 text-sm font-semibold">Recipient Info</p>
-  //           <p className="text-gray-800 text-sm">{info.name}</p>
-  //           <p className="text-gray-800 mt-2 text-sm">{info.phone}</p>
-  //         </div>
-
-  //         <div className="flex flex-col justify-start">
-  //           <p className="mb-2 text-sm font-semibold">Delivery Address</p>
-  //           <p className="text-gray-800 text-sm">{info.street}</p>
-  //           <p className="text-gray-800 text-sm">
-  //             {info.city}, {info.pcode}
-  //           </p>
-  //           <p className="text-gray-800 text-sm">{info.state}</p>
-  //         </div>
-  //       </div>
-  //     </section>
-
-  //     <section className="px-6 py-8">
-  //       <div className="rounded-lg bg-white p-6 shadow-lg space-y-10">
-  //         {loading ? (
-  //           <Loading />
-  //         ) : (
-  //           orderIds.map((orderId, idx) => (
-  //             <div
-  //               key={orderId}
-  //               className="space-y-6 border-t first:border-t-0 pt-6"
-  //             >
-  //               <div className="space-y-1">
-  //                 <p className="text-sm font-bold">Order ID: {orderId}</p>
-  //                 <p className="text-sm font-bold">
-  //                   Tracking Number: {orderId}
-  //                 </p>
-  //               </div>
-
-  //               <div className="space-y-4">
-  //                 {orderItems.map((item) => (
-  //                   <div
-  //                     key={item.id}
-  //                     className="flex items-center justify-between"
-  //                   >
-  //                     <Image
-  //                       src={item.image}
-  //                       alt={item.name}
-  //                       width={400}
-  //                       height={400}
-  //                       className="size-16 rounded-md object-cover"
-  //                     />
-
-  //                     <div className="ml-4 flex-1">
-  //                       <p className="font-medium">{item.name}</p>
-  //                     </div>
-
-  //                     <div className="text-right text-sm space-y-1">
-  //                       <div className="text-gray-600">
-  //                         Qty: {item.quantity}
-  //                       </div>
-  //                       <div className="font-bold text-gray-800">
-  //                         RM {item.price}
-  //                       </div>
-  //                     </div>
-  //                   </div>
-  //                 ))}
-  //               </div>
-
-  //               <div className="space-y-2 border-t pt-4 text-sm text-gray-700">
-  //                 <div className="flex justify-between font-semibold">
-  //                   <span>Merchandise Subtotal</span>
-  //                   <span>RM {totalPrice[idx]}</span>
-  //                 </div>
-  //                 <div className="flex justify-between">
-  //                   <span>Shipping Fee + SST</span>
-  //                   <span>RM 5</span>
-  //                 </div>
-  //                 <div className="flex justify-between text-base font-bold">
-  //                   <span>Order Total</span>
-  //                   <span>RM {(totalPrice[idx] ?? 0) + 5}</span>
-  //                 </div>
-  //                 <div className="mt-2 flex justify-between text-xs">
-  //                   <span>Payment Method</span>
-  //                   <span>Credit / Debit Card</span>
-  //                 </div>
-  //               </div>
-  //             </div>
-  //           ))
-  //         )}
-  //       </div>
-  //     </section>
-
-  //   </div>
-  // );
-};
-
-ShippingProgress.hideFooter = true;
-
-export default ShippingProgress;
+}

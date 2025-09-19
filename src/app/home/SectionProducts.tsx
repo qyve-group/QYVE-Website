@@ -34,18 +34,73 @@ const SectionProducts = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .in('id', [7, 9, 6]);
+      // Check if we have valid Supabase credentials
+      if (
+        !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+        process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')
+      ) {
+        console.log('Using demo products - Supabase not configured');
+        // Use demo products
+        setProducts([
+          {
+            id: 7,
+            name: 'Demo Product 1',
+            description: 'Demo description',
+            price: 99,
+            stock: 10,
+            category_id: 1,
+            created_at: new Date(),
+            slug: 'demo-1',
+            previous_price: 120,
+            image_cover: '/socks_black.png',
+            colors: ['black'],
+          },
+          {
+            id: 9,
+            name: 'Demo Product 2',
+            description: 'Demo description',
+            price: 89,
+            stock: 5,
+            category_id: 1,
+            created_at: new Date(),
+            slug: 'demo-2',
+            previous_price: 110,
+            image_cover: '/socks_white.png',
+            colors: ['white'],
+          },
+          {
+            id: 6,
+            name: 'Demo Product 3',
+            description: 'Demo description',
+            price: 79,
+            stock: 8,
+            category_id: 1,
+            created_at: new Date(),
+            slug: 'demo-3',
+            previous_price: 100,
+            image_cover: '/jersey_pic.jpg',
+            colors: ['blue'],
+          },
+        ]);
+        return;
+      }
 
-      // console.log*('Fetched products:', data);
-      // console.log*('Supabase error:', error);
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .in('id', [7, 9, 6]);
 
-      if (error) {
-        // console.error*('Error fetching products: ', error);
-      } else {
-        setProducts(data);
+        if (error) {
+          console.error('Error fetching products: ', error);
+          // Fallback to demo products on error
+          setProducts([]);
+        } else {
+          setProducts(data);
+        }
+      } catch (err) {
+        console.error('Failed to connect to Supabase:', err);
+        setProducts([]);
       }
     };
 
