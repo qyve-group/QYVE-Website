@@ -4,6 +4,7 @@ import React from 'react';
 
 import { supabase } from '@/libs/supabaseClient';
 import Heading from '@/shared/Heading/Heading';
+import ComingSoon from '@/components/ComingSoon';
 
 interface BlogPost {
   id: number;
@@ -20,8 +21,13 @@ const getBlogPosts = async (): Promise<BlogPost[]> => {
     const { data, error } = await supabase
       .from('blog_posts')
       .select('id, title, slug, excerpt, author, featured_image, created_at')
-      .eq('published', true)
+      .is('published', true)
+      // .filter('published', 'eq', true)
+      // .eq('published', true)
+      // .not('published', 'is', null)
       .order('created_at', { ascending: false });
+
+    // console.log('blog posts: ', data);
 
     if (error) {
       console.error('Error fetching blog posts:', error);
@@ -112,9 +118,10 @@ const BlogPage = async () => {
         </div>
       ) : (
         <div className="mt-12 text-center">
-          <p className="text-gray-500">
+          <ComingSoon />
+          {/* <p className="text-gray-500">
             No blog posts available at the moment.
-          </p>
+          </p> */}
         </div>
       )}
     </div>
