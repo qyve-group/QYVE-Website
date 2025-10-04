@@ -606,10 +606,11 @@ export async function POST(req: Request) {
         // Don't fail the webhook for shipping errors
       }
 
-    console.log(
-      '✅ Webhook processing completed successfully for order:',
-      orderId,
-    );
+      console.log(
+        '✅ Webhook processing completed successfully for order:',
+        orderId,
+      );
+    }
   }
 
   return NextResponse.json({ received: true });
