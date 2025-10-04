@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { LuFilter } from 'react-icons/lu';
 
 import { filters } from '@/data/content';
