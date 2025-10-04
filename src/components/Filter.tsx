@@ -7,11 +7,7 @@ import Button from '@/shared/Button/Button';
 import Select from '@/shared/Select/Select';
 
 const Filter = () => {
-  const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>({});
-
   const handleFilterChange = (filterType: string, value: string) => {
-    setSelectedFilters(prev => ({ ...prev, [filterType]: value }));
-    
     // Track filter usage
     if (value && value !== filterType) { // Don't track the default option
       trackFilterUsage(filterType, value, 'shop');
