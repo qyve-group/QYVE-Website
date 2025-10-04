@@ -135,7 +135,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
     }
 
     trackAddToCart({
-      item_id: selectedProductSizeId,
+      item_id: selectedProductSizeId || 'unknown',
       item_name: `${selectedColor}`,
       price,
       quantity: 1,
@@ -168,7 +168,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
     }
 
     trackAddToCart({
-      item_id: selectedProductSizeId,
+      item_id: selectedProductSizeId || 'unknown',
       item_name: `${selectedColor}`,
       price,
       quantity: 1,
