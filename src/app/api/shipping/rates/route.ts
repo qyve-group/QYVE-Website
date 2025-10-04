@@ -4,7 +4,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getShippingRates } from '@/lib/easyparcel-service';
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const body = await req.json();
     const { from, to, parcel } = body;
