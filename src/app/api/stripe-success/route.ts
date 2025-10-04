@@ -17,7 +17,7 @@ const stripeSecretKey = isDevEnvironment
 const stripe = new Stripe(stripeSecretKey!, {
   apiVersion: '2025-06-30.basil', // ✅ required for proper types
 });
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<NextResponse> {
   const sessionId = req.nextUrl.searchParams.get('session_id');
 
   if (!sessionId) {

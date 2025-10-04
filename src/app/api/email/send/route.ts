@@ -12,7 +12,7 @@ interface SendEmailRequest {
 }
 
 // Send email endpoint
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const body: SendEmailRequest = await req.json();
     const { type, data } = body;
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
 }
 
 // Test email endpoint
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(req.url);
     const testEmail = searchParams.get('email');

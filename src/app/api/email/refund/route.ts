@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sendRefundConfirmation } from '@/lib/email-service';
 import { RefundData } from '@/lib/email-templates';
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const body = await req.json();
     const { orderId, customerEmail, customerName, refundAmount, reason } = body;
