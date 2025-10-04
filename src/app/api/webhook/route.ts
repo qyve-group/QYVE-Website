@@ -551,31 +551,44 @@ export async function POST(req: Request) {
 
       console.log('📨 Formatted order items text:', orderItemsText);
 
-      const email = new SendSmtpEmail();
-      email.templateId = 4; // 👈 replace with your Brevo template ID
-      email.to = [{ email: customerEmail as string }];
-      email.params = {
-        subject: 'Your Order Confirmation',
-        // parameter: "Thanks for your order!", // maps to {{params.parameter}} in template
-        orderId,
-        customerName,
-        customerAddress: `${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}`,
-        // amount: session.amount_total ? session.amount_total / 100 : "N/A",
-      };
+      // Send order confirmation email using new email service
+      try {
+        const orderData = {
+          orderId,
+          customerName,
+          customerEmail: customerEmail as string,
+          totalAmount: session.amount_total ? session.amount_total / 100 : 0,
+          currency: 'MYR',
+          items: cartItems.map((item: any) => ({
+            name: item.products_sizes?.product_colors?.products?.name || 'Product',
+            quantity: item.quantity,
+            price: item.price,
+            size: item.products_sizes?.size || 'N/A',
+            color: item.products_sizes?.product_colors?.color || 'N/A',
+          })),
+          shippingAddress: {
+            line1: orderAddress.shipping_address_1,
+            line2: orderAddress.shipping_address_2,
+            city: orderAddress.city,
+            state: orderAddress.state,
+            postalCode: orderAddress.postal_code,
+            country: orderAddress.country,
+          },
+        };
 
-      // try {
-      await brevoClient.sendTransacEmail(email);
-      console.log(
-        '✅ Order confirmation email sent to:',
-        session.customer_email,
-      );
-      // } catch (error) {
-      //   console.error("❌ Failed to send Brevo email:", error);
-    } catch (emailError) {
-      console.error('❌ Email receipt failed (non-critical):', emailError);
-      console.error('❌ Email error stack:', (emailError as Error).stack);
-      // Don't fail the webhook for email errors
-    }
+        const { sendOrderConfirmation } = await import('@/lib/email-service');
+        const emailResult = await sendOrderConfirmation(orderData);
+        
+        if (emailResult.success) {
+          console.log('✅ Order confirmation email sent successfully');
+        } else {
+          console.error('❌ Failed to send order confirmation email:', emailResult.error);
+        }
+      } catch (emailError) {
+        console.error('❌ Email receipt failed (non-critical):', emailError);
+        console.error('❌ Email error stack:', (emailError as Error).stack);
+        // Don't fail the webhook for email errors
+      }
 
     console.log(
       '✅ Webhook processing completed successfully for order:',
