@@ -76,6 +76,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { trackPurchase } from '@/lib/gtag';
 
 const PaymentSuccess = () => {
   const searchParams = useSearchParams();
@@ -91,10 +92,51 @@ const PaymentSuccess = () => {
     async function fetchData() {
       if (!sessionId) return;
 
-      const res = await fetch(`/api/stripe-success?session_id=${sessionId}`);
-      const data = await res.json();
+      try {
+        // Get transaction details
+        const res = await fetch(`/api/stripe-success?session_id=${sessionId}`);
+        const transactionData = await res.json();
+        setTransaction(transactionData);
 
-      setTransaction(data);
+        // Get detailed order information for GA tracking
+        const orderRes = await fetch(`/api/order-details?session_id=${sessionId}`);
+        const orderData = await orderRes.json();
+
+        // Track purchase event with detailed item information
+        if (orderData && orderData.total_value) {
+          trackPurchase({
+            transaction_id: sessionId,
+            value: orderData.total_value,
+            currency: orderData.currency || 'MYR',
+            items: orderData.items || [{
+              item_id: 'purchase',
+              item_name: 'Order',
+              price: orderData.total_value,
+              quantity: 1,
+              item_category: 'Apparel',
+              item_brand: 'QYVE',
+            }],
+          });
+        } else if (transactionData && transactionData.amount) {
+          // Fallback to basic tracking if detailed order not available
+          trackPurchase({
+            transaction_id: sessionId,
+            value: parseFloat(transactionData.amount),
+            currency: 'MYR',
+            items: [{
+              item_id: 'purchase',
+              item_name: 'Order',
+              price: parseFloat(transactionData.amount),
+              quantity: 1,
+              item_category: 'Apparel',
+              item_brand: 'QYVE',
+            }],
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching order data:', error);
+        // Still show the success page even if tracking fails
+      }
     }
 
     fetchData();

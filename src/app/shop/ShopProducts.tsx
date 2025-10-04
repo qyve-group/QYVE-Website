@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-// import Filter from '@/components/Filter';
+import Filter from '@/components/Filter';
 import ProductCard from '@/components/ProductCard';
 import { productsSection } from '@/data/content';
 import { supabase } from '@/libs/supabaseClient';
@@ -191,7 +191,7 @@ const ShopProducts = () => {
           Products
         </div>
       </Heading>
-      {/* <Filter /> */}
+      <Filter />
 
       <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
         {products && products.length > 0 ? (

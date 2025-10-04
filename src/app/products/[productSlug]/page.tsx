@@ -2,7 +2,7 @@
 import { pathOr } from 'ramda';
 import React from 'react';
 
-import { event } from '@/lib/gtag';
+import { trackProductView } from '@/lib/gtag';
 // import { useEffect, useState } from "react";
 // import { shoes } from "@/data/content";
 import { supabase } from '@/libs/supabaseClient';
@@ -133,31 +133,14 @@ const SingleProductPage = async ({ params }: Props) => {
   const selectedProduct = await getProductData(params.productSlug);
   console.log('selected Product: ', selectedProduct);
 
-  event('view_item', {
+  trackProductView({
+    item_id: selectedProduct?.id,
+    item_name: selectedProduct?.name,
+    price: selectedProduct?.price,
     currency: 'MYR',
-    value: selectedProduct?.price,
-    items: [
-      {
-        item_id: selectedProduct?.id,
-        item_name: selectedProduct?.name,
-        // affiliation: "Google Merchandise Store",
-        // coupon: "SUMMER_FUN",
-        // discount: 2.22,
-        // index: 0,
-        // item_brand: "Google",
-        // item_category: "Apparel",
-        // item_category2: "Adult",
-        // item_category3: "Shirts",
-        // item_category4: "Crew",
-        // item_category5: "Short sleeve",
-        // item_list_id: "related_products",
-        // item_list_name: "Related Products",
-        // item_variant: "green",
-        // location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
-        // price: selectedProduct?.price,
-        // quantity: 3
-      },
-    ],
+    item_category: 'Apparel',
+    item_brand: 'QYVE',
+    image_url: selectedProduct?.image_cover,
   });
 
   return (

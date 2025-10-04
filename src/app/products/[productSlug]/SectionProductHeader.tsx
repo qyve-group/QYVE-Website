@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 
 import ImageShowCase from '@/components/ImageShowCase';
 import ShoeSizeButton from '@/components/ShoeSizeButton';
-import { event } from '@/lib/gtag';
+import { trackAddToCart } from '@/lib/gtag';
 // import { shoeSizes } from "@/data/content";
 // import nike_profile from '@/images/nike_profile.jpg';
 // import ButtonCircle3 from '@/shared/Button/ButtonCircle3';
@@ -134,21 +134,16 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       return;
     }
 
-    event('add_to_cart', {
+    trackAddToCart({
+      item_id: selectedProductSizeId,
+      item_name: `${selectedColor}`,
+      price,
+      quantity: 1,
       currency: 'MYR',
-      value: price,
-      items: [
-        {
-          item_id: selectedProductSizeId,
-          item_name: `${selectedColor}`,
-          price,
-          quantity: 1,
-          item_variant: selectedSize,
-          // item_brand: 'YourBrandName', // optional but recommended
-          // item_category: 'Shoes', // or your product category
-          image_url: selectedImage, // optional for reports
-        },
-      ],
+      item_category: 'Apparel',
+      item_brand: 'QYVE',
+      item_variant: selectedSize,
+      image_url: selectedImage,
     });
 
     dispatch(
@@ -172,21 +167,16 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       return;
     }
 
-    event('add_to_cart', {
+    trackAddToCart({
+      item_id: selectedProductSizeId,
+      item_name: `${selectedColor}`,
+      price,
+      quantity: 1,
       currency: 'MYR',
-      value: price,
-      items: [
-        {
-          item_id: selectedProductSizeId,
-          item_name: `${selectedColor}`,
-          price,
-          quantity: 1,
-          item_variant: selectedSize,
-          // item_brand: 'YourBrandName', // optional but recommended
-          // item_category: 'Shoes', // or your product category
-          image_url: selectedImage, // optional for reports
-        },
-      ],
+      item_category: 'Apparel',
+      item_brand: 'QYVE',
+      item_variant: selectedSize,
+      image_url: selectedImage,
     });
 
     dispatch(

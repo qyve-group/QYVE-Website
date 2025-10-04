@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { trackBeginCheckout } from '@/lib/gtag';
 import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import type { CartItem } from '@/store/cartSlice';
 import type { RootState } from '@/store/store';
@@ -92,6 +93,23 @@ export default function CheckoutButton({
 
     try {
       setLoading(true);
+      
+      // Track begin checkout event
+      const totalValue = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) + shippingPrice;
+      trackBeginCheckout(
+        cartItems.map(item => ({
+          item_id: item.id,
+          item_name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          item_category: 'Apparel',
+          item_brand: 'QYVE',
+          item_variant: item.product_size,
+        })),
+        totalValue,
+        'MYR'
+      );
+      
       // console.log*('Checkout button clicked');
       console.log('Sending checkout body', {
         userId,
