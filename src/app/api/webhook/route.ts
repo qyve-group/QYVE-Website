@@ -590,6 +590,22 @@ export async function POST(req: Request) {
         // Don't fail the webhook for email errors
       }
 
+      // Auto-create shipment if enabled
+      try {
+        const { autoCreateOrderShipment } = await import('@/lib/automated-shipping');
+        const shippingResult = await autoCreateOrderShipment(orderData);
+        
+        if (shippingResult.success) {
+          console.log('✅ Automated shipment created:', shippingResult.trackingNumber);
+        } else {
+          console.error('❌ Failed to create automated shipment:', shippingResult.error);
+          // Don't fail the webhook for shipping errors
+        }
+      } catch (shippingError) {
+        console.error('❌ Automated shipping failed (non-critical):', shippingError);
+        // Don't fail the webhook for shipping errors
+      }
+
     console.log(
       '✅ Webhook processing completed successfully for order:',
       orderId,
