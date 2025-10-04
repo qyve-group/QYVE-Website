@@ -142,14 +142,6 @@ export async function POST(req: Request) {
 
       console.log('✅ Order items created successfully');
 
-      const customerEmail = isGuestCheckout
-        ? contactInfo.email
-        : session.customer_details?.email;
-
-      const customerName = isGuestCheckout
-        ? contactInfo.name
-        : session.customer_details?.name;
-
       console.log('✅ Webhook processing completed successfully for order:', orderId);
     } catch (error) {
       console.error('❌ Failed to process order:', error);
