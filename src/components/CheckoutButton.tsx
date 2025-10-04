@@ -104,7 +104,7 @@ export default function CheckoutButton({
           quantity: item.quantity,
           item_category: 'Apparel',
           item_brand: 'QYVE',
-          item_variant: item.product_size,
+          item_variant: item.product_size || undefined,
         })),
         totalValue,
         'MYR'
