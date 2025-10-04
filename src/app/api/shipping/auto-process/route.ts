@@ -1,10 +1,10 @@
 // Auto-process shipping API endpoint
 // Automatically create shipments for pending orders
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { processPendingOrders } from '@/lib/automated-shipping';
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     console.log('📦 Starting automated shipping process...');
     
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
 }
 
 // Get status of automated shipping
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     // This could be enhanced to show shipping statistics
     return NextResponse.json({
