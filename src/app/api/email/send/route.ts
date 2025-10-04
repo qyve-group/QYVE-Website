@@ -9,14 +9,13 @@ import { OrderData, RefundData } from '@/lib/email-templates';
 interface SendEmailRequest {
   type: EmailType;
   data: OrderData | RefundData;
-  testMode?: boolean;
 }
 
 // Send email endpoint
 export async function POST(req: NextRequest) {
   try {
     const body: SendEmailRequest = await req.json();
-    const { type, data, testMode = false } = body;
+    const { type, data } = body;
 
     // Validate request
     if (!type || !data) {
