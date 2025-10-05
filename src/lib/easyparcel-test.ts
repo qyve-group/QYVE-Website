@@ -119,8 +119,8 @@ export const testCreateShipment = async () => {
       from,
       to,
       parcel,
-      bestRate.courier,
-      bestRate.service,
+      bestRate?.courier ?? '',
+      bestRate?.service ?? '',
     );
 
     if (result.success) {

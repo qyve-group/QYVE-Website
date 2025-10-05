@@ -29,7 +29,7 @@ interface ParcelDetails {
   value: number; // in MYR
 }
 
-interface ShippingRate {
+export interface ShippingRate {
   courier: string;
   service: string;
   price: number;
@@ -37,7 +37,7 @@ interface ShippingRate {
   trackingNumber?: string;
 }
 
-interface ShipmentResult {
+export interface ShipmentResult {
   success: boolean;
   trackingNumber?: string;
   courier?: string;
@@ -47,7 +47,7 @@ interface ShipmentResult {
   error?: string;
 }
 
-interface TrackingResult {
+export interface TrackingResult {
   success: boolean;
   status?: string;
   location?: string;
