@@ -246,6 +246,7 @@ export class EmailService {
     attempt: number = 1,
   ): Promise<EmailResult> {
     try {
+      // TODO: Brevo's sendTransacEmail response does not have messageId
       const result = await brevoClient.sendTransacEmail(email);
 
       return {
