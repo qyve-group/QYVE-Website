@@ -1,19 +1,31 @@
 // Order cancellation API endpoint
 // Sends cancellation notification emails
 
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
 import { sendOrderCancellation } from '@/lib/email-service';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const body = await req.json();
-    const { orderId, reason, customerEmail, customerName, totalAmount, items, shippingAddress } = body;
+    const {
+      orderId,
+      reason,
+      customerEmail,
+      customerName,
+      totalAmount,
+      items,
+      shippingAddress,
+    } = body;
 
     // Validate required fields
     if (!orderId || !reason || !customerEmail) {
       return NextResponse.json(
-        { error: 'Missing required fields: orderId, reason, and customerEmail' },
-        { status: 400 }
+        {
+          error: 'Missing required fields: orderId, reason, and customerEmail',
+        },
+        { status: 400 },
       );
     }
 
@@ -42,15 +54,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         message: 'Order cancellation email sent successfully',
         messageId: result.messageId,
       });
-    } else {
-      return NextResponse.json(
-        {
-          success: false,
-          error: result.error,
-        },
-        { status: 500 }
-      );
     }
+    return NextResponse.json(
+      {
+        success: false,
+        error: result.error,
+      },
+      { status: 500 },
+    );
   } catch (error) {
     console.error('❌ Order cancellation API error:', error);
     return NextResponse.json(
@@ -58,9 +69,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         success: false,
         error: 'Internal server error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-
-

@@ -1,6 +1,6 @@
+import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { createClient } from '@supabase/supabase-js';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2025-06-30.basil',
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
   } catch (err: any) {
     console.error('❌ Webhook signature verification failed:', err.message);
     console.log('⚠️ Attempting to parse webhook body directly...');
-    
+
     try {
       event = JSON.parse(rawBody);
       console.log('✅ Webhook body parsed successfully (unverified)');
@@ -125,6 +125,7 @@ export async function POST(req: Request) {
       console.log('✅ Order created successfully:', orderData.id);
 
       for (const item of cartItems) {
+        /* eslint-disable-next-line no-await-in-loop */
         const { error: orderItemError } = await supabase
           .from('order_items')
           .insert({
@@ -142,7 +143,10 @@ export async function POST(req: Request) {
 
       console.log('✅ Order items created successfully');
 
-      console.log('✅ Webhook processing completed successfully for order:', orderId);
+      console.log(
+        '✅ Webhook processing completed successfully for order:',
+        orderId,
+      );
     } catch (error) {
       console.error('❌ Failed to process order:', error);
       return NextResponse.json(

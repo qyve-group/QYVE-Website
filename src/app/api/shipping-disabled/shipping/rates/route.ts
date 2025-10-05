@@ -1,7 +1,9 @@
 // Shipping rates API endpoint
 // Get shipping rates from EasyParcel for given addresses and parcel details
 
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
 import { getShippingRates } from '@/lib/easyparcel-service';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -13,28 +15,44 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     if (!from || !to || !parcel) {
       return NextResponse.json(
         { error: 'Missing required fields: from, to, and parcel' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Validate address fields
-    const requiredFields = ['name', 'phone', 'email', 'address1', 'city', 'state', 'postcode', 'country'];
+    const requiredFields = [
+      'name',
+      'phone',
+      'email',
+      'address1',
+      'city',
+      'state',
+      'postcode',
+      'country',
+    ];
     for (const field of requiredFields) {
       if (!from[field] || !to[field]) {
         return NextResponse.json(
           { error: `Missing required field: ${field}` },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
 
     // Validate parcel fields
-    const parcelFields = ['weight', 'length', 'width', 'height', 'content', 'value'];
+    const parcelFields = [
+      'weight',
+      'length',
+      'width',
+      'height',
+      'content',
+      'value',
+    ];
     for (const field of parcelFields) {
       if (parcel[field] === undefined || parcel[field] === null) {
         return NextResponse.json(
           { error: `Missing required parcel field: ${field}` },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
@@ -53,7 +71,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         success: false,
         error: error instanceof Error ? error.message : 'Internal server error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

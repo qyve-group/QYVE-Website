@@ -2,7 +2,7 @@
 // Comprehensive testing functions for all email types
 
 import { emailService, EmailType } from './email-service';
-import { OrderData, RefundData } from './email-templates';
+import type { OrderData, RefundData } from './email-templates';
 
 // Test data generators
 const generateTestOrderData = (): OrderData => ({
@@ -52,96 +52,96 @@ const generateTestRefundData = (): RefundData => ({
 // Test functions for each email type
 export const testOrderConfirmation = async (testEmail: string) => {
   console.log('🧪 Testing Order Confirmation Email...');
-  
+
   const orderData = generateTestOrderData();
   orderData.customerEmail = testEmail;
-  
+
   const result = await emailService.sendOrderConfirmation(orderData);
-  
+
   if (result.success) {
     console.log('✅ Order confirmation email sent successfully');
     console.log('📧 Message ID:', result.messageId);
   } else {
     console.error('❌ Order confirmation email failed:', result.error);
   }
-  
+
   return result;
 };
 
 export const testPaymentConfirmation = async (testEmail: string) => {
   console.log('🧪 Testing Payment Confirmation Email...');
-  
+
   const orderData = generateTestOrderData();
   orderData.customerEmail = testEmail;
-  
+
   const result = await emailService.sendPaymentConfirmation(orderData);
-  
+
   if (result.success) {
     console.log('✅ Payment confirmation email sent successfully');
     console.log('📧 Message ID:', result.messageId);
   } else {
     console.error('❌ Payment confirmation email failed:', result.error);
   }
-  
+
   return result;
 };
 
 export const testShippingNotification = async (testEmail: string) => {
   console.log('🧪 Testing Shipping Notification Email...');
-  
+
   const orderData = generateTestOrderData();
   orderData.customerEmail = testEmail;
   orderData.trackingNumber = 'EP123456789MY';
   orderData.estimatedDelivery = '3-5 business days';
-  
+
   const result = await emailService.sendShippingNotification(orderData);
-  
+
   if (result.success) {
     console.log('✅ Shipping notification email sent successfully');
     console.log('📧 Message ID:', result.messageId);
   } else {
     console.error('❌ Shipping notification email failed:', result.error);
   }
-  
+
   return result;
 };
 
 export const testOrderCancellation = async (testEmail: string) => {
   console.log('🧪 Testing Order Cancellation Email...');
-  
+
   const orderData = generateTestOrderData();
   orderData.customerEmail = testEmail;
-  
+
   const result = await emailService.sendOrderCancellation({
     ...orderData,
     reason: 'Customer requested cancellation',
   });
-  
+
   if (result.success) {
     console.log('✅ Order cancellation email sent successfully');
     console.log('📧 Message ID:', result.messageId);
   } else {
     console.error('❌ Order cancellation email failed:', result.error);
   }
-  
+
   return result;
 };
 
 export const testRefundConfirmation = async (testEmail: string) => {
   console.log('🧪 Testing Refund Confirmation Email...');
-  
+
   const refundData = generateTestRefundData();
   refundData.customerEmail = testEmail;
-  
+
   const result = await emailService.sendRefundConfirmation(refundData);
-  
+
   if (result.success) {
     console.log('✅ Refund confirmation email sent successfully');
     console.log('📧 Message ID:', result.messageId);
   } else {
     console.error('❌ Refund confirmation email failed:', result.error);
   }
-  
+
   return result;
 };
 
@@ -151,7 +151,7 @@ export const testAllEmails = async (testEmail: string) => {
   console.log('=====================================');
   console.log(`📧 Test email: ${testEmail}`);
   console.log('=====================================');
-  
+
   const results = {
     orderConfirmation: await testOrderConfirmation(testEmail),
     paymentConfirmation: await testPaymentConfirmation(testEmail),
@@ -159,11 +159,11 @@ export const testAllEmails = async (testEmail: string) => {
     orderCancellation: await testOrderCancellation(testEmail),
     refundConfirmation: await testRefundConfirmation(testEmail),
   };
-  
+
   console.log('=====================================');
   console.log('📊 Test Results Summary:');
   console.log('=====================================');
-  
+
   Object.entries(results).forEach(([testName, result]) => {
     const status = result.success ? '✅ PASS' : '❌ FAIL';
     console.log(`${status} ${testName}`);
@@ -171,23 +171,25 @@ export const testAllEmails = async (testEmail: string) => {
       console.log(`   Error: ${result.error}`);
     }
   });
-  
-  const successCount = Object.values(results).filter(r => r.success).length;
+
+  const successCount = Object.values(results).filter((r) => r.success).length;
   const totalCount = Object.keys(results).length;
-  
+
   console.log('=====================================');
-  console.log(`📈 Success Rate: ${successCount}/${totalCount} (${Math.round(successCount/totalCount*100)}%)`);
+  console.log(
+    `📈 Success Rate: ${successCount}/${totalCount} (${Math.round((successCount / totalCount) * 100)}%)`,
+  );
   console.log('=====================================');
-  
+
   return results;
 };
 
 // API testing functions
 export const testEmailAPI = async (testEmail: string) => {
   console.log('🧪 Testing Email API Endpoints...');
-  
+
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  
+
   try {
     // Test order confirmation API
     console.log('📧 Testing order confirmation API...');
@@ -202,10 +204,10 @@ export const testEmailAPI = async (testEmail: string) => {
         },
       }),
     });
-    
+
     const orderResult = await orderResponse.json();
     console.log('Order confirmation API result:', orderResult);
-    
+
     // Test shipping notification API
     console.log('📧 Testing shipping notification API...');
     const shippingResponse = await fetch(`${baseUrl}/api/email/shipping`, {
@@ -222,10 +224,10 @@ export const testEmailAPI = async (testEmail: string) => {
         shippingAddress: generateTestOrderData().shippingAddress,
       }),
     });
-    
+
     const shippingResult = await shippingResponse.json();
     console.log('Shipping notification API result:', shippingResult);
-    
+
     return {
       orderConfirmation: orderResult,
       shippingNotification: shippingResult,
@@ -250,5 +252,3 @@ if (typeof window !== 'undefined') {
     generateTestRefundData,
   };
 }
-
-

@@ -2,14 +2,15 @@
 // Automatically create shipments for pending orders
 
 import { NextResponse } from 'next/server';
+
 import { processPendingOrders } from '@/lib/automated-shipping';
 
 export async function POST(): Promise<NextResponse> {
   try {
     console.log('📦 Starting automated shipping process...');
-    
+
     const result = await processPendingOrders();
-    
+
     return NextResponse.json({
       success: true,
       message: 'Automated shipping process completed',
@@ -24,7 +25,7 @@ export async function POST(): Promise<NextResponse> {
         success: false,
         error: error instanceof Error ? error.message : 'Internal server error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -45,7 +46,7 @@ export async function GET(): Promise<NextResponse> {
         success: false,
         error: error instanceof Error ? error.message : 'Internal server error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

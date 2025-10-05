@@ -32,15 +32,17 @@ export const trackProductView = (product: {
   event('view_item', {
     currency: product.currency || 'MYR',
     value: product.price || 0,
-    items: [{
-      item_id: product.item_id,
-      item_name: product.item_name,
-      price: product.price,
-      item_category: product.item_category || 'Apparel',
-      item_brand: product.item_brand || 'QYVE',
-      item_variant: product.item_variant,
-      image_url: product.image_url,
-    }],
+    items: [
+      {
+        item_id: product.item_id,
+        item_name: product.item_name,
+        price: product.price,
+        item_category: product.item_category || 'Apparel',
+        item_brand: product.item_brand || 'QYVE',
+        item_variant: product.item_variant,
+        image_url: product.image_url,
+      },
+    ],
   });
 };
 
@@ -59,33 +61,39 @@ export const trackAddToCart = (product: {
   event('add_to_cart', {
     currency: product.currency || 'MYR',
     value: product.price * product.quantity,
-    items: [{
-      item_id: product.item_id,
-      item_name: product.item_name,
-      price: product.price,
-      quantity: product.quantity,
-      item_category: product.item_category || 'Apparel',
-      item_brand: product.item_brand || 'QYVE',
-      item_variant: product.item_variant,
-      image_url: product.image_url,
-    }],
+    items: [
+      {
+        item_id: product.item_id,
+        item_name: product.item_name,
+        price: product.price,
+        quantity: product.quantity,
+        item_category: product.item_category || 'Apparel',
+        item_brand: product.item_brand || 'QYVE',
+        item_variant: product.item_variant,
+        image_url: product.image_url,
+      },
+    ],
   });
 };
 
 // Begin Checkout Event
-export const trackBeginCheckout = (cartItems: Array<{
-  item_id: string | number;
-  item_name: string;
-  price: number;
-  quantity: number;
-  item_category?: string;
-  item_brand?: string;
-  item_variant?: string;
-}>, totalValue: number, currency: string = 'MYR') => {
+export const trackBeginCheckout = (
+  cartItems: Array<{
+    item_id: string | number;
+    item_name: string;
+    price: number;
+    quantity: number;
+    item_category?: string;
+    item_brand?: string;
+    item_variant?: string;
+  }>,
+  totalValue: number,
+  currency: string = 'MYR',
+) => {
   event('begin_checkout', {
     currency,
     value: totalValue,
-    items: cartItems.map(item => ({
+    items: cartItems.map((item) => ({
       item_id: item.item_id,
       item_name: item.item_name,
       price: item.price,
@@ -122,7 +130,7 @@ export const trackPurchase = (transaction: {
     coupon: transaction.coupon,
     shipping: transaction.shipping,
     tax: transaction.tax,
-    items: transaction.items.map(item => ({
+    items: transaction.items.map((item) => ({
       item_id: item.item_id,
       item_name: item.item_name,
       price: item.price,
@@ -135,7 +143,12 @@ export const trackPurchase = (transaction: {
 };
 
 // Filter/Sort Usage Events
-export const trackFilterUsage = (filterType: string, filterValue: string, page: string = 'shop') => {
+export const trackFilterUsage = (
+  filterType: string,
+  filterValue: string,
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  page: string = 'shop',
+) => {
   event('filter_usage', {
     filter_type: filterType,
     filter_value: filterValue,
@@ -144,6 +157,7 @@ export const trackFilterUsage = (filterType: string, filterValue: string, page: 
   });
 };
 
+// eslint-disable-next-line unused-imports/no-unused-vars
 export const trackSortUsage = (sortType: string, page: string = 'shop') => {
   event('sort_usage', {
     sort_type: sortType,
@@ -153,7 +167,10 @@ export const trackSortUsage = (sortType: string, page: string = 'shop') => {
 };
 
 // Newsletter Subscription Event
-export const trackNewsletterSubscription = (email: string, source: string = 'website') => {
+export const trackNewsletterSubscription = (
+  email: string,
+  source: string = 'website',
+) => {
   event('newsletter_subscription', {
     email_domain: email.split('@')[1],
     subscription_source: source,
@@ -172,7 +189,10 @@ export const trackSearch = (searchTerm: string, resultsCount?: number) => {
 };
 
 // Custom Events
-export const trackCustomEvent = (eventName: string, parameters: Record<string, any>) => {
+export const trackCustomEvent = (
+  eventName: string,
+  parameters: Record<string, any>,
+) => {
   event(eventName, {
     ...parameters,
     page_location: window.location.href,

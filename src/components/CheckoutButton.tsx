@@ -93,11 +93,13 @@ export default function CheckoutButton({
 
     try {
       setLoading(true);
-      
+
       // Track begin checkout event
-      const totalValue = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) + shippingPrice;
+      const totalValue =
+        cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) +
+        shippingPrice;
       trackBeginCheckout(
-        cartItems.map(item => ({
+        cartItems.map((item) => ({
           item_id: item.id,
           item_name: item.name,
           price: item.price,
@@ -107,9 +109,9 @@ export default function CheckoutButton({
           item_variant: item.product_size || undefined,
         })),
         totalValue,
-        'MYR'
+        'MYR',
       );
-      
+
       // console.log*('Checkout button clicked');
       console.log('Sending checkout body', {
         userId,

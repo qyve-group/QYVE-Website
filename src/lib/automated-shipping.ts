@@ -2,6 +2,7 @@
 // Automatically creates shipments when orders are confirmed
 
 import { createClient } from '@supabase/supabase-js';
+
 import { autoCreateShipment } from './easyparcel-service';
 import { sendShippingNotification } from './email-service';
 
@@ -59,35 +60,45 @@ const QYVE_WAREHOUSE = {
 function calculateParcelDetails(items: OrderData['items'], totalValue: number) {
   // Estimate weight based on item count (average 0.3kg per item)
   const estimatedWeight = Math.max(0.1, items.length * 0.3);
-  
+
   // Estimate dimensions based on item count
   const baseLength = 20; // cm
   const baseWidth = 15; // cm
   const baseHeight = 5; // cm
   const itemHeight = 3; // cm per item
-  
+
   const length = baseLength;
   const width = baseWidth;
-  const height = Math.max(baseHeight, baseHeight + (items.length - 1) * itemHeight);
-  
+  const height = Math.max(
+    baseHeight,
+    baseHeight + (items.length - 1) * itemHeight,
+  );
+
   return {
     weight: Math.min(estimatedWeight, 30), // Max 30kg
     length: Math.min(length, 100), // Max 100cm
     width: Math.min(width, 100), // Max 100cm
     height: Math.min(height, 100), // Max 100cm
-    content: items.map(item => `${item.name} (${item.size || 'N/A'})`).join(', '),
+    content: items
+      .map((item) => `${item.name} (${item.size || 'N/A'})`)
+      .join(', '),
     value: totalValue,
   };
 }
 
 // Automatically create shipment for an order
-export async function autoCreateOrderShipment(orderData: OrderData): Promise<ShippingResult> {
+export async function autoCreateOrderShipment(
+  orderData: OrderData,
+): Promise<ShippingResult> {
   try {
     console.log('📦 Auto-creating shipment for order:', orderData.orderId);
-    
+
     // Calculate parcel details
-    const parcelDetails = calculateParcelDetails(orderData.items, orderData.totalAmount);
-    
+    const parcelDetails = calculateParcelDetails(
+      orderData.items,
+      orderData.totalAmount,
+    );
+
     // Prepare shipping addresses
     const fromAddress = QYVE_WAREHOUSE;
     const toAddress = {
@@ -107,7 +118,7 @@ export async function autoCreateOrderShipment(orderData: OrderData): Promise<Shi
       fromAddress,
       toAddress,
       parcelDetails,
-      'cheapest' // Use cheapest option for cost efficiency
+      'cheapest', // Use cheapest option for cost efficiency
     );
 
     if (!shipmentResult.success) {
@@ -156,6 +167,7 @@ export async function autoCreateOrderShipment(orderData: OrderData): Promise<Shi
         ...orderData,
         trackingNumber: shipmentResult.trackingNumber,
         estimatedDelivery: shipmentResult.deliveryTime,
+        currency: 'MYR',
       };
 
       await sendShippingNotification(emailData);
@@ -183,14 +195,18 @@ export async function autoCreateOrderShipment(orderData: OrderData): Promise<Shi
 }
 
 // Process pending orders for shipping
-export async function processPendingOrders(): Promise<{ processed: number; errors: number }> {
+export async function processPendingOrders(): Promise<{
+  processed: number;
+  errors: number;
+}> {
   try {
     console.log('📦 Processing pending orders for shipping...');
-    
+
     // Get orders that are confirmed but not yet shipped
     const { data: orders, error: ordersError } = await supabase
       .from('orders')
-      .select(`
+      .select(
+        `
         *,
         order_items(
           *,
@@ -202,7 +218,8 @@ export async function processPendingOrders(): Promise<{ processed: number; error
             )
           )
         )
-      `)
+      `,
+      )
       .eq('status', 'confirmed')
       .is('tracking_number', null);
 
@@ -229,13 +246,16 @@ export async function processPendingOrders(): Promise<{ processed: number; error
           customerName: order.customer_name,
           customerEmail: order.customer_email,
           totalAmount: order.total_price,
-          items: order.order_items?.map((item: any) => ({
-            name: item.products_sizes?.product_colors?.products?.name || 'Product',
-            quantity: item.quantity,
-            price: item.price,
-            size: item.products_sizes?.size || 'N/A',
-            color: item.products_sizes?.product_colors?.color || 'N/A',
-          })) || [],
+          items:
+            order.order_items?.map((item: any) => ({
+              name:
+                item.products_sizes?.product_colors?.products?.name ||
+                'Product',
+              quantity: item.quantity,
+              price: item.price,
+              size: item.products_sizes?.size || 'N/A',
+              color: item.products_sizes?.product_colors?.color || 'N/A',
+            })) || [],
           shippingAddress: {
             line1: order.shipping_address_1,
             line2: order.shipping_address_2,
@@ -245,23 +265,33 @@ export async function processPendingOrders(): Promise<{ processed: number; error
             country: order.country,
           },
         };
-
+        // eslint-disable-next-line no-await-in-loop
         const result = await autoCreateOrderShipment(orderData);
-        
+
         if (result.success) {
+          // eslint-disable-next-line no-plusplus
           processed++;
-          console.log(`✅ Processed order ${order.id} with tracking ${result.trackingNumber}`);
+          console.log(
+            `✅ Processed order ${order.id} with tracking ${result.trackingNumber}`,
+          );
         } else {
+          // eslint-disable-next-line no-plusplus
           errors++;
-          console.error(`❌ Failed to process order ${order.id}:`, result.error);
+          console.error(
+            `❌ Failed to process order ${order.id}:`,
+            result.error,
+          );
         }
       } catch (orderError) {
+        // eslint-disable-next-line no-plusplus
         errors++;
         console.error(`❌ Error processing order ${order.id}:`, orderError);
       }
     }
 
-    console.log(`📊 Processing complete: ${processed} processed, ${errors} errors`);
+    console.log(
+      `📊 Processing complete: ${processed} processed, ${errors} errors`,
+    );
     return { processed, errors };
   } catch (error) {
     console.error('❌ Process pending orders error:', error);
@@ -273,10 +303,10 @@ export async function processPendingOrders(): Promise<{ processed: number; error
 export async function testAutomatedShipping(): Promise<boolean> {
   try {
     console.log('🧪 Testing automated shipping system...');
-    
+
     // Test with sample order data
     const testOrderData: OrderData = {
-      orderId: 'TEST-ORDER-' + Date.now(),
+      orderId: `TEST-ORDER-${Date.now()}`,
       customerName: 'Test Customer',
       customerEmail: 'test@example.com',
       totalAmount: 99.99,
@@ -299,14 +329,13 @@ export async function testAutomatedShipping(): Promise<boolean> {
     };
 
     const result = await autoCreateOrderShipment(testOrderData);
-    
+
     if (result.success) {
       console.log('✅ Automated shipping test successful');
       return true;
-    } else {
-      console.error('❌ Automated shipping test failed:', result.error);
-      return false;
     }
+    console.error('❌ Automated shipping test failed:', result.error);
+    return false;
   } catch (error) {
     console.error('❌ Automated shipping test error:', error);
     return false;

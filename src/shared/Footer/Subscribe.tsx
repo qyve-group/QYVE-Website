@@ -18,21 +18,21 @@ const Subscribe = () => {
     }
 
     setIsLoading(true);
-    
+
     try {
       // Track newsletter subscription
       trackNewsletterSubscription(email, 'footer');
-      
+
       // Here you would typically send the email to your backend/email service
       // For now, we'll just simulate success
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      // eslint-disable-next-line no-promise-executor-return
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       setIsSubscribed(true);
       setEmail('');
-      
+
       // Reset success message after 3 seconds
       setTimeout(() => setIsSubscribed(false), 3000);
-      
     } catch (error) {
       console.error('Newsletter subscription error:', error);
       alert('Failed to subscribe. Please try again.');
@@ -58,11 +58,16 @@ const Subscribe = () => {
       </div>
       <div className="basis-[43%] space-y-7">
         <p className="text-neutral-400">{newsletter.description}</p>
-        <ButtonPrimary 
+        <ButtonPrimary
           onClick={handleSubscribe}
           disabled={isLoading || isSubscribed}
         >
-          {isSubscribed ? 'Subscribed!' : isLoading ? 'Subscribing...' : 'Subscribe'}
+          {/* eslint-disable-next-line no-nested-ternary */}
+          {isSubscribed
+            ? 'Subscribed!'
+            : isLoading
+              ? 'Subscribing...'
+              : 'Subscribe'}
         </ButtonPrimary>
       </div>
     </div>

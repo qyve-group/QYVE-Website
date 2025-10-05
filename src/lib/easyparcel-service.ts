@@ -60,16 +60,17 @@ interface TrackingResult {
 const EASYPARCEL_CONFIG: EasyParcelConfig = {
   apiKey: process.env.EASYPARCEL_API_KEY || '',
   apiSecret: process.env.EASYPARCEL_API_SECRET || '',
-  baseUrl: process.env.NODE_ENV === 'production' 
-    ? 'https://connect.easyparcel.my/' 
-    : 'http://demo.connect.easyparcel.my/',
+  baseUrl:
+    process.env.NODE_ENV === 'production'
+      ? 'https://connect.easyparcel.my/'
+      : 'http://demo.connect.easyparcel.my/',
   isProduction: process.env.NODE_ENV === 'production',
 };
 
 // EasyParcel service class
 export class EasyParcelService {
   private static instance: EasyParcelService;
-  
+
   public static getInstance(): EasyParcelService {
     if (!EasyParcelService.instance) {
       EasyParcelService.instance = new EasyParcelService();
@@ -78,72 +79,79 @@ export class EasyParcelService {
   }
 
   // Check shipping rates
+  // eslint-disable-next-line class-methods-use-this
   async getShippingRates(
     from: ShippingAddress,
     to: ShippingAddress,
-    parcel: ParcelDetails
+    parcel: ParcelDetails,
   ): Promise<ShippingRate[]> {
     try {
       console.log('📦 Checking shipping rates with EasyParcel...');
-      
-      const response = await fetch(`${EASYPARCEL_CONFIG.baseUrl}api/rate-check`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${EASYPARCEL_CONFIG.apiKey}`,
+
+      const response = await fetch(
+        `${EASYPARCEL_CONFIG.baseUrl}api/rate-check`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${EASYPARCEL_CONFIG.apiKey}`,
+          },
+          body: JSON.stringify({
+            api_key: EASYPARCEL_CONFIG.apiKey,
+            api_secret: EASYPARCEL_CONFIG.apiSecret,
+            from: {
+              name: from.name,
+              phone: from.phone,
+              email: from.email,
+              address1: from.address1,
+              address2: from.address2 || '',
+              city: from.city,
+              state: from.state,
+              postcode: from.postcode,
+              country: from.country,
+            },
+            to: {
+              name: to.name,
+              phone: to.phone,
+              email: to.email,
+              address1: to.address1,
+              address2: to.address2 || '',
+              city: to.city,
+              state: to.state,
+              postcode: to.postcode,
+              country: to.country,
+            },
+            parcel: {
+              weight: parcel.weight,
+              length: parcel.length,
+              width: parcel.width,
+              height: parcel.height,
+              content: parcel.content,
+              value: parcel.value,
+            },
+          }),
         },
-        body: JSON.stringify({
-          api_key: EASYPARCEL_CONFIG.apiKey,
-          api_secret: EASYPARCEL_CONFIG.apiSecret,
-          from: {
-            name: from.name,
-            phone: from.phone,
-            email: from.email,
-            address1: from.address1,
-            address2: from.address2 || '',
-            city: from.city,
-            state: from.state,
-            postcode: from.postcode,
-            country: from.country,
-          },
-          to: {
-            name: to.name,
-            phone: to.phone,
-            email: to.email,
-            address1: to.address1,
-            address2: to.address2 || '',
-            city: to.city,
-            state: to.state,
-            postcode: to.postcode,
-            country: to.country,
-          },
-          parcel: {
-            weight: parcel.weight,
-            length: parcel.length,
-            width: parcel.width,
-            height: parcel.height,
-            content: parcel.content,
-            value: parcel.value,
-          },
-        }),
-      });
+      );
 
       if (!response.ok) {
-        throw new Error(`EasyParcel API error: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `EasyParcel API error: ${response.status} ${response.statusText}`,
+        );
       }
 
       const data = await response.json();
-      
+
       if (data.error) {
         throw new Error(`EasyParcel API error: ${data.error}`);
       }
 
-      const rates: ShippingRate[] = data.result?.map((rate: any) => ({
-        courier: rate.courier,
-        service: rate.service,
-        price: parseFloat(rate.price),
-        deliveryTime: rate.delivery_time,
-      })) || [];
+      const rates: ShippingRate[] =
+        data.result?.map((rate: any) => ({
+          courier: rate.courier,
+          service: rate.service,
+          price: parseFloat(rate.price),
+          deliveryTime: rate.delivery_time,
+        })) || [];
 
       console.log(`✅ Found ${rates.length} shipping options`);
       return rates;
@@ -154,66 +162,72 @@ export class EasyParcelService {
   }
 
   // Create shipment
+  // eslint-disable-next-line class-methods-use-this
   async createShipment(
     from: ShippingAddress,
     to: ShippingAddress,
     parcel: ParcelDetails,
     courier: string,
-    service: string
+    service: string,
   ): Promise<ShipmentResult> {
     try {
       console.log('📦 Creating shipment with EasyParcel...');
-      
-      const response = await fetch(`${EASYPARCEL_CONFIG.baseUrl}api/order-create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${EASYPARCEL_CONFIG.apiKey}`,
+
+      const response = await fetch(
+        `${EASYPARCEL_CONFIG.baseUrl}api/order-create`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${EASYPARCEL_CONFIG.apiKey}`,
+          },
+          body: JSON.stringify({
+            api_key: EASYPARCEL_CONFIG.apiKey,
+            api_secret: EASYPARCEL_CONFIG.apiSecret,
+            from: {
+              name: from.name,
+              phone: from.phone,
+              email: from.email,
+              address1: from.address1,
+              address2: from.address2 || '',
+              city: from.city,
+              state: from.state,
+              postcode: from.postcode,
+              country: from.country,
+            },
+            to: {
+              name: to.name,
+              phone: to.phone,
+              email: to.email,
+              address1: to.address1,
+              address2: to.address2 || '',
+              city: to.city,
+              state: to.state,
+              postcode: to.postcode,
+              country: to.country,
+            },
+            parcel: {
+              weight: parcel.weight,
+              length: parcel.length,
+              width: parcel.width,
+              height: parcel.height,
+              content: parcel.content,
+              value: parcel.value,
+            },
+            courier,
+            service,
+          }),
         },
-        body: JSON.stringify({
-          api_key: EASYPARCEL_CONFIG.apiKey,
-          api_secret: EASYPARCEL_CONFIG.apiSecret,
-          from: {
-            name: from.name,
-            phone: from.phone,
-            email: from.email,
-            address1: from.address1,
-            address2: from.address2 || '',
-            city: from.city,
-            state: from.state,
-            postcode: from.postcode,
-            country: from.country,
-          },
-          to: {
-            name: to.name,
-            phone: to.phone,
-            email: to.email,
-            address1: to.address1,
-            address2: to.address2 || '',
-            city: to.city,
-            state: to.state,
-            postcode: to.postcode,
-            country: to.country,
-          },
-          parcel: {
-            weight: parcel.weight,
-            length: parcel.length,
-            width: parcel.width,
-            height: parcel.height,
-            content: parcel.content,
-            value: parcel.value,
-          },
-          courier: courier,
-          service: service,
-        }),
-      });
+      );
 
       if (!response.ok) {
-        throw new Error(`EasyParcel API error: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `EasyParcel API error: ${response.status} ${response.statusText}`,
+        );
       }
 
       const data = await response.json();
-      
+
       if (data.error) {
         throw new Error(`EasyParcel API error: ${data.error}`);
       }
@@ -239,15 +253,16 @@ export class EasyParcelService {
   }
 
   // Track shipment
+  // eslint-disable-next-line class-methods-use-this
   async trackShipment(trackingNumber: string): Promise<TrackingResult> {
     try {
       console.log('📦 Tracking shipment:', trackingNumber);
-      
+
       const response = await fetch(`${EASYPARCEL_CONFIG.baseUrl}api/track`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${EASYPARCEL_CONFIG.apiKey}`,
+          Authorization: `Bearer ${EASYPARCEL_CONFIG.apiKey}`,
         },
         body: JSON.stringify({
           api_key: EASYPARCEL_CONFIG.apiKey,
@@ -257,11 +272,13 @@ export class EasyParcelService {
       });
 
       if (!response.ok) {
-        throw new Error(`EasyParcel API error: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `EasyParcel API error: ${response.status} ${response.statusText}`,
+        );
       }
 
       const data = await response.json();
-      
+
       if (data.error) {
         throw new Error(`EasyParcel API error: ${data.error}`);
       }
@@ -290,23 +307,22 @@ export class EasyParcelService {
     from: ShippingAddress,
     to: ShippingAddress,
     parcel: ParcelDetails,
-    preference: 'cheapest' | 'fastest' = 'cheapest'
+    preference: 'cheapest' | 'fastest' = 'cheapest',
   ): Promise<ShippingRate | null> {
     try {
       const rates = await this.getShippingRates(from, to, parcel);
-      
+
       if (rates.length === 0) {
         return null;
       }
 
       if (preference === 'cheapest') {
-        return rates.reduce((cheapest, current) => 
-          current.price < cheapest.price ? current : cheapest
+        return rates.reduce((cheapest, current) =>
+          current.price < cheapest.price ? current : cheapest,
         );
-      } else {
-        // For fastest, we'd need to parse delivery time, but for now return first option
-        return rates[0];
       }
+      // For fastest, we'd need to parse delivery time, but for now return first option
+      return rates[0] ?? null;
     } catch (error) {
       console.error('❌ Failed to get best shipping rate:', error);
       return null;
@@ -318,13 +334,18 @@ export class EasyParcelService {
     from: ShippingAddress,
     to: ShippingAddress,
     parcel: ParcelDetails,
-    preference: 'cheapest' | 'fastest' = 'cheapest'
+    preference: 'cheapest' | 'fastest' = 'cheapest',
   ): Promise<ShipmentResult> {
     try {
       console.log('📦 Auto-creating shipment with best rate...');
-      
-      const bestRate = await this.getBestShippingRate(from, to, parcel, preference);
-      
+
+      const bestRate = await this.getBestShippingRate(
+        from,
+        to,
+        parcel,
+        preference,
+      );
+
       if (!bestRate) {
         return {
           success: false,
@@ -332,7 +353,13 @@ export class EasyParcelService {
         };
       }
 
-      return await this.createShipment(from, to, parcel, bestRate.courier, bestRate.service);
+      return await this.createShipment(
+        from,
+        to,
+        parcel,
+        bestRate.courier,
+        bestRate.service,
+      );
     } catch (error) {
       console.error('❌ Failed to auto-create shipment:', error);
       return {
@@ -346,7 +373,7 @@ export class EasyParcelService {
   async testConnection(): Promise<boolean> {
     try {
       console.log('🧪 Testing EasyParcel connection...');
-      
+
       // Test with minimal data
       const testFrom: ShippingAddress = {
         name: 'QYVE Test',
@@ -393,17 +420,29 @@ export class EasyParcelService {
 export const easyParcelService = EasyParcelService.getInstance();
 
 // Convenience functions
-export const getShippingRates = (from: ShippingAddress, to: ShippingAddress, parcel: ParcelDetails) => 
-  easyParcelService.getShippingRates(from, to, parcel);
+export const getShippingRates = (
+  from: ShippingAddress,
+  to: ShippingAddress,
+  parcel: ParcelDetails,
+) => easyParcelService.getShippingRates(from, to, parcel);
 
-export const createShipment = (from: ShippingAddress, to: ShippingAddress, parcel: ParcelDetails, courier: string, service: string) => 
-  easyParcelService.createShipment(from, to, parcel, courier, service);
+export const createShipment = (
+  from: ShippingAddress,
+  to: ShippingAddress,
+  parcel: ParcelDetails,
+  courier: string,
+  service: string,
+) => easyParcelService.createShipment(from, to, parcel, courier, service);
 
-export const trackShipment = (trackingNumber: string) => 
+export const trackShipment = (trackingNumber: string) =>
   easyParcelService.trackShipment(trackingNumber);
 
-export const autoCreateShipment = (from: ShippingAddress, to: ShippingAddress, parcel: ParcelDetails, preference: 'cheapest' | 'fastest' = 'cheapest') => 
-  easyParcelService.autoCreateShipment(from, to, parcel, preference);
+export const autoCreateShipment = (
+  from: ShippingAddress,
+  to: ShippingAddress,
+  parcel: ParcelDetails,
+  preference: 'cheapest' | 'fastest' = 'cheapest',
+) => easyParcelService.autoCreateShipment(from, to, parcel, preference);
 
-export const testEasyParcelConnection = () => 
+export const testEasyParcelConnection = () =>
   easyParcelService.testConnection();

@@ -1,9 +1,11 @@
 // Email API Endpoint for sending transactional emails
 // Handles all email types with proper validation and error handling
 
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
 import { emailService, EmailType } from '@/lib/email-service';
-import { OrderData, RefundData } from '@/lib/email-templates';
+import type { OrderData, RefundData } from '@/lib/email-templates';
 
 // Request validation schemas
 interface SendEmailRequest {
@@ -21,7 +23,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     if (!type || !data) {
       return NextResponse.json(
         { error: 'Missing required fields: type and data' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -29,7 +31,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     if (!Object.values(EmailType).includes(type)) {
       return NextResponse.json(
         { error: 'Invalid email type' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -40,27 +42,29 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       case EmailType.ORDER_CONFIRMATION:
         result = await emailService.sendOrderConfirmation(data as OrderData);
         break;
-      
+
       case EmailType.PAYMENT_CONFIRMATION:
         result = await emailService.sendPaymentConfirmation(data as OrderData);
         break;
-      
+
       case EmailType.SHIPPING_NOTIFICATION:
         result = await emailService.sendShippingNotification(data as OrderData);
         break;
-      
+
       case EmailType.ORDER_CANCELLATION:
-        result = await emailService.sendOrderCancellation(data as OrderData & { reason: string });
+        result = await emailService.sendOrderCancellation(
+          data as OrderData & { reason: string },
+        );
         break;
-      
+
       case EmailType.REFUND_CONFIRMATION:
         result = await emailService.sendRefundConfirmation(data as RefundData);
         break;
-      
+
       default:
         return NextResponse.json(
           { error: 'Unsupported email type' },
-          { status: 400 }
+          { status: 400 },
         );
     }
 
@@ -71,16 +75,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         message: 'Email sent successfully',
         retryCount: result.retryCount,
       });
-    } else {
-      return NextResponse.json(
-        {
-          success: false,
-          error: result.error,
-          retryCount: result.retryCount,
-        },
-        { status: 500 }
-      );
     }
+    return NextResponse.json(
+      {
+        success: false,
+        error: result.error,
+        retryCount: result.retryCount,
+      },
+      { status: 500 },
+    );
   } catch (error) {
     console.error('❌ Email API error:', error);
     return NextResponse.json(
@@ -88,7 +91,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         success: false,
         error: 'Internal server error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -102,7 +105,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     if (!testEmail) {
       return NextResponse.json(
         { error: 'Test email address required' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -111,7 +114,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     if (!emailRegex.test(testEmail)) {
       return NextResponse.json(
         { error: 'Invalid email format' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -123,15 +126,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         message: 'Test email sent successfully',
         messageId: result.messageId,
       });
-    } else {
-      return NextResponse.json(
-        {
-          success: false,
-          error: result.error,
-        },
-        { status: 500 }
-      );
     }
+    return NextResponse.json(
+      {
+        success: false,
+        error: result.error,
+      },
+      { status: 500 },
+    );
   } catch (error) {
     console.error('❌ Test email API error:', error);
     return NextResponse.json(
@@ -139,9 +141,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         success: false,
         error: 'Internal server error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-
-

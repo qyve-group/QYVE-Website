@@ -1,9 +1,11 @@
 // Create shipment API endpoint
 // Create shipment with EasyParcel and update order status
 
-import { NextRequest, NextResponse } from 'next/server';
-import { createShipment, autoCreateShipment } from '@/lib/easyparcel-service';
 import { createClient } from '@supabase/supabase-js';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
+import { autoCreateShipment, createShipment } from '@/lib/easyparcel-service';
 import { sendShippingNotification } from '@/lib/email-service';
 
 const supabase = createClient(
@@ -14,22 +16,22 @@ const supabase = createClient(
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const body = await req.json();
-    const { 
-      orderId, 
-      from, 
-      to, 
-      parcel, 
-      courier, 
-      service, 
+    const {
+      orderId,
+      from,
+      to,
+      parcel,
+      courier,
+      service,
       autoSelect = false,
-      preference = 'cheapest'
+      preference = 'cheapest',
     } = body;
 
     // Validate required fields
     if (!orderId || !from || !to || !parcel) {
       return NextResponse.json(
         { error: 'Missing required fields: orderId, from, to, and parcel' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -43,7 +45,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       if (!courier || !service) {
         return NextResponse.json(
           { error: 'Missing required fields: courier and service' },
-          { status: 400 }
+          { status: 400 },
         );
       }
       shipmentResult = await createShipment(from, to, parcel, courier, service);
@@ -55,7 +57,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           success: false,
           error: shipmentResult.error,
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -75,7 +77,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         .eq('id', orderId);
 
       if (updateError) {
-        console.error('❌ Failed to update order with tracking info:', updateError);
+        console.error(
+          '❌ Failed to update order with tracking info:',
+          updateError,
+        );
         // Don't fail the shipment creation, just log the error
       } else {
         console.log('✅ Order updated with tracking information');
@@ -90,7 +95,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       // Get order details for email
       const { data: orderData, error: orderError } = await supabase
         .from('orders')
-        .select(`
+        .select(
+          `
           *,
           order_items(
             *,
@@ -102,7 +108,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
               )
             )
           )
-        `)
+        `,
+        )
         .eq('id', orderId)
         .single();
 
@@ -113,13 +120,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           customerEmail: orderData.customer_email,
           totalAmount: orderData.total_price,
           currency: 'MYR',
-          items: orderData.order_items?.map((item: any) => ({
-            name: item.products_sizes?.product_colors?.products?.name || 'Product',
-            quantity: item.quantity,
-            price: item.price,
-            size: item.products_sizes?.size || 'N/A',
-            color: item.products_sizes?.product_colors?.color || 'N/A',
-          })) || [],
+          items:
+            orderData.order_items?.map((item: any) => ({
+              name:
+                item.products_sizes?.product_colors?.products?.name ||
+                'Product',
+              quantity: item.quantity,
+              price: item.price,
+              size: item.products_sizes?.size || 'N/A',
+              color: item.products_sizes?.product_colors?.color || 'N/A',
+            })) || [],
           shippingAddress: {
             line1: orderData.shipping_address_1,
             line2: orderData.shipping_address_2,
@@ -136,7 +146,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         console.log('✅ Shipping notification email sent');
       }
     } catch (emailError) {
-      console.error('❌ Failed to send shipping notification email:', emailError);
+      console.error(
+        '❌ Failed to send shipping notification email:',
+        emailError,
+      );
       // Don't fail the shipment creation
     }
 
@@ -156,7 +169,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         success: false,
         error: error instanceof Error ? error.message : 'Internal server error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

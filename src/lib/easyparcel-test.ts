@@ -1,15 +1,17 @@
 // EasyParcel Testing Utility for QYVE E-commerce Platform
 // Comprehensive testing functions for EasyParcel integration
 
-import { 
-  easyParcelService, 
-  getShippingRates, 
-  createShipment, 
-  trackShipment, 
+import {
+  processPendingOrders,
+  testAutomatedShipping,
+} from './automated-shipping';
+import {
   autoCreateShipment,
-  testEasyParcelConnection 
+  createShipment,
+  getShippingRates,
+  testEasyParcelConnection,
+  trackShipment,
 } from './easyparcel-service';
-import { processPendingOrders, testAutomatedShipping } from './automated-shipping';
 
 // Test data generators
 const generateTestFromAddress = () => ({
@@ -48,16 +50,16 @@ const generateTestParcel = () => ({
 // Test EasyParcel connection
 export const testConnection = async () => {
   console.log('🧪 Testing EasyParcel Connection...');
-  
+
   try {
     const isConnected = await testEasyParcelConnection();
-    
+
     if (isConnected) {
       console.log('✅ EasyParcel connection successful');
     } else {
       console.log('❌ EasyParcel connection failed');
     }
-    
+
     return isConnected;
   } catch (error) {
     console.error('❌ Connection test error:', error);
@@ -68,25 +70,26 @@ export const testConnection = async () => {
 // Test shipping rates
 export const testShippingRates = async () => {
   console.log('🧪 Testing Shipping Rates...');
-  
+
   try {
     const from = generateTestFromAddress();
     const to = generateTestToAddress();
     const parcel = generateTestParcel();
-    
+
     const rates = await getShippingRates(from, to, parcel);
-    
+
     if (rates.length > 0) {
       console.log('✅ Shipping rates retrieved successfully');
       console.log(`📦 Found ${rates.length} shipping options:`);
       rates.forEach((rate, index) => {
-        console.log(`  ${index + 1}. ${rate.courier} - ${rate.service}: RM${rate.price} (${rate.deliveryTime})`);
+        console.log(
+          `  ${index + 1}. ${rate.courier} - ${rate.service}: RM${rate.price} (${rate.deliveryTime})`,
+        );
       });
       return rates;
-    } else {
-      console.log('❌ No shipping rates found');
-      return [];
     }
+    console.log('❌ No shipping rates found');
+    return [];
   } catch (error) {
     console.error('❌ Shipping rates test error:', error);
     return [];
@@ -96,30 +99,30 @@ export const testShippingRates = async () => {
 // Test shipment creation
 export const testCreateShipment = async () => {
   console.log('🧪 Testing Shipment Creation...');
-  
+
   try {
     const from = generateTestFromAddress();
     const to = generateTestToAddress();
     const parcel = generateTestParcel();
-    
+
     // Get rates first to get valid courier and service
     const rates = await getShippingRates(from, to, parcel);
-    
+
     if (rates.length === 0) {
       console.log('❌ No shipping rates available for testing');
       return null;
     }
-    
+
     const bestRate = rates[0]; // Use first available rate
-    
+
     const result = await createShipment(
       from,
       to,
       parcel,
       bestRate.courier,
-      bestRate.service
+      bestRate.service,
     );
-    
+
     if (result.success) {
       console.log('✅ Shipment created successfully');
       console.log(`📦 Tracking Number: ${result.trackingNumber}`);
@@ -127,10 +130,9 @@ export const testCreateShipment = async () => {
       console.log(`💰 Price: RM${result.price}`);
       console.log(`⏰ Delivery Time: ${result.deliveryTime}`);
       return result;
-    } else {
-      console.log('❌ Shipment creation failed:', result.error);
-      return null;
     }
+    console.log('❌ Shipment creation failed:', result.error);
+    return null;
   } catch (error) {
     console.error('❌ Shipment creation test error:', error);
     return null;
@@ -140,24 +142,23 @@ export const testCreateShipment = async () => {
 // Test auto-create shipment
 export const testAutoCreateShipment = async () => {
   console.log('🧪 Testing Auto-Create Shipment...');
-  
+
   try {
     const from = generateTestFromAddress();
     const to = generateTestToAddress();
     const parcel = generateTestParcel();
-    
+
     const result = await autoCreateShipment(from, to, parcel, 'cheapest');
-    
+
     if (result.success) {
       console.log('✅ Auto-create shipment successful');
       console.log(`📦 Tracking Number: ${result.trackingNumber}`);
       console.log(`🚚 Courier: ${result.courier} - ${result.service}`);
       console.log(`💰 Price: RM${result.price}`);
       return result;
-    } else {
-      console.log('❌ Auto-create shipment failed:', result.error);
-      return null;
     }
+    console.log('❌ Auto-create shipment failed:', result.error);
+    return null;
   } catch (error) {
     console.error('❌ Auto-create shipment test error:', error);
     return null;
@@ -167,11 +168,11 @@ export const testAutoCreateShipment = async () => {
 // Test shipment tracking
 export const testTrackShipment = async (trackingNumber?: string) => {
   console.log('🧪 Testing Shipment Tracking...');
-  
+
   try {
     // Use provided tracking number or create a test shipment first
     let testTrackingNumber = trackingNumber;
-    
+
     if (!testTrackingNumber) {
       const shipmentResult = await testAutoCreateShipment();
       if (!shipmentResult?.trackingNumber) {
@@ -180,9 +181,9 @@ export const testTrackShipment = async (trackingNumber?: string) => {
       }
       testTrackingNumber = shipmentResult.trackingNumber;
     }
-    
+
     const result = await trackShipment(testTrackingNumber);
-    
+
     if (result.success) {
       console.log('✅ Shipment tracking successful');
       console.log(`📦 Status: ${result.status}`);
@@ -190,10 +191,9 @@ export const testTrackShipment = async (trackingNumber?: string) => {
       console.log(`🕐 Last Update: ${result.lastUpdate}`);
       console.log(`⏰ Estimated Delivery: ${result.estimatedDelivery}`);
       return result;
-    } else {
-      console.log('❌ Shipment tracking failed:', result.error);
-      return null;
     }
+    console.log('❌ Shipment tracking failed:', result.error);
+    return null;
   } catch (error) {
     console.error('❌ Shipment tracking test error:', error);
     return null;
@@ -203,16 +203,16 @@ export const testTrackShipment = async (trackingNumber?: string) => {
 // Test automated shipping system
 export const testAutomatedShippingSystem = async () => {
   console.log('🧪 Testing Automated Shipping System...');
-  
+
   try {
     const result = await testAutomatedShipping();
-    
+
     if (result) {
       console.log('✅ Automated shipping system test successful');
     } else {
       console.log('❌ Automated shipping system test failed');
     }
-    
+
     return result;
   } catch (error) {
     console.error('❌ Automated shipping system test error:', error);
@@ -223,15 +223,15 @@ export const testAutomatedShippingSystem = async () => {
 // Test process pending orders
 export const testProcessPendingOrders = async () => {
   console.log('🧪 Testing Process Pending Orders...');
-  
+
   try {
     const result = await processPendingOrders();
-    
+
     console.log(`📊 Processing Results:`);
     console.log(`  ✅ Processed: ${result.processed}`);
     console.log(`  ❌ Errors: ${result.errors}`);
     console.log(`  📦 Total: ${result.processed + result.errors}`);
-    
+
     return result;
   } catch (error) {
     console.error('❌ Process pending orders test error:', error);
@@ -243,7 +243,7 @@ export const testProcessPendingOrders = async () => {
 export const runAllEasyParcelTests = async () => {
   console.log('🚀 Running All EasyParcel Tests...');
   console.log('=====================================');
-  
+
   const results = {
     connection: await testConnection(),
     shippingRates: await testShippingRates(),
@@ -253,32 +253,34 @@ export const runAllEasyParcelTests = async () => {
     automatedShipping: await testAutomatedShippingSystem(),
     processPending: await testProcessPendingOrders(),
   };
-  
+
   console.log('=====================================');
   console.log('📊 Test Results Summary:');
   console.log('=====================================');
-  
+
   Object.entries(results).forEach(([testName, result]) => {
     const status = result ? '✅ PASS' : '❌ FAIL';
     console.log(`${status} ${testName}`);
   });
-  
-  const successCount = Object.values(results).filter(r => r).length;
+
+  const successCount = Object.values(results).filter((r) => r).length;
   const totalCount = Object.keys(results).length;
-  
+
   console.log('=====================================');
-  console.log(`📈 Success Rate: ${successCount}/${totalCount} (${Math.round(successCount/totalCount*100)}%)`);
+  console.log(
+    `📈 Success Rate: ${successCount}/${totalCount} (${Math.round((successCount / totalCount) * 100)}%)`,
+  );
   console.log('=====================================');
-  
+
   return results;
 };
 
 // API testing functions
 export const testEasyParcelAPI = async () => {
   console.log('🧪 Testing EasyParcel API Endpoints...');
-  
+
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  
+
   try {
     // Test shipping rates API
     console.log('📦 Testing shipping rates API...');
@@ -291,19 +293,22 @@ export const testEasyParcelAPI = async () => {
         parcel: generateTestParcel(),
       }),
     });
-    
+
     const ratesResult = await ratesResponse.json();
     console.log('Shipping rates API result:', ratesResult);
-    
+
     // Test auto-process API
     console.log('📦 Testing auto-process API...');
-    const processResponse = await fetch(`${baseUrl}/api/shipping/auto-process`, {
-      method: 'POST',
-    });
-    
+    const processResponse = await fetch(
+      `${baseUrl}/api/shipping/auto-process`,
+      {
+        method: 'POST',
+      },
+    );
+
     const processResult = await processResponse.json();
     console.log('Auto-process API result:', processResult);
-    
+
     return {
       shippingRates: ratesResult,
       autoProcess: processResult,

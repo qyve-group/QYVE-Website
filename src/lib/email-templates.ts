@@ -226,7 +226,9 @@ export const generateOrderConfirmationEmail = (data: OrderData) => `
             </tr>
           </thead>
           <tbody>
-            ${data.items.map(item => `
+            ${data.items
+              .map(
+                (item) => `
               <tr>
                 <td><strong>${item.name}</strong></td>
                 <td>${item.size || 'N/A'}</td>
@@ -234,7 +236,9 @@ export const generateOrderConfirmationEmail = (data: OrderData) => `
                 <td>${item.quantity}</td>
                 <td>RM ${(item.price * item.quantity).toFixed(2)}</td>
               </tr>
-            `).join('')}
+            `,
+              )
+              .join('')}
           </tbody>
         </table>
         
@@ -242,7 +246,7 @@ export const generateOrderConfirmationEmail = (data: OrderData) => `
           <h3>Shipping Address</h3>
           <p>
             ${data.shippingAddress.line1}<br>
-            ${data.shippingAddress.line2 ? data.shippingAddress.line2 + '<br>' : ''}
+            ${data.shippingAddress.line2 ? `${data.shippingAddress.line2}<br>` : ''}
             ${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddress.postalCode}<br>
             ${data.shippingAddress.country}
           </p>
@@ -347,7 +351,7 @@ export const generateShippingNotificationEmail = (data: OrderData) => `
           <h3>Shipping Address</h3>
           <p>
             ${data.shippingAddress.line1}<br>
-            ${data.shippingAddress.line2 ? data.shippingAddress.line2 + '<br>' : ''}
+            ${data.shippingAddress.line2 ? `${data.shippingAddress.line2}<br>` : ''}
             ${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddress.postalCode}<br>
             ${data.shippingAddress.country}
           </p>
@@ -364,14 +368,18 @@ export const generateShippingNotificationEmail = (data: OrderData) => `
             </tr>
           </thead>
           <tbody>
-            ${data.items.map(item => `
+            ${data.items
+              .map(
+                (item) => `
               <tr>
                 <td><strong>${item.name}</strong></td>
                 <td>${item.size || 'N/A'}</td>
                 <td>${item.color || 'N/A'}</td>
                 <td>${item.quantity}</td>
               </tr>
-            `).join('')}
+            `,
+              )
+              .join('')}
           </tbody>
         </table>
         
@@ -392,7 +400,9 @@ export const generateShippingNotificationEmail = (data: OrderData) => `
 `;
 
 // Order Cancellation Email Template
-export const generateOrderCancellationEmail = (data: OrderData & { reason: string }) => `
+export const generateOrderCancellationEmail = (
+  data: OrderData & { reason: string },
+) => `
   <!DOCTYPE html>
   <html>
   <head>
@@ -486,5 +496,3 @@ export const generateRefundConfirmationEmail = (data: RefundData) => `
   </body>
   </html>
 `;
-
-

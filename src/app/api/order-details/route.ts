@@ -12,13 +12,17 @@ export async function GET(req: Request) {
     const sessionId = searchParams.get('session_id');
 
     if (!sessionId) {
-      return NextResponse.json({ error: 'Session ID required' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Session ID required' },
+        { status: 400 },
+      );
     }
 
     // Get order details from database
     const { data: order, error: orderError } = await supabase
       .from('orders')
-      .select(`
+      .select(
+        `
         *,
         order_items(
           *,
@@ -30,7 +34,8 @@ export async function GET(req: Request) {
             )
           )
         )
-      `)
+      `,
+      )
       .eq('stripe_session_id', sessionId)
       .single();
 
@@ -41,7 +46,8 @@ export async function GET(req: Request) {
     // Format items for Google Analytics
     const items = order.order_items.map((item: any) => ({
       item_id: item.products_sizes?.id || item.product_size_id,
-      item_name: item.products_sizes?.product_colors?.products?.name || 'Product',
+      item_name:
+        item.products_sizes?.product_colors?.products?.name || 'Product',
       price: item.price,
       quantity: item.quantity,
       item_category: 'Apparel',
@@ -58,6 +64,9 @@ export async function GET(req: Request) {
     });
   } catch (error) {
     console.error('Error fetching order details:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 }

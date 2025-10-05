@@ -99,7 +99,9 @@ const PaymentSuccess = () => {
         setTransaction(transactionData);
 
         // Get detailed order information for GA tracking
-        const orderRes = await fetch(`/api/order-details?session_id=${sessionId}`);
+        const orderRes = await fetch(
+          `/api/order-details?session_id=${sessionId}`,
+        );
         const orderData = await orderRes.json();
 
         // Track purchase event with detailed item information
@@ -108,14 +110,16 @@ const PaymentSuccess = () => {
             transaction_id: sessionId,
             value: orderData.total_value,
             currency: orderData.currency || 'MYR',
-            items: orderData.items || [{
-              item_id: 'purchase',
-              item_name: 'Order',
-              price: orderData.total_value,
-              quantity: 1,
-              item_category: 'Apparel',
-              item_brand: 'QYVE',
-            }],
+            items: orderData.items || [
+              {
+                item_id: 'purchase',
+                item_name: 'Order',
+                price: orderData.total_value,
+                quantity: 1,
+                item_category: 'Apparel',
+                item_brand: 'QYVE',
+              },
+            ],
           });
         } else if (transactionData && transactionData.amount) {
           // Fallback to basic tracking if detailed order not available
@@ -123,14 +127,16 @@ const PaymentSuccess = () => {
             transaction_id: sessionId,
             value: parseFloat(transactionData.amount),
             currency: 'MYR',
-            items: [{
-              item_id: 'purchase',
-              item_name: 'Order',
-              price: parseFloat(transactionData.amount),
-              quantity: 1,
-              item_category: 'Apparel',
-              item_brand: 'QYVE',
-            }],
+            items: [
+              {
+                item_id: 'purchase',
+                item_name: 'Order',
+                price: parseFloat(transactionData.amount),
+                quantity: 1,
+                item_category: 'Apparel',
+                item_brand: 'QYVE',
+              },
+            ],
           });
         }
       } catch (error) {

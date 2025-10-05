@@ -2,14 +2,14 @@
 // Handles all transactional emails with proper error handling and retry logic
 
 import { brevoClient, SendSmtpEmail } from '@/libs/brevo';
+
+import type { OrderData, RefundData } from './email-templates';
 import {
-  OrderData,
-  RefundData,
+  generateOrderCancellationEmail,
   generateOrderConfirmationEmail,
   generatePaymentConfirmationEmail,
-  generateShippingNotificationEmail,
-  generateOrderCancellationEmail,
   generateRefundConfirmationEmail,
+  generateShippingNotificationEmail,
 } from './email-templates';
 
 // Email service configuration
@@ -40,7 +40,7 @@ export interface EmailResult {
 // Enhanced email service class
 export class EmailService {
   private static instance: EmailService;
-  
+
   public static getInstance(): EmailService {
     if (!EmailService.instance) {
       EmailService.instance = new EmailService();
@@ -51,21 +51,31 @@ export class EmailService {
   // Send order confirmation email
   async sendOrderConfirmation(data: OrderData): Promise<EmailResult> {
     try {
-      console.log('📧 Sending order confirmation email to:', data.customerEmail);
-      
+      console.log(
+        '📧 Sending order confirmation email to:',
+        data.customerEmail,
+      );
+
       const email = new SendSmtpEmail();
       email.to = [{ email: data.customerEmail, name: data.customerName }];
       email.subject = `Order Confirmation - ${data.orderId}`;
       email.htmlContent = generateOrderConfirmationEmail(data);
-      email.sender = { email: EMAIL_CONFIG.fromEmail, name: EMAIL_CONFIG.fromName };
-      
+      email.sender = {
+        email: EMAIL_CONFIG.fromEmail,
+        name: EMAIL_CONFIG.fromName,
+      };
+
       const result = await this.sendWithRetry(email);
-      
+
       if (result.success) {
         console.log('✅ Order confirmation email sent successfully');
-        await this.logEmailSent(EmailType.ORDER_CONFIRMATION, data.customerEmail, data.orderId);
+        await this.logEmailSent(
+          EmailType.ORDER_CONFIRMATION,
+          data.customerEmail,
+          data.orderId,
+        );
       }
-      
+
       return result;
     } catch (error) {
       console.error('❌ Failed to send order confirmation email:', error);
@@ -79,21 +89,31 @@ export class EmailService {
   // Send payment confirmation email
   async sendPaymentConfirmation(data: OrderData): Promise<EmailResult> {
     try {
-      console.log('📧 Sending payment confirmation email to:', data.customerEmail);
-      
+      console.log(
+        '📧 Sending payment confirmation email to:',
+        data.customerEmail,
+      );
+
       const email = new SendSmtpEmail();
       email.to = [{ email: data.customerEmail, name: data.customerName }];
       email.subject = `Payment Confirmation - ${data.orderId}`;
       email.htmlContent = generatePaymentConfirmationEmail(data);
-      email.sender = { email: EMAIL_CONFIG.fromEmail, name: EMAIL_CONFIG.fromName };
-      
+      email.sender = {
+        email: EMAIL_CONFIG.fromEmail,
+        name: EMAIL_CONFIG.fromName,
+      };
+
       const result = await this.sendWithRetry(email);
-      
+
       if (result.success) {
         console.log('✅ Payment confirmation email sent successfully');
-        await this.logEmailSent(EmailType.PAYMENT_CONFIRMATION, data.customerEmail, data.orderId);
+        await this.logEmailSent(
+          EmailType.PAYMENT_CONFIRMATION,
+          data.customerEmail,
+          data.orderId,
+        );
       }
-      
+
       return result;
     } catch (error) {
       console.error('❌ Failed to send payment confirmation email:', error);
@@ -107,21 +127,31 @@ export class EmailService {
   // Send shipping notification email
   async sendShippingNotification(data: OrderData): Promise<EmailResult> {
     try {
-      console.log('📧 Sending shipping notification email to:', data.customerEmail);
-      
+      console.log(
+        '📧 Sending shipping notification email to:',
+        data.customerEmail,
+      );
+
       const email = new SendSmtpEmail();
       email.to = [{ email: data.customerEmail, name: data.customerName }];
       email.subject = `Your Order Has Shipped - ${data.orderId}`;
       email.htmlContent = generateShippingNotificationEmail(data);
-      email.sender = { email: EMAIL_CONFIG.fromEmail, name: EMAIL_CONFIG.fromName };
-      
+      email.sender = {
+        email: EMAIL_CONFIG.fromEmail,
+        name: EMAIL_CONFIG.fromName,
+      };
+
       const result = await this.sendWithRetry(email);
-      
+
       if (result.success) {
         console.log('✅ Shipping notification email sent successfully');
-        await this.logEmailSent(EmailType.SHIPPING_NOTIFICATION, data.customerEmail, data.orderId);
+        await this.logEmailSent(
+          EmailType.SHIPPING_NOTIFICATION,
+          data.customerEmail,
+          data.orderId,
+        );
       }
-      
+
       return result;
     } catch (error) {
       console.error('❌ Failed to send shipping notification email:', error);
@@ -133,23 +163,35 @@ export class EmailService {
   }
 
   // Send order cancellation email
-  async sendOrderCancellation(data: OrderData & { reason: string }): Promise<EmailResult> {
+  async sendOrderCancellation(
+    data: OrderData & { reason: string },
+  ): Promise<EmailResult> {
     try {
-      console.log('📧 Sending order cancellation email to:', data.customerEmail);
-      
+      console.log(
+        '📧 Sending order cancellation email to:',
+        data.customerEmail,
+      );
+
       const email = new SendSmtpEmail();
       email.to = [{ email: data.customerEmail, name: data.customerName }];
       email.subject = `Order Cancelled - ${data.orderId}`;
       email.htmlContent = generateOrderCancellationEmail(data);
-      email.sender = { email: EMAIL_CONFIG.fromEmail, name: EMAIL_CONFIG.fromName };
-      
+      email.sender = {
+        email: EMAIL_CONFIG.fromEmail,
+        name: EMAIL_CONFIG.fromName,
+      };
+
       const result = await this.sendWithRetry(email);
-      
+
       if (result.success) {
         console.log('✅ Order cancellation email sent successfully');
-        await this.logEmailSent(EmailType.ORDER_CANCELLATION, data.customerEmail, data.orderId);
+        await this.logEmailSent(
+          EmailType.ORDER_CANCELLATION,
+          data.customerEmail,
+          data.orderId,
+        );
       }
-      
+
       return result;
     } catch (error) {
       console.error('❌ Failed to send order cancellation email:', error);
@@ -163,21 +205,31 @@ export class EmailService {
   // Send refund confirmation email
   async sendRefundConfirmation(data: RefundData): Promise<EmailResult> {
     try {
-      console.log('📧 Sending refund confirmation email to:', data.customerEmail);
-      
+      console.log(
+        '📧 Sending refund confirmation email to:',
+        data.customerEmail,
+      );
+
       const email = new SendSmtpEmail();
       email.to = [{ email: data.customerEmail, name: data.customerName }];
       email.subject = `Refund Processed - ${data.orderId}`;
       email.htmlContent = generateRefundConfirmationEmail(data);
-      email.sender = { email: EMAIL_CONFIG.fromEmail, name: EMAIL_CONFIG.fromName };
-      
+      email.sender = {
+        email: EMAIL_CONFIG.fromEmail,
+        name: EMAIL_CONFIG.fromName,
+      };
+
       const result = await this.sendWithRetry(email);
-      
+
       if (result.success) {
         console.log('✅ Refund confirmation email sent successfully');
-        await this.logEmailSent(EmailType.REFUND_CONFIRMATION, data.customerEmail, data.orderId);
+        await this.logEmailSent(
+          EmailType.REFUND_CONFIRMATION,
+          data.customerEmail,
+          data.orderId,
+        );
       }
-      
+
       return result;
     } catch (error) {
       console.error('❌ Failed to send refund confirmation email:', error);
@@ -189,10 +241,13 @@ export class EmailService {
   }
 
   // Send email with retry logic
-  private async sendWithRetry(email: SendSmtpEmail, attempt: number = 1): Promise<EmailResult> {
+  private async sendWithRetry(
+    email: SendSmtpEmail,
+    attempt: number = 1,
+  ): Promise<EmailResult> {
     try {
       const result = await brevoClient.sendTransacEmail(email);
-      
+
       return {
         success: true,
         messageId: result.messageId,
@@ -200,13 +255,15 @@ export class EmailService {
       };
     } catch (error) {
       console.error(`❌ Email send attempt ${attempt} failed:`, error);
-      
+
       if (attempt < EMAIL_CONFIG.retryAttempts) {
-        console.log(`🔄 Retrying email send (attempt ${attempt + 1}/${EMAIL_CONFIG.retryAttempts})...`);
+        console.log(
+          `🔄 Retrying email send (attempt ${attempt + 1}/${EMAIL_CONFIG.retryAttempts})...`,
+        );
         await this.delay(EMAIL_CONFIG.retryDelay * attempt);
         return this.sendWithRetry(email, attempt + 1);
       }
-      
+
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -216,15 +273,24 @@ export class EmailService {
   }
 
   // Delay utility for retry logic
+  // eslint-disable-next-line class-methods-use-this
   private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    // eslint-disable-next-line no-promise-executor-return
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   // Log email sent to database (optional)
-  private async logEmailSent(type: EmailType, email: string, orderId: string): Promise<void> {
+  // eslint-disable-next-line class-methods-use-this
+  private async logEmailSent(
+    type: EmailType,
+    email: string,
+    orderId: string,
+  ): Promise<void> {
     try {
       // This could be enhanced to log to a database table for email tracking
-      console.log(`📊 Email logged: ${type} sent to ${email} for order ${orderId}`);
+      console.log(
+        `📊 Email logged: ${type} sent to ${email} for order ${orderId}`,
+      );
     } catch (error) {
       console.error('❌ Failed to log email:', error);
     }
@@ -234,7 +300,7 @@ export class EmailService {
   async sendTestEmail(testEmail: string): Promise<EmailResult> {
     try {
       console.log('📧 Sending test email to:', testEmail);
-      
+
       const testData: OrderData = {
         orderId: 'TEST-ORDER-123',
         customerName: 'Test Customer',
@@ -258,7 +324,7 @@ export class EmailService {
           country: 'Malaysia',
         },
       };
-      
+
       return await this.sendOrderConfirmation(testData);
     } catch (error) {
       console.error('❌ Failed to send test email:', error);
@@ -274,11 +340,15 @@ export class EmailService {
 export const emailService = EmailService.getInstance();
 
 // Convenience functions for direct use
-export const sendOrderConfirmation = (data: OrderData) => emailService.sendOrderConfirmation(data);
-export const sendPaymentConfirmation = (data: OrderData) => emailService.sendPaymentConfirmation(data);
-export const sendShippingNotification = (data: OrderData) => emailService.sendShippingNotification(data);
-export const sendOrderCancellation = (data: OrderData & { reason: string }) => emailService.sendOrderCancellation(data);
-export const sendRefundConfirmation = (data: RefundData) => emailService.sendRefundConfirmation(data);
-export const sendTestEmail = (testEmail: string) => emailService.sendTestEmail(testEmail);
-
-
+export const sendOrderConfirmation = (data: OrderData) =>
+  emailService.sendOrderConfirmation(data);
+export const sendPaymentConfirmation = (data: OrderData) =>
+  emailService.sendPaymentConfirmation(data);
+export const sendShippingNotification = (data: OrderData) =>
+  emailService.sendShippingNotification(data);
+export const sendOrderCancellation = (data: OrderData & { reason: string }) =>
+  emailService.sendOrderCancellation(data);
+export const sendRefundConfirmation = (data: RefundData) =>
+  emailService.sendRefundConfirmation(data);
+export const sendTestEmail = (testEmail: string) =>
+  emailService.sendTestEmail(testEmail);

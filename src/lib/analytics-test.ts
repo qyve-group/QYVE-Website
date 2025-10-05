@@ -2,15 +2,15 @@
 // This file can be used to test Google Analytics tracking in development
 
 import {
-  trackProductView,
   trackAddToCart,
   trackBeginCheckout,
-  trackPurchase,
+  trackCustomEvent,
   trackFilterUsage,
-  trackSortUsage,
   trackNewsletterSubscription,
+  trackProductView,
+  trackPurchase,
   trackSearch,
-  trackCustomEvent
+  trackSortUsage,
 } from './gtag';
 
 // Test Product View
@@ -19,12 +19,12 @@ export const testProductView = () => {
   trackProductView({
     item_id: 'test-product-123',
     item_name: 'Test Product',
-    price: 25.00,
+    price: 25.0,
     currency: 'MYR',
     item_category: 'Apparel',
     item_brand: 'QYVE',
     item_variant: 'Black',
-    image_url: '/test-product.jpg'
+    image_url: '/test-product.jpg',
   });
   console.log('✅ Product view event sent');
 };
@@ -35,13 +35,13 @@ export const testAddToCart = () => {
   trackAddToCart({
     item_id: 'test-product-123',
     item_name: 'Test Product',
-    price: 25.00,
+    price: 25.0,
     quantity: 2,
     currency: 'MYR',
     item_category: 'Apparel',
     item_brand: 'QYVE',
     item_variant: 'Black',
-    image_url: '/test-product.jpg'
+    image_url: '/test-product.jpg',
   });
   console.log('✅ Add to cart event sent');
 };
@@ -53,14 +53,14 @@ export const testBeginCheckout = () => {
     {
       item_id: 'test-product-123',
       item_name: 'Test Product',
-      price: 25.00,
+      price: 25.0,
       quantity: 2,
       item_category: 'Apparel',
       item_brand: 'QYVE',
-      item_variant: 'Black'
-    }
+      item_variant: 'Black',
+    },
   ];
-  trackBeginCheckout(testCartItems, 50.00, 'MYR');
+  trackBeginCheckout(testCartItems, 50.0, 'MYR');
   console.log('✅ Begin checkout event sent');
 };
 
@@ -69,21 +69,21 @@ export const testPurchase = () => {
   console.log('🧪 Testing Purchase Tracking...');
   trackPurchase({
     transaction_id: 'test-transaction-123',
-    value: 50.00,
+    value: 50.0,
     currency: 'MYR',
     items: [
       {
         item_id: 'test-product-123',
         item_name: 'Test Product',
-        price: 25.00,
+        price: 25.0,
         quantity: 2,
         item_category: 'Apparel',
         item_brand: 'QYVE',
-        item_variant: 'Black'
-      }
+        item_variant: 'Black',
+      },
     ],
-    shipping: 5.00,
-    tax: 0.00
+    shipping: 5.0,
+    tax: 0.0,
   });
   console.log('✅ Purchase event sent');
 };
@@ -127,11 +127,11 @@ export const testCustomEvents = () => {
   console.log('🧪 Testing Custom Events Tracking...');
   trackCustomEvent('button_click', {
     button_name: 'hero_cta',
-    page_section: 'homepage'
+    page_section: 'homepage',
   });
   trackCustomEvent('video_play', {
     video_title: 'product_demo',
-    video_duration: 120
+    video_duration: 120,
   });
   console.log('✅ Custom events sent');
 };
@@ -140,7 +140,7 @@ export const testCustomEvents = () => {
 export const runAllAnalyticsTests = () => {
   console.log('🚀 Running All Google Analytics Tests...');
   console.log('=====================================');
-  
+
   testProductView();
   setTimeout(() => testAddToCart(), 100);
   setTimeout(() => testBeginCheckout(), 200);
@@ -150,7 +150,7 @@ export const runAllAnalyticsTests = () => {
   setTimeout(() => testNewsletterSubscription(), 600);
   setTimeout(() => testSearch(), 700);
   setTimeout(() => testCustomEvents(), 800);
-  
+
   setTimeout(() => {
     console.log('=====================================');
     console.log('✅ All analytics tests completed!');
@@ -170,6 +170,6 @@ if (typeof window !== 'undefined') {
     testNewsletterSubscription,
     testSearch,
     testCustomEvents,
-    runAllAnalyticsTests
+    runAllAnalyticsTests,
   };
 }

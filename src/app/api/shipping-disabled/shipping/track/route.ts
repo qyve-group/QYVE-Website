@@ -1,7 +1,9 @@
 // Track shipment API endpoint
 // Get tracking information for a shipment
 
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
 import { trackShipment } from '@/lib/easyparcel-service';
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
@@ -12,7 +14,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     if (!trackingNumber) {
       return NextResponse.json(
         { error: 'Missing required parameter: tracking_number' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -24,7 +26,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
           success: false,
           error: trackingResult.error,
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -43,7 +45,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         success: false,
         error: error instanceof Error ? error.message : 'Internal server error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

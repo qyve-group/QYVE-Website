@@ -1,9 +1,11 @@
 // Shipping notification API endpoint
 // Sends shipping notification emails when orders are shipped
 
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
 import { sendShippingNotification } from '@/lib/email-service';
-import { OrderData } from '@/lib/email-templates';
+import type { OrderData } from '@/lib/email-templates';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
@@ -14,7 +16,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     if (!orderId || !trackingNumber) {
       return NextResponse.json(
         { error: 'Missing required fields: orderId and trackingNumber' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -46,15 +48,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         message: 'Shipping notification sent successfully',
         messageId: result.messageId,
       });
-    } else {
-      return NextResponse.json(
-        {
-          success: false,
-          error: result.error,
-        },
-        { status: 500 }
-      );
     }
+    return NextResponse.json(
+      {
+        success: false,
+        error: result.error,
+      },
+      { status: 500 },
+    );
   } catch (error) {
     console.error('❌ Shipping notification API error:', error);
     return NextResponse.json(
@@ -62,9 +63,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         success: false,
         error: 'Internal server error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-
-

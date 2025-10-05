@@ -9,7 +9,8 @@ import Select from '@/shared/Select/Select';
 const Filter = () => {
   const handleFilterChange = (filterType: string, value: string) => {
     // Track filter usage
-    if (value && value !== filterType) { // Don't track the default option
+    if (value && value !== filterType) {
+      // Don't track the default option
       trackFilterUsage(filterType, value, 'shop');
     }
   };
@@ -24,20 +25,20 @@ const Filter = () => {
   return (
     <div className="mx-auto mb-10 max-w-4xl items-center justify-between space-y-3 rounded-2xl border border-neutral-300 p-2 md:flex md:space-y-0 md:rounded-full">
       <div className="grid basis-3/4 gap-3 md:grid-cols-4">
-        {filters.map((filter, index) => {
+        {filters.map((filter, _index) => {
           const filterType = filter[0];
-          const isSortFilter = filterType.toLowerCase().includes('sort');
-          
+          const isSortFilter = filterType?.toLowerCase().includes('sort');
+
           return (
-            <Select 
-              sizeClass="h-12" 
+            <Select
+              sizeClass="h-12"
               key={filterType}
               onChange={(e) => {
-                const value = e.target.value;
+                const { value } = e.target;
                 if (isSortFilter) {
                   handleSortChange(value);
                 } else {
-                  handleFilterChange(filterType, value);
+                  handleFilterChange(filterType ?? '', value);
                 }
               }}
             >

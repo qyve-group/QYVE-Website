@@ -2,9 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
+import ComingSoon from '@/components/ComingSoon';
 import { supabase } from '@/libs/supabaseClient';
 import Heading from '@/shared/Heading/Heading';
-import ComingSoon from '@/components/ComingSoon';
 
 interface BlogPost {
   id: number;
