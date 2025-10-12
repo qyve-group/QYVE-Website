@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     console.log('📧 Testing email to:', email);
     
     // Create SMTP transporter using Brevo SMTP
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp-relay.brevo.com',
       port: 587,
       secure: false, // true for 465, false for other ports
