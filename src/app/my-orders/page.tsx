@@ -13,6 +13,13 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import RefundButton from '@/components/RefundButton';
+import RefundEligibilityStatus from '@/components/RefundEligibilityStatus';
+import { 
+  checkRefundEligibility, 
+  MOCK_ORDER_REFUND_DATA,
+  type OrderRefundData 
+} from '@/data/refund-types';
 import { supabase } from '@/libs/supabaseClient';
 import type { RootState } from '@/store/store';
 import {
@@ -137,82 +144,7 @@ const ShippingProgress = ({
   );
 };
 
-const RefundButton = ({
-  orderId,
-  orderStatus,
-  createdAt,
-}: {
-  orderId: number;
-  orderStatus: string;
-  createdAt: string;
-}) => {
-  const isRefundable = () => {
-    // Can only refund delivered orders
-    if (orderStatus !== 'delivered') return false;
-
-    // Calculate days since delivery
-    const deliveryDate = new Date(createdAt);
-    const currentDate = new Date();
-    const daysDifference = Math.floor(
-      (currentDate.getTime() - deliveryDate.getTime()) / (1000 * 3600 * 24),
-    );
-
-    // Allow refund within 7 days of delivery
-    return daysDifference <= 7;
-  };
-
-  const handleRefund = () => {
-    if (!isRefundable()) {
-      alert(
-        'Refund period has expired. Refunds are only available within 7 days of delivery.',
-      );
-      return;
-    }
-
-    const message = `Hi QYVE team, I would like to request a refund for Order ID: ${orderId}. Please assist me with the refund process.`;
-    const whatsappUrl = `https://wa.me/60123456789?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-  };
-
-  const getDaysRemaining = () => {
-    const deliveryDate = new Date(createdAt);
-    const currentDate = new Date();
-    const daysDifference = Math.floor(
-      (currentDate.getTime() - deliveryDate.getTime()) / (1000 * 3600 * 24),
-    );
-    return Math.max(0, 7 - daysDifference);
-  };
-
-  return (
-    <div className="mt-4">
-      {/* eslint-disable no-nested-ternary */}
-      {isRefundable() ? (
-        <div>
-          <button
-            type="button"
-            onClick={handleRefund}
-            className="rounded-lg bg-red-500 px-4 py-2 text-sm text-white transition-colors hover:bg-red-600"
-          >
-            Request Refund
-          </button>
-          <p className="text-gray-500 mt-1 text-xs">
-            {getDaysRemaining()} days remaining for refund
-          </p>
-        </div>
-      ) : orderStatus === 'delivered' ? (
-        <div className="text-gray-500 flex items-center gap-2">
-          <XCircle size={16} />
-          <span className="text-sm">Refund period expired</span>
-        </div>
-      ) : (
-        <div className="text-gray-500 flex items-center gap-2">
-          <Clock size={16} />
-          <span className="text-sm">Refund available after delivery</span>
-        </div>
-      )}
-    </div>
-  );
-};
+// Enhanced refund functionality integrated below
 
 export default function MyOrders() {
   const userId = useSelector((state: RootState) => state.auth.user);
@@ -450,12 +382,31 @@ export default function MyOrders() {
                   </div>
                 </div>
 
-                {/* Refund Button */}
-                <RefundButton
-                  orderId={order.id}
-                  orderStatus={order.shipping_status}
-                  createdAt={order.delivered_at || order.created_at}
-                />
+                {/* Enhanced Refund Section */}
+                {order.shipping_status === 'delivered' && (
+                  <div className="border-t pt-4">
+                    <h4 className="text-gray-800 font-semibold mb-3">Refund Options</h4>
+                    
+                    {/* Refund Eligibility Status */}
+                    <RefundEligibilityStatus
+                      eligibility={checkRefundEligibility(order.delivered_at || order.created_at)}
+                      className="mb-4"
+                    />
+                    
+                    {/* Refund Button */}
+                    <RefundButton
+                      orderNumber={`QYVE-2024-${order.id.toString().padStart(3, '0')}`}
+                      orderId={order.id.toString()}
+                      amount={order.total_price}
+                      currency="MYR"
+                      eligibility={checkRefundEligibility(order.delivered_at || order.created_at)}
+                      onRefundRequest={(orderId, reason) => {
+                        console.log('Refund requested for order:', orderId, 'Reason:', reason);
+                        // Here you would typically send the refund request to your backend
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             );
           })}

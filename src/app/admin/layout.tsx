@@ -17,7 +17,8 @@ import {
   LogOut,
   Menu,
   X,
-  Megaphone
+  Megaphone,
+  RotateCcw
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -32,6 +33,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
     { name: 'Products', href: '/admin/products', icon: Package },
+    { name: 'Refunds', href: '/admin/refunds', icon: RotateCcw },
     { name: 'Campaigns', href: '/admin/campaigns', icon: Megaphone },
     { name: 'Size Charts', href: '/admin/size-charts', icon: FileText },
     { name: 'Banners', href: '/admin/banners', icon: Image },
