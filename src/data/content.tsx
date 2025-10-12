@@ -47,6 +47,11 @@ export const topNavLinks: NavItemType[] = [
     href: '/shop',
   },
   {
+    id: 'sub-zero-campaign',
+    name: 'Sub-Zero',
+    href: '/campaigns/sub-zero',
+  },
+  {
     id: 'eerrrt',
     name: 'Blog',
     href: '/blog',
