@@ -25,6 +25,14 @@ interface ProductFormData {
   colors: string[];
   sizes: ProductSize[];
   isActive: boolean;
+  // Enhanced filter fields
+  available_colors: string[];
+  available_sizes: string[];
+  is_featured: boolean;
+  is_new_arrival: boolean;
+  is_best_seller: boolean;
+  is_on_sale: boolean;
+  inventory_quantity: number;
 }
 
 interface ProductSize {
@@ -45,7 +53,15 @@ const AddProductPage = () => {
     category: 'futsal',
     colors: ['black'],
     sizes: [],
-    isActive: true
+    isActive: true,
+    // Enhanced filter fields
+    available_colors: ['black'],
+    available_sizes: [],
+    is_featured: false,
+    is_new_arrival: false,
+    is_best_seller: false,
+    is_on_sale: false,
+    inventory_quantity: 0
   });
 
   const [newColor, setNewColor] = useState('');
@@ -247,6 +263,157 @@ const AddProductPage = () => {
                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 required
               />
+            </div>
+
+            {/* Enhanced Filter Fields */}
+            <div className="mt-6 border-t pt-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Filter & Display Options</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Available Colors */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Available Colors (for filtering)
+                  </label>
+                  <div className="mt-1 flex flex-wrap gap-2">
+                    {formData.available_colors.map((color, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+                      >
+                        {color}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newColors = formData.available_colors.filter((_, i) => i !== index);
+                            handleInputChange('available_colors', newColors);
+                          }}
+                          className="ml-1 text-gray-400 hover:text-gray-600"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </span>
+                    ))}
+                    <input
+                      type="text"
+                      placeholder="Add color"
+                      className="text-sm border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          const target = e.target as HTMLInputElement;
+                          if (target.value && !formData.available_colors.includes(target.value)) {
+                            handleInputChange('available_colors', [...formData.available_colors, target.value]);
+                            target.value = '';
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Available Sizes */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Available Sizes (for filtering)
+                  </label>
+                  <div className="mt-1 flex flex-wrap gap-2">
+                    {formData.available_sizes.map((size, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+                      >
+                        {size}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newSizes = formData.available_sizes.filter((_, i) => i !== index);
+                            handleInputChange('available_sizes', newSizes);
+                          }}
+                          className="ml-1 text-gray-400 hover:text-gray-600"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </span>
+                    ))}
+                    <input
+                      type="text"
+                      placeholder="Add size"
+                      className="text-sm border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          const target = e.target as HTMLInputElement;
+                          if (target.value && !formData.available_sizes.includes(target.value)) {
+                            handleInputChange('available_sizes', [...formData.available_sizes, target.value]);
+                            target.value = '';
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Inventory Quantity */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Total Inventory Quantity
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.inventory_quantity}
+                    onChange={(e) => handleInputChange('inventory_quantity', parseInt(e.target.value) || 0)}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                </div>
+
+                {/* Product Flags */}
+                <div className="space-y-3">
+                  <label className="block text-sm font-medium text-gray-700">Product Flags</label>
+                  
+                  <div className="space-y-2">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.is_featured}
+                        onChange={(e) => handleInputChange('is_featured', e.target.checked)}
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <span className="ml-2 text-sm text-gray-900">Featured Product</span>
+                    </label>
+                    
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.is_new_arrival}
+                        onChange={(e) => handleInputChange('is_new_arrival', e.target.checked)}
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <span className="ml-2 text-sm text-gray-900">New Arrival</span>
+                    </label>
+                    
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.is_best_seller}
+                        onChange={(e) => handleInputChange('is_best_seller', e.target.checked)}
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <span className="ml-2 text-sm text-gray-900">Best Seller</span>
+                    </label>
+                    
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.is_on_sale}
+                        onChange={(e) => handleInputChange('is_on_sale', e.target.checked)}
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <span className="ml-2 text-sm text-gray-900">On Sale</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="mt-6">

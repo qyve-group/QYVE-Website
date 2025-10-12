@@ -4,12 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { 
   BarChart3, 
   TrendingUp, 
-  TrendingDown,
   Users,
   ShoppingCart,
   DollarSign,
-  Eye,
-  Mail
 } from 'lucide-react';
 
 interface AnalyticsData {

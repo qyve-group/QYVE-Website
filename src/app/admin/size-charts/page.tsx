@@ -13,7 +13,7 @@ import {
   Users,
   HelpCircle
 } from 'lucide-react';
-import { sizeCharts } from '@/data/sizeCharts';
+import { SIZE_CHARTS } from '@/data/sizeCharts';
 
 interface SizeChart {
   title: string;
@@ -35,7 +35,7 @@ interface SizeChart {
 }
 
 const SizeChartsPage = () => {
-  const [charts, setCharts] = useState<Record<string, SizeChart>>(sizeCharts || {});
+  const [charts, setCharts] = useState<Record<string, SizeChart>>(SIZE_CHARTS || {});
   const [selectedCategory, setSelectedCategory] = useState<string>('futsal');
   const [editingChart, setEditingChart] = useState<SizeChart | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
