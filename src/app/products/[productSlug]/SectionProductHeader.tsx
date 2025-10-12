@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 
 import ImageShowCase from '@/components/ImageShowCase';
 import ShoeSizeButton from '@/components/ShoeSizeButton';
+import SizeChartButton from '@/components/SizeChartButton';
 import { trackAddToCart } from '@/lib/gtag';
 // import { shoeSizes } from "@/data/content";
 // import nike_profile from '@/images/nike_profile.jpg';
@@ -85,6 +86,18 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
   const [selectedProductSizeId, setSelectedProductSizeId] = useState<number>();
   const [custom, setCustom] = useState('');
+
+  // Determine product category for size chart
+  const getProductCategory = (productName: string): string => {
+    const name = productName.toLowerCase();
+    if (name.includes('jersey') || name.includes('bola') || name.includes('leyenda')) return 'jersey';
+    if (name.includes('slide') || name.includes('recovery')) return 'slides';
+    if (name.includes('sock') || name.includes('progrip')) return 'socks';
+    if (name.includes('futsal') || name.includes('infinitus')) return 'futsal';
+    return 'jersey'; // Default to jersey for apparel
+  };
+
+  const productCategory = getProductCategory(name);
 
   // console.log('slug -sectionproductheader: ', slug);
 
@@ -503,9 +516,17 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
         <div className="mb-5 flex items-end justify-between">
           <p className="text-xl">Available sizes</p>
-          <p className="flex items-center gap-1 text-sm text-neutral-500">
-            Size guide <LuInfo />
-          </p>
+          <div className="flex items-center gap-3">
+            <SizeChartButton
+              category={productCategory}
+              productName={name}
+              variant="button"
+              className="text-sm"
+            />
+            <p className="flex items-center gap-1 text-sm text-neutral-500">
+              Size guide <LuInfo />
+            </p>
+          </div>
         </div>
         <div className="grid grid-cols-3 gap-3">
           {/* {products_sizes.map((product) => (

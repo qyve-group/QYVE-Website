@@ -331,7 +331,7 @@ const PaymentSuccess = () => {
 
             <div className="space-y-3 pt-4">
               <Button asChild className="w-full text-black">
-                <Link href="/">
+                <Link href="/home">
                   Back to Home
                   <ArrowRight className="ml-2 size-4" />
                 </Link>

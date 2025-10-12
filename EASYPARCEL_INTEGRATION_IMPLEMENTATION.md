@@ -38,12 +38,13 @@ This document outlines the comprehensive EasyParcel integration implemented for 
 | File | Purpose | Status |
 |------|---------|--------|
 | `src/lib/easyparcel-service.ts` | EasyParcel API service | ✅ Complete |
-| `src/lib/automated-shipping.ts` | Automated shipping system | ✅ Complete |
-| `src/app/api/shipping/rates/route.ts` | Shipping rates API | ✅ Complete |
-| `src/app/api/shipping/create/route.ts` | Shipment creation API | ✅ Complete |
-| `src/app/api/shipping/track/route.ts` | Tracking API | ✅ Complete |
-| `src/app/api/shipping/auto-process/route.ts` | Auto-process API | ✅ Complete |
-| `src/lib/easyparcel-test.ts` | Testing utilities | ✅ Complete |
+| `src/lib/automated-shipping-integrated.ts` | Automated shipping system with email integration | ✅ Complete |
+| `src/lib/easyparcel-service-mock.ts` | Mock EasyParcel service for testing | ✅ Complete |
+| `src/app/api/shipping/process-pending/route.ts` | Process pending orders API | ✅ Complete |
+| `src/app/api/shipping/process-order/route.ts` | Process specific order API | ✅ Complete |
+| `src/app/api/shipping/status/route.ts` | Shipping status API | ✅ Complete |
+| `src/app/api/test-complete-flow/route.ts` | Complete flow testing | ✅ Complete |
+| `src/app/api/test-mock-easyparcel/route.ts` | Mock service testing | ✅ Complete |
 
 ### Integration Points
 
@@ -85,10 +86,10 @@ export class EasyParcelService {
 
 ### 2. Automated Shipping System
 
-**Automated System** (`src/lib/automated-shipping.ts`):
+**Integrated Automated System** (`src/lib/automated-shipping-integrated.ts`):
 
 ```typescript
-// Auto-create shipment for order
+// Auto-create shipment for order with email integration
 export async function autoCreateOrderShipment(orderData: OrderData): Promise<ShippingResult>
 
 // Process all pending orders
@@ -96,49 +97,58 @@ export async function processPendingOrders(): Promise<{ processed: number; error
 
 // Test automated system
 export async function testAutomatedShipping(): Promise<boolean>
+
+// Mock service for testing without API credentials
+export const mockEasyParcelService = {
+  getShippingRates: async () => mockShippingRates,
+  createShipment: async () => mockShipmentResult,
+  trackShipment: async () => mockTrackingResult
+};
 ```
 
 **Automation Features:**
 - ✅ Automatic shipment creation on order confirmation
 - ✅ Parcel dimension calculation based on items
 - ✅ Database integration for tracking info
-- ✅ Email notifications with tracking details
+- ✅ Email notifications with tracking details and real QYVE logo
 - ✅ Order status updates
+- ✅ Mock service for testing without live API credentials
+- ✅ Fallback to mock service when API credentials not available
 
 ### 3. API Endpoints
 
-**Shipping Rates API** (`/api/shipping/rates`):
+**Process Pending Orders API** (`/api/shipping/process-pending`):
 ```typescript
-POST /api/shipping/rates
+POST /api/shipping/process-pending
+// Processes all pending orders for shipping
+```
+
+**Process Specific Order API** (`/api/shipping/process-order`):
+```typescript
+POST /api/shipping/process-order
 {
-  "from": { "name": "...", "phone": "...", "email": "...", "address1": "...", "city": "...", "state": "...", "postcode": "...", "country": "..." },
-  "to": { "name": "...", "phone": "...", "email": "...", "address1": "...", "city": "...", "state": "...", "postcode": "...", "country": "..." },
-  "parcel": { "weight": 0.5, "length": 20, "width": 15, "height": 5, "content": "...", "value": 99.99 }
+  "orderId": "ORDER-123"
 }
 ```
 
-**Create Shipment API** (`/api/shipping/create`):
+**Shipping Status API** (`/api/shipping/status`):
 ```typescript
-POST /api/shipping/create
+GET /api/shipping/status?orderId=ORDER-123
+```
+
+**Complete Flow Test API** (`/api/test-complete-flow`):
+```typescript
+POST /api/test-complete-flow
 {
-  "orderId": "ORDER-123",
-  "from": { /* from address */ },
-  "to": { /* to address */ },
-  "parcel": { /* parcel details */ },
-  "courier": "J&T Express",
-  "service": "Standard",
-  "autoSelect": false
+  "email": "test@example.com"
 }
+// Tests complete order-to-shipping flow with mock data
 ```
 
-**Track Shipment API** (`/api/shipping/track`):
+**Mock EasyParcel Test API** (`/api/test-mock-easyparcel`):
 ```typescript
-GET /api/shipping/track?tracking_number=EP123456789MY
-```
-
-**Auto-Process API** (`/api/shipping/auto-process`):
-```typescript
-POST /api/shipping/auto-process
+POST /api/test-mock-easyparcel
+// Tests mock EasyParcel service functionality
 ```
 
 ### 4. Webhook Integration
@@ -146,13 +156,26 @@ POST /api/shipping/auto-process
 **Updated Webhook** (`src/app/api/webhook/route.ts`):
 
 ```typescript
-// Auto-create shipment after order confirmation
+// Auto-create shipment after order confirmation with email integration
 try {
-  const { autoCreateOrderShipment } = await import('@/lib/automated-shipping');
+  const { autoCreateOrderShipment } = await import('@/lib/automated-shipping-integrated');
   const shippingResult = await autoCreateOrderShipment(orderData);
   
   if (shippingResult.success) {
     console.log('✅ Automated shipment created:', shippingResult.trackingNumber);
+    
+    // Send shipping notification email with tracking number
+    const { sendShippingNotification } = await import('@/lib/email-service-integrated');
+    await sendShippingNotification({
+      customerEmail: orderData.customerEmail,
+      customerName: orderData.customerName,
+      orderId: orderData.orderId,
+      trackingNumber: shippingResult.trackingNumber,
+      courier: shippingResult.courier,
+      estimatedDelivery: shippingResult.estimatedDelivery,
+      items: orderData.items,
+      shippingAddress: orderData.shippingAddress
+    });
   }
 } catch (shippingError) {
   console.error('❌ Automated shipping failed:', shippingError);
@@ -212,23 +235,39 @@ try {
 
 ### Testing Utilities
 
-**Comprehensive Test Suite** (`src/lib/easyparcel-test.ts`):
+**Comprehensive Test Suite** (`src/app/api/test-complete-flow/route.ts`):
 
 ```typescript
-// Test all EasyParcel functions
-export const runAllEasyParcelTests = async () => {
-  const results = {
-    connection: await testConnection(),
-    shippingRates: await testShippingRates(),
-    createShipment: await testCreateShipment(),
-    autoCreateShipment: await testAutoCreateShipment(),
-    trackShipment: await testTrackShipment(),
-    automatedShipping: await testAutomatedShippingSystem(),
-    processPending: await testProcessPendingOrders(),
-  };
+// Test complete order-to-shipping flow
+export async function POST(req: NextRequest) {
+  const { email } = await req.json();
   
-  return results;
-};
+  try {
+    // Test mock EasyParcel service
+    const mockResult = await testMockEasyParcelService();
+    
+    // Test automated shipping with mock data
+    const shippingResult = await testAutomatedShippingWithMock();
+    
+    // Test email integration
+    const emailResult = await testShippingEmailIntegration(email);
+    
+    return NextResponse.json({
+      success: true,
+      message: "Complete flow test successful",
+      results: {
+        mockService: mockResult,
+        automatedShipping: shippingResult,
+        emailIntegration: emailResult
+      }
+    });
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      error: error.message
+    }, { status: 500 });
+  }
+}
 ```
 
 ### Manual Testing Checklist
@@ -258,19 +297,43 @@ export const runAllEasyParcelTests = async () => {
   - [ ] Verify database updates
   - [ ] Check email notifications
 
-### Browser Console Testing
+### API Testing
 
-```javascript
-// Test individual functions
-easyParcelTest.testConnection();
-easyParcelTest.testShippingRates();
-easyParcelTest.testCreateShipment();
+**Test Complete Flow:**
+```bash
+# Test complete order-to-shipping flow with mock data
+curl -X POST http://localhost:3000/api/test-complete-flow \
+  -H "Content-Type: application/json" \
+  -d '{"email":"your-test-email@example.com"}'
+```
 
-// Test all functions
-easyParcelTest.runAllEasyParcelTests();
+**Test Mock EasyParcel Service:**
+```bash
+# Test mock EasyParcel service functionality
+curl -X POST http://localhost:3000/api/test-mock-easyparcel
+```
 
-// Test API endpoints
-easyParcelTest.testEasyParcelAPI();
+**Test Shipping Processing:**
+```bash
+# Process all pending orders
+curl -X POST http://localhost:3000/api/shipping/process-pending
+
+# Process specific order
+curl -X POST http://localhost:3000/api/shipping/process-order \
+  -H "Content-Type: application/json" \
+  -d '{"orderId":"ORDER-123"}'
+
+# Get shipping status
+curl -X GET "http://localhost:3000/api/shipping/status?orderId=ORDER-123"
+```
+
+**PowerShell Testing:**
+```powershell
+# Test complete flow
+$response = Invoke-WebRequest -Uri "http://localhost:3000/api/test-complete-flow" -Method POST -Headers @{"Content-Type"="application/json"} -Body '{"email":"your-test-email@example.com"}'; $response.Content
+
+# Test mock service
+$response = Invoke-WebRequest -Uri "http://localhost:3000/api/test-mock-easyparcel" -Method POST; $response.Content
 ```
 
 ## 🔧 Configuration
@@ -278,7 +341,7 @@ easyParcelTest.testEasyParcelAPI();
 ### Environment Variables
 
 ```bash
-# EasyParcel Configuration
+# EasyParcel Configuration (Optional - Mock service used if not provided)
 EASYPARCEL_API_KEY=your-easyparcel-api-key
 EASYPARCEL_API_SECRET=your-easyparcel-api-secret
 
@@ -292,6 +355,13 @@ WAREHOUSE_CITY=Kuala Lumpur
 WAREHOUSE_STATE=Kuala Lumpur
 WAREHOUSE_POSTCODE=50000
 WAREHOUSE_COUNTRY=Malaysia
+
+# Email Integration (Required for shipping notifications)
+SMTP_HOST=smtp-relay.brevo.com
+SMTP_PORT=587
+SMTP_USER=noreply@qyveofficial.com
+SMTP_PASS=your-brevo-smtp-key
+NEXT_PUBLIC_BASE_URL=https://qyveofficial.com
 ```
 
 ### EasyParcel Configuration
@@ -304,24 +374,40 @@ const EASYPARCEL_CONFIG: EasyParcelConfig = {
     ? 'https://connect.easyparcel.my/' 
     : 'http://demo.connect.easyparcel.my/',
   isProduction: process.env.NODE_ENV === 'production',
+  useMockService: !process.env.EASYPARCEL_API_KEY, // Use mock if no API key
+};
+
+// Mock Service Configuration
+const MOCK_CONFIG = {
+  enabled: !process.env.EASYPARCEL_API_KEY,
+  mockTrackingNumber: 'EP123456789MY',
+  mockCourier: 'J&T Express',
+  mockEstimatedDelivery: '2-3 business days',
+  mockShippingRates: [
+    { courier: 'J&T Express', service: 'Standard', price: 8.50, days: 2 },
+    { courier: 'PosLaju', service: 'Express', price: 12.00, days: 1 }
+  ]
 };
 ```
 
 ## 🚀 Deployment Checklist
 
 ### Pre-Deployment
-- [ ] EasyParcel API credentials configured
+- [ ] EasyParcel API credentials configured (optional - mock service available)
 - [ ] Warehouse address configured
 - [ ] All API endpoints tested
 - [ ] Database schema updated
-- [ ] Email system integrated
+- [ ] Email system integrated with real QYVE logo
+- [ ] Mock service tested for development
 
 ### Post-Deployment
-- [ ] Test connection to EasyParcel
+- [ ] Test connection to EasyParcel (or verify mock service)
 - [ ] Create test shipment
 - [ ] Verify tracking functionality
-- [ ] Test automated shipping
+- [ ] Test automated shipping with email notifications
+- [ ] Verify shipping notification emails with real QYVE logo
 - [ ] Monitor error logs
+- [ ] Test complete order-to-shipping flow
 
 ## 📊 Expected Results
 
@@ -335,9 +421,11 @@ const EASYPARCEL_CONFIG: EasyParcelConfig = {
 ### Customer Experience
 - ✅ **Automatic Shipment** - Orders shipped immediately
 - ✅ **Tracking Information** - Real-time updates
-- ✅ **Email Notifications** - Shipping confirmations
+- ✅ **Email Notifications** - Shipping confirmations with real QYVE logo
 - ✅ **Delivery Estimation** - Expected delivery dates
 - ✅ **Multiple Courier Options** - Best service selection
+- ✅ **Professional Branding** - Real QYVE logo in all shipping emails
+- ✅ **Mock Service Support** - Development testing without API credentials
 
 ## 🔧 Troubleshooting
 
@@ -365,18 +453,27 @@ const EASYPARCEL_CONFIG: EasyParcelConfig = {
 
 ### Debug Tools
 
-```javascript
-// Test EasyParcel connection
-easyParcelTest.testConnection();
+**API Testing:**
+```bash
+# Test complete flow
+curl -X POST http://localhost:3000/api/test-complete-flow \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com"}'
 
-// Test shipping rates
-easyParcelTest.testShippingRates();
+# Test mock service
+curl -X POST http://localhost:3000/api/test-mock-easyparcel
 
-// Test automated system
-easyParcelTest.testAutomatedShippingSystem();
+# Test shipping processing
+curl -X POST http://localhost:3000/api/shipping/process-pending
+```
 
-// Check API endpoints
-easyParcelTest.testEasyParcelAPI();
+**PowerShell Testing:**
+```powershell
+# Test complete flow
+$response = Invoke-WebRequest -Uri "http://localhost:3000/api/test-complete-flow" -Method POST -Headers @{"Content-Type"="application/json"} -Body '{"email":"test@example.com"}'; $response.Content
+
+# Test mock service
+$response = Invoke-WebRequest -Uri "http://localhost:3000/api/test-mock-easyparcel" -Method POST; $response.Content
 ```
 
 ## 📝 Maintenance

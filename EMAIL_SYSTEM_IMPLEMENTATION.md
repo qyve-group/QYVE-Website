@@ -2,30 +2,33 @@
 
 ## 📧 Overview
 
-This document outlines the comprehensive transactional email system implemented for the QYVE e-commerce platform. The system provides branded, professional email templates for all customer touchpoints throughout the order lifecycle.
+This document outlines the comprehensive transactional email system implemented for the QYVE e-commerce platform. The system provides branded, professional email templates with the real QYVE logo for all customer touchpoints throughout the order lifecycle.
 
 ## 🎯 Implementation Summary
 
 ### ✅ Completed Features
 
-1. **Professional Email Templates**
-   - Order confirmation emails
-   - Payment confirmation emails
-   - Shipping notification emails
-   - Order cancellation emails
-   - Refund confirmation emails
+1. **Professional Email Templates with Real QYVE Logo**
+   - Order confirmation emails with QYVE branding
+   - Payment confirmation emails with QYVE branding
+   - Shipping notification emails with QYVE branding
+   - Order cancellation emails with QYVE branding
+   - Refund confirmation emails with QYVE branding
 
-2. **Enhanced Email Service**
+2. **Enhanced Email Service (SMTP-based)**
+   - Nodemailer SMTP integration with Brevo
    - Retry logic with exponential backoff
    - Error handling and logging
    - Template-based email generation
    - API endpoints for all email types
 
-3. **Branded Design**
+3. **Branded Design with Real QYVE Logo**
+   - Real QYVE logo integration (not placeholder)
    - QYVE branding and styling
    - Mobile-responsive templates
    - Professional HTML structure
    - Consistent color scheme and typography
+   - Email client compatibility (Gmail, Outlook, Apple Mail, etc.)
 
 ## 🏗️ Technical Architecture
 
@@ -33,13 +36,14 @@ This document outlines the comprehensive transactional email system implemented 
 
 | File | Purpose | Status |
 |------|---------|--------|
-| `src/lib/email-templates.ts` | HTML email templates | ✅ Complete |
-| `src/lib/email-service.ts` | Email service with retry logic | ✅ Complete |
+| `src/lib/email-templates.ts` | HTML email templates with real QYVE logo | ✅ Complete |
+| `src/lib/email-service-integrated.ts` | SMTP email service with retry logic | ✅ Complete |
 | `src/app/api/email/send/route.ts` | Main email API endpoint | ✅ Complete |
 | `src/app/api/email/shipping/route.ts` | Shipping notification API | ✅ Complete |
 | `src/app/api/email/cancellation/route.ts` | Cancellation API | ✅ Complete |
 | `src/app/api/email/refund/route.ts` | Refund confirmation API | ✅ Complete |
-| `src/lib/email-test.ts` | Testing utilities | ✅ Complete |
+| `src/app/api/test-all-emails/route.ts` | Comprehensive testing endpoint | ✅ Complete |
+| `public/qyve-logo.png` | Real QYVE logo for emails | ✅ Complete |
 
 ### Email Types
 
@@ -89,21 +93,37 @@ export const generateOrderConfirmationEmail = (data: OrderData) => `
 - ✅ Order details table
 - ✅ Call-to-action buttons
 
-### 2. Email Service
+### 2. Email Service (SMTP-based)
 
-**Enhanced Service with Retry Logic** (`src/lib/email-service.ts`):
+**Enhanced SMTP Service with Retry Logic** (`src/lib/email-service-integrated.ts`):
 
 ```typescript
+import nodemailer from 'nodemailer';
+
 export class EmailService {
+  private transporter: nodemailer.Transporter;
+  
+  constructor() {
+    this.transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp-relay.brevo.com',
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+  }
+
   // Send email with retry logic
-  private async sendWithRetry(email: SendSmtpEmail, attempt: number = 1): Promise<EmailResult> {
+  private async sendWithRetry(mailOptions: any, attempt: number = 1): Promise<EmailResult> {
     try {
-      const result = await brevoClient.sendTransacEmail(email);
+      const result = await this.transporter.sendMail(mailOptions);
       return { success: true, messageId: result.messageId };
     } catch (error) {
       if (attempt < EMAIL_CONFIG.retryAttempts) {
         await this.delay(EMAIL_CONFIG.retryDelay * attempt);
-        return this.sendWithRetry(email, attempt + 1);
+        return this.sendWithRetry(mailOptions, attempt + 1);
       }
       return { success: false, error: error.message };
     }
@@ -112,11 +132,13 @@ export class EmailService {
 ```
 
 **Service Features:**
+- ✅ Nodemailer SMTP integration with Brevo
 - ✅ Retry logic with exponential backoff
 - ✅ Error handling and logging
-- ✅ Singleton pattern for efficiency
+- ✅ Real QYVE logo integration
 - ✅ Type-safe email data structures
 - ✅ Comprehensive error reporting
+- ✅ Email client compatibility
 
 ### 3. API Endpoints
 
@@ -150,7 +172,7 @@ export async function POST(req: NextRequest) {
 **Updated Webhook** (`src/app/api/webhook/route.ts`):
 
 ```typescript
-// Send order confirmation email using new email service
+// Send order confirmation email using integrated email service
 const orderData = {
   orderId,
   customerName,
@@ -174,9 +196,43 @@ const orderData = {
   },
 };
 
-const { sendOrderConfirmation } = await import('@/lib/email-service');
+const { sendOrderConfirmation } = await import('@/lib/email-service-integrated');
 const emailResult = await sendOrderConfirmation(orderData);
 ```
+
+### 5. Real QYVE Logo Integration
+
+**Logo Implementation** (`src/lib/email-templates.ts`):
+
+```typescript
+// Header Logo with Real QYVE Logo
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
+  <tr>
+    <td align="center">
+      <table cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="width: 80px; height: 80px; background-color: white; border-radius: 50%; text-align: center; vertical-align: middle; padding: 10px;">
+            <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+// Footer Logo with Real QYVE Logo
+<div style="display: inline-block; width: 40px; height: 40px; background-color: white; border-radius: 50%; text-align: center; line-height: 40px; margin-bottom: 10px; padding: 5px;">
+  <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
+</div>
+```
+
+**Logo Features:**
+- ✅ Real QYVE logo (not placeholder text)
+- ✅ White circular background for contrast
+- ✅ Responsive sizing (60px header, 30px footer)
+- ✅ Email client compatibility
+- ✅ Dynamic URL for local/production environments
+- ✅ Proper alt text for accessibility
 
 ## 📧 Email Templates
 
@@ -256,21 +312,40 @@ const emailResult = await sendOrderConfirmation(orderData);
 
 ### Testing Utilities
 
-**Comprehensive Test Suite** (`src/lib/email-test.ts`):
+**Comprehensive Test Suite** (`src/app/api/test-all-emails/route.ts`):
 
 ```typescript
-// Test all email types
-export const testAllEmails = async (testEmail: string) => {
-  const results = {
-    orderConfirmation: await testOrderConfirmation(testEmail),
-    paymentConfirmation: await testPaymentConfirmation(testEmail),
-    shippingNotification: await testShippingNotification(testEmail),
-    orderCancellation: await testOrderCancellation(testEmail),
-    refundConfirmation: await testRefundConfirmation(testEmail),
-  };
+// Test all email types with real QYVE logo
+export async function POST(req: NextRequest) {
+  const { email } = await req.json();
   
-  return results;
-};
+  const results = await Promise.all([
+    testOrderConfirmation(email),
+    testPaymentConfirmation(email),
+    testShippingNotification(email),
+    testOrderCancellation(email),
+    testRefundConfirmation(email),
+  ]);
+  
+  return NextResponse.json({
+    success: true,
+    message: `All email types tested: ${results.filter(r => r.success).length}/${results.length} successful`,
+    email,
+    results,
+    summary: {
+      total: results.length,
+      successful: results.filter(r => r.success).length,
+      failed: results.filter(r => !r.success).length
+    },
+    features: {
+      qyveLogo: "Updated with official QYVE logo image",
+      brandedTemplates: "All templates use QYVE colors and styling",
+      responsiveDesign: "Mobile-friendly layouts",
+      trackingIntegration: "Shipping notifications include EasyParcel tracking",
+      webhookIntegration: "Automatic emails via Stripe webhook"
+    }
+  });
+}
 ```
 
 ### Manual Testing Checklist
@@ -301,18 +376,51 @@ export const testAllEmails = async (testEmail: string) => {
   - [ ] Verify refund amount
   - [ ] Check processing date
 
-### Browser Console Testing
+### API Testing
 
-```javascript
-// Test individual email types
-emailTest.testOrderConfirmation('test@example.com');
-emailTest.testShippingNotification('test@example.com');
+**Test All Email Types:**
+```bash
+# Test all email types with real QYVE logo
+curl -X POST http://localhost:3000/api/test-all-emails \
+  -H "Content-Type: application/json" \
+  -d '{"email":"your-test-email@example.com"}'
+```
 
-// Test all emails
-emailTest.testAllEmails('test@example.com');
+**Test Individual Email Types:**
+```bash
+# Order Confirmation
+curl -X POST http://localhost:3000/api/test-emails/order-confirmation \
+  -H "Content-Type: application/json" \
+  -d '{"email":"your-test-email@example.com"}'
 
-// Test API endpoints
-emailTest.testEmailAPI('test@example.com');
+# Payment Confirmation
+curl -X POST http://localhost:3000/api/test-emails/payment-confirmation \
+  -H "Content-Type: application/json" \
+  -d '{"email":"your-test-email@example.com"}'
+
+# Shipping Notification
+curl -X POST http://localhost:3000/api/test-emails/shipping-notification \
+  -H "Content-Type: application/json" \
+  -d '{"email":"your-test-email@example.com"}'
+
+# Order Cancellation
+curl -X POST http://localhost:3000/api/test-emails/order-cancellation \
+  -H "Content-Type: application/json" \
+  -d '{"email":"your-test-email@example.com"}'
+
+# Refund Confirmation
+curl -X POST http://localhost:3000/api/test-emails/refund-confirmation \
+  -H "Content-Type: application/json" \
+  -d '{"email":"your-test-email@example.com"}'
+```
+
+**PowerShell Testing:**
+```powershell
+# Test all emails
+$response = Invoke-WebRequest -Uri "http://localhost:3000/api/test-all-emails" -Method POST -Headers @{"Content-Type"="application/json"} -Body '{"email":"your-test-email@example.com"}'; $response.Content
+
+# Test individual email
+$response = Invoke-WebRequest -Uri "http://localhost:3000/api/test-emails/order-confirmation" -Method POST -Headers @{"Content-Type"="application/json"} -Body '{"email":"your-test-email@example.com"}'; $response.Content
 ```
 
 ## 📊 Email Analytics
@@ -343,52 +451,67 @@ emailTest.testEmailAPI('test@example.com');
 # Brevo SMTP Configuration
 SMTP_HOST=smtp-relay.brevo.com
 SMTP_PORT=587
-SMTP_USER=your-brevo-email
+SMTP_USER=noreply@qyveofficial.com
 SMTP_PASS=your-brevo-smtp-key
-
-# Brevo API Configuration
-BREVO_API_KEY=your-brevo-api-key
 
 # Email Configuration
 COMPANY_NAME=QYVE
-NEXT_PUBLIC_BASE_URL=https://your-domain.com
+NEXT_PUBLIC_BASE_URL=https://qyveofficial.com
+
+# Logo Configuration
+# Logo file: public/qyve-logo.png (copied from src/images/QyveLogo_logo_black_rgb.png)
+# Logo URL: https://qyveofficial.com/qyve-logo.png
 ```
 
 ### Email Service Configuration
 
 ```typescript
 const EMAIL_CONFIG = {
-  fromEmail: process.env.SMTP_USER || 'noreply@qyve.com',
-  fromName: 'QYVE',
+  fromEmail: process.env.SMTP_USER || 'noreply@qyveofficial.com',
+  fromName: 'QYVE Team',
   retryAttempts: 3,
   retryDelay: 1000, // 1 second
+};
+
+// Logo Configuration
+const LOGO_CONFIG = {
+  headerSize: '60px',
+  footerSize: '30px',
+  backgroundColor: 'white',
+  borderRadius: '50%',
+  url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png`
 };
 ```
 
 ## 🚀 Deployment Checklist
 
 ### Pre-Deployment
-- [ ] All email templates tested
+- [ ] All email templates tested with real QYVE logo
 - [ ] API endpoints functional
-- [ ] Brevo configuration verified
+- [ ] Brevo SMTP configuration verified
 - [ ] Error handling tested
 - [ ] Mobile responsiveness confirmed
+- [ ] Logo accessibility verified (public/qyve-logo.png)
+- [ ] Email client compatibility tested
 
 ### Post-Deployment
-- [ ] Send test emails
+- [ ] Send test emails with real QYVE logo
 - [ ] Verify email delivery
-- [ ] Check template rendering
+- [ ] Check template rendering in multiple email clients
+- [ ] Verify logo displays correctly
 - [ ] Monitor error logs
 - [ ] Test all email types
+- [ ] Confirm logo URL accessibility in production
 
 ## 📈 Expected Results
 
 ### Customer Experience
-- ✅ Professional email communications
+- ✅ Professional email communications with real QYVE logo
 - ✅ Clear order status updates
 - ✅ Easy tracking information access
-- ✅ Consistent branding experience
+- ✅ Consistent branding experience with authentic QYVE logo
 - ✅ Mobile-friendly email design
+- ✅ Real QYVE logo displays correctly in all email clients
 
 ### Business Benefits
 - ✅ Reduced customer support inquiries

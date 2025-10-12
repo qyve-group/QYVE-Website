@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     
     // Send test email
     const info = await transporter.sendMail({
-      from: `"QYVE" <${process.env.SMTP_USER}>`,
+      from: `"QYVE Team" <noreply@qyveofficial.com>`,
       to: email,
       subject: '🎉 QYVE Email System Test - SMTP',
       html: `

@@ -14,8 +14,8 @@ import {
 
 // Email service configuration
 const EMAIL_CONFIG = {
-  fromEmail: process.env.SMTP_USER || 'noreply@qyve.com',
-  fromName: 'QYVE',
+  fromEmail: 'noreply@qyveofficial.com', // Use the verified sender
+  fromName: 'QYVE Team',
   retryAttempts: 3,
   retryDelay: 1000, // 1 second
 };

@@ -5,6 +5,7 @@ import React from 'react';
 import { FaCircle } from 'react-icons/fa6';
 
 import type { ProductType } from '@/data/types';
+import SizeChartButton from './SizeChartButton';
 
 // import LikeButton from './LikeButton';
 
@@ -25,6 +26,18 @@ const ProductCard: FC<ProductCardProps> = ({
     black: 'text-black',
     white: 'text-white',
   };
+
+  // Determine product category for size chart
+  const getProductCategory = (productName: string): string => {
+    const name = productName.toLowerCase();
+    if (name.includes('jersey') || name.includes('bola') || name.includes('leyenda')) return 'jersey';
+    if (name.includes('slide') || name.includes('recovery')) return 'slides';
+    if (name.includes('sock') || name.includes('progrip')) return 'socks';
+    if (name.includes('futsal') || name.includes('infinitus')) return 'futsal';
+    return 'jersey'; // Default to jersey for apparel
+  };
+
+  const productCategory = getProductCategory(product.name);
   return (
     <Link href={`/products/${product.slug}`}>
       <div
@@ -73,6 +86,16 @@ const ProductCard: FC<ProductCardProps> = ({
           <div className="flex items-center justify-between">
             {/* <p className="text-sm text-neutral-500">{product.shoeCategory}</p> */}
             <p className="text-lg font-medium text-black">RM {product.price}</p>
+          </div>
+
+          {/* Size Chart Button */}
+          <div className="mt-3 pt-3 border-t">
+            <SizeChartButton
+              category={productCategory}
+              productName={product.name}
+              variant="link"
+              className="text-xs w-full justify-center"
+            />
           </div>
         </div>
       </div>

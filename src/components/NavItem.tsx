@@ -45,8 +45,9 @@ const NavigationItem: FC<NavigationItemProps> = ({
       <div className="mx-3 flex shrink-0 items-center text-lg font-medium hover:text-primary">
         <Link
           className="list-none"
-          href={{
-            pathname: item.href || undefined,
+          href={item.href}
+          onClick={() => {
+            console.log('Navigation clicked:', item.name, item.href);
           }}
         >
           {item.name}

@@ -27,10 +27,11 @@ This document outlines the comprehensive Google Analytics 4 (GA4) implementation
 
 | File | Purpose | Status |
 |------|---------|--------|
-| `src/lib/gtag.ts` | Core analytics functions | ✅ Complete |
+| `src/lib/gtag.ts` | Core analytics functions with e-commerce tracking | ✅ Complete |
 | `src/components/Analytics.tsx` | SPA navigation tracking | ✅ Complete |
 | `src/app/layout.tsx` | GA4 script injection | ✅ Complete |
 | `src/lib/analytics-test.ts` | Testing utilities | ✅ Complete |
+| `src/app/api/order-details/route.ts` | Order details API for purchase tracking | ✅ Complete |
 
 ### Event Tracking Implementation
 
@@ -197,6 +198,51 @@ import { runAllAnalyticsTests } from '@/lib/analytics-test';
 
 // Run all tests
 runAllAnalyticsTests();
+
+// Individual test functions
+export const testProductView = () => {
+  trackProductView({
+    item_id: 'test-product-123',
+    item_name: 'Test Product',
+    price: 99.99,
+    currency: 'MYR',
+    item_category: 'Apparel',
+    item_brand: 'QYVE',
+    image_url: 'https://example.com/product.jpg'
+  });
+};
+
+export const testAddToCart = () => {
+  trackAddToCart({
+    item_id: 'test-product-123',
+    item_name: 'Test Product',
+    price: 99.99,
+    quantity: 1,
+    currency: 'MYR',
+    item_category: 'Apparel',
+    item_brand: 'QYVE',
+    item_variant: 'Large',
+    image_url: 'https://example.com/product.jpg'
+  });
+};
+
+export const testPurchase = () => {
+  trackPurchase({
+    transaction_id: 'test-transaction-123',
+    value: 199.98,
+    currency: 'MYR',
+    items: [
+      {
+        item_id: 'test-product-123',
+        item_name: 'Test Product',
+        price: 99.99,
+        quantity: 2,
+        item_category: 'Apparel',
+        item_brand: 'QYVE'
+      }
+    ]
+  });
+};
 ```
 
 ### Manual Testing Checklist
@@ -240,6 +286,46 @@ analyticsTest.testPurchase();
 
 // Run all tests
 analyticsTest.runAllAnalyticsTests();
+
+// Test specific events
+gtag('event', 'view_item', {
+  currency: 'MYR',
+  value: 99.99,
+  items: [{
+    item_id: 'test-product-123',
+    item_name: 'Test Product',
+    price: 99.99,
+    quantity: 1,
+    item_category: 'Apparel',
+    item_brand: 'QYVE'
+  }]
+});
+
+// Test custom events
+gtag('event', 'filter_usage', {
+  filter_type: 'color',
+  filter_value: 'red',
+  page_location: 'shop'
+});
+
+gtag('event', 'newsletter_subscription', {
+  email_domain: 'gmail.com',
+  subscription_source: 'footer'
+});
+```
+
+### API Testing
+
+**Test Order Details API:**
+```bash
+# Test order details endpoint for purchase tracking
+curl -X GET "http://localhost:3000/api/order-details?sessionId=test-session-123"
+```
+
+**PowerShell Testing:**
+```powershell
+# Test order details API
+$response = Invoke-WebRequest -Uri "http://localhost:3000/api/order-details?sessionId=test-session-123" -Method GET; $response.Content
 ```
 
 ## 🔍 Verification in Google Analytics
@@ -322,6 +408,49 @@ console.log(window.dataLayer);
 window.gtag('event', 'test_event', {
   test_parameter: 'test_value'
 });
+
+// Test e-commerce events
+window.gtag('event', 'view_item', {
+  currency: 'MYR',
+  value: 99.99,
+  items: [{
+    item_id: 'test-123',
+    item_name: 'Test Product',
+    price: 99.99,
+    quantity: 1,
+    item_category: 'Apparel',
+    item_brand: 'QYVE'
+  }]
+});
+
+// Test purchase event
+window.gtag('event', 'purchase', {
+  transaction_id: 'test-transaction-123',
+  value: 199.98,
+  currency: 'MYR',
+  items: [{
+    item_id: 'test-123',
+    item_name: 'Test Product',
+    price: 99.99,
+    quantity: 2,
+    item_category: 'Apparel',
+    item_brand: 'QYVE'
+  }]
+});
+```
+
+### API Testing
+
+**Test Order Details API:**
+```bash
+# Test order details endpoint
+curl -X GET "http://localhost:3000/api/order-details?sessionId=test-session-123"
+```
+
+**PowerShell Testing:**
+```powershell
+# Test order details API
+$response = Invoke-WebRequest -Uri "http://localhost:3000/api/order-details?sessionId=test-session-123" -Method GET; $response.Content
 ```
 
 ## 📝 Maintenance

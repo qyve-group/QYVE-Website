@@ -7,7 +7,7 @@ import NavigationItem from '../NavItem';
 
 const TopNav = () => {
   return (
-    <div className="hidden py-3 lg:block">
+    <div className="hidden md:block">
       <div className="container flex items-center justify-between text-sm ">
         <div className="flex items-center divide-x divide-neutral-100 text-black">
           {topNavLinks.map((item) => (
