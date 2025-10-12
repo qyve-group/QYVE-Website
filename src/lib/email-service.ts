@@ -251,7 +251,7 @@ export class EmailService {
 
       return {
         success: true,
-        messageId: result.messageId,
+        messageId: result.body?.messageId || 'unknown',
         retryCount: attempt - 1,
       };
     } catch (error) {

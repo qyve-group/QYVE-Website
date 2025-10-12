@@ -3,7 +3,7 @@ import {
   SendSmtpEmail,
   TransactionalEmailsApi,
   TransactionalEmailsApiApiKeys,
-  //TODO: module not found @getbrevo/brevo
+  // TODO: module not found @getbrevo/brevo
 } from '@getbrevo/brevo';
 
 // Create a reusable Brevo client

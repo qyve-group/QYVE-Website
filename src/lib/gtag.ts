@@ -146,7 +146,6 @@ export const trackPurchase = (transaction: {
 export const trackFilterUsage = (
   filterType: string,
   filterValue: string,
-  // eslint-disable-next-line unused-imports/no-unused-vars
   page: string = 'shop',
 ) => {
   event('filter_usage', {
@@ -154,15 +153,16 @@ export const trackFilterUsage = (
     filter_value: filterValue,
     page_location: window.location.href,
     page_title: document.title,
+    page_name: page,
   });
 };
 
-// eslint-disable-next-line unused-imports/no-unused-vars
 export const trackSortUsage = (sortType: string, page: string = 'shop') => {
   event('sort_usage', {
     sort_type: sortType,
     page_location: window.location.href,
     page_title: document.title,
+    page_name: page,
   });
 };
 
