@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { sendOrderConfirmationEmail } from '@/lib/email-service';
+import { sendOrderConfirmation } from '@/lib/email-service';
 
 export async function POST(req: Request) {
   try {
@@ -13,6 +13,8 @@ export async function POST(req: Request) {
       orderId: 'TEST-ORDER-123',
       customerName: 'Test Customer',
       customerEmail: email || 'test@example.com',
+      totalAmount: 108,
+      currency: 'MYR',
       items: [
         {
           name: 'Test QYVE Product',
@@ -22,12 +24,9 @@ export async function POST(req: Request) {
           color: 'Black'
         }
       ],
-      subtotal: 100,
-      shipping: 8,
-      total: 108,
       shippingAddress: {
-        name: 'Test Customer',
-        address: '123 Test Street',
+        line1: '123 Test Street',
+        line2: 'Apt 1',
         city: 'Kuala Lumpur',
         state: 'Kuala Lumpur',
         postalCode: '50000',
@@ -37,7 +36,7 @@ export async function POST(req: Request) {
 
     console.log('📧 Sending test order confirmation email...');
     
-    const result = await sendOrderConfirmationEmail(testOrderData);
+    const result = await sendOrderConfirmation(testOrderData);
     
     if (result.success) {
       console.log('✅ Email sent successfully:', result.messageId);
