@@ -30,7 +30,7 @@ const SectionProducts = () => {
 
   // const router = useRouter();
 
-  const [products, setProducts] = useState<Product[]>();
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -44,42 +44,42 @@ const SectionProducts = () => {
         setProducts([
           {
             id: 7,
-            name: 'Demo Product 1',
-            description: 'Demo description',
-            price: 99,
+            name: 'QYVE Leyenda \'94 Series',
+            description: 'Premium jersey with classic design',
+            price: 50,
             stock: 10,
             category_id: 1,
             created_at: new Date(),
-            slug: 'demo-1',
-            previous_price: 120,
-            image_cover: '/socks_black.png',
-            colors: ['black'],
+            slug: 'qyve-leyenda-94-series',
+            previous_price: 60,
+            image_cover: '/jersey_pic.jpg',
+            colors: ['black', 'pink'],
           },
           {
             id: 9,
-            name: 'Demo Product 2',
-            description: 'Demo description',
-            price: 89,
+            name: 'QYVE Recovery Slides',
+            description: 'Comfortable recovery slides for post-game',
+            price: 30,
             stock: 5,
             category_id: 1,
             created_at: new Date(),
-            slug: 'demo-2',
-            previous_price: 110,
-            image_cover: '/socks_white.png',
-            colors: ['white'],
+            slug: 'qyve-recovery-slides',
+            previous_price: 35,
+            image_cover: '/socks_white_bg.jpg',
+            colors: ['black', 'cream'],
           },
           {
             id: 6,
-            name: 'Demo Product 3',
-            description: 'Demo description',
-            price: 79,
+            name: 'QYVE ProGrip Socks',
+            description: 'High-performance socks with grip technology',
+            price: 18,
             stock: 8,
             category_id: 1,
             created_at: new Date(),
-            slug: 'demo-3',
-            previous_price: 100,
-            image_cover: '/jersey_pic.jpg',
-            colors: ['blue'],
+            slug: 'qyve-progrip-socks',
+            previous_price: 22,
+            image_cover: '/socks_white.png',
+            colors: ['white', 'black'],
           },
         ]);
         return;

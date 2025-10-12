@@ -39,9 +39,15 @@ const ProductCard: FC<ProductCardProps> = ({
 
   const productCategory = getProductCategory(product.name);
   return (
-    <Link href={`/products/${product.slug}`}>
+    <Link 
+      href={`/products/${product.slug}`}
+      onClick={(e) => {
+        console.log('Product card clicked:', product.name, product.slug);
+        console.log('Event:', e);
+      }}
+    >
       <div
-        className={`transitionEffect relative border p-3 shadow-sm ${className}`}
+        className={`transitionEffect relative border p-3 shadow-sm cursor-pointer ${className}`}
       >
         <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl lg:h-[350px] 2xl:h-[400px]">
           {/* {product.justIn && (

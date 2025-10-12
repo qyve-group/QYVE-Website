@@ -21,7 +21,9 @@ const SizeChartButton: React.FC<SizeChartButtonProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setIsModalOpen(true);
   };
 
