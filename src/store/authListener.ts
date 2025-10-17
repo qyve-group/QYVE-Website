@@ -1,7 +1,7 @@
 import { supabase } from '@/libs/supabaseClient';
 import { fetchCartFromSupabase } from '@/services/cartService';
 // import { debounce } from '@/utils/debounce';
-import { logout, setUser } from '@/store/authSlice';
+import { logout, setUser, setLoading } from '@/store/authSlice';
 import { clearCart, setCart } from '@/store/cartSlice';
 // import { store } from '@/store/store';
 import { mergeCarts } from '@/utils/cart';
@@ -20,6 +20,7 @@ export const listenForAuthChanges = (dispatch: any, getState: () => any) => {
     process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')
   ) {
     console.log('Supabase not configured - skipping auth listener');
+    dispatch(setLoading(false)); // Set loading to false when Supabase is not configured
     return () => {}; // Return empty cleanup function
   }
 
@@ -52,10 +53,12 @@ export const listenForAuthChanges = (dispatch: any, getState: () => any) => {
           // store.dispatch(setCart(userCart));
         } else {
           console.log('No current user session authlistener.tsx');
+          dispatch(setLoading(false)); // Set loading to false when there's no session
         }
       })
       .catch((error) => {
         console.error('Error getting Supabase session:', error);
+        dispatch(setLoading(false)); // Set loading to false on error
       });
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -95,6 +98,7 @@ export const listenForAuthChanges = (dispatch: any, getState: () => any) => {
     };
   } catch (error) {
     console.error('Error setting up auth listener:', error);
+    dispatch(setLoading(false)); // Set loading to false on error
     return () => {}; // Return empty cleanup function
   }
 };
