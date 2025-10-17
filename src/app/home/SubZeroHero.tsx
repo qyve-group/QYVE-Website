@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 
 const SubZeroHero = () => {
@@ -18,7 +17,7 @@ const SubZeroHero = () => {
                 THE GAME,
               </span>
               <span className="block text-3xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
-                REDIFINED
+                REDEFINED
               </span>
             </h1>
 
@@ -33,13 +32,14 @@ const SubZeroHero = () => {
           {/* Right Product Image */}
           <div className="relative flex items-center justify-center">
             <div className="relative h-[400px] w-full max-w-[600px]">
-              <Image
-                src="/subzero-shoe.png"
-                alt="SubZero Futsal Shoe"
-                fill
-                className="object-contain drop-shadow-2xl"
-                priority
-              />
+              {/* Placeholder for SubZero shoe image */}
+              <div className="flex h-full w-full items-center justify-center rounded-lg bg-white/10 backdrop-blur-sm">
+                <p className="text-center text-white/50">
+                  SubZero Product Image
+                  <br />
+                  <span className="text-sm">(Add /subzero-shoe.png)</span>
+                </p>
+              </div>
             </div>
           </div>
         </div>

@@ -24,7 +24,7 @@ const NewsletterSignup = () => {
             Be part of the next big thing.
           </p>
 
-          <form onSubmit={handleSubmit} className="flex gap-2">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row sm:gap-2">
             <input
               type="email"
               value={email}
