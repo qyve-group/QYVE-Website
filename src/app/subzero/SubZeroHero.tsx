@@ -1,48 +1,58 @@
 'use client';
 
 import Link from 'next/link';
+// import Image from 'next/image';
 
 const SubZeroHero = () => {
   return (
-    <section className="relative min-h-[600px] overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a]">
-      <div className="container relative z-10 mx-auto px-4 py-20 md:py-32">
-        <div className="grid items-center gap-12 md:grid-cols-2">
-          {/* Left Content */}
-          <div className="flex flex-col items-center space-y-8 text-center">
-            <h1 className="font-bold italic leading-none">
-              <span className="block text-6xl text-white md:text-7xl lg:text-8xl">
-                SUBZERO
-              </span>
-              <span className="mt-2 block text-3xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
-                THE GAME,
-              </span>
-              <span className="block text-3xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
-                REDEFINED
-              </span>
-            </h1>
+    // <section className="relative min-h-[600px] overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a]">
+    <section className="relative min-h-[600px] overflow-hidden bg-[url('/subzero_test.jpeg')] bg-cover bg-center bg-blend-overlay">
+      <div className="flex container relative z-10 mx-auto px-4 py-20 items-end justify-center min-h-[600px]">
+        {/* <div className="items-end justify-center min-h-[600px]"> */}
+        {/*  Content */}
+        <div className="flex flex-col items-center space-y-8 text-center">
+          <h1 className="font-bold italic leading-none">
+            <span className="block text-6xl text-white md:text-7xl lg:text-8xl">
+              SUBZERO
+            </span>
+            <span className="mt-2 block text-3xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
+              THE GAME REDEFINED
+            </span>
+            {/* <span className="block text-3xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
+              REDEFINED
+            </span> */}
+          </h1>
 
-            <Link
-              href="/products/subzero"
-              className="inline-block rounded-full bg-white px-12 py-4 text-lg font-semibold text-gray-900 transition-all hover:bg-gray-100 hover:scale-105"
-            >
-              BUY NOW
-            </Link>
-          </div>
+          <Link
+            href="/products/subzero"
+            className="inline-block rounded-full bg-white px-12 py-4 text-lg font-semibold text-gray-900 transition-all hover:bg-gray-100 hover:scale-105"
+          >
+            BUY NOW
+          </Link>
+        </div>
 
-          {/* Right Product Image */}
-          <div className="relative flex items-center justify-center">
-            <div className="relative h-[400px] w-full max-w-[600px]">
-              {/* Placeholder for SubZero shoe image */}
-              <div className="flex h-full w-full items-center justify-center rounded-lg bg-white/10 backdrop-blur-sm">
+        {/* Right Product Image */}
+
+        {/* <div className="relative flex items-center justify-center">
+            <div className="relative h-[400px] w-full max-w-[600px]"> */}
+        {/* Placeholder for SubZero shoe image */}
+        {/* <div className="flex h-full w-full items-center justify-center rounded-lg bg-white/10 backdrop-blur-sm">
                 <p className="text-center text-white/50">
                   SubZero Product Image
                   <br />
-                  <span className="text-sm">(Add /subzero-shoe.png)</span>
+                  <span className="text-sm">
+                    <Image
+                      fill
+                      src={'/subzero_test.jpeg'}
+                      alt={'SubZero image'}
+                      className="object-cover"
+                    />
+                  </span>
                 </p>
-              </div>
-            </div>
-          </div>
-        </div>
+              </div> */}
+        {/* </div>
+          </div> */}
+        {/* </div> */}
       </div>
 
       {/* Background Pattern/Texture */}

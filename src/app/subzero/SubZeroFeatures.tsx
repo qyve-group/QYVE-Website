@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 
 const features = [
   {
@@ -19,14 +20,30 @@ const features = [
     content: [
       'Built with EVA rebound technology that absorbs shock and releases energy with every step.',
       "You don't just move – you reload.",
+      'From the first sprint to the final shot, you stay light, responsive, and ready to strike.',
     ],
   },
   {
     id: '03',
     title: 'OUTSOLE SYSTEM: TRACTION GRIP',
     content: [
-      'Multi-directional traction pattern designed for explosive lateral movements and instant stops.',
-      'Maximum grip, zero slip – engineered for futsal court performance.',
+      'Custome-tuned non-marking rubber sole with multi-directional groovers for explosive turns and quick revoery',
+      'Like frost gripping glass, every cut holds - giving you total control even in the fastest changes.',
+      'Precision traction.',
+    ],
+  },
+  {
+    id: '04',
+    title: 'INSOLE SYSTEM: PRECISION CONTROL',
+    content: [
+      'Foam insoles for close ball touch, cleaner passes, and sharper shooting accuracy.',
+    ],
+  },
+  {
+    id: '05',
+    title: 'REINFORCED TOE: SHARP SHOOTING',
+    content: [
+      'Durable Suede toe for precision toe-pokes and stronger strikes where it matters most.',
     ],
   },
 ];
@@ -43,8 +60,14 @@ const SubZeroFeatures = () => {
       <div className="container mx-auto px-4">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left - Product Image Placeholder */}
-          <div className="flex items-center justify-center">
-            <div className="aspect-square w-full max-w-md rounded-lg bg-gray-200" />
+
+          <div className="relative flex items-center justify-center">
+            <Image
+              fill
+              src={'/sample_breakdown.jpeg'}
+              alt={'Subzero breakdown'}
+              className="object-cover"
+            />
           </div>
 
           {/* Right - Features */}
