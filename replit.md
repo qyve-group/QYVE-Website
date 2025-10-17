@@ -17,7 +17,9 @@ This is a modern Next.js e-commerce application called QYVE, focused on lifestyl
 - ✅ Dependencies installed and configured
 - ✅ Next.js configured for Replit environment (port 5000, host binding)
 - ✅ Development workflow set up
-- ⚠️ Supabase credentials need to be configured for full functionality
+- ✅ Supabase credentials configured and working
+- ✅ Redux Persist configured for SSR compatibility
+- ✅ SubZero futsal shoe landing page on /subzero route
 - ⚠️ Stripe credentials need to be configured for payments
 
 ## Configuration Required
@@ -57,6 +59,12 @@ To fully run this application, you'll need to configure:
    - Google Analytics ID
 
 ## Recent Changes
+- 2025-10-17: Created SubZero futsal shoe landing page at /subzero route
+- 2025-10-17: Added SubZero navigation menu item to header
+- 2025-10-17: Centered hero CTA button on SubZero landing page
+- 2025-10-17: Fixed Redux Persist SSR compatibility with createWebStorage
+- 2025-10-17: Fixed AuthProvider loading state to prevent blank screens
+- 2025-10-17: Added setLoading(false) dispatches in auth listener for all scenarios
 - 2025-09-06: Set up environment-aware Stripe configuration (test keys for Replit, production for Vercel)
 - 2025-09-06: Fixed CollapsibleCheckout component to properly call Stripe API
 - 2025-09-06: Implemented automated Stripe webhook system for payment confirmations
@@ -84,3 +92,14 @@ To fully run this application, you'll need to configure:
 - SEO optimization with Next.js SEO
 - Admin features for product management
 - Order management system
+- SubZero futsal shoe dedicated landing page
+
+## SubZero Landing Page
+The SubZero landing page is accessible at `/subzero` and features:
+- Hero section with centered CTA button
+- Product features accordion
+- Call-to-action section
+- "Proudly Malaysian" craftsmanship gallery
+- Newsletter signup section
+- Responsive design with Tailwind CSS
+- Navigation menu integration
