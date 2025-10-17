@@ -8,7 +8,7 @@ const SubZeroHero = () => {
       <div className="container relative z-10 mx-auto px-4 py-20 md:py-32">
         <div className="grid items-center gap-12 md:grid-cols-2">
           {/* Left Content */}
-          <div className="space-y-8 text-center md:text-left">
+          <div className="flex flex-col items-center space-y-8 text-center">
             <h1 className="font-bold italic leading-none">
               <span className="block text-6xl text-white md:text-7xl lg:text-8xl">
                 SUBZERO

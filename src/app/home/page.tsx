@@ -1,20 +1,25 @@
 import React from 'react';
 
-import NewsletterSignup from './NewsletterSignup';
-import ProudlyMalaysian from './ProudlyMalaysian';
-import SubZeroCTA from './SubZeroCTA';
-import SubZeroFeatures from './SubZeroFeatures';
-import SubZeroHero from './SubZeroHero';
+import BrandMessage from './BrandMessage';
+import MainBanner from './MainBanner';
+import SectionProducts from './SectionProducts';
+import Values from './Values';
 
 const page = () => {
   return (
     <div>
-      {/* SubZero Landing Page Sections */}
-      <SubZeroHero />
-      <SubZeroFeatures />
-      <SubZeroCTA />
-      <ProudlyMalaysian />
-      <NewsletterSignup />
+      <MainBanner />
+
+      <div className="mb-10">
+        <SectionProducts />
+      </div>
+      <div>
+        <BrandMessage />
+      </div>
+
+      <div>
+        <Values />
+      </div>
     </div>
   );
 };
