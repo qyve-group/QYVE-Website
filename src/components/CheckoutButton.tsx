@@ -48,12 +48,6 @@ export default function CheckoutButton({
   const [loading, setLoading] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
-  // if (!userId) {
-  //   console.log('No logged in user id redirecting to login checkoutbutton.tsx');
-  //   router.push('/login?redirect=checkout');
-  //   return;
-  // }
-
   useEffect(() => {
     if (!userId) {
       console.log(
@@ -87,12 +81,33 @@ export default function CheckoutButton({
 
     if (!stripePromise) {
       throw new Error('Stripe is not initialized.');
-      // return;
     }
 
     try {
       setLoading(true);
-      // console.log*('Checkout button clicked');
+
+      try {
+        const { trackBeginCheckout } = await import('@/lib/gtag');
+        const totalValue =
+          cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) +
+          shippingPrice;
+        trackBeginCheckout(
+          cartItems.map((item) => ({
+            item_id: item.id,
+            item_name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            item_category: 'Apparel',
+            item_brand: 'QYVE',
+            item_variant: item.product_size || undefined,
+          })),
+          totalValue,
+          'MYR',
+        );
+      } catch (gaError) {
+        console.warn('GA tracking failed (non-critical):', gaError);
+      }
+
       console.log('Sending checkout body', {
         userId,
         cartItems,
@@ -122,14 +137,11 @@ export default function CheckoutButton({
 
       if (data.url) {
         console.log('Redirecting to Stripe:', data.url);
-        // Try copying URL to clipboard as backup
         navigator.clipboard?.writeText(data.url).catch(() => {});
 
-        // Try opening in new tab
         const newWindow = window.open(data.url, '_blank');
 
         if (!newWindow) {
-          // Fallback if popup blocked
           console.warn(
             'Popup blocked. Please copy this URL manually:',
             data.url,
