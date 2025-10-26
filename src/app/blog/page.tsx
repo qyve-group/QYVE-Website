@@ -3,7 +3,6 @@ import Link from 'next/link';
 import React from 'react';
 
 import ComingSoon from '@/components/ComingSoon';
-import { supabase } from '@/libs/supabaseClient';
 import Heading from '@/shared/Heading/Heading';
 
 interface BlogPost {
@@ -16,29 +15,31 @@ interface BlogPost {
   created_at: string;
 }
 
+// Demo blog posts based on the QYVE website
+const demoBlogPosts: BlogPost[] = [
+  {
+    id: 1,
+    title: 'The Journey of Building QYVE Infinitus - Our Very First Futsal Shoe',
+    slug: 'journey-building-qyve-infinitus-first-futsal-shoe',
+    excerpt: 'The first futsal shoe we ever made',
+    author: 'QYVE Team',
+    featured_image: '/images/qyve-infinitus-blog.jpg',
+    created_at: '2025-09-19',
+  },
+  {
+    id: 2,
+    title: 'QYVE Brand Story: From Court to Comfort',
+    slug: 'qyve-brand-story-court-to-comfort',
+    excerpt: 'Learn about the journey that led to creating premium recovery gear for athletes and everyday warriors.',
+    author: 'QYVE Team',
+    featured_image: '/images/qyve-jersey-blog.jpg',
+    created_at: '2025-09-06',
+  },
+];
+
 const getBlogPosts = async (): Promise<BlogPost[]> => {
-  try {
-    const { data, error } = await supabase
-      .from('blog_posts')
-      .select('id, title, slug, excerpt, author, featured_image, created_at')
-      .is('published', true)
-      // .filter('published', 'eq', true)
-      // .eq('published', true)
-      // .not('published', 'is', null)
-      .order('created_at', { ascending: false });
-
-    // console.log('blog posts: ', data);
-
-    if (error) {
-      console.error('Error fetching blog posts:', error);
-      return [];
-    }
-
-    return data || [];
-  } catch (error) {
-    console.error('Error fetching blog posts:', error);
-    return [];
-  }
+  // Return demo data for now since Supabase is not configured
+  return demoBlogPosts;
 };
 
 const formatDate = (dateString: string) => {
@@ -119,9 +120,6 @@ const BlogPage = async () => {
       ) : (
         <div className="mt-12 text-center">
           <ComingSoon />
-          {/* <p className="text-gray-500">
-            No blog posts available at the moment.
-          </p> */}
         </div>
       )}
     </div>
