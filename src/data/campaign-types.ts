@@ -80,15 +80,15 @@ export const CAMPAIGNS: Campaign[] = [
     id: 'sub-zero',
     name: 'Sub-Zero',
     slug: 'sub-zero',
-    description: 'Experience the ultimate in cold-weather performance with our Sub-Zero collection. Engineered for extreme conditions, these shoes deliver unmatched warmth, durability, and style.',
-    shortDescription: 'Ultimate cold-weather performance footwear',
+    description: 'Introducing Sub-Zero, QYVE\'s revolutionary new shoe line designed for athletes who demand uncompromising performance. Built with cutting-edge technology and premium materials.',
+    shortDescription: 'QYVE\'s revolutionary new performance shoe line',
     status: 'active',
     startDate: '2024-12-01',
     endDate: '2025-03-31',
     heroBanner: {
       title: 'Sub-Zero',
-      subtitle: 'Conquer the Cold',
-      description: 'Engineered for extreme conditions. Built for champions.',
+      subtitle: 'The Next Generation',
+      description: 'Revolutionary performance shoes. Built for champions.',
       backgroundImage: '/images/campaigns/sub-zero/hero-banner.jpg',
       backgroundColor: '#1a1a2e',
       textColor: '#ffffff',
@@ -117,9 +117,9 @@ export const CAMPAIGNS: Campaign[] = [
       ]
     },
     seo: {
-      title: 'Sub-Zero Collection - QYVE Cold Weather Performance Footwear',
-      description: 'Discover the Sub-Zero collection by QYVE. Premium cold-weather performance footwear engineered for extreme conditions. Shop now.',
-      keywords: ['sub-zero', 'cold weather', 'performance footwear', 'winter shoes', 'QYVE']
+      title: 'Sub-Zero Collection - QYVE Revolutionary Performance Shoes',
+      description: 'Discover the Sub-Zero collection by QYVE. Revolutionary performance shoes engineered for athletes who demand excellence. Shop now.',
+      keywords: ['sub-zero', 'performance shoes', 'QYVE', 'athletic footwear', 'new shoe line']
     },
     createdAt: '2024-12-01T00:00:00Z',
     updatedAt: '2024-12-01T00:00:00Z'
@@ -152,7 +152,7 @@ export const CAMPAIGN_PRODUCTS: CampaignProduct[] = [
       '/images/products/sub-zero-pro/back.jpg',
       '/images/products/sub-zero-pro/detail.jpg'
     ],
-    description: 'The ultimate cold-weather performance shoe. Features advanced thermal insulation, waterproof construction, and superior traction for extreme conditions.',
+    description: 'The ultimate performance shoe. Features advanced cushioning technology, premium materials, and superior traction for exceptional performance.',
     category: 'futsal',
     colors: ['black', 'white', 'navy'],
     sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12'],
@@ -173,7 +173,7 @@ export const CAMPAIGN_PRODUCTS: CampaignProduct[] = [
       '/images/products/sub-zero-thermal/side.jpg',
       '/images/products/sub-zero-thermal/back.jpg'
     ],
-    description: 'Premium thermal insulation meets cutting-edge design. Perfect for cold weather training and outdoor activities.',
+    description: 'Premium comfort meets cutting-edge design. Perfect for training and athletic performance with advanced cushioning technology.',
     category: 'futsal',
     colors: ['black', 'gray'],
     sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12'],
@@ -195,7 +195,7 @@ export const CAMPAIGN_PRODUCTS: CampaignProduct[] = [
       '/images/products/sub-zero-extreme/back.jpg',
       '/images/products/sub-zero-extreme/detail.jpg'
     ],
-    description: 'For the most extreme conditions. Advanced materials and construction for ultimate performance in harsh environments.',
+    description: 'For the most demanding athletes. Advanced materials and construction for ultimate performance in any environment.',
     category: 'futsal',
     colors: ['black', 'white'],
     sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12'],
@@ -215,7 +215,7 @@ export const CAMPAIGN_PRODUCTS: CampaignProduct[] = [
       '/images/products/sub-zero-essentials/main.jpg',
       '/images/products/sub-zero-essentials/side.jpg'
     ],
-    description: 'Essential cold-weather performance at an accessible price. Quality and comfort for everyday cold weather activities.',
+    description: 'Essential performance at an accessible price. Quality and comfort for everyday athletic activities.',
     category: 'futsal',
     colors: ['black', 'navy'],
     sizes: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12'],
@@ -232,15 +232,15 @@ export const CAMPAIGN_LOOKBOOK: CampaignLookbookItem[] = [
     id: 'hero-lifestyle',
     type: 'lifestyle',
     image: '/images/campaigns/sub-zero/lookbook/hero-lifestyle.jpg',
-    title: 'Conquer the Cold',
-    description: 'Built for extreme conditions',
+    title: 'The Next Generation',
+    description: 'Built for champions',
     position: { row: 1, column: 1, spanRows: 2, spanColumns: 2 }
   },
   {
     id: 'sub-zero-pro-detail',
     type: 'detail',
     image: '/images/campaigns/sub-zero/lookbook/pro-detail.jpg',
-    title: 'Advanced Thermal Insulation',
+    title: 'Advanced Cushioning Technology',
     position: { row: 1, column: 3, spanRows: 1, spanColumns: 1 }
   },
   {
@@ -254,7 +254,7 @@ export const CAMPAIGN_LOOKBOOK: CampaignLookbookItem[] = [
     id: 'thermal-tech',
     type: 'detail',
     image: '/images/campaigns/sub-zero/lookbook/thermal-tech.jpg',
-    title: 'Revolutionary Thermal Technology',
+    title: 'Revolutionary Performance Technology',
     position: { row: 3, column: 1, spanRows: 1, spanColumns: 2 }
   },
   {
