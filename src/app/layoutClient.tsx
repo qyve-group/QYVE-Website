@@ -28,16 +28,18 @@ export default function LayoutClient({
   // For admin pages, don't show client-side elements
   if (isAdminPage) {
     return (
-      <Suspense fallback={<Loading />}>{children}</Suspense>
+      <Providers>
+        <Suspense fallback={<Loading />}>{children}</Suspense>
+      </Providers>
     );
   }
 
   // For regular pages, show full client-side layout
   return (
-    <>
+    <Providers>
       <Header />
       <Suspense fallback={<Loading />}>{children}</Suspense>
       {!hideFooter && <Footer />}
-    </>
+    </Providers>
   );
 }

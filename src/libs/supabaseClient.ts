@@ -11,16 +11,30 @@ if (typeof window === 'undefined') {
   console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseAnonKey ? '✅ Set' : '❌ Missing');
 }
 
-if (!supabaseUrl) {
-  throw new Error('NEXT_PUBLIC_SUPABASE_URL environment variable is required');
+// Create a mock client if environment variables are not set
+let supabase: any;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn('Supabase environment variables not set, using mock client');
+  supabase = {
+    auth: {
+      getSession: () => Promise.resolve({ data: { session: null } }),
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+      signOut: () => Promise.resolve({ error: null }),
+    },
+    from: () => ({
+      select: () => Promise.resolve({ data: [], error: null }),
+      insert: () => Promise.resolve({ data: [], error: null }),
+      update: () => Promise.resolve({ data: [], error: null }),
+      delete: () => Promise.resolve({ data: [], error: null }),
+    }),
+  };
+} else {
+  // Create and export a single Supabase client instance
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
 }
 
-if (!supabaseAnonKey) {
-  throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY environment variable is required');
-}
-
-// Create and export a single Supabase client instance
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export { supabase };
 
 // export const supabase = createClient(
 //   process.env.SUPABASE_URL!,

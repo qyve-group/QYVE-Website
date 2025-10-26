@@ -18,12 +18,12 @@ const CartSync = () => {
   }, [cart]);
 
   useEffect(() => {
-    if (!auth.user || cart.items.length === 0) return;
-
-    console.log('cartProvider.tsx ----- Syncing redux cart to supabase...');
-    console.log('cart items: ', cart.items);
-
     try {
+      if (!auth.user || cart.items.length === 0) return;
+
+      console.log('cartProvider.tsx ----- Syncing redux cart to supabase...');
+      console.log('cart items: ', cart.items);
+
       debouncedSaveCart(auth.user.id, cart.items);
     } catch (error) {
       console.error('debouncedSaveCart error - cartProvider.tsx: ', error);
