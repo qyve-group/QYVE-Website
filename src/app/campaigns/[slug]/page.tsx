@@ -73,13 +73,13 @@ const CampaignPage: React.FC<CampaignPageProps> = ({ params }) => {
               </span>
               
               {campaign.startDate && (
-                <span className="text-gray-400">
+                <span className="text-gray-200">
                   Launched: {new Date(campaign.startDate).toLocaleDateString()}
                 </span>
               )}
               
               {campaign.endDate && (
-                <span className="text-gray-400">
+                <span className="text-gray-200">
                   Until: {new Date(campaign.endDate).toLocaleDateString()}
                 </span>
               )}
