@@ -92,6 +92,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ): Promise<NextResponse> {
   try {
+    const supabase = await createClient();
     const { id } = params;
 
     const { data: refund, error } = await supabase
@@ -145,6 +146,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ): Promise<NextResponse> {
   try {
+    const supabase = await createClient();
     const { id } = params;
 
     const { error } = await supabase

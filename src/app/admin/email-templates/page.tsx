@@ -9,7 +9,6 @@ import {
   X,
   Mail,
   FileText,
-  Palette,
   Code
 } from 'lucide-react';
 
@@ -33,7 +32,6 @@ const EmailTemplatesPage = () => {
   const [editingTemplate, setEditingTemplate] = useState<EmailTemplate | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const [activeTab, setActiveTab] = useState<'html' | 'text' | 'preview'>('html');
 
   useEffect(() => {
     fetchTemplates();

@@ -30,14 +30,15 @@ export async function POST(request: NextRequest) {
 
       // Send branded email notification
       try {
-        const emailTemplate = generatePasswordResetEmail(
-          email.split('@')[0], // Use email prefix as name
-          `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/reset-password`,
-          1 // 1 hour expiry
-        );
+        const emailTemplate = generatePasswordResetEmail({
+          customerName: email.split('@')[0],
+          customerEmail: email,
+          resetLink: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/reset-password`,
+          expiryTime: '1 hour'
+        });
 
         // Configure nodemailer transporter
-        const transporter = nodemailer.createTransporter({
+        const transporter = nodemailer.createTransport({
           host: process.env.EMAIL_SERVER_HOST,
           port: Number(process.env.EMAIL_SERVER_PORT),
           secure: process.env.EMAIL_SERVER_SECURE === 'true',
@@ -74,9 +75,10 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const emailTemplate = generatePasswordResetConfirmationEmail(
+      const emailTemplate = generatePasswordResetConfirmationEmail({
         customerName,
-        new Date().toLocaleString('en-MY', {
+        customerEmail,
+        resetTime: new Date().toLocaleString('en-MY', {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
@@ -84,10 +86,10 @@ export async function POST(request: NextRequest) {
           minute: '2-digit',
           timeZone: 'Asia/Kuala_Lumpur'
         })
-      );
+      });
 
       // Configure nodemailer transporter
-      const transporter = nodemailer.createTransporter({
+      const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_SERVER_HOST,
         port: Number(process.env.EMAIL_SERVER_PORT),
         secure: process.env.EMAIL_SERVER_SECURE === 'true',
