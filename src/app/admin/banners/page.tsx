@@ -13,7 +13,7 @@ import {
   Type,
   Settings
 } from 'lucide-react';
-import { BannerConfig, BANNER_VARIANTS } from '@/data/bannerConfig';
+import { BannerConfig } from '@/data/bannerConfig';
 
 const BannersPage = () => {
   const [banners, setBanners] = useState<BannerConfig[]>([]);
