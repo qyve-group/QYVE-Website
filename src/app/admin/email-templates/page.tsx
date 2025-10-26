@@ -8,7 +8,6 @@ import {
   Save,
   X,
   Mail,
-  Send,
   FileText,
   Palette,
   Code
