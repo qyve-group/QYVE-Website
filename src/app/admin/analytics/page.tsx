@@ -69,7 +69,7 @@ const AnalyticsPage = () => {
               { month: 'May', sales: 11200 },
               { month: 'Jun', sales: totalRevenue }
             ],
-            topProducts: productsData.products?.slice(0, 4).map((product: any, index: number) => ({
+            topProducts: productsData.products?.slice(0, 4).map((product: any) => ({
               name: product.name,
               sales: Math.floor(Math.random() * 50) + 10, // Mock sales data
               revenue: Math.floor(Math.random() * 3000) + 500 // Mock revenue data

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/libs/supabaseServer';
+import { createClient } from '@/libs/supabaseServer';
 
 // PUT /api/refunds/[id] - Update refund request status
 export async function PUT(
@@ -7,6 +7,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ): Promise<NextResponse> {
   try {
+    const supabase = await createClient();
     const { id } = params;
     const body = await request.json();
     const { status, notes, processed_by } = body;

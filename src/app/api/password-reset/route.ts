@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/libs/supabaseClient';
+import nodemailer from 'nodemailer';
 import { generatePasswordResetEmail, generatePasswordResetConfirmationEmail } from '@/lib/password-reset-templates';
-import { sendEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,14 +30,25 @@ export async function POST(request: NextRequest) {
 
       // Send branded email notification
       try {
-        const emailTemplate = generatePasswordResetEmail({
-          customerName: email.split('@')[0], // Use email prefix as name
-          customerEmail: email,
-          resetLink: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/reset-password`,
-          expiryTime: '1 hour'
+        const emailTemplate = generatePasswordResetEmail(
+          email.split('@')[0], // Use email prefix as name
+          `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/reset-password`,
+          1 // 1 hour expiry
+        );
+
+        // Configure nodemailer transporter
+        const transporter = nodemailer.createTransporter({
+          host: process.env.EMAIL_SERVER_HOST,
+          port: Number(process.env.EMAIL_SERVER_PORT),
+          secure: process.env.EMAIL_SERVER_SECURE === 'true',
+          auth: {
+            user: process.env.EMAIL_SERVER_USER,
+            pass: process.env.EMAIL_SERVER_PASSWORD,
+          },
         });
 
-        await sendEmail({
+        await transporter.sendMail({
+          from: process.env.EMAIL_FROM,
           to: email,
           subject: 'Reset Your QYVE Password',
           html: emailTemplate,
@@ -63,10 +74,9 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const emailTemplate = generatePasswordResetConfirmationEmail({
+      const emailTemplate = generatePasswordResetConfirmationEmail(
         customerName,
-        customerEmail,
-        resetTime: new Date().toLocaleString('en-MY', {
+        new Date().toLocaleString('en-MY', {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
@@ -74,9 +84,21 @@ export async function POST(request: NextRequest) {
           minute: '2-digit',
           timeZone: 'Asia/Kuala_Lumpur'
         })
+      );
+
+      // Configure nodemailer transporter
+      const transporter = nodemailer.createTransporter({
+        host: process.env.EMAIL_SERVER_HOST,
+        port: Number(process.env.EMAIL_SERVER_PORT),
+        secure: process.env.EMAIL_SERVER_SECURE === 'true',
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
       });
 
-      await sendEmail({
+      await transporter.sendMail({
+        from: process.env.EMAIL_FROM,
         to: customerEmail,
         subject: 'Password Successfully Reset - QYVE',
         html: emailTemplate,

@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/libs/supabaseServer';
+import { createClient } from '@/libs/supabaseServer';
 import { generateRefundWhatsAppLink, checkRefundEligibility } from '@/data/refund-types';
 
 // GET /api/refunds - Get all refund requests
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
+    const supabase = await createClient();
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
     const orderId = searchParams.get('order_id');
@@ -61,6 +62,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 // POST /api/refunds - Create a new refund request
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
+    const supabase = await createClient();
     const body = await request.json();
     const { order_id, customer_id, reason } = body;
 
