@@ -93,16 +93,6 @@ const ProductCard: FC<ProductCardProps> = ({
             {/* <p className="text-sm text-neutral-500">{product.shoeCategory}</p> */}
             <p className="text-lg font-medium text-black">RM {product.price}</p>
           </div>
-
-          {/* Size Chart Button */}
-          <div className="mt-3 pt-3 border-t">
-            <SizeChartButton
-              category={productCategory}
-              productName={product.name}
-              variant="link"
-              className="text-xs w-full justify-center"
-            />
-          </div>
         </div>
       </div>
     </Link>

@@ -523,9 +523,6 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
               variant="button"
               className="text-sm"
             />
-            <p className="flex items-center gap-1 text-sm text-neutral-500">
-              Size guide <LuInfo />
-            </p>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-3">
