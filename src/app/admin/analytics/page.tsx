@@ -47,7 +47,6 @@ const AnalyticsPage = () => {
           // Calculate real analytics from actual data
           const totalOrders = ordersData.orders?.length || 0;
           const totalRevenue = ordersData.orders?.reduce((sum: number, order: any) => sum + (order.total || 0), 0) || 0;
-          const totalProducts = productsData.products?.length || 0;
           
           realData = {
             totalVisitors: 1250, // This would come from Google Analytics

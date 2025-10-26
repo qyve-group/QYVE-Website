@@ -56,39 +56,19 @@ export const topNavLinks: NavItemType[] = [
     name: 'Blog',
     href: '/blog',
   },
-  // {
-  //   id: 'eexct',
-  //   name: 'Collections',
-  //   href: '/products',
-  // },
-  // {
-  //   id: 'h6ii8g',
-  //   name: 'Contact',
-  //   href: '/contact',
-  // },
+  {
+    id: 'h6ii8g',
+    name: 'Contact',
+    href: '/contact',
+  },
   {
     id: 'h678ty',
     name: 'FAQ',
     href: '/faqs',
   },
-  // {
-  //   id: 'h6i78g',
-  //   name: 'Checkout',
-  //   href: '/checkout',
-  // },
-  // {
-  //   id: 'f678ty',
-  //   name: 'Cart',
-  //   href: '/cart',
-  // },
 ];
 
 export const NavLinks: NavItemType[] = [
-  // {
-  //   id: 'ee46t',
-  //   name: 'Home',
-  //   href: '/home',
-  // },
   {
     id: 'eeshop',
     name: 'Shop',
@@ -99,32 +79,16 @@ export const NavLinks: NavItemType[] = [
     name: 'Blog',
     href: '/blog',
   },
-  // {
-  //   id: 'eexct',
-  //   name: 'Collection',
-  //   href: '/products',
-  // },
-
-  // {
-  //   id: 'h6ii8g',
-  //   name: 'Contact',
-  //   href: '/contact',
-  // },
+  {
+    id: 'h6ii8g',
+    name: 'Contact',
+    href: '/contact',
+  },
   {
     id: 'h678ty',
     name: 'FAQ',
     href: '/faqs',
   },
-  // {
-  //   id: 'h6i78g',
-  //   name: 'Checkout',
-  //   href: '/checkout',
-  // },
-  // {
-  //   id: 'f678ty',
-  //   name: 'Cart',
-  //   href: '/cart',
-  // },
 ];
 
 // export const headerSection = [

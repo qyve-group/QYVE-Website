@@ -19,11 +19,17 @@ export default function LayoutClient({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  console.log('LayoutClient - pathname:', pathname);
+  
   const hideFooter = ['/checkout', '/login', '/my-orders'].includes(pathname);
   const isAdminPage = pathname?.startsWith('/admin');
+  
+  console.log('LayoutClient - isAdminPage:', isAdminPage);
+  console.log('LayoutClient - hideFooter:', hideFooter);
 
   // For admin pages, don't show client-side elements
   if (isAdminPage) {
+    console.log('LayoutClient - Rendering admin layout');
     return (
       <Providers>
         <Suspense fallback={<Loading />}>{children}</Suspense>
@@ -32,14 +38,12 @@ export default function LayoutClient({
   }
 
   // For regular pages, show full client-side layout
+  console.log('LayoutClient - Rendering regular layout with Header');
   return (
-    <Providers>
-      <BannerProvider>
-        <Header />
-        <Suspense fallback={<Loading />}>{children}</Suspense>
-        {!hideFooter && <Footer />}
-        <BannerManager />
-      </BannerProvider>
-    </Providers>
+    <div>
+      <Header />
+      <Suspense fallback={<Loading />}>{children}</Suspense>
+      {!hideFooter && <Footer />}
+    </div>
   );
 }
