@@ -35,13 +35,13 @@ const SubZeroCampaignPage = () => {
       />
 
       {/* Campaign Story Section */}
-      <section className="py-20 bg-gray-900 text-white">
+      <section className="py-20 bg-white text-black">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8">
+            <h2 className="text-4xl md:text-5xl font-bold mb-8 text-black">
               The Next Generation of Performance Shoes
             </h2>
-            <p className="text-xl leading-relaxed mb-12">
+            <p className="text-xl leading-relaxed mb-12 text-black">
               Introducing Sub-Zero, QYVE's revolutionary new shoe line designed for athletes who demand 
               uncompromising performance. Built with cutting-edge technology and premium materials, 
               Sub-Zero delivers the perfect balance of comfort, durability, and style for every step of your journey.
@@ -55,7 +55,7 @@ const SubZeroCampaignPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Advanced Cushioning</h3>
+                <h3 className="text-xl font-bold mb-2 text-black">Advanced Cushioning</h3>
                 <p className="text-black">
                   Revolutionary midsole technology provides superior comfort and energy return for all-day performance.
                 </p>
@@ -67,7 +67,7 @@ const SubZeroCampaignPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Premium Materials</h3>
+                <h3 className="text-xl font-bold mb-2 text-black">Premium Materials</h3>
                 <p className="text-black">
                   Crafted with high-quality leather and breathable mesh for durability and comfort in any condition.
                 </p>
@@ -79,7 +79,7 @@ const SubZeroCampaignPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Enhanced Grip</h3>
+                <h3 className="text-xl font-bold mb-2 text-black">Enhanced Grip</h3>
                 <p className="text-black">
                   Multi-directional outsole pattern delivers exceptional traction on various surfaces for confident movement.
                 </p>
