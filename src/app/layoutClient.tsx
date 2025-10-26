@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Suspense } from 'react';
 
 import Header from '@/components/Header/Header';
-import MinimalProviders from '@/components/MinimalProviders';
+import Providers from '@/components/Providers';
 import Footer from '@/shared/Footer/Footer';
 
 import Loading from './loading';
