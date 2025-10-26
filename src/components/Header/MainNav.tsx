@@ -21,22 +21,6 @@ import MenuBar from './MenuBar';
 import TopNav from './TopNav';
 
 const MainNav = () => {
-  console.log('MainNav component rendering...');
-  
-  // Safe Redux hooks with error handling
-  let auth, dispatch, router;
-  try {
-    auth = useSelector((state: RootState) => state.auth);
-    dispatch = useDispatch<AppDispatch>();
-    router = useRouter();
-  } catch (error) {
-    console.error('Redux hooks error in MainNav:', error);
-    // Fallback values
-    auth = { user: null, loading: false };
-    dispatch = () => {};
-    router = { push: () => {} };
-  }
-
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isNavigatingToLogin, setIsNavigatingToLogin] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -44,42 +28,25 @@ const MainNav = () => {
 
   const handleLogOut = async () => {
     setIsLoggingOut(true);
-    try {
-      if (dispatch && typeof dispatch === 'function') {
-        await dispatch(logoutUser());
-      }
-      setIsOpen(false);
-    } catch (error) {
-      console.error('error logging out in mainnav.tsx: ', error);
-    } finally {
-      setIsLoggingOut(false);
-    }
-    if (router && router.push) {
-      router.push('/home');
-    }
+    setIsOpen(false);
+    setIsLoggingOut(false);
+    // Redirect to home
+    window.location.href = '/home';
   };
 
   return (
-    <div className="container mx-auto px-4 flex items-center justify-between py-3">
-      {/* Mobile Menu Button - Only visible on mobile */}
-      <div className="lg:hidden">
+    <div className="container flex items-center justify-between py-2">
+      <div className="flex-1 lg:hidden">
         <MenuBar />
       </div>
-      
-      {/* Logo - Always visible */}
-      <div className="flex items-center">
+      <div className="flex items-center gap-5 lg:basis-3/5">
         <Logo />
-      </div>
-      
-      {/* Desktop Navigation - Always visible for testing */}
-      <div className="flex items-center gap-5 flex-1 justify-center">
         <TopNav />
       </div>
 
-      {/* Right side - Cart and User Account */}
-      <div className="flex items-center gap-3">
+      <div className="flex flex-1 items-center justify-end gap-5">
         <div className="flex items-center divide-x divide-neutral-300">
-          <CartSideBar />
+          <div>Cart</div>
           <div
             ref={dropdownRef}
             className="relative cursor-pointer"
@@ -103,43 +70,19 @@ const MainNav = () => {
               }
             }}
           >
-            {auth?.user ? (
-              <div className="flex items-center gap-2 pl-5">
-                <span className="text-gray-700 mr-2 hidden text-sm font-medium md:block">
-                  Hi, {auth.user.email?.split('@')[0] || 'User'}
-                </span>
-                <ButtonCircle3
-                  onClick={() => {
-                    setIsOpen(!isOpen);
-                  }}
-                  className="overflow-hidden bg-gray"
-                  size="w-10 h-10"
-                >
-                  <RiAccountCircleFill className="size-full object-cover object-center" />
-                </ButtonCircle3>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2 pl-5">
-                {isNavigatingToLogin ? (
-                  <div className="text-gray-500 flex items-center gap-2 px-4 py-2">
-                    <div className="border-gray-500 size-4 animate-spin rounded-full border-b-2" />
-                    <span className="text-sm">Loading...</span>
-                  </div>
-                ) : (
-                  <Link
-                    href="/login"
-                    className="text-gray-700 hover:bg-gray-100 block rounded-md px-4 py-2 transition-colors"
-                    onClick={() => {
-                      setIsNavigatingToLogin(true);
-                      // Reset after navigation starts
-                      setTimeout(() => setIsNavigatingToLogin(false), 1500);
-                    }}
-                  >
-                    Login
-                  </Link>
-                )}
-              </div>
-            )}
+            <div className="flex items-center gap-2 pl-5">
+              <Link
+                href="/login"
+                className="text-gray-700 hover:bg-gray-100 block rounded-md px-4 py-2 transition-colors"
+                onClick={() => {
+                  setIsNavigatingToLogin(true);
+                  // Reset after navigation starts
+                  setTimeout(() => setIsNavigatingToLogin(false), 1500);
+                }}
+              >
+                Login
+              </Link>
+            </div>
             {isOpen && (
               <div className="absolute right-0 z-10 mt-2 w-48 overflow-hidden rounded-lg bg-primary text-white shadow-lg">
                 <Link
