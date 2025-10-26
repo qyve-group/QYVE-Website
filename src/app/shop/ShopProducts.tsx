@@ -195,7 +195,7 @@ const ShopProducts = () => {
       created_at: new Date(),
       slug: 'qyve-recovery-slides',
       previous_price: 35,
-      image_cover: '/socks_white_bg.jpg',
+      image_cover: '/slides_life.jpg',
       colors: ['black', 'cream'],
       available_colors: ['black', 'cream'],
       available_sizes: ['6', '7', '8', '9', '10', '11', '12'],

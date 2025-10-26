@@ -124,6 +124,93 @@ const createDemoProduct = (productSlug: string) => {
         { id: 10, size: 'XL', stock: 4, product_id: 6, product_color_id: 3 },
       ],
     },
+    'qyve-recovery-slides': {
+      id: 9,
+      name: 'QYVE Recovery Slides',
+      price: 30,
+      previous_price: 35,
+      image_cover: '/slides_life.jpg',
+      overview:
+        'Comfortable recovery slides for post-game relaxation. Designed with premium materials for ultimate comfort and support after intense training sessions.',
+      shipment_details:
+        'Free shipping on orders over RM50. Estimated delivery: 3-5 business days.',
+      colors: ['black', 'cream'],
+      product_shots: [{ images: ['/slides_life.jpg', '/slides_life2.jpg'] }],
+      product_colors: [
+        { id: 4, color: 'black', product_id: 9, image: '/slides_life.jpg' },
+        { id: 5, color: 'cream', product_id: 9, image: '/slides_life2.jpg' },
+      ],
+      products_sizes: [
+        { id: 11, size: '6', stock: 3, product_id: 9, product_color_id: 4 },
+        { id: 12, size: '7', stock: 5, product_id: 9, product_color_id: 4 },
+        { id: 13, size: '8', stock: 4, product_id: 9, product_color_id: 4 },
+        { id: 14, size: '9', stock: 6, product_id: 9, product_color_id: 4 },
+        { id: 15, size: '10', stock: 4, product_id: 9, product_color_id: 4 },
+        { id: 16, size: '11', stock: 3, product_id: 9, product_color_id: 4 },
+        { id: 17, size: '12', stock: 2, product_id: 9, product_color_id: 4 },
+        { id: 18, size: '6', stock: 2, product_id: 9, product_color_id: 5 },
+        { id: 19, size: '7', stock: 4, product_id: 9, product_color_id: 5 },
+        { id: 20, size: '8', stock: 3, product_id: 9, product_color_id: 5 },
+        { id: 21, size: '9', stock: 5, product_id: 9, product_color_id: 5 },
+        { id: 22, size: '10', stock: 3, product_id: 9, product_color_id: 5 },
+        { id: 23, size: '11', stock: 2, product_id: 9, product_color_id: 5 },
+        { id: 24, size: '12', stock: 1, product_id: 9, product_color_id: 5 },
+      ],
+    },
+    'qyve-progrip-socks': {
+      id: 6,
+      name: 'QYVE ProGrip Socks',
+      price: 18,
+      previous_price: 22,
+      image_cover: '/socks_white.png',
+      overview:
+        'High-performance socks with advanced grip technology. Designed for athletes who demand superior traction and comfort during intense training sessions.',
+      shipment_details:
+        'Free shipping on orders over RM50. Estimated delivery: 3-5 business days.',
+      colors: ['white', 'black'],
+      product_shots: [{ images: ['/socks_white.png', '/socks_black.png'] }],
+      product_colors: [
+        { id: 6, color: 'white', product_id: 6, image: '/socks_white.png' },
+        { id: 7, color: 'black', product_id: 6, image: '/socks_black.png' },
+      ],
+      products_sizes: [
+        { id: 25, size: 'S', stock: 3, product_id: 6, product_color_id: 6 },
+        { id: 26, size: 'M', stock: 5, product_id: 6, product_color_id: 6 },
+        { id: 27, size: 'L', stock: 4, product_id: 6, product_color_id: 6 },
+        { id: 28, size: 'XL', stock: 2, product_id: 6, product_color_id: 6 },
+        { id: 29, size: 'S', stock: 2, product_id: 6, product_color_id: 7 },
+        { id: 30, size: 'M', stock: 4, product_id: 6, product_color_id: 7 },
+        { id: 31, size: 'L', stock: 3, product_id: 6, product_color_id: 7 },
+        { id: 32, size: 'XL', stock: 1, product_id: 6, product_color_id: 7 },
+      ],
+    },
+    'qyve-leyenda-94-series': {
+      id: 7,
+      name: 'QYVE Leyenda \'94 Series',
+      price: 50,
+      previous_price: 60,
+      image_cover: '/jersey_pic.jpg',
+      overview:
+        'Premium jersey with classic design inspired by the legendary \'94 series. Features premium materials and retro styling for ultimate comfort and style.',
+      shipment_details:
+        'Free shipping on orders over RM50. Estimated delivery: 3-5 business days.',
+      colors: ['black', 'pink'],
+      product_shots: [{ images: ['/jersey_pic.jpg', '/jersey_pic_2.jpg'] }],
+      product_colors: [
+        { id: 8, color: 'black', product_id: 7, image: '/jersey_pic.jpg' },
+        { id: 9, color: 'pink', product_id: 7, image: '/jersey_pic_2.jpg' },
+      ],
+      products_sizes: [
+        { id: 33, size: 'S', stock: 3, product_id: 7, product_color_id: 8 },
+        { id: 34, size: 'M', stock: 5, product_id: 7, product_color_id: 8 },
+        { id: 35, size: 'L', stock: 4, product_id: 7, product_color_id: 8 },
+        { id: 36, size: 'XL', stock: 2, product_id: 7, product_color_id: 8 },
+        { id: 37, size: 'S', stock: 2, product_id: 7, product_color_id: 9 },
+        { id: 38, size: 'M', stock: 4, product_id: 7, product_color_id: 9 },
+        { id: 39, size: 'L', stock: 3, product_id: 7, product_color_id: 9 },
+        { id: 40, size: 'XL', stock: 1, product_id: 7, product_color_id: 9 },
+      ],
+    },
   };
 
   return demoProducts[productSlug] || null;
