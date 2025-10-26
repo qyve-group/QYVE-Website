@@ -56,7 +56,7 @@ const SubZeroCampaignPage = () => {
                   </svg>
                 </div>
                 <h3 className="text-xl font-bold mb-2">Advanced Thermal Insulation</h3>
-                <p className="text-gray-300">
+                <p className="text-black">
                   Revolutionary thermal technology keeps your feet warm in temperatures as low as -30°C.
                 </p>
               </div>
@@ -68,7 +68,7 @@ const SubZeroCampaignPage = () => {
                   </svg>
                 </div>
                 <h3 className="text-xl font-bold mb-2">Waterproof Construction</h3>
-                <p className="text-gray-300">
+                <p className="text-black">
                   Fully waterproof materials ensure your feet stay dry in wet and snowy conditions.
                 </p>
               </div>
@@ -80,7 +80,7 @@ const SubZeroCampaignPage = () => {
                   </svg>
                 </div>
                 <h3 className="text-xl font-bold mb-2">Superior Traction</h3>
-                <p className="text-gray-300">
+                <p className="text-black">
                   Advanced sole technology provides exceptional grip on ice, snow, and wet surfaces.
                 </p>
               </div>
@@ -123,19 +123,19 @@ const SubZeroCampaignPage = () => {
                     <svg className="w-5 h-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span>Maintains warmth down to -30°C</span>
+                    <span className="text-black">Maintains warmth down to -30°C</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="w-5 h-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span>Lightweight and breathable</span>
+                    <span className="text-black">Lightweight and breathable</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="w-5 h-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span>Moisture-wicking properties</span>
+                    <span className="text-black">Moisture-wicking properties</span>
                   </li>
                 </ul>
               </div>
