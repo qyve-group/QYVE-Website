@@ -85,6 +85,47 @@ export class EasyParcelService {
   ): Promise<ShippingRate[]> {
     try {
       console.log('📦 Checking shipping rates with EasyParcel...');
+      console.log('🔑 API Key present:', !!EASYPARCEL_CONFIG.apiKey);
+      console.log('🌐 Base URL:', EASYPARCEL_CONFIG.baseUrl);
+
+      const requestBody = {
+        api: EASYPARCEL_CONFIG.apiKey,
+        from: {
+          name: from.name,
+          phone: from.phone,
+          email: from.email,
+          address1: from.address1,
+          address2: from.address2 || '',
+          city: from.city,
+          state: from.state,
+          postcode: from.postcode,
+          country: from.country,
+        },
+        to: {
+          name: to.name,
+          phone: to.phone,
+          email: to.email,
+          address1: to.address1,
+          address2: to.address2 || '',
+          city: to.city,
+          state: to.state,
+          postcode: to.postcode,
+          country: to.country,
+        },
+        parcel: {
+          weight: parcel.weight,
+          length: parcel.length,
+          width: parcel.width,
+          height: parcel.height,
+          content: parcel.content,
+          value: parcel.value,
+        },
+      };
+
+      console.log('📤 Request body (API key hidden):', JSON.stringify({
+        ...requestBody,
+        api: '***HIDDEN***'
+      }));
 
       const response = await fetch(
         `${EASYPARCEL_CONFIG.baseUrl}api/rate-check`,
@@ -94,49 +135,30 @@ export class EasyParcelService {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${EASYPARCEL_CONFIG.apiKey}`,
           },
-          body: JSON.stringify({
-            api: EASYPARCEL_CONFIG.apiKey,
-            from: {
-              name: from.name,
-              phone: from.phone,
-              email: from.email,
-              address1: from.address1,
-              address2: from.address2 || '',
-              city: from.city,
-              state: from.state,
-              postcode: from.postcode,
-              country: from.country,
-            },
-            to: {
-              name: to.name,
-              phone: to.phone,
-              email: to.email,
-              address1: to.address1,
-              address2: to.address2 || '',
-              city: to.city,
-              state: to.state,
-              postcode: to.postcode,
-              country: to.country,
-            },
-            parcel: {
-              weight: parcel.weight,
-              length: parcel.length,
-              width: parcel.width,
-              height: parcel.height,
-              content: parcel.content,
-              value: parcel.value,
-            },
-          }),
+          body: JSON.stringify(requestBody),
         },
       );
 
+      console.log('📥 Response status:', response.status, response.statusText);
+      console.log('📥 Response headers:', Object.fromEntries(response.headers.entries()));
+
+      // Get response text first to see what we're actually getting
+      const responseText = await response.text();
+      console.log('📥 Response text:', responseText);
+
       if (!response.ok) {
         throw new Error(
-          `EasyParcel API error: ${response.status} ${response.statusText}`,
+          `EasyParcel API error: ${response.status} ${response.statusText}. Response: ${responseText}`,
         );
       }
 
-      const data = await response.json();
+      // Try to parse as JSON
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        throw new Error(`Failed to parse response as JSON: ${responseText}`);
+      }
 
       if (data.error) {
         throw new Error(`EasyParcel API error: ${data.error}`);
