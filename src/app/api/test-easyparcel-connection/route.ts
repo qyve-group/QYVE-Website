@@ -5,17 +5,17 @@ export async function GET(): Promise<NextResponse> {
   try {
     console.log('🧪 Testing EasyParcel Connection...');
     
-    // Check if API key is configured
+    // Check if API credentials are configured
     const apiKey = process.env.EASYPARCEL_API_KEY;
-    const apiSecret = process.env.EASYPARCEL_API_SECRET;
+    const authKey = process.env.EASYPARCEL_AUTH_KEY;
     
-    if (!apiKey || !apiSecret) {
+    if (!apiKey || !authKey) {
       return NextResponse.json({
         success: false,
         error: 'EasyParcel API credentials not configured',
         details: {
           apiKey: apiKey ? '✅ Set' : '❌ Missing',
-          apiSecret: apiSecret ? '✅ Set' : '❌ Missing'
+          authKey: authKey ? '✅ Set' : '❌ Missing'
         }
       }, { status: 400 });
     }
@@ -28,7 +28,7 @@ export async function GET(): Promise<NextResponse> {
         success: true,
         message: 'EasyParcel connection test successful!',
         apiKey: '✅ Configured',
-        apiSecret: '✅ Configured',
+        authKey: '✅ Configured',
         connection: '✅ Working',
         timestamp: new Date().toISOString()
       });
@@ -37,7 +37,7 @@ export async function GET(): Promise<NextResponse> {
         success: false,
         error: 'EasyParcel connection test failed',
         apiKey: '✅ Configured',
-        apiSecret: '✅ Configured',
+        authKey: '✅ Configured',
         connection: '❌ Failed'
       }, { status: 500 });
     }

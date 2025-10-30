@@ -196,8 +196,8 @@ export default function TestIntegrationsPage() {
                         <span>{easyParcelResults.details.apiKey}</span>
                       </div>
                       <div className="flex items-center text-sm">
-                        <span className="font-medium mr-2">API Secret:</span>
-                        <span>{easyParcelResults.details.apiSecret}</span>
+                        <span className="font-medium mr-2">Auth Key:</span>
+                        <span>{easyParcelResults.details.authKey}</span>
                       </div>
                     </div>
                   )}
