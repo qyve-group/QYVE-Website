@@ -88,88 +88,63 @@ export class EasyParcelService {
       console.log('🔑 API Key present:', !!EASYPARCEL_CONFIG.apiKey);
       console.log('🌐 Base URL:', EASYPARCEL_CONFIG.baseUrl);
 
-      const requestBody = {
+      // EasyParcel Individual API uses form data format
+      const formData = new URLSearchParams({
         api: EASYPARCEL_CONFIG.apiKey,
-        from: {
-          name: from.name,
-          phone: from.phone,
-          email: from.email,
-          address1: from.address1,
-          address2: from.address2 || '',
-          city: from.city,
-          state: from.state,
-          postcode: from.postcode,
-          country: from.country,
-        },
-        to: {
-          name: to.name,
-          phone: to.phone,
-          email: to.email,
-          address1: to.address1,
-          address2: to.address2 || '',
-          city: to.city,
-          state: to.state,
-          postcode: to.postcode,
-          country: to.country,
-        },
-        parcel: {
-          weight: parcel.weight,
-          length: parcel.length,
-          width: parcel.width,
-          height: parcel.height,
-          content: parcel.content,
-          value: parcel.value,
-        },
-      };
+        weight: parcel.weight.toString(),
+        length: parcel.length.toString(),
+        width: parcel.width.toString(),
+        height: parcel.height.toString(),
+        content: parcel.content,
+        value: parcel.value.toString(),
+        pick_code: from.postcode,
+        pick_state: from.state,
+        pick_country: from.country,
+        send_code: to.postcode,
+        send_state: to.state,
+        send_country: to.country,
+      });
 
-      console.log('📤 Request body (API key hidden):', JSON.stringify({
-        ...requestBody,
-        api: '***HIDDEN***'
-      }));
+      console.log('📤 Sending request to EasyParcel...');
 
       const response = await fetch(
-        `${EASYPARCEL_CONFIG.baseUrl}api/rate-check`,
+        `${EASYPARCEL_CONFIG.baseUrl}?ac=EPRateCheckingBulk`,
         {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${EASYPARCEL_CONFIG.apiKey}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: JSON.stringify(requestBody),
+          body: formData.toString(),
         },
       );
 
       console.log('📥 Response status:', response.status, response.statusText);
-      console.log('📥 Response headers:', Object.fromEntries(response.headers.entries()));
 
-      // Get response text first to see what we're actually getting
       const responseText = await response.text();
-      console.log('📥 Response text:', responseText);
-
-      if (!response.ok) {
-        throw new Error(
-          `EasyParcel API error: ${response.status} ${response.statusText}. Response: ${responseText}`,
-        );
-      }
+      console.log('📥 Response received, length:', responseText.length);
 
       // Try to parse as JSON
       let data;
       try {
         data = JSON.parse(responseText);
+        console.log('📥 Parsed JSON successfully');
       } catch (parseError) {
-        throw new Error(`Failed to parse response as JSON: ${responseText}`);
+        console.error('❌ Failed to parse response:', responseText.substring(0, 200));
+        throw new Error(`Failed to parse response as JSON: ${responseText.substring(0, 200)}`);
       }
 
-      if (data.error) {
-        throw new Error(`EasyParcel API error: ${data.error}`);
+      // Check API response status
+      if (data.api_status !== 'Success' && data.api_status !== 'success') {
+        throw new Error(`EasyParcel API error: ${data.error_remark || data.error_code || 'Unknown error'}`);
       }
 
+      // Parse shipping rates from response
       const rates: ShippingRate[] =
-        data.result?.map((rate: any) => ({
-          courier: rate.courier,
-          service: rate.service,
-          price: parseFloat(rate.price),
-          deliveryTime: rate.delivery_time,
+        data.rates?.map((rate: any) => ({
+          courier: rate.courier_name || rate.courier,
+          service: rate.service_name || rate.service,
+          price: parseFloat(rate.price || rate.shipment_price || 0),
+          deliveryTime: rate.delivery_time || rate.estimated_delivery || 'N/A',
         })) || [];
 
       console.log(`✅ Found ${rates.length} shipping options`);
@@ -192,71 +167,59 @@ export class EasyParcelService {
     try {
       console.log('📦 Creating shipment with EasyParcel...');
 
+      // EasyParcel Individual API uses form data format
+      const formData = new URLSearchParams({
+        api: EASYPARCEL_CONFIG.apiKey,
+        weight: parcel.weight.toString(),
+        length: parcel.length.toString(),
+        width: parcel.width.toString(),
+        height: parcel.height.toString(),
+        content: parcel.content,
+        value: parcel.value.toString(),
+        service_id: service,
+        pick_name: from.name,
+        pick_contact: from.phone,
+        pick_addr1: from.address1,
+        pick_addr2: from.address2 || '',
+        pick_city: from.city,
+        pick_state: from.state,
+        pick_code: from.postcode,
+        pick_country: from.country,
+        send_name: to.name,
+        send_contact: to.phone,
+        send_addr1: to.address1,
+        send_addr2: to.address2 || '',
+        send_city: to.city,
+        send_state: to.state,
+        send_code: to.postcode,
+        send_country: to.country,
+      });
+
       const response = await fetch(
-        `${EASYPARCEL_CONFIG.baseUrl}api/order-create`,
+        `${EASYPARCEL_CONFIG.baseUrl}?ac=EPSubmitOrderBulk`,
         {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${EASYPARCEL_CONFIG.apiKey}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: JSON.stringify({
-            api: EASYPARCEL_CONFIG.apiKey,
-            from: {
-              name: from.name,
-              phone: from.phone,
-              email: from.email,
-              address1: from.address1,
-              address2: from.address2 || '',
-              city: from.city,
-              state: from.state,
-              postcode: from.postcode,
-              country: from.country,
-            },
-            to: {
-              name: to.name,
-              phone: to.phone,
-              email: to.email,
-              address1: to.address1,
-              address2: to.address2 || '',
-              city: to.city,
-              state: to.state,
-              postcode: to.postcode,
-              country: to.country,
-            },
-            parcel: {
-              weight: parcel.weight,
-              length: parcel.length,
-              width: parcel.width,
-              height: parcel.height,
-              content: parcel.content,
-              value: parcel.value,
-            },
-            courier,
-            service,
-          }),
+          body: formData.toString(),
         },
       );
 
-      if (!response.ok) {
-        throw new Error(
-          `EasyParcel API error: ${response.status} ${response.statusText}`,
-        );
-      }
+      const responseText = await response.text();
+      const data = JSON.parse(responseText);
 
-      const data = await response.json();
-
-      if (data.error) {
-        throw new Error(`EasyParcel API error: ${data.error}`);
+      if (data.api_status !== 'Success' && data.api_status !== 'success') {
+        throw new Error(`EasyParcel API error: ${data.error_remark || data.error_code || 'Unknown error'}`);
       }
 
       const result: ShipmentResult = {
         success: true,
-        trackingNumber: data.result?.tracking_number,
-        courier: data.result?.courier,
-        service: data.result?.service,
-        price: parseFloat(data.result?.price || '0'),
-        deliveryTime: data.result?.delivery_time,
+        trackingNumber: data.result?.tracking_number || data.result?.awb,
+        courier,
+        service,
+        price: parseFloat(data.result?.price || data.result?.shipment_price || '0'),
+        deliveryTime: data.result?.delivery_time || data.result?.estimated_delivery,
       };
 
       console.log('✅ Shipment created successfully:', result.trackingNumber);
@@ -276,36 +239,33 @@ export class EasyParcelService {
     try {
       console.log('📦 Tracking shipment:', trackingNumber);
 
-      const response = await fetch(`${EASYPARCEL_CONFIG.baseUrl}api/track`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${EASYPARCEL_CONFIG.apiKey}`,
-        },
-        body: JSON.stringify({
-          api: EASYPARCEL_CONFIG.apiKey,
-          tracking_number: trackingNumber,
-        }),
+      // EasyParcel Individual API uses form data format
+      const formData = new URLSearchParams({
+        api: EASYPARCEL_CONFIG.apiKey,
+        tracking_no: trackingNumber,
       });
 
-      if (!response.ok) {
-        throw new Error(
-          `EasyParcel API error: ${response.status} ${response.statusText}`,
-        );
-      }
+      const response = await fetch(`${EASYPARCEL_CONFIG.baseUrl}?ac=EPGetOrderStatus`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString(),
+      });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      const data = JSON.parse(responseText);
 
-      if (data.error) {
-        throw new Error(`EasyParcel API error: ${data.error}`);
+      if (data.api_status !== 'Success' && data.api_status !== 'success') {
+        throw new Error(`EasyParcel API error: ${data.error_remark || data.error_code || 'Unknown error'}`);
       }
 
       const result: TrackingResult = {
         success: true,
-        status: data.result?.status,
-        location: data.result?.location,
-        lastUpdate: data.result?.last_update,
-        estimatedDelivery: data.result?.estimated_delivery,
+        status: data.result?.status || data.result?.order_status,
+        location: data.result?.location || data.result?.last_location,
+        lastUpdate: data.result?.last_update || data.result?.updated_at,
+        estimatedDelivery: data.result?.estimated_delivery || data.result?.eta,
       };
 
       console.log('✅ Tracking info retrieved:', result.status);
