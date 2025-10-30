@@ -88,22 +88,24 @@ export class EasyParcelService {
       console.log('🔑 API Key present:', !!EASYPARCEL_CONFIG.apiKey);
       console.log('🌐 Base URL:', EASYPARCEL_CONFIG.baseUrl);
 
-      // EasyParcel Individual API uses form data format
-      const formData = new URLSearchParams({
+      // EasyParcel Individual API uses bulk array format
+      const bulkData = {
         api: EASYPARCEL_CONFIG.apiKey,
-        weight: parcel.weight.toString(),
-        length: parcel.length.toString(),
-        width: parcel.width.toString(),
-        height: parcel.height.toString(),
-        content: parcel.content,
-        value: parcel.value.toString(),
-        pick_code: from.postcode,
-        pick_state: from.state,
-        pick_country: from.country,
-        send_code: to.postcode,
-        send_state: to.state,
-        send_country: to.country,
-      });
+        bulk: [{
+          weight: parcel.weight.toString(),
+          length: parcel.length.toString(),
+          width: parcel.width.toString(),
+          height: parcel.height.toString(),
+          content: parcel.content,
+          value: parcel.value.toString(),
+          pick_code: from.postcode,
+          pick_state: from.state,
+          pick_country: from.country,
+          send_code: to.postcode,
+          send_state: to.state,
+          send_country: to.country,
+        }]
+      };
 
       console.log('📤 Sending request to EasyParcel...');
 
@@ -114,7 +116,10 @@ export class EasyParcelService {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: formData.toString(),
+          body: new URLSearchParams({
+            api: EASYPARCEL_CONFIG.apiKey,
+            bulk: JSON.stringify(bulkData.bulk)
+          }).toString(),
         },
       );
 
@@ -138,14 +143,21 @@ export class EasyParcelService {
         throw new Error(`EasyParcel API error: ${data.error_remark || data.error_code || 'Unknown error'}`);
       }
 
-      // Parse shipping rates from response
+      // Parse shipping rates from response - bulk API returns array of results
+      const bulkResult = data.result && data.result.length > 0 ? data.result[0] : null;
+      
+      if (!bulkResult || !bulkResult.rates) {
+        console.log('⚠️ No rates found in response');
+        return [];
+      }
+
       const rates: ShippingRate[] =
-        data.rates?.map((rate: any) => ({
+        bulkResult.rates.map((rate: any) => ({
           courier: rate.courier_name || rate.courier,
-          service: rate.service_name || rate.service,
+          service: rate.service_name || rate.service || rate.service_id,
           price: parseFloat(rate.price || rate.shipment_price || 0),
           deliveryTime: rate.delivery_time || rate.estimated_delivery || 'N/A',
-        })) || [];
+        }));
 
       console.log(`✅ Found ${rates.length} shipping options`);
       return rates;
@@ -167,9 +179,8 @@ export class EasyParcelService {
     try {
       console.log('📦 Creating shipment with EasyParcel...');
 
-      // EasyParcel Individual API uses form data format
-      const formData = new URLSearchParams({
-        api: EASYPARCEL_CONFIG.apiKey,
+      // EasyParcel Individual API uses bulk array format
+      const bulkData = [{
         weight: parcel.weight.toString(),
         length: parcel.length.toString(),
         width: parcel.width.toString(),
@@ -193,7 +204,7 @@ export class EasyParcelService {
         send_state: to.state,
         send_code: to.postcode,
         send_country: to.country,
-      });
+      }];
 
       const response = await fetch(
         `${EASYPARCEL_CONFIG.baseUrl}?ac=EPSubmitOrderBulk`,
@@ -202,7 +213,10 @@ export class EasyParcelService {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: formData.toString(),
+          body: new URLSearchParams({
+            api: EASYPARCEL_CONFIG.apiKey,
+            bulk: JSON.stringify(bulkData)
+          }).toString(),
         },
       );
 
