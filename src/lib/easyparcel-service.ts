@@ -3,7 +3,6 @@
 
 interface EasyParcelConfig {
   apiKey: string;
-  authKey: string;
   baseUrl: string;
   isProduction: boolean;
 }
@@ -59,7 +58,6 @@ export interface TrackingResult {
 // EasyParcel service configuration
 const EASYPARCEL_CONFIG: EasyParcelConfig = {
   apiKey: process.env.EASYPARCEL_API_KEY || '',
-  authKey: process.env.EASYPARCEL_AUTH_KEY || '',
   baseUrl:
     process.env.NODE_ENV === 'production'
       ? 'https://connect.easyparcel.my/'
@@ -98,7 +96,6 @@ export class EasyParcelService {
           },
           body: JSON.stringify({
             api: EASYPARCEL_CONFIG.apiKey,
-            authentication: EASYPARCEL_CONFIG.authKey,
             from: {
               name: from.name,
               phone: from.phone,
@@ -183,7 +180,6 @@ export class EasyParcelService {
           },
           body: JSON.stringify({
             api: EASYPARCEL_CONFIG.apiKey,
-            authentication: EASYPARCEL_CONFIG.authKey,
             from: {
               name: from.name,
               phone: from.phone,
@@ -266,7 +262,6 @@ export class EasyParcelService {
         },
         body: JSON.stringify({
           api: EASYPARCEL_CONFIG.apiKey,
-          authentication: EASYPARCEL_CONFIG.authKey,
           tracking_number: trackingNumber,
         }),
       });

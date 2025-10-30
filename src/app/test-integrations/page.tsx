@@ -195,10 +195,6 @@ export default function TestIntegrationsPage() {
                         <span className="font-medium mr-2">API Key:</span>
                         <span>{easyParcelResults.details.apiKey}</span>
                       </div>
-                      <div className="flex items-center text-sm">
-                        <span className="font-medium mr-2">Auth Key:</span>
-                        <span>{easyParcelResults.details.authKey}</span>
-                      </div>
                     </div>
                   )}
 
@@ -214,10 +210,10 @@ export default function TestIntegrationsPage() {
                   ) : (
                     <div className="mt-3 p-3 bg-yellow-100 rounded border border-yellow-300">
                       <p className="text-sm text-yellow-800">
-                        ⚠️ <strong>Action Required:</strong> Add missing credentials to Replit Secrets
+                        ⚠️ <strong>Action Required:</strong> Add EASYPARCEL_API_KEY to Replit Secrets
                       </p>
                       <p className="text-xs text-yellow-700 mt-1">
-                        You need to add EASYPARCEL_API_SECRET to your environment variables.
+                        EasyParcel Individual API only requires the API key.
                       </p>
                     </div>
                   )}
