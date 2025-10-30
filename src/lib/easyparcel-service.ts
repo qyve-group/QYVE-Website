@@ -88,24 +88,22 @@ export class EasyParcelService {
       console.log('🔑 API Key present:', !!EASYPARCEL_CONFIG.apiKey);
       console.log('🌐 Base URL:', EASYPARCEL_CONFIG.baseUrl);
 
-      // EasyParcel Individual API uses bulk array format
-      const bulkData = {
-        api: EASYPARCEL_CONFIG.apiKey,
-        bulk: [{
-          weight: parcel.weight.toString(),
-          length: parcel.length.toString(),
-          width: parcel.width.toString(),
-          height: parcel.height.toString(),
-          content: parcel.content,
-          value: parcel.value.toString(),
-          pick_code: from.postcode,
-          pick_state: from.state,
-          pick_country: from.country,
-          send_code: to.postcode,
-          send_state: to.state,
-          send_country: to.country,
-        }]
-      };
+      // EasyParcel Individual API uses PHP-style array format
+      // PHP needs bulk[0][field] format, not JSON
+      const formData = new URLSearchParams();
+      formData.append('api', EASYPARCEL_CONFIG.apiKey);
+      formData.append('bulk[0][weight]', parcel.weight.toString());
+      formData.append('bulk[0][length]', parcel.length.toString());
+      formData.append('bulk[0][width]', parcel.width.toString());
+      formData.append('bulk[0][height]', parcel.height.toString());
+      formData.append('bulk[0][content]', parcel.content);
+      formData.append('bulk[0][value]', parcel.value.toString());
+      formData.append('bulk[0][pick_code]', from.postcode);
+      formData.append('bulk[0][pick_state]', from.state);
+      formData.append('bulk[0][pick_country]', from.country);
+      formData.append('bulk[0][send_code]', to.postcode);
+      formData.append('bulk[0][send_state]', to.state);
+      formData.append('bulk[0][send_country]', to.country);
 
       console.log('📤 Sending request to EasyParcel...');
 
@@ -116,10 +114,7 @@ export class EasyParcelService {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: new URLSearchParams({
-            api: EASYPARCEL_CONFIG.apiKey,
-            bulk: JSON.stringify(bulkData.bulk)
-          }).toString(),
+          body: formData.toString(),
         },
       );
 
@@ -179,32 +174,32 @@ export class EasyParcelService {
     try {
       console.log('📦 Creating shipment with EasyParcel...');
 
-      // EasyParcel Individual API uses bulk array format
-      const bulkData = [{
-        weight: parcel.weight.toString(),
-        length: parcel.length.toString(),
-        width: parcel.width.toString(),
-        height: parcel.height.toString(),
-        content: parcel.content,
-        value: parcel.value.toString(),
-        service_id: service,
-        pick_name: from.name,
-        pick_contact: from.phone,
-        pick_addr1: from.address1,
-        pick_addr2: from.address2 || '',
-        pick_city: from.city,
-        pick_state: from.state,
-        pick_code: from.postcode,
-        pick_country: from.country,
-        send_name: to.name,
-        send_contact: to.phone,
-        send_addr1: to.address1,
-        send_addr2: to.address2 || '',
-        send_city: to.city,
-        send_state: to.state,
-        send_code: to.postcode,
-        send_country: to.country,
-      }];
+      // EasyParcel Individual API uses PHP-style array format
+      const formData = new URLSearchParams();
+      formData.append('api', EASYPARCEL_CONFIG.apiKey);
+      formData.append('bulk[0][weight]', parcel.weight.toString());
+      formData.append('bulk[0][length]', parcel.length.toString());
+      formData.append('bulk[0][width]', parcel.width.toString());
+      formData.append('bulk[0][height]', parcel.height.toString());
+      formData.append('bulk[0][content]', parcel.content);
+      formData.append('bulk[0][value]', parcel.value.toString());
+      formData.append('bulk[0][service_id]', service);
+      formData.append('bulk[0][pick_name]', from.name);
+      formData.append('bulk[0][pick_contact]', from.phone);
+      formData.append('bulk[0][pick_addr1]', from.address1);
+      formData.append('bulk[0][pick_addr2]', from.address2 || '');
+      formData.append('bulk[0][pick_city]', from.city);
+      formData.append('bulk[0][pick_state]', from.state);
+      formData.append('bulk[0][pick_code]', from.postcode);
+      formData.append('bulk[0][pick_country]', from.country);
+      formData.append('bulk[0][send_name]', to.name);
+      formData.append('bulk[0][send_contact]', to.phone);
+      formData.append('bulk[0][send_addr1]', to.address1);
+      formData.append('bulk[0][send_addr2]', to.address2 || '');
+      formData.append('bulk[0][send_city]', to.city);
+      formData.append('bulk[0][send_state]', to.state);
+      formData.append('bulk[0][send_code]', to.postcode);
+      formData.append('bulk[0][send_country]', to.country);
 
       const response = await fetch(
         `${EASYPARCEL_CONFIG.baseUrl}?ac=EPSubmitOrderBulk`,
@@ -213,10 +208,7 @@ export class EasyParcelService {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: new URLSearchParams({
-            api: EASYPARCEL_CONFIG.apiKey,
-            bulk: JSON.stringify(bulkData)
-          }).toString(),
+          body: formData.toString(),
         },
       );
 
