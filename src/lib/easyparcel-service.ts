@@ -56,13 +56,15 @@ export interface TrackingResult {
 }
 
 // EasyParcel service configuration
+// Uses REPLIT_DEPLOYMENT to detect production environment
+const isProduction = process.env.REPLIT_DEPLOYMENT === '1' || process.env.NODE_ENV === 'production';
+
 const EASYPARCEL_CONFIG: EasyParcelConfig = {
   apiKey: process.env.EASYPARCEL_API_KEY || '',
-  baseUrl:
-    process.env.NODE_ENV === 'production'
-      ? 'https://connect.easyparcel.my/'
-      : 'http://demo.connect.easyparcel.my/',
-  isProduction: process.env.NODE_ENV === 'production',
+  baseUrl: isProduction
+    ? 'https://connect.easyparcel.my/'      // Production (real shipments)
+    : 'http://demo.connect.easyparcel.my/', // Development (free testing)
+  isProduction,
 };
 
 // EasyParcel service class
