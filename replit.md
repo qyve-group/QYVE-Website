@@ -23,6 +23,7 @@ This is a modern Next.js e-commerce application called QYVE, focused on lifestyl
 - ✅ Size chart system fixed and operational (0 LSP errors)
 - ✅ Refund system integrated
 - ✅ EasyParcel shipping configured (Individual API)
+- ✅ SubZero landing page integrated (complete product showcase)
 
 ## Configuration Required
 To fully run this application, you'll need to configure:
@@ -68,6 +69,8 @@ To fully run this application, you'll need to configure:
 - 📄 **Documentation**: See PRODUCTION_READINESS_ANALYSIS.md for full details
 
 ## Recent Changes
+- 2025-11-03: Updated EasyParcel service to use REPLIT_DEPLOYMENT for auto-environment detection
+- 2025-11-03: Merged SubZero landing page from subzero branch (6 components: Hero, Features, CTA, ProudlyMalaysian, Newsletter)
 - 2025-10-30: Analyzed production readiness for email and EasyParcel integrations
 - 2025-10-30: Created comprehensive production readiness documentation
 - 2025-10-30: Fixed SizeChartModal component (reduced from 33 LSP errors to 0)
@@ -100,6 +103,7 @@ To fully run this application, you'll need to configure:
 - SEO optimization with Next.js SEO
 - Admin dashboard (10+ pages for management)
 - Order management system
+- **SubZero landing page** (dedicated product showcase with hero, features, CTA, newsletter signup)
 - **Marketing banner system** (top/bottom placement, newsletter integration)
 - **GDPR cookie consent** (4 consent types with localStorage tracking)
 - **Automated email system** (order confirmations, shipping, refunds via Brevo)
