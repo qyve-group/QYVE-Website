@@ -69,6 +69,9 @@ To fully run this application, you'll need to configure:
 - 📄 **Documentation**: See PRODUCTION_READINESS_ANALYSIS.md for full details
 
 ## Recent Changes
+- 2025-11-05: Built complete pre-order system with bundling functionality for SubZero products
+- 2025-11-05: Created Supabase schema for pre-orders, bundles, and tracking (5 tables with full relations)
+- 2025-11-05: Integrated Redux cart system with bundle selection and "Add More Items" modal
 - 2025-11-03: Updated EasyParcel service to use REPLIT_DEPLOYMENT for auto-environment detection
 - 2025-11-03: Merged SubZero landing page from subzero branch (6 components: Hero, Features, CTA, ProudlyMalaysian, Newsletter)
 - 2025-10-30: Analyzed production readiness for email and EasyParcel integrations
@@ -104,6 +107,9 @@ To fully run this application, you'll need to configure:
 - Admin dashboard (10+ pages for management)
 - Order management system
 - **SubZero landing page** (dedicated product showcase with hero, features, CTA, newsletter signup)
+- **Pre-order system** (complete form with Supabase storage, deposit tracking, status management)
+- **Product bundling** (interactive bundle selector with customization, savings display, cart integration)
+- **"Add More Items" modal** (suggests bundles after cart addition, conversion optimization)
 - **Marketing banner system** (top/bottom placement, newsletter integration)
 - **GDPR cookie consent** (4 consent types with localStorage tracking)
 - **Automated email system** (order confirmations, shipping, refunds via Brevo)
@@ -116,4 +122,6 @@ To fully run this application, you'll need to configure:
 - **FEATURE_STATUS_SUMMARY.md**: Complete feature breakdown and status
 - **PRODUCTION_READINESS_ANALYSIS.md**: Email & EasyParcel production readiness
 - **COOKIE_CONSENT_USAGE_GUIDE.md**: How to leverage GDPR consent for business
+- **PRE_ORDER_AND_BUNDLES_GUIDE.md**: Complete guide for pre-order system and bundling
 - **DATABASE_SCHEMA_CONSENT.sql**: Database table for tracking user consent
+- **database-schema-preorders-bundles.sql**: Pre-order and bundle database schema
