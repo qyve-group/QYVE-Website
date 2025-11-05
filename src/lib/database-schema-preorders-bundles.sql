@@ -214,6 +214,43 @@ CREATE TABLE IF NOT EXISTS bundle_purchases (
 );
 
 -- =====================================================
+-- 6. BUNDLE ASSOCIATIONS (PRODUCT MATCHING)
+-- =====================================================
+-- Links bundles to specific products, categories, or tags
+-- Used to show relevant bundles when user adds products to cart
+
+CREATE TABLE IF NOT EXISTS bundle_associations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  bundle_id UUID NOT NULL REFERENCES product_bundles(id) ON DELETE CASCADE,
+  
+  -- Association type
+  association_type VARCHAR(50) NOT NULL CHECK (association_type IN (
+    'product_id',      -- Associate with specific product
+    'product_name',    -- Associate with product by name
+    'category',        -- Associate with product category
+    'tag',             -- Associate with product tag
+    'all_products'     -- Show for all products (universal bundle)
+  )),
+  
+  -- Association value (depends on type)
+  association_value VARCHAR(255) NOT NULL,
+  
+  -- Priority (higher = shown first)
+  priority INTEGER DEFAULT 0,
+  
+  -- Display rules
+  min_cart_value DECIMAL(10,2), -- Only show if cart exceeds this value
+  max_suggestions INTEGER DEFAULT 3, -- Max times to show this bundle
+  
+  -- Timestamps
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  
+  -- Ensure unique combinations
+  UNIQUE(bundle_id, association_type, association_value)
+);
+
+-- =====================================================
 -- INDEXES FOR PERFORMANCE
 -- =====================================================
 
@@ -238,6 +275,12 @@ CREATE INDEX IF NOT EXISTS idx_bundle_items_product ON bundle_items(product_id);
 CREATE INDEX IF NOT EXISTS idx_bundle_purchases_bundle ON bundle_purchases(bundle_id);
 CREATE INDEX IF NOT EXISTS idx_bundle_purchases_email ON bundle_purchases(customer_email);
 CREATE INDEX IF NOT EXISTS idx_bundle_purchases_created_at ON bundle_purchases(created_at);
+
+-- Bundle associations indexes
+CREATE INDEX IF NOT EXISTS idx_bundle_assoc_bundle ON bundle_associations(bundle_id);
+CREATE INDEX IF NOT EXISTS idx_bundle_assoc_type ON bundle_associations(association_type);
+CREATE INDEX IF NOT EXISTS idx_bundle_assoc_value ON bundle_associations(association_value);
+CREATE INDEX IF NOT EXISTS idx_bundle_assoc_priority ON bundle_associations(priority DESC);
 
 -- =====================================================
 -- SAMPLE DATA: SubZero Pre-Order Bundle
@@ -318,3 +361,88 @@ INSERT INTO product_bundles (
   'Save RM59',
   false
 ) ON CONFLICT (bundle_slug) DO NOTHING;
+
+-- =====================================================
+-- SAMPLE DATA: Universal Bundle Examples
+-- =====================================================
+
+-- Pro Grip Socks Bundle (Buy 2 pairs)
+INSERT INTO product_bundles (
+  bundle_name,
+  bundle_slug,
+  bundle_description,
+  regular_price,
+  bundle_price,
+  discount_amount,
+  discount_percentage,
+  is_active,
+  is_featured,
+  badge_text,
+  allow_customization
+) VALUES (
+  'Pro Grip Socks - 2 Pack',
+  'pro-grip-socks-2-pack',
+  'Get 2 pairs of our premium performance grip socks at a special bundle price.',
+  90.00,
+  75.00,
+  15.00,
+  16.67,
+  true,
+  false,
+  'Save RM15',
+  true
+) ON CONFLICT (bundle_slug) DO NOTHING;
+
+-- Add bundle items for sock bundle
+DO $$
+DECLARE
+  socks_bundle_id UUID;
+BEGIN
+  SELECT id INTO socks_bundle_id FROM product_bundles WHERE bundle_slug = 'pro-grip-socks-2-pack';
+  
+  INSERT INTO bundle_items (bundle_id, product_name, product_sku, item_price, quantity, is_required, available_sizes)
+  VALUES 
+    (socks_bundle_id, 'Pro Grip Performance Socks', 'SOCK-PRO-001', 45.00, 2, true, '["S", "M", "L", "XL"]')
+  ON CONFLICT DO NOTHING;
+END $$;
+
+-- =====================================================
+-- SAMPLE DATA: Bundle Associations
+-- =====================================================
+
+-- Associate sock bundle with sock products
+DO $$
+DECLARE
+  socks_bundle_id UUID;
+BEGIN
+  SELECT id INTO socks_bundle_id FROM product_bundles WHERE bundle_slug = 'pro-grip-socks-2-pack';
+  
+  -- Show this bundle when ANY sock product is added to cart
+  INSERT INTO bundle_associations (bundle_id, association_type, association_value, priority)
+  VALUES 
+    (socks_bundle_id, 'category', 'socks', 100),
+    (socks_bundle_id, 'product_name', 'Pro Grip Socks', 100),
+    (socks_bundle_id, 'product_name', 'Performance Grip Socks', 100),
+    (socks_bundle_id, 'tag', 'socks', 90)
+  ON CONFLICT (bundle_id, association_type, association_value) DO NOTHING;
+END $$;
+
+-- Associate SubZero bundles with SubZero products
+DO $$
+DECLARE
+  subzero_complete_id UUID;
+  subzero_socks_id UUID;
+BEGIN
+  SELECT id INTO subzero_complete_id FROM product_bundles WHERE bundle_slug = 'subzero-complete-package';
+  SELECT id INTO subzero_socks_id FROM product_bundles WHERE bundle_slug = 'subzero-socks-bundle';
+  
+  -- Show SubZero bundles when SubZero shoes are added
+  INSERT INTO bundle_associations (bundle_id, association_type, association_value, priority)
+  VALUES 
+    (subzero_complete_id, 'product_name', 'SubZero', 100),
+    (subzero_complete_id, 'product_name', 'SubZero Futsal Shoes', 100),
+    (subzero_complete_id, 'category', 'futsal-shoes', 90),
+    (subzero_socks_id, 'product_name', 'SubZero', 80),
+    (subzero_socks_id, 'product_name', 'SubZero Futsal Shoes', 80)
+  ON CONFLICT (bundle_id, association_type, association_value) DO NOTHING;
+END $$;
