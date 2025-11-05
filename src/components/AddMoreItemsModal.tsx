@@ -25,6 +25,13 @@ interface Bundle {
   items: BundleItem[];
 }
 
+interface ProductContext {
+  name: string;
+  price: number;
+  category?: string;
+  productId?: string;
+}
+
 interface AddMoreItemsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -33,33 +40,40 @@ interface AddMoreItemsModalProps {
     price: number;
     image?: string;
   };
+  productContext?: ProductContext | null;
 }
 
 const AddMoreItemsModal = ({
   isOpen,
   onClose,
   itemJustAdded,
+  productContext,
 }: AddMoreItemsModalProps) => {
   const [bundles, setBundles] = useState<Bundle[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isOpen) {
-      fetchBundles();
+    if (isOpen && productContext) {
+      fetchRelevantBundles();
     }
-  }, [isOpen]);
+  }, [isOpen, productContext]);
 
-  const fetchBundles = async () => {
+  const fetchRelevantBundles = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/bundles/get?active=true');
+      
+      const params = new URLSearchParams();
+      if (productContext?.name) params.append('productName', productContext.name);
+      if (productContext?.category) params.append('category', productContext.category);
+      if (productContext?.productId) params.append('productId', productContext.productId);
+      
+      const response = await fetch(`/api/bundles/relevant?${params.toString()}`);
       const data = await response.json();
       
-      if (data.success) {
-        setBundles(data.bundles || []);
-      }
+      setBundles(data.bundles || []);
     } catch (error) {
-      console.error('Failed to fetch bundles:', error);
+      console.error('Failed to fetch relevant bundles:', error);
+      setBundles([]);
     } finally {
       setLoading(false);
     }
@@ -126,7 +140,7 @@ const AddMoreItemsModal = ({
                     as="h2"
                     className="text-3xl font-bold text-gray-900 mb-2"
                   >
-                    Save More with Bundles!
+                    Here's what will go well with your purchase
                   </Dialog.Title>
                   <p className="text-gray-600">
                     Get everything you need at a discounted price
