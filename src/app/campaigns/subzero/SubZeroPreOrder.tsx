@@ -26,15 +26,20 @@ const SubZeroPreOrder = () => {
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-2xl shadow-lg p-8 border-2 border-gray-200 hover:border-blue-500 transition-all">
             <div className="text-center mb-6">
+              <div className="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-1 rounded-full text-sm font-bold mb-3">
+                🔥 EARLY BIRD - 10% OFF
+              </div>
               <div className="text-5xl mb-4">👟</div>
               <h3 className="text-2xl font-bold mb-2">SubZero Futsal Shoes</h3>
               <p className="text-gray-600 mb-4">
                 Get the revolutionary SubZero futsal shoes
               </p>
-              <div className="flex items-baseline justify-center gap-2 mb-2">
-                <span className="text-4xl font-bold text-blue-600">RM 399</span>
+              <div className="flex items-baseline justify-center gap-3 mb-2">
+                <span className="text-2xl text-gray-400 line-through">RM 238</span>
+                <span className="text-4xl font-bold text-blue-600">RM 214.20</span>
               </div>
-              <p className="text-sm text-gray-500">30% deposit required</p>
+              <p className="text-sm text-green-600 font-semibold mb-1">Save RM 23.80!</p>
+              <p className="text-sm text-gray-500">30% deposit required (RM 64.26)</p>
             </div>
 
             <ul className="space-y-3 mb-8">
@@ -115,8 +120,8 @@ const SubZeroPreOrder = () => {
               >
                 <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
                   <SubZeroPreOrderForm
-                    productName="SubZero Futsal Shoes"
-                    defaultPrice={399.00}
+                    productName="SubZero Futsal Shoes (Early Bird)"
+                    defaultPrice={214.20}
                     onClose={() => setIsPreOrderOpen(false)}
                     onSuccess={(id) => {
                       console.log('Pre-order created:', id);
