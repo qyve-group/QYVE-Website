@@ -53,6 +53,10 @@ export async function POST(req: Request) {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    const forwardedFor = req.headers.get('x-forwarded-for');
+    const realIp = req.headers.get('x-real-ip');
+    const clientIp = forwardedFor ? forwardedFor.split(',')[0].trim() : (realIp || null);
+
     const preOrderData = {
       customer_email: customerEmail,
       customer_name: customerName,
@@ -71,7 +75,7 @@ export async function POST(req: Request) {
       status: 'pending',
       payment_status: 'unpaid',
       source: 'website',
-      ip_address: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip'),
+      ip_address: clientIp || null,
       user_agent: req.headers.get('user-agent'),
     };
 
