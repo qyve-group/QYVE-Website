@@ -44,16 +44,14 @@ const SubZeroFeatures = () => {
       <div className="container mx-auto px-4">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left - Product Image */}
-          <div className="flex items-center justify-center">
-            <div className="relative aspect-square w-full max-w-md overflow-hidden rounded-lg bg-gray-200">
-              <Image
-                src="/subzero-features.jpeg"
-                alt="SubZero Futsal Shoes Features"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+          <div className="relative h-full min-h-[400px] overflow-hidden rounded-lg bg-gray-200 lg:min-h-[600px]">
+            <Image
+              src="/subzero-features.jpeg"
+              alt="SubZero Futsal Shoes Features"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
 
           {/* Right - Features */}
