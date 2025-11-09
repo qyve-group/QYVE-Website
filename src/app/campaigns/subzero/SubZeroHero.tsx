@@ -30,17 +30,15 @@ const SubZeroHero = () => {
             </Link>
           </div>
 
-          {/* Right Product Image */}
-          <div className="relative flex items-center justify-center">
-            <div className="relative h-[400px] w-full max-w-[600px]">
-              <Image 
-                src="/subzero-shoe.jpeg" 
-                alt="SubZero Futsal Shoes - The Game Redefined" 
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+          {/* Right Product Image - Full Height */}
+          <div className="relative h-[500px] md:h-[600px] lg:h-[700px]">
+            <Image 
+              src="/subzero-shoe.jpeg" 
+              alt="SubZero Futsal Shoes - The Game Redefined" 
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
         </div>
       </div>
