@@ -23,13 +23,13 @@ const SubZeroSizeChart = () => {
             <table className="w-full">
               <thead>
                 <tr className="bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] text-white">
-                  <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">
+                  <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
                     EU Size
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">
+                  <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
                     UK Size
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">
+                  <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
                     Foot Length (mm)
                   </th>
                 </tr>
@@ -42,13 +42,13 @@ const SubZeroSizeChart = () => {
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                     }`}
                   >
-                    <td className="whitespace-nowrap px-6 py-4 text-lg font-semibold text-gray-900">
+                    <td className="whitespace-nowrap px-6 py-4 text-center text-lg font-semibold text-gray-900">
                       {size.eu}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-lg text-gray-700">
+                    <td className="whitespace-nowrap px-6 py-4 text-center text-lg text-gray-700">
                       {size.uk}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-lg text-gray-700">
+                    <td className="whitespace-nowrap px-6 py-4 text-center text-lg text-gray-700">
                       {size.mm} mm
                     </td>
                   </tr>
