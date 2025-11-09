@@ -6,7 +6,7 @@ const SubZeroSizeChart = () => {
     { eu: '39', uk: '6', mm: '259.66' },
     { eu: '40', uk: '7', mm: '266.33' },
     { eu: '41', uk: '7.5', mm: '273' },
-    { eu: '42', uk: '8-8.5', mm: '279.67' },
+    { eu: '42', uk: '8.5', mm: '279.67' },
     { eu: '43', uk: '9', mm: '286.34' },
     { eu: '44', uk: '10', mm: '293.01' },
   ];
@@ -70,9 +70,7 @@ const SubZeroSizeChart = () => {
               </li>
               <li className="flex items-start">
                 <span className="mr-2 font-bold">2.</span>
-                <span>
-                  Mark the longest point of your foot on the paper
-                </span>
+                <span>Mark the longest point of your foot on the paper</span>
               </li>
               <li className="flex items-start">
                 <span className="mr-2 font-bold">3.</span>
