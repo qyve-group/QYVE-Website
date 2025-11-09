@@ -196,6 +196,27 @@ const getBaseStyles = () => `
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
     }
+    .btn-subzero {
+      display: inline-block;
+      padding: 16px 32px;
+      background: linear-gradient(135deg, #0a1f3d 0%, #0d3d5c 50%, #1a5a7a 100%);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 8px;
+      margin: 15px 0;
+      font-weight: 700;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 16px rgba(79, 209, 197, 0.3);
+      transition: all 0.3s ease;
+      border: 2px solid #4FD1C5;
+    }
+    .btn-subzero:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(79, 209, 197, 0.5);
+      background: linear-gradient(135deg, #0d3d5c 0%, #1a5a7a 50%, #2a6a8a 100%);
+    }
     .footer { 
       text-align: center; 
       margin-top: 40px; 
@@ -749,7 +770,7 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
         <p style="font-size: 14px; color: #6c757d;">We'll keep you updated on the production and delivery status.</p>
         
         <div style="text-align: center; margin: 30px 0;">
-          <a href="${process.env.NEXT_PUBLIC_BASE_URL}/campaigns/subzero" class="btn">View SubZero Page</a>
+          <a href="${process.env.NEXT_PUBLIC_BASE_URL}/campaigns/subzero" class="btn-subzero">View SubZero Page</a>
         </div>
       </div>
       
