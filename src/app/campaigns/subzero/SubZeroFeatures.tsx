@@ -46,11 +46,11 @@ const SubZeroFeatures = () => {
           {/* Left - Product Image */}
           <div className="flex items-center justify-center">
             <div className="relative aspect-square w-full max-w-md overflow-hidden rounded-lg bg-gray-200">
-              <Image 
-                src="/subzero-features.jpeg" 
-                alt="SubZero Futsal Shoes Features" 
+              <Image
+                src="/subzero-features.jpeg"
+                alt="SubZero Futsal Shoes Features"
                 fill
-                className="object-cover"
+                className="object-contain"
                 priority
               />
             </div>
