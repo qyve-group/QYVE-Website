@@ -9,7 +9,10 @@ const SubZeroPreOrder = () => {
   const [isPreOrderOpen, setIsPreOrderOpen] = useState(false);
 
   return (
-    <section id="preorder" className="bg-gradient-to-br from-gray-50 to-white py-16">
+    <section
+      id="preorder"
+      className="bg-gradient-to-br from-gray-50 to-white py-16"
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold italic mb-4">
@@ -26,8 +29,8 @@ const SubZeroPreOrder = () => {
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-2xl shadow-lg p-8 border-2 border-gray-200 hover:border-blue-500 transition-all">
             <div className="text-center mb-6">
-              <div className="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-1 rounded-full text-sm font-bold mb-3">
-                🔥 EARLY BIRD - RM 20 OFF
+              <div className="inline-block bg-gradient-to-r from-blue-500 to-blue-300 text-white px-4 py-1 rounded-full text-sm font-bold mb-3">
+                EARLY BIRD - RM 20 OFF
               </div>
               {/* <div className="text-5xl mb-4">👟</div> */}
               <h3 className="text-2xl font-bold mb-2">SubZero Futsal Shoes</h3>
@@ -35,10 +38,14 @@ const SubZeroPreOrder = () => {
                 Get the revolutionary SubZero futsal shoes
               </p>
               <div className="flex items-baseline justify-center gap-3 mb-2">
-                <span className="text-2xl text-gray-400 line-through">RM 238</span>
+                <span className="text-2xl text-gray-400 line-through">
+                  RM 238
+                </span>
                 <span className="text-4xl font-bold text-blue-600">RM 218</span>
               </div>
-              <p className="text-sm text-green-600 font-semibold mb-1">Save RM 20!</p>
+              <p className="text-sm text-green-600 font-semibold mb-1">
+                Save RM 20!
+              </p>
               {/* <p className="text-sm text-gray-500">30% deposit required (RM 64.26)</p> */}
             </div>
 
@@ -121,7 +128,7 @@ const SubZeroPreOrder = () => {
                 <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
                   <SubZeroPreOrderForm
                     productName="SubZero Futsal Shoes (Early Bird)"
-                    defaultPrice={214.20}
+                    defaultPrice={214.2}
                     onClose={() => setIsPreOrderOpen(false)}
                     onSuccess={(id) => {
                       console.log('Pre-order created:', id);
@@ -134,7 +141,6 @@ const SubZeroPreOrder = () => {
           </div>
         </Dialog>
       </Transition>
-
     </section>
   );
 };
