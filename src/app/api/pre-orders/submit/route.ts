@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { preOrderSchema } from '@/lib/validation/pre-order-schema';
+import { EmailService } from '@/lib/email-service-smtp';
+import type { PreOrderData } from '@/lib/email-templates';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -100,6 +102,24 @@ export async function POST(req: Request) {
         new_status: 'pending',
         notes: 'Pre-order created from website',
       }]);
+
+    const emailService = EmailService.getInstance();
+    const emailData: PreOrderData = {
+      preOrderId: data.id,
+      customerName: customerName,
+      customerEmail: customerEmail,
+      productName: productName,
+      productVariant: productVariant || 'Standard',
+      quantity: quantity,
+      unitPrice: unitPrice,
+      totalPrice: totalPrice,
+      depositAmount: depositAmount || (totalPrice * 0.3),
+      estimatedDelivery: '8-12 weeks from deposit payment',
+    };
+
+    await emailService.sendPreOrderConfirmation(emailData).catch((error) => {
+      console.error('Failed to send pre-order confirmation email:', error);
+    });
 
     return NextResponse.json({
       success: true,

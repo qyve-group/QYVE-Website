@@ -69,6 +69,9 @@ To fully run this application, you'll need to configure:
 - 📄 **Documentation**: See PRODUCTION_READINESS_ANALYSIS.md for full details
 
 ## Recent Changes
+- 2025-11-09: **Added pre-order email confirmation** (automated emails via Brevo SMTP)
+- 2025-11-09: **Fixed IP address handling** in pre-order API (supports multi-proxy environments)
+- 2025-11-09: **Updated SubZero pricing** to Early Bird 10% off (RM 214.20 from RM 238)
 - 2025-11-05: **REFACTORED** bundling system to be universal for ALL products (not just SubZero)
 - 2025-11-05: Created `bundle_associations` table for smart product-to-bundle matching
 - 2025-11-05: Built global cart hook (`useAddToCart`) that auto-triggers bundle modal

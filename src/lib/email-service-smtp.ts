@@ -2,11 +2,12 @@
 // Uses Nodemailer with Brevo SMTP for reliable email delivery
 
 import nodemailer from 'nodemailer';
-import type { OrderData, RefundData } from './email-templates';
+import type { OrderData, RefundData, PreOrderData } from './email-templates';
 import {
   generateOrderCancellationEmail,
   generateOrderConfirmationEmail,
   generatePaymentConfirmationEmail,
+  generatePreOrderConfirmationEmail,
   generateRefundConfirmationEmail,
   generateShippingNotificationEmail,
 } from './email-templates';
@@ -26,6 +27,7 @@ export enum EmailType {
   SHIPPING_NOTIFICATION = 'shipping_notification',
   ORDER_CANCELLATION = 'order_cancellation',
   REFUND_CONFIRMATION = 'refund_confirmation',
+  PRE_ORDER_CONFIRMATION = 'pre_order_confirmation',
 }
 
 // Email sending result
@@ -240,6 +242,43 @@ export class EmailService {
       return result;
     } catch (error) {
       console.error('❌ Failed to send refund confirmation email:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  // Send pre-order confirmation email
+  async sendPreOrderConfirmation(data: PreOrderData): Promise<EmailResult> {
+    try {
+      console.log(
+        '📧 Sending pre-order confirmation email to:',
+        data.customerEmail,
+      );
+
+      const transporter = createTransporter();
+      const mailOptions = {
+        from: `"${EMAIL_CONFIG.fromName}" <${EMAIL_CONFIG.fromEmail}>`,
+        to: data.customerEmail,
+        subject: `Pre-Order Confirmed - ${data.productName}`,
+        html: generatePreOrderConfirmationEmail(data),
+      };
+
+      const result = await this.sendWithRetry(transporter, mailOptions);
+
+      if (result.success) {
+        console.log('✅ Pre-order confirmation email sent successfully');
+        await this.logEmailSent(
+          EmailType.PRE_ORDER_CONFIRMATION,
+          data.customerEmail,
+          data.preOrderId,
+        );
+      }
+
+      return result;
+    } catch (error) {
+      console.error('❌ Failed to send pre-order confirmation email:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
