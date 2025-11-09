@@ -360,8 +360,8 @@ export const generateOrderConfirmationEmail = (data: OrderData) => `
             <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
           </div>
         </div>
-        <p><strong>QYVE</strong> - Premium Sports Apparel</p>
-        <p>Questions? Contact us at <a href="mailto:support@qyveofficial.com">support@qyveofficial.com</a></p>
+        <p><strong>QYVE</strong></p>
+        <p>Questions? Contact us at <a href="mailto:qyveshoe@gmail.com">qyveshoe@gmail.com</a></p>
         <p>Follow us on social media for updates and new arrivals!</p>
         <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e9ecef;">
           <p style="font-size: 12px; color: ${QYVE_BRAND.textLight};">© 2025 QYVE. All rights reserved.</p>
@@ -709,7 +709,7 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
             </td>
           </tr>
         </table>
-        <h1>🎉 Pre-Order Confirmed!</h1>
+        <h1>Pre-Order Confirmed!</h1>
         <p>Thank you for pre-ordering with QYVE</p>
       </div>
       
@@ -724,24 +724,16 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
           <p><strong>Product:</strong> ${data.productName}</p>
           <p><strong>Variant:</strong> ${data.productVariant}</p>
           <p><strong>Quantity:</strong> ${data.quantity}</p>
-          <p><strong>Status:</strong> <span class="status-badge" style="background-color: #ffc107; color: #000;">Awaiting Deposit</span></p>
+
         </div>
         
         <div class="amount">RM ${data.totalPrice.toFixed(2)}</div>
         
-        <h3 style="margin-top: 30px;">💰 Deposit Required</h3>
-        <div style="background: linear-gradient(135deg, #fff8e1 0%, #ffffff 100%); padding: 20px; border-radius: 12px; border-left: 4px solid #ffc107; margin: 20px 0;">
-          <p style="font-size: 18px; margin-bottom: 10px;"><strong>30% Deposit:</strong> <span style="color: #f7931e; font-size: 24px; font-weight: 800;">RM ${data.depositAmount.toFixed(2)}</span></p>
-          <p style="font-size: 14px; color: #6c757d;">Balance due at delivery: RM ${(data.totalPrice - data.depositAmount).toFixed(2)}</p>
-        </div>
+ 
         
-        <div style="background: #e8f5e9; padding: 20px; border-radius: 12px; border-left: 4px solid #4caf50; margin: 20px 0;">
-          <h3 style="margin-top: 0; color: #2e7d32;">📧 Payment Instructions Coming Soon</h3>
-          <p style="margin-bottom: 0;">We'll send you an email with payment instructions within 24 hours. Please complete the deposit payment to secure your pre-order.</p>
-        </div>
         
         <h3>📦 Delivery Information</h3>
-        <p><strong>Estimated Delivery:</strong> ${data.estimatedDelivery}</p>
+        <p><strong>Estimated Delivery:</strong> Within 5 days after 12/12 once full payment is made.</p>
         <p style="font-size: 14px; color: #6c757d;">We'll keep you updated on the production and delivery status.</p>
         
         <div style="text-align: center; margin: 30px 0;">
@@ -755,8 +747,8 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
             <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
           </div>
         </div>
-        <p><strong>QYVE</strong> - Premium Sports Apparel</p>
-        <p>Questions about your pre-order? Contact us at <a href="mailto:support@qyveofficial.com">support@qyveofficial.com</a></p>
+        <p><strong>QYVE</strong> </p>
+        <p>Questions about your pre-order? Contact us at <a href="mailto:qyveshoe@gmail.com">qyveshoe@gmail.com</a></p>
         <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e9ecef;">
           <p style="font-size: 12px; color: ${QYVE_BRAND.textLight};">© 2025 QYVE. All rights reserved.</p>
         </div>
@@ -765,3 +757,18 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
   </body>
   </html>
 `;
+
+
+// <p><strong>Status:</strong> <span class="status-badge" style="background-color: #ffc107; color: #000;">Awaiting Deposit</span></p>
+
+ // <h3 style="margin-top: 30px;">💰 Deposit Required</h3>
+ //  <div style="background: linear-gradient(135deg, #fff8e1 0%, #ffffff 100%); padding: 20px; border-radius: 12px; border-left: 4px solid #ffc107; margin: 20px 0;">
+ //    <p style="font-size: 18px; margin-bottom: 10px;"><strong>30% Deposit:</strong> <span style="color: #f7931e; font-size: 24px; font-weight: 800;">RM ${data.depositAmount.toFixed(2)}</span></p>
+ //    <p style="font-size: 14px; color: #6c757d;">Balance due at delivery: RM ${(data.totalPrice - data.depositAmount).toFixed(2)}</p>
+ //  </div>
+
+
+// <div style="background: #e8f5e9; padding: 20px; border-radius: 12px; border-left: 4px solid #4caf50; margin: 20px 0;">
+//   <h3 style="margin-top: 0; color: #2e7d32;">📧 Payment Instructions Coming Soon</h3>
+//   <p style="margin-bottom: 0;">We'll send you an email with payment instructions within 24 hours. Please complete the deposit payment to secure your pre-order.</p>
+// </div>
