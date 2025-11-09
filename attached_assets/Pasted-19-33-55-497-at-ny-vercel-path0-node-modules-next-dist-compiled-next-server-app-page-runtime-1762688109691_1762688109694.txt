@@ -1,0 +1,43 @@
+19:33:55.497 
+    at ny (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:27:52524)
+19:33:55.497 
+    at nv (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:27:55162)
+19:33:55.498 
+    at ng (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:27:54569)
+19:33:55.513 
+19:33:55.513 
+Error occurred prerendering page "/test-banner". Read more: https://nextjs.org/docs/messages/prerender-error
+19:33:55.513 
+Error: useBanner must be used within a BannerProvider
+19:33:55.513 
+    at c (/vercel/path0/.next/server/chunks/8092.js:1:1855)
+19:33:55.514 
+    at x (/vercel/path0/.next/server/app/test-banner/page.js:1:2771)
+19:33:55.514 
+    at nh (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:27:36421)
+19:33:55.514 
+    at ny (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:27:52524)
+19:33:55.514 
+    at nf (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:27:35987)
+19:33:55.514 
+    at nh (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:27:36572)
+19:33:55.514 
+    at nh (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:27:49347)
+19:33:55.514 
+    at ny (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:27:52524)
+19:33:55.514 
+    at nv (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:27:55162)
+19:33:55.514 
+    at ng (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:27:54569)
+19:33:57.453 
+ ✓ Generating static pages (113/113) 
+19:33:57.459 
+19:33:57.459 
+> Export encountered errors on following paths:
+19:33:57.459 
+	/admin/size-charts/page: /admin/size-charts
+19:33:57.459 
+	/test-banner/page: /test-banner
+19:33:57.555 
+Error: Command "npm run build" exited with 1
+Deployment Summary

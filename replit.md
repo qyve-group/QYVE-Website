@@ -69,7 +69,7 @@ To fully run this application, you'll need to configure:
 - 📄 **Documentation**: See PRODUCTION_READINESS_ANALYSIS.md for full details
 
 ## Recent Changes
-- 2025-11-09: **Fixed Vercel build errors** (made test pages dynamic to prevent prerendering issues)
+- 2025-11-09: **Fixed Vercel build errors** (removed all test pages and API routes from production)
 - 2025-11-09: **Configured deployment settings** (disabled TypeScript & Prettier checks for Vercel builds)
 - 2025-11-09: **Added pre-order email confirmation** (automated emails via Brevo SMTP)
 - 2025-11-09: **Fixed IP address handling** in pre-order API (supports multi-proxy environments)
