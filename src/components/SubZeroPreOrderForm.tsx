@@ -12,7 +12,7 @@ interface PreOrderFormProps {
 
 const SubZeroPreOrderForm = ({
   productName = 'SubZero Futsal Shoes (Early Bird)',
-  defaultPrice = 214.20,
+  defaultPrice = 214.2,
   onClose,
   onSuccess,
 }: PreOrderFormProps) => {
@@ -43,12 +43,16 @@ const SubZeroPreOrderForm = ({
   const sizes = ['38', '39', '40', '41', '42', '43', '44', '45'];
   const colors = ['White'];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value } = e.target;
-    
+
     if (name.startsWith('shipping_')) {
       const field = name.replace('shipping_', '');
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         shippingAddress: {
           ...prev.shippingAddress,
@@ -56,7 +60,7 @@ const SubZeroPreOrderForm = ({
         },
       }));
     } else {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         [name]: value,
       }));
@@ -98,7 +102,7 @@ const SubZeroPreOrderForm = ({
       }
 
       setSuccess(true);
-      
+
       if (onSuccess) {
         onSuccess(data.preOrderId);
       }
@@ -107,7 +111,9 @@ const SubZeroPreOrderForm = ({
         if (onClose) onClose();
       }, 3000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit pre-order');
+      setError(
+        err instanceof Error ? err.message : 'Failed to submit pre-order',
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -117,7 +123,9 @@ const SubZeroPreOrderForm = ({
     return (
       <div className="text-center p-8">
         <div className="mb-4 text-6xl">🎉</div>
-        <h3 className="text-2xl font-bold text-green-600 mb-2">Pre-Order Confirmed!</h3>
+        <h3 className="text-2xl font-bold text-green-600 mb-2">
+          Pre-Order Confirmed!
+        </h3>
         {/* <p className="text-gray-600">
           Thank you! We&apos;ll send you an email with payment instructions.
         </p> */}
@@ -137,7 +145,7 @@ const SubZeroPreOrderForm = ({
       )}
 
       <h2 className="text-3xl font-bold mb-6">Pre-Order {productName}</h2>
-      
+
       {error && (
         <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
           {error}
@@ -162,7 +170,7 @@ const SubZeroPreOrderForm = ({
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email *
@@ -389,9 +397,9 @@ const SubZeroPreOrderForm = ({
                 RM {(defaultPrice * formData.quantity).toFixed(2)}
               </span>
             </div>
-            <p className="text-sm text-gray-600 mt-2">
+            {/* <p className="text-sm text-gray-600 mt-2">
               30% deposit required: RM {(defaultPrice * formData.quantity * 0.3).toFixed(2)}
-            </p>
+            </p> */}
           </div>
         </div>
 
