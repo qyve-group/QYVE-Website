@@ -37,7 +37,6 @@ const TestBannerPage = () => {
             <p><strong>Position:</strong> {currentBanner?.position || 'N/A'}</p>
           </div>
           <div>
-            <p><strong>Variant:</strong> {currentBanner?.variant || 'default'}</p>
             <p><strong>Active:</strong> {currentBanner?.isActive ? 'Yes' : 'No'}</p>
             <p><strong>GDPR Required:</strong> {currentBanner?.gdprRequired ? 'Yes' : 'No'}</p>
           </div>

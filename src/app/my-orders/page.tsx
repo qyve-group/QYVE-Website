@@ -184,7 +184,7 @@ export default function MyOrders() {
       setOrders(ordersData);
 
       // Fetch order items for each order
-      const orderIds = ordersData.map((order) => order.id);
+      const orderIds = ordersData.map((order: any) => order.id);
       const { data: itemsData, error: itemsError } = await supabase
         .from('order_items')
         .select('*')

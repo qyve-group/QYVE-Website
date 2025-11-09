@@ -87,10 +87,10 @@ export async function POST(req: Request) {
       .select()
       .single();
 
-    if (error) {
+    if (error || !data) {
       console.error('Supabase error:', error);
       return NextResponse.json(
-        { error: 'Failed to create pre-order', details: error.message },
+        { error: 'Failed to create pre-order', details: error?.message || 'No data returned' },
         { status: 500 }
       );
     }

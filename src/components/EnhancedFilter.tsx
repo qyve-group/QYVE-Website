@@ -84,14 +84,15 @@ const EnhancedFilter: React.FC<EnhancedFilterProps> = ({ onFiltersChange, onSort
   };
 
   const handleSortChange = (sortBy: string) => {
+    const direction = sortBy === 'price_low_high' ? 'asc' : 'desc';
     const newFilters = {
       ...filters,
       sort_by: sortBy,
-      direction: sortBy === 'price_low_high' ? 'asc' : 'desc'
+      direction: direction as 'asc' | 'desc'
     };
     
     setFilters(newFilters);
-    onSortChange({ sort_by: sortBy, direction: newFilters.direction });
+    onSortChange({ sort_by: sortBy, direction: direction as 'asc' | 'desc' });
     
     // Track sort usage
     if (sortBy && sortBy !== 'Sort by') {
