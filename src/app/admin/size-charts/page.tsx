@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import { SIZE_CHARTS } from '@/data/sizeCharts';
 
+export const dynamic = 'force-dynamic';
+
 interface SizeChart {
   title: string;
   description: string;

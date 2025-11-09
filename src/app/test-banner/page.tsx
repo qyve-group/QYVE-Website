@@ -7,6 +7,8 @@ import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import Heading from '@/shared/Heading/Heading';
 
+export const dynamic = 'force-dynamic';
+
 const TestBannerPage = () => {
   const { showBanner, hideBanner, currentBanner, isBannerVisible } = useBanner();
   const [selectedVariant, setSelectedVariant] = useState<string>('default');
