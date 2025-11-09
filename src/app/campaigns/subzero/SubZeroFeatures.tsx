@@ -46,8 +46,8 @@ const SubZeroFeatures = () => {
           {/* Left - Product Image */}
           <div className="relative h-full min-h-[400px] overflow-hidden rounded-lg bg-gray-200 lg:min-h-[600px]">
             <Image
-              src="/subzero-features.jpeg"
-              alt="SubZero Futsal Shoes Features"
+              src="/subzero-breakdown.jpeg"
+              alt="SubZero Futsal Shoes Features Breakdown"
               fill
               className="object-cover"
               priority
