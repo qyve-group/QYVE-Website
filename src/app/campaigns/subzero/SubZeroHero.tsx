@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 const SubZeroHero = () => {
   return (
@@ -25,21 +26,20 @@ const SubZeroHero = () => {
               href="/products/subzero"
               className="inline-block rounded-full bg-white px-12 py-4 text-lg font-semibold text-gray-900 transition-all hover:bg-gray-100 hover:scale-105"
             >
-              BUY NOW
+              PREORDER
             </Link>
           </div>
 
           {/* Right Product Image */}
           <div className="relative flex items-center justify-center">
             <div className="relative h-[400px] w-full max-w-[600px]">
-              {/* Placeholder for SubZero shoe image */}
-              <div className="flex h-full w-full items-center justify-center rounded-lg bg-white/10 backdrop-blur-sm">
-                <p className="text-center text-white/50">
-                  SubZero Product Image
-                  <br />
-                  <span className="text-sm">(Add /subzero-shoe.png)</span>
-                </p>
-              </div>
+              <Image 
+                src="/subzero-shoe.jpeg" 
+                alt="SubZero Futsal Shoes - The Game Redefined" 
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
           </div>
         </div>
