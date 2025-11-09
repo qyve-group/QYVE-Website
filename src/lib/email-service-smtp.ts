@@ -40,7 +40,7 @@ export interface EmailResult {
 
 // Create SMTP transporter
 const createTransporter = () => {
-  return nodemailer.createTransporter({
+  return nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp-relay.brevo.com',
     port: 587,
     secure: false, // true for 465, false for other ports
