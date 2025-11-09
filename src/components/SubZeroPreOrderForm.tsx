@@ -40,7 +40,7 @@ const SubZeroPreOrderForm = ({
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const sizes = ['38', '39', '40', '41', '42', '43', '44', '45'];
+  const sizes = ['38', '39', '40', '41', '42', '43', '44'];
   const colors = ['White'];
 
   const handleInputChange = (

@@ -6,6 +6,7 @@ import React from 'react';
 import SubZeroFeatures from './SubZeroFeatures';
 import SubZeroHero from './SubZeroHero';
 import SubZeroPreOrder from './SubZeroPreOrder';
+import SubZeroSizeChart from './SubZeroSizeChart';
 
 const SubZeroPage = () => {
   return (
@@ -13,6 +14,7 @@ const SubZeroPage = () => {
       {/* SubZero Landing Page Sections */}
       <SubZeroHero />
       <SubZeroFeatures />
+      <SubZeroSizeChart />
       <SubZeroPreOrder />
       {/* <SubZeroCTA /> */}
       {/* <ProudlyMalaysian /> */}
