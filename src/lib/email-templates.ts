@@ -200,7 +200,7 @@ const getBaseStyles = () => `
       display: inline-block;
       padding: 16px 32px;
       background: linear-gradient(135deg, #0a1f3d 0%, #0d3d5c 50%, #1a5a7a 100%);
-      color: #ffffff;
+      color: #ffffff !important;
       text-decoration: none;
       border-radius: 8px;
       margin: 15px 0;
@@ -216,6 +216,7 @@ const getBaseStyles = () => `
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(79, 209, 197, 0.5);
       background: linear-gradient(135deg, #0d3d5c 0%, #1a5a7a 50%, #2a6a8a 100%);
+      color: #ffffff !important;
     }
     .footer { 
       text-align: center; 
@@ -424,7 +425,7 @@ export const generatePaymentConfirmationEmail = (data: OrderData) => `
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="width: 80px; height: 80px; background-color: white; border-radius: 50%; text-align: center; vertical-align: middle; padding: 10px;">
-                    <img src="https://qyveofficial.com/images/QyveLogo_logo_black_rgb.png" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
+                    <img src="${getLogoUrl()}" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
                   </td>
                 </tr>
               </table>
@@ -493,7 +494,7 @@ export const generateShippingNotificationEmail = (data: OrderData) => `
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="width: 80px; height: 80px; background-color: white; border-radius: 50%; text-align: center; vertical-align: middle; padding: 10px;">
-                    <img src="https://qyveofficial.com/images/QyveLogo_logo_black_rgb.png" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
+                    <img src="${getLogoUrl()}" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
                   </td>
                 </tr>
               </table>
@@ -598,7 +599,7 @@ export const generateOrderCancellationEmail = (
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="width: 80px; height: 80px; background-color: white; border-radius: 50%; text-align: center; vertical-align: middle; padding: 10px;">
-                    <img src="https://qyveofficial.com/images/QyveLogo_logo_black_rgb.png" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
+                    <img src="${getLogoUrl()}" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
                   </td>
                 </tr>
               </table>
@@ -667,7 +668,7 @@ export const generateRefundConfirmationEmail = (data: RefundData) => `
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="width: 80px; height: 80px; background-color: white; border-radius: 50%; text-align: center; vertical-align: middle; padding: 10px;">
-                    <img src="https://qyveofficial.com/images/QyveLogo_logo_black_rgb.png" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
+                    <img src="${getLogoUrl()}" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
                   </td>
                 </tr>
               </table>
@@ -770,7 +771,7 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
         <p style="font-size: 14px; color: #6c757d;">We'll keep you updated on the production and delivery status.</p>
         
         <div style="text-align: center; margin: 30px 0;">
-          <a href="${process.env.NEXT_PUBLIC_BASE_URL}/campaigns/subzero" class="btn-subzero">View SubZero Page</a>
+          <a href="${process.env.NEXT_PUBLIC_BASE_URL}/campaigns/subzero" class="btn-subzero" style="color: #ffffff !important; text-decoration: none;">View SubZero Page</a>
         </div>
       </div>
       
