@@ -21,7 +21,7 @@ const SubZeroPreOrderForm = ({
     customerEmail: '',
     customerPhone: '',
     size: '',
-    color: 'Black',
+    color: 'White',
     quantity: 1,
     shippingAddress: {
       fname: '',
@@ -41,7 +41,7 @@ const SubZeroPreOrderForm = ({
   const [success, setSuccess] = useState(false);
 
   const sizes = ['38', '39', '40', '41', '42', '43', '44', '45'];
-  const colors = ['Black', 'White', 'Blue/Black'];
+  const colors = ['White'];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

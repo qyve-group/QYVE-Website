@@ -60,6 +60,18 @@ const QYVE_BRAND = {
   textLight: '#6c757d',    // Medium Gray
 };
 
+// Get absolute logo URL for email templates
+const getLogoUrl = () => {
+  if (process.env.NEXT_PUBLIC_BASE_URL) {
+    return `${process.env.NEXT_PUBLIC_BASE_URL}/qyve-logo.png`;
+  }
+  const replitDomain = process.env.REPLIT_DOMAINS?.split(',')[0];
+  if (replitDomain) {
+    return `https://${replitDomain}/qyve-logo.png`;
+  }
+  return 'https://qyveofficial.com/qyve-logo.png';
+};
+
 // Base template styles with QYVE branding
 const getBaseStyles = () => `
   <style>
@@ -284,7 +296,7 @@ export const generateOrderConfirmationEmail = (data: OrderData) => `
                      <table cellpadding="0" cellspacing="0">
                        <tr>
                          <td style="width: 80px; height: 80px; background-color: white; border-radius: 50%; text-align: center; vertical-align: middle; padding: 10px;">
-                           <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
+                           <img src="${getLogoUrl()}" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
                          </td>
                        </tr>
                      </table>
@@ -357,7 +369,7 @@ export const generateOrderConfirmationEmail = (data: OrderData) => `
       <div class="footer">
         <div style="margin-bottom: 20px;">
           <div style="display: inline-block; width: 40px; height: 40px; background-color: white; border-radius: 50%; text-align: center; line-height: 40px; margin-bottom: 10px; padding: 5px;">
-            <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
+            <img src="${getLogoUrl()}" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
           </div>
         </div>
         <p><strong>QYVE</strong></p>
@@ -427,7 +439,7 @@ export const generatePaymentConfirmationEmail = (data: OrderData) => `
       <div class="footer">
         <div style="margin-bottom: 20px;">
           <div style="display: inline-block; width: 40px; height: 40px; background-color: white; border-radius: 50%; text-align: center; line-height: 40px; margin-bottom: 10px; padding: 5px;">
-            <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
+            <img src="${getLogoUrl()}" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
           </div>
         </div>
         <p><strong>QYVE</strong> - Premium Sports Apparel</p>
@@ -530,7 +542,7 @@ export const generateShippingNotificationEmail = (data: OrderData) => `
       <div class="footer">
         <div style="margin-bottom: 20px;">
           <div style="display: inline-block; width: 40px; height: 40px; background-color: white; border-radius: 50%; text-align: center; line-height: 40px; margin-bottom: 10px; padding: 5px;">
-            <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
+            <img src="${getLogoUrl()}" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
           </div>
         </div>
         <p><strong>QYVE</strong> - Premium Sports Apparel</p>
@@ -601,7 +613,7 @@ export const generateOrderCancellationEmail = (
       <div class="footer">
         <div style="margin-bottom: 20px;">
           <div style="display: inline-block; width: 40px; height: 40px; background-color: white; border-radius: 50%; text-align: center; line-height: 40px; margin-bottom: 10px; padding: 5px;">
-            <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
+            <img src="${getLogoUrl()}" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
           </div>
         </div>
         <p><strong>QYVE</strong> - Premium Sports Apparel</p>
@@ -670,7 +682,7 @@ export const generateRefundConfirmationEmail = (data: RefundData) => `
       <div class="footer">
         <div style="margin-bottom: 20px;">
           <div style="display: inline-block; width: 40px; height: 40px; background-color: white; border-radius: 50%; text-align: center; line-height: 40px; margin-bottom: 10px; padding: 5px;">
-            <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
+            <img src="${getLogoUrl()}" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
           </div>
         </div>
         <p><strong>QYVE</strong> - Premium Sports Apparel</p>
@@ -702,7 +714,7 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="width: 80px; height: 80px; background-color: white; border-radius: 50%; text-align: center; vertical-align: middle; padding: 10px;">
-                    <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
+                    <img src="${getLogoUrl()}" alt="QYVE Logo" style="width: 60px; height: 60px; object-fit: contain;" />
                   </td>
                 </tr>
               </table>
@@ -744,7 +756,7 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
       <div class="footer">
         <div style="margin-bottom: 20px;">
           <div style="display: inline-block; width: 40px; height: 40px; background-color: white; border-radius: 50%; text-align: center; line-height: 40px; margin-bottom: 10px; padding: 5px;">
-            <img src="${process.env.NEXT_PUBLIC_BASE_URL || 'https://qyveofficial.com'}/qyve-logo.png" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
+            <img src="${getLogoUrl()}" alt="QYVE Logo" style="width: 30px; height: 30px; object-fit: contain;" />
           </div>
         </div>
         <p><strong>QYVE</strong> </p>
