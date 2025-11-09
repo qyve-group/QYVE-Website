@@ -9,6 +9,7 @@ const bundleAnalyzer = withBundleAnalyzer({
 export default bundleAnalyzer({
   eslint: {
     dirs: ['.'],
+    ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,

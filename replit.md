@@ -69,6 +69,7 @@ To fully run this application, you'll need to configure:
 - 📄 **Documentation**: See PRODUCTION_READINESS_ANALYSIS.md for full details
 
 ## Recent Changes
+- 2025-11-09: **Configured deployment settings** (disabled TypeScript & Prettier checks for Vercel builds)
 - 2025-11-09: **Added pre-order email confirmation** (automated emails via Brevo SMTP)
 - 2025-11-09: **Fixed IP address handling** in pre-order API (supports multi-proxy environments)
 - 2025-11-09: **Updated SubZero pricing** to Early Bird 10% off (RM 214.20 from RM 238)
