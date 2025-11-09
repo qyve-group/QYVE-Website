@@ -8,9 +8,9 @@ const SubZeroHero = () => {
     <section className="relative min-h-[600px] overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a]">
       {/* Background Shoe Image - Right Side */}
       <div className="absolute right-0 top-0 h-full w-1/2 opacity-80">
-        <Image 
-          src="/subzero-shoe.jpeg" 
-          alt="SubZero Futsal Shoes - The Game Redefined" 
+        <Image
+          src="/subzero-shoe.jpeg"
+          alt="SubZero Futsal Shoes - The Game Redefined"
           fill
           className="object-cover"
           priority
@@ -41,7 +41,7 @@ const SubZeroHero = () => {
           </h1>
 
           <Link
-            href="/products/subzero"
+            href="#preorder"
             className="inline-block rounded-full bg-white px-12 py-4 text-lg font-semibold text-gray-900 transition-all hover:bg-gray-100 hover:scale-105"
           >
             PREORDER

@@ -9,7 +9,7 @@ const SubZeroPreOrder = () => {
   const [isPreOrderOpen, setIsPreOrderOpen] = useState(false);
 
   return (
-    <section className="bg-gradient-to-br from-gray-50 to-white py-16">
+    <section id="preorder" className="bg-gradient-to-br from-gray-50 to-white py-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold italic mb-4">
@@ -27,19 +27,19 @@ const SubZeroPreOrder = () => {
           <div className="bg-white rounded-2xl shadow-lg p-8 border-2 border-gray-200 hover:border-blue-500 transition-all">
             <div className="text-center mb-6">
               <div className="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-1 rounded-full text-sm font-bold mb-3">
-                🔥 EARLY BIRD - 10% OFF
+                🔥 EARLY BIRD - RM 20 OFF
               </div>
-              <div className="text-5xl mb-4">👟</div>
+              {/* <div className="text-5xl mb-4">👟</div> */}
               <h3 className="text-2xl font-bold mb-2">SubZero Futsal Shoes</h3>
               <p className="text-gray-600 mb-4">
                 Get the revolutionary SubZero futsal shoes
               </p>
               <div className="flex items-baseline justify-center gap-3 mb-2">
                 <span className="text-2xl text-gray-400 line-through">RM 238</span>
-                <span className="text-4xl font-bold text-blue-600">RM 214.20</span>
+                <span className="text-4xl font-bold text-blue-600">RM 218</span>
               </div>
-              <p className="text-sm text-green-600 font-semibold mb-1">Save RM 23.80!</p>
-              <p className="text-sm text-gray-500">30% deposit required (RM 64.26)</p>
+              <p className="text-sm text-green-600 font-semibold mb-1">Save RM 20!</p>
+              {/* <p className="text-sm text-gray-500">30% deposit required (RM 64.26)</p> */}
             </div>
 
             <ul className="space-y-3 mb-8">
@@ -74,7 +74,7 @@ const SubZeroPreOrder = () => {
           <div className="inline-flex items-center gap-8 text-sm text-gray-600">
             <div className="flex items-center gap-2">
               <span className="text-2xl">🚚</span>
-              <span>8-12 weeks delivery</span>
+              <span>Within 5 days delivery after 12/12</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-2xl">🔒</span>

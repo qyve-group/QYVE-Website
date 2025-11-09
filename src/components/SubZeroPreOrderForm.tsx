@@ -118,9 +118,9 @@ const SubZeroPreOrderForm = ({
       <div className="text-center p-8">
         <div className="mb-4 text-6xl">🎉</div>
         <h3 className="text-2xl font-bold text-green-600 mb-2">Pre-Order Confirmed!</h3>
-        <p className="text-gray-600">
+        {/* <p className="text-gray-600">
           Thank you! We&apos;ll send you an email with payment instructions.
-        </p>
+        </p> */}
       </div>
     );
   }
@@ -358,7 +358,7 @@ const SubZeroPreOrderForm = ({
         </div>
 
         {/* Additional Notes */}
-        <div>
+        {/* <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Special Requests / Notes
           </label>
@@ -370,7 +370,7 @@ const SubZeroPreOrderForm = ({
             placeholder="Any special requests or notes for your order..."
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
-        </div>
+        </div> */}
 
         {/* Price Summary */}
         <div className="bg-gray-50 p-6 rounded-lg">
@@ -405,7 +405,7 @@ const SubZeroPreOrderForm = ({
         </button>
 
         <p className="text-sm text-gray-600 text-center">
-          Expected delivery: 8-12 weeks from deposit payment
+          Expected delivery: Within 5 days from 12/12 once full payment is made.
         </p>
       </form>
     </div>

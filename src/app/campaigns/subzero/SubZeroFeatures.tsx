@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 
 const features = [
   {
@@ -42,9 +43,17 @@ const SubZeroFeatures = () => {
     <section className="bg-white py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* Left - Product Image Placeholder */}
+          {/* Left - Product Image */}
           <div className="flex items-center justify-center">
-            <div className="aspect-square w-full max-w-md rounded-lg bg-gray-200" />
+            <div className="relative aspect-square w-full max-w-md overflow-hidden rounded-lg bg-gray-200">
+              <Image 
+                src="/subzero-features.jpeg" 
+                alt="SubZero Futsal Shoes Features" 
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
           </div>
 
           {/* Right - Features */}
