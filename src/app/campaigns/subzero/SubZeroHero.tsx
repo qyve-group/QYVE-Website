@@ -26,7 +26,7 @@ const SubZeroHero = () => {
       </div>
 
       {/* Content - Bottom positioned on mobile, left on desktop */}
-      <div className="container relative z-10 mx-auto flex h-[600px] items-end px-4 pb-12 md:items-center md:pb-0 md:py-32">
+      <div className="container relative z-10 mx-auto flex h-[600px] items-end px-4 pb-12 md:items-center md:py-32 md:pb-0">
         <div className="flex w-full flex-col items-center space-y-6 text-center md:w-auto md:items-start md:space-y-8 md:text-left">
           <h1 className="font-bold italic leading-none">
             {/* <span className="md:text-7xl lg:text-8xl block text-5xl text-white">
