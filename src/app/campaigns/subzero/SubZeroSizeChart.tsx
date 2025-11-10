@@ -49,7 +49,7 @@ const SubZeroSizeChart = () => {
                       {size.uk}
                     </td>
                     <td className="text-gray-700 whitespace-nowrap px-6 py-4 text-center text-lg">
-                      {size.mm} mm
+                      {size.cm} cm
                     </td>
                   </tr>
                 ))}
