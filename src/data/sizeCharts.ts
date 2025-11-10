@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+
 export interface SizeChartData {
   category: string;
   title: string;

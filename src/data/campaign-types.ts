@@ -362,7 +362,7 @@ export const getFeaturedProducts = (
 };
 
 export const getLookbookItems = (
-  campaignSlug: string,
+  _campaignSlug: string,
 ): CampaignLookbookItem[] => {
   return CAMPAIGN_LOOKBOOK; // For now, all lookbook items are for Sub-Zero
 };

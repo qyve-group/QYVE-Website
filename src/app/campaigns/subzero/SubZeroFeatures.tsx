@@ -98,7 +98,7 @@ const SubZeroFeatures = () => {
                   >
                     <div className="bg-gray-50 space-y-3 p-6 pt-0">
                       {feature.content.map((paragraph, idx) => (
-                        //eslint-disable-next-line react/no-array-index-key
+                        // eslint-disable-next-line react/no-array-index-key
                         <p key={idx} className="text-gray-700">
                           {paragraph}
                         </p>

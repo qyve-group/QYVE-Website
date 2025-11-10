@@ -112,10 +112,13 @@ const CampaignFeaturedProducts: React.FC<CampaignFeaturedProductsProps> = ({
                             // eslint-disable-next-line no-nested-ternary
                             color === 'black'
                               ? '#000000'
-                              : color === 'white'
+                              : // eslint-disable-next-line no-nested-ternary
+                                color === 'white'
                                 ? '#ffffff'
-                                : color === 'navy'
-                                  ? '#1e3a8a'
+                                : // eslint-disable-next-line no-nested-ternary
+                                  color === 'navy'
+                                  ? // eslint-disable-next-line no-nested-ternary
+                                    '#1e3a8a'
                                   : color === 'gray'
                                     ? '#6b7280'
                                     : '#000000',

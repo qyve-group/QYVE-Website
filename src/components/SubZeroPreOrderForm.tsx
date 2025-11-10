@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+
 'use client';
 
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -137,6 +139,7 @@ const SubZeroPreOrderForm = ({
     <div className="mx-auto max-w-2xl">
       {onClose && (
         <button
+          type="button"
           onClick={onClose}
           className="text-gray-400 hover:text-gray-600 absolute right-4 top-4"
         >

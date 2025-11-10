@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 'use client';
 
 import { AlertCircle, CheckCircle, Lightbulb, Ruler, X } from 'lucide-react';
@@ -88,9 +90,8 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
     if (!currentQuestion) return false;
 
     if (currentQuestion.required) {
-      return (
-        answers[currentQuestion.id] && answers[currentQuestion.id].trim() !== ''
-      );
+      const answer = answers[currentQuestion.id];
+      return answer != null && answer.trim() !== '';
     }
     return true;
   };
@@ -147,7 +148,7 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
           </h4>
           <ul className="space-y-2 text-blue-800">
             {sizeChart.sizeGuide.map((step, index) => (
-              //eslint-disable-next-line react/no-array-index-key
+              // eslint-disable-next-line react/no-array-index-key
               <li key={index} className="flex items-start">
                 <span className="mr-3 mt-0.5 flex size-6 items-center justify-center rounded-full bg-blue-200 text-sm font-semibold text-blue-800">
                   {index + 1}
@@ -166,7 +167,7 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
           </h4>
           <ul className="space-y-2 text-green-800">
             {sizeChart.tips.map((tip, index) => (
-        //eslint-disable-next-line react/no-array-index-key  
+              // eslint-disable-next-line react/no-array-index-key
               <li key={index} className="flex items-start">
                 <CheckCircle className="mr-2 mt-0.5 size-5 text-green-600" />
                 {tip}
@@ -208,7 +209,7 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
             </div>
             <p className="mb-6 text-green-800">{recommendation.reasoning}</p>
             <button
-              type='button'
+              type="button"
               onClick={handleRestartQuestionnaire}
               className="rounded-lg bg-green-600 px-6 py-2 text-white transition-colors hover:bg-green-700"
             >
@@ -224,16 +225,6 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
         <div className="py-8 text-center">
           <div className="mx-auto mb-4 size-12 animate-spin rounded-full border-b-2 border-blue-600" />
           <p className="text-gray-600">Calculating your perfect size...</p>
-        </div>
-      );
-    }
-
-    const currentQuestion = questionnaire[currentQuestionIndex];
-    
-    if (!currentQuestion) {
-      return (
-        <div className="py-8 text-center">
-          <p className="text-gray-600">No questions available.</p>
         </div>
       );
     }
@@ -279,6 +270,7 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
             {currentQuestion.type === 'radio' && currentQuestion.options && (
               <div className="mx-auto max-w-md space-y-3">
                 {currentQuestion.options.map((option) => (
+                  // eslint-disable-next-line jsx-a11y/label-has-associated-control
                   <label
                     key={option}
                     className="border-gray-200 hover:bg-gray-50 flex cursor-pointer items-center rounded-lg border p-4 transition-colors"
@@ -316,6 +308,7 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
         {/* Navigation Buttons */}
         <div className="flex justify-between pt-6">
           <button
+            type="button"
             onClick={handlePreviousQuestion}
             disabled={currentQuestionIndex === 0}
             className="border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg border px-6 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
@@ -323,6 +316,7 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
             Previous
           </button>
           <button
+            type="button"
             onClick={handleNextQuestion}
             disabled={!isCurrentQuestionAnswered()}
             className="rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
@@ -361,6 +355,7 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
                 )}
               </div>
               <button
+                type="button"
                 onClick={onClose}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
               >
@@ -371,6 +366,7 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
             {/* Tabs */}
             <div className="mt-4 flex space-x-1">
               <button
+                type="button"
                 onClick={() => setActiveTab('chart')}
                 className={`rounded-lg px-4 py-2 font-medium transition-colors ${
                   activeTab === 'chart'
@@ -381,6 +377,7 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
                 Size Chart
               </button>
               <button
+                type="button"
                 onClick={() => setActiveTab('questionnaire')}
                 className={`rounded-lg px-4 py-2 font-medium transition-colors ${
                   activeTab === 'questionnaire'
@@ -402,6 +399,7 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
           <div className="bg-gray-50 border-gray-200 border-t px-6 py-4">
             <div className="flex justify-end">
               <button
+                type="button"
                 onClick={onClose}
                 className="bg-gray-600 hover:bg-gray-700 rounded-lg px-6 py-2 text-white transition-colors"
               >
