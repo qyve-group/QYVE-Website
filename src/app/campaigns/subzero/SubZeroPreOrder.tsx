@@ -29,7 +29,7 @@ const SubZeroPreOrder = () => {
         <div className="mx-auto max-w-2xl">
           <div className="border-gray-200 rounded-2xl border-2 bg-white p-8 shadow-lg transition-all hover:border-blue-500">
             <div className="mb-6 text-center">
-              <div className="mb-3 inline-block rounded-full bg-gradient-to-r from-blue-500 to-blue-300 px-4 py-1 text-sm font-bold text-white">
+              <div className="mb-3 inline-block rounded-full bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] px-4 py-1 text-sm font-bold text-white">
                 EARLY BIRD - RM 20 OFF
               </div>
               {/* <div className="text-5xl mb-4">👟</div> */}
@@ -51,20 +51,20 @@ const SubZeroPreOrder = () => {
 
             <ul className="mb-8 space-y-3">
               <li className="text-gray-700 flex items-center gap-2">
-                <span className="text-green-600">✓</span>
+                {/* <span className="text-green-600">✓</span> */}
                 SubZero-Weave Tech upper
               </li>
               <li className="text-gray-700 flex items-center gap-2">
-                <span className="text-green-600">✓</span>
+                {/* <span className="text-green-600">✓</span> */}
                 Energy return foam midsole
               </li>
               <li className="text-gray-700 flex items-center gap-2">
-                <span className="text-green-600">✓</span>
+                {/* <span className="text-green-600">✓</span> */}
                 Multi-directional traction grip
               </li>
               <li className="text-gray-700 flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                Sizes 38-45 EU
+                {/* <span className="text-green-600">✓</span> */}
+                Sizes 38-44 EU
               </li>
             </ul>
 
@@ -81,7 +81,7 @@ const SubZeroPreOrder = () => {
           </div>
         </div>
 
-        <div className="mt-12 space-y-4 text-center">
+        {/* <div className="mt-12 space-y-4 text-center">
           <div className="text-gray-600 inline-flex items-center gap-8 text-sm">
             <div className="flex items-center gap-2">
               <span className="text-2xl">🚚</span>
@@ -96,7 +96,7 @@ const SubZeroPreOrder = () => {
               <span>Limited slots</span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Pre-Order Modal */}

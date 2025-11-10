@@ -57,7 +57,7 @@ const SubZeroSizeChart = () => {
             </table>
           </div>
 
-          <div className="mt-8 rounded-lg border border-blue-200 bg-blue-50 p-6">
+          {/* <div className="mt-8 rounded-lg border border-blue-200 bg-blue-50 p-6">
             <h3 className="mb-3 text-lg font-bold text-blue-900">
               📏 How to Measure Your Foot
             </h3>
@@ -85,7 +85,7 @@ const SubZeroSizeChart = () => {
                 </span>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>
