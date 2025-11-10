@@ -104,7 +104,10 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
     if (!sizeChart) return null;
 
     const measurementKeys = Object.keys(sizeChart.measurements);
-    const sizes = Object.keys(sizeChart.measurements[measurementKeys[0]] || {});
+    const firstKey = measurementKeys[0];
+    if (!firstKey) return null;
+    
+    const sizes = Object.keys(sizeChart.measurements[firstKey] || {});
 
     return (
       <div className="space-y-6">
@@ -126,14 +129,17 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
             <tbody>
               {sizes.map((size) => (
                 <tr key={size} className="hover:bg-gray-50">
-                  {measurementKeys.map((key) => (
-                    <td
-                      key={key}
-                      className="border-gray-300 text-gray-600 border px-4 py-3"
-                    >
-                      {sizeChart.measurements[key][size]}
-                    </td>
-                  ))}
+                  {measurementKeys.map((key) => {
+                    const measurement = sizeChart.measurements[key];
+                    return (
+                      <td
+                        key={key}
+                        className="border-gray-300 text-gray-600 border px-4 py-3"
+                      >
+                        {measurement ? measurement[size] : '-'}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -225,6 +231,14 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
         <div className="py-8 text-center">
           <div className="mx-auto mb-4 size-12 animate-spin rounded-full border-b-2 border-blue-600" />
           <p className="text-gray-600">Calculating your perfect size...</p>
+        </div>
+      );
+    }
+
+    if (!currentQuestion) {
+      return (
+        <div className="py-8 text-center">
+          <p className="text-gray-600">No questions available.</p>
         </div>
       );
     }
