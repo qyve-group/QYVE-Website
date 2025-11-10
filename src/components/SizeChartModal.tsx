@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 
 'use client';
 
@@ -106,7 +107,7 @@ const SizeChartModal: React.FC<SizeChartModalProps> = ({
     const measurementKeys = Object.keys(sizeChart.measurements);
     const firstKey = measurementKeys[0];
     if (!firstKey) return null;
-    
+
     const sizes = Object.keys(sizeChart.measurements[firstKey] || {});
 
     return (
