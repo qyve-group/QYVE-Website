@@ -42,8 +42,8 @@ const SubZeroFeatures = () => {
   return (
     <section className="bg-white py-16 md:py-24">
       <div className="container mx-auto px-4">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* Left - Product Image */}
+        <div className="flex flex-col-reverse gap-12 lg:grid lg:grid-cols-2 lg:gap-16">
+          {/* Left - Product Image (appears after text on mobile) */}
           <div className="bg-gray-200 relative h-full min-h-[400px] overflow-hidden rounded-lg lg:min-h-[600px]">
             <Image
               src="/subzero-breakdown.jpeg"
@@ -54,7 +54,7 @@ const SubZeroFeatures = () => {
             />
           </div>
 
-          {/* Right - Features */}
+          {/* Right - Features (appears first on mobile) */}
           <div className="space-y-8">
             <h2 className="text-4xl font-bold italic md:text-5xl">
               <span className="block text-black">ENGINEERED FOR</span>
