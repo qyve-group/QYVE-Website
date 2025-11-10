@@ -492,7 +492,7 @@ const getJerseySizeRecommendation = (answers: {
   }
 
   const sizeMatch = chestMeasurement.match(/(XS|S|M|L|XL|XXL|3XL)/);
-  let recommendedSize = sizeMatch ? sizeMatch[1] : 'M';
+  let recommendedSize: string = sizeMatch?.[1] ?? 'M';
   let confidence = 85;
   let reasoning = `Based on your chest measurement (${chestMeasurement})`;
 
@@ -528,13 +528,13 @@ const getSlidesSizeRecommendation = (answers: {
     };
   }
 
-  let recommendedSize = currentSize;
+  let recommendedSize: string = currentSize;
   let confidence = 90;
   let reasoning = `Based on your current size ${currentSize}`;
 
   // Slides can be slightly larger for comfort
   if (footWidth === 'Wide') {
-    recommendedSize = getNextSizeUp(currentSize);
+    recommendedSize = getNextSizeUp(recommendedSize);
     reasoning += ', we recommend sizing up for wider feet and comfort';
     confidence -= 5;
   } else {
@@ -564,7 +564,7 @@ const getSocksSizeRecommendation = (answers: {
     };
   }
 
-  const recommendedSize = currentSockSize || getSockSizeFromShoeSize(shoeSize);
+  const recommendedSize: string = currentSockSize || getSockSizeFromShoeSize(shoeSize || '9');
   let confidence = 85;
   let reasoning = `Based on your current sock size ${recommendedSize}`;
 
@@ -601,7 +601,10 @@ const getNextSizeUp = (size: string): string => {
     '12',
   ];
   const index = sizes.indexOf(size);
-  return index < sizes.length - 1 ? sizes[index + 1] : size;
+  if (index !== -1 && index < sizes.length - 1) {
+    return sizes[index + 1] ?? size;
+  }
+  return size;
 };
 
 const getSockSizeFromShoeSize = (shoeSize: string): string => {
