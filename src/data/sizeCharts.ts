@@ -564,7 +564,8 @@ const getSocksSizeRecommendation = (answers: {
     };
   }
 
-  const recommendedSize: string = currentSockSize || getSockSizeFromShoeSize(shoeSize || '9');
+  const recommendedSize: string =
+    currentSockSize || getSockSizeFromShoeSize(shoeSize || '9');
   let confidence = 85;
   let reasoning = `Based on your current sock size ${recommendedSize}`;
 
