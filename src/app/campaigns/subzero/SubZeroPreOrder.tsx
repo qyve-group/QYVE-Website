@@ -70,7 +70,7 @@ const SubZeroPreOrder = () => {
 
             <button
               type="button"
-              onClick={() => setIsPreOrderOpen(true)}
+              onClick={() => window.open("https://forms.gle/oEzXaeWTwE5qbrHi7", "_blank")}
               className="w-full rounded-lg bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] py-4 text-lg font-semibold text-white transition-all hover:opacity-90"
             >
               Pre-Order Now
