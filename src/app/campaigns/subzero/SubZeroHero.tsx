@@ -6,19 +6,19 @@ import Link from 'next/link';
 const SubZeroHero = () => {
   return (
     <section className="relative min-h-[600px] overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a]">
-      {/* Background Shoe Image - Right Side */}
-      <div className="absolute right-0 top-0 h-full w-1/2 opacity-80">
+      {/* Background Shoe Image - Full width on mobile, right side on desktop */}
+      <div className="absolute right-0 top-0 h-full w-full opacity-60 md:w-1/2 md:opacity-80">
         <Image
           src="/subzero-shoe.jpeg"
           alt="SubZero Futsal Shoes - The Game Redefined"
           fill
-          className="object-cover"
+          className="object-cover object-center md:object-right"
           priority
         />
       </div>
 
-      {/* Gradient Overlay to blend image with background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0a1f3d] via-[#0a1f3d]/80 to-transparent" />
+      {/* Gradient Overlay to blend image with background - Stronger on mobile */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a1f3d]/90 via-[#0a1f3d]/70 to-[#0a1f3d]/50 md:bg-gradient-to-r md:from-[#0a1f3d] md:via-[#0a1f3d]/80 md:to-transparent" />
 
       {/* Background Pattern/Texture */}
       <div className="absolute inset-0 opacity-10">
@@ -29,20 +29,20 @@ const SubZeroHero = () => {
       <div className="container relative z-10 mx-auto px-4 py-20 md:py-32">
         <div className="flex flex-col items-center space-y-8 text-center md:items-start md:text-left">
           <h1 className="font-bold italic leading-none">
-            <span className="md:text-7xl lg:text-8xl block text-6xl text-white">
+            <span className="block text-5xl text-white md:text-7xl lg:text-8xl">
               SUBZERO
             </span>
-            <span className="mt-2 block text-3xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
+            <span className="mt-2 block text-2xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
               THE GAME,
             </span>
-            <span className="block text-3xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
+            <span className="block text-2xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
               REDEFINED
             </span>
           </h1>
 
           <Link
             href="#preorder"
-            className="text-gray-900 hover:bg-gray-100 inline-block rounded-full bg-white px-12 py-4 text-lg font-semibold transition-all hover:scale-105"
+            className="inline-block rounded-full bg-white px-10 py-3 text-base font-semibold text-gray-900 transition-all hover:scale-105 hover:bg-gray-100 md:px-12 md:py-4 md:text-lg"
           >
             PREORDER
           </Link>
