@@ -2,13 +2,13 @@ import React from 'react';
 
 const SubZeroSizeChart = () => {
   const sizeData = [
-    { eu: '38', uk: '5.5', mm: '252.99' },
-    { eu: '39', uk: '6', mm: '259.66' },
-    { eu: '40', uk: '7', mm: '266.33' },
-    { eu: '41', uk: '7.5', mm: '273' },
-    { eu: '42', uk: '8.5', mm: '279.67' },
-    { eu: '43', uk: '9', mm: '286.34' },
-    { eu: '44', uk: '10', mm: '293.01' },
+    { eu: '38', uk: '5.5', cm: '25.3' },
+    { eu: '39', uk: '6', cm: '26.0' },
+    { eu: '40', uk: '7', cm: '26.6' },
+    { eu: '41', uk: '7.5', cm: '27.3' },
+    { eu: '42', uk: '8.5', cm: '28.0' },
+    { eu: '43', uk: '9', cm: '28.6' },
+    { eu: '44', uk: '10', cm: '29.3' },
   ];
 
   return (
@@ -30,7 +30,7 @@ const SubZeroSizeChart = () => {
                     UK Size
                   </th>
                   <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
-                    Foot Length (mm)
+                    Foot Length (cm)
                   </th>
                 </tr>
               </thead>
