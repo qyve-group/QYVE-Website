@@ -7,7 +7,7 @@ const SubZeroHero = () => {
   return (
     <section className="relative min-h-[600px] overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a]">
       {/* Background Shoe Image - Full width on mobile, right side on desktop */}
-      <div className="absolute right-0 top-0 h-full w-full opacity-60 md:w-1/2 md:opacity-80">
+      <div className="absolute right-0 top-0 size-full opacity-60 md:w-1/2 md:opacity-80">
         <Image
           src="/subzero-shoe.jpeg"
           alt="SubZero Futsal Shoes - The Game Redefined"
@@ -29,7 +29,7 @@ const SubZeroHero = () => {
       <div className="container relative z-10 mx-auto px-4 py-20 md:py-32">
         <div className="flex flex-col items-center space-y-8 text-center md:items-start md:text-left">
           <h1 className="font-bold italic leading-none">
-            <span className="block text-5xl text-white md:text-7xl lg:text-8xl">
+            <span className="md:text-7xl lg:text-8xl block text-5xl text-white">
               SUBZERO
             </span>
             <span className="mt-2 block text-2xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
@@ -42,7 +42,7 @@ const SubZeroHero = () => {
 
           <Link
             href="#preorder"
-            className="inline-block rounded-full bg-white px-10 py-3 text-base font-semibold text-gray-900 transition-all hover:scale-105 hover:bg-gray-100 md:px-12 md:py-4 md:text-lg"
+            className="text-gray-900 hover:bg-gray-100 inline-block rounded-full bg-white px-10 py-3 text-base font-semibold transition-all hover:scale-105 md:px-12 md:py-4 md:text-lg"
           >
             PREORDER
           </Link>
