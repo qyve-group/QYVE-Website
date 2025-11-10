@@ -47,6 +47,11 @@ export const topNavLinks: NavItemType[] = [
     href: '/shop',
   },
   {
+    id: 'eesubzero',
+    name: 'Subzero',
+    href: '/campaigns/subzero',
+  },
+  {
     id: 'eerrrt',
     name: 'Blog',
     href: '/blog',
@@ -88,6 +93,11 @@ export const NavLinks: NavItemType[] = [
     id: 'eeshop',
     name: 'Shop',
     href: '/shop',
+  },
+  {
+    id: 'eesubzero',
+    name: 'Subzero',
+    href: '/campaigns/subzero',
   },
   {
     id: 'eerrrt',
