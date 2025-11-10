@@ -32,7 +32,8 @@ export const SIZE_CHARTS: { [key: string]: SizeChartData } = {
   futsal: {
     category: 'futsal',
     title: 'Futsal Shoes Size Chart',
-    description: 'Find your perfect futsal shoe size for optimal performance and comfort.',
+    description:
+      'Find your perfect futsal shoe size for optimal performance and comfort.',
     measurements: {
       'US Size': {
         '6': '6',
@@ -47,7 +48,7 @@ export const SIZE_CHARTS: { [key: string]: SizeChartData } = {
         '10.5': '10.5',
         '11': '11',
         '11.5': '11.5',
-        '12': '12'
+        '12': '12',
       },
       'UK Size': {
         '6': '5',
@@ -62,7 +63,7 @@ export const SIZE_CHARTS: { [key: string]: SizeChartData } = {
         '10.5': '9.5',
         '11': '10',
         '11.5': '10.5',
-        '12': '11'
+        '12': '11',
       },
       'EU Size': {
         '6': '39',
@@ -77,7 +78,7 @@ export const SIZE_CHARTS: { [key: string]: SizeChartData } = {
         '10.5': '45',
         '11': '45.5',
         '11.5': '46',
-        '12': '47'
+        '12': '47',
       },
       'Foot Length (cm)': {
         '6': '23.5',
@@ -92,89 +93,91 @@ export const SIZE_CHARTS: { [key: string]: SizeChartData } = {
         '10.5': '28.3',
         '11': '28.9',
         '11.5': '29.4',
-        '12': '30.0'
-      }
+        '12': '30.0',
+      },
     },
     sizeGuide: [
       'Measure your foot length from heel to toe',
       'Stand on a piece of paper and mark the longest points',
       'Measure the distance between the marks in centimeters',
       'Compare with our size chart to find your perfect fit',
-      'For futsal shoes, we recommend a snug fit for better ball control'
+      'For futsal shoes, we recommend a snug fit for better ball control',
     ],
     tips: [
       'Futsal shoes should fit snugly but not tight',
       'Leave about 0.5cm space at the toe for comfort',
       'Consider your foot width - wider feet may need to size up',
       'Try on both shoes as feet can vary in size',
-      'Wear the same type of socks you plan to use during play'
-    ]
+      'Wear the same type of socks you plan to use during play',
+    ],
   },
 
   // Jersey
   jersey: {
     category: 'jersey',
     title: 'Jersey Size Chart',
-    description: 'Choose the right jersey size for comfort and performance on the field.',
+    description:
+      'Choose the right jersey size for comfort and performance on the field.',
     measurements: {
-      'Size': {
-        'XS': 'XS',
-        'S': 'S',
-        'M': 'M',
-        'L': 'L',
-        'XL': 'XL',
-        'XXL': 'XXL',
-        '3XL': '3XL'
+      Size: {
+        XS: 'XS',
+        S: 'S',
+        M: 'M',
+        L: 'L',
+        XL: 'XL',
+        XXL: 'XXL',
+        '3XL': '3XL',
       },
       'Chest (cm)': {
-        'XS': '86-91',
-        'S': '91-96',
-        'M': '96-101',
-        'L': '101-106',
-        'XL': '106-111',
-        'XXL': '111-116',
-        '3XL': '116-121'
+        XS: '86-91',
+        S: '91-96',
+        M: '96-101',
+        L: '101-106',
+        XL: '106-111',
+        XXL: '111-116',
+        '3XL': '116-121',
       },
       'Length (cm)': {
-        'XS': '66',
-        'S': '68',
-        'M': '70',
-        'L': '72',
-        'XL': '74',
-        'XXL': '76',
-        '3XL': '78'
+        XS: '66',
+        S: '68',
+        M: '70',
+        L: '72',
+        XL: '74',
+        XXL: '76',
+        '3XL': '78',
       },
       'Shoulder (cm)': {
-        'XS': '42',
-        'S': '44',
-        'M': '46',
-        'L': '48',
-        'XL': '50',
-        'XXL': '52',
-        '3XL': '54'
-      }
+        XS: '42',
+        S: '44',
+        M: '46',
+        L: '48',
+        XL: '50',
+        XXL: '52',
+        '3XL': '54',
+      },
     },
     sizeGuide: [
       'Measure around the fullest part of your chest',
       'Keep the measuring tape parallel to the ground',
-      'Don\'t pull the tape too tight or too loose',
+      "Don't pull the tape too tight or too loose",
       'For jerseys, consider if you prefer a loose or fitted style',
-      'Check the length measurement for your preferred fit'
+      'Check the length measurement for your preferred fit',
     ],
     tips: [
       'Jerseys are designed for athletic fit - consider sizing up for comfort',
       'Check the length measurement if you prefer longer or shorter jerseys',
       'Consider layering - you may want extra room for base layers',
       'Our jerseys are made with stretchy material for flexibility',
-      'If between sizes, we recommend sizing up for comfort'
-    ]
+      'If between sizes, we recommend sizing up for comfort',
+    ],
   },
 
   // Slides
   slides: {
     category: 'slides',
     title: 'Recovery Slides Size Chart',
-    description: 'Find the perfect fit for your recovery slides for maximum comfort.',
+    description:
+      'Find the perfect fit for your recovery slides for maximum comfort.',
     measurements: {
       'US Size': {
         '6': '6',
@@ -189,7 +192,7 @@ export const SIZE_CHARTS: { [key: string]: SizeChartData } = {
         '10.5': '10.5',
         '11': '11',
         '11.5': '11.5',
-        '12': '12'
+        '12': '12',
       },
       'UK Size': {
         '6': '5',
@@ -204,7 +207,7 @@ export const SIZE_CHARTS: { [key: string]: SizeChartData } = {
         '10.5': '9.5',
         '11': '10',
         '11.5': '10.5',
-        '12': '11'
+        '12': '11',
       },
       'EU Size': {
         '6': '39',
@@ -219,7 +222,7 @@ export const SIZE_CHARTS: { [key: string]: SizeChartData } = {
         '10.5': '45',
         '11': '45.5',
         '11.5': '46',
-        '12': '47'
+        '12': '47',
       },
       'Foot Length (cm)': {
         '6': '23.5',
@@ -234,23 +237,23 @@ export const SIZE_CHARTS: { [key: string]: SizeChartData } = {
         '10.5': '28.3',
         '11': '28.9',
         '11.5': '29.4',
-        '12': '30.0'
-      }
+        '12': '30.0',
+      },
     },
     sizeGuide: [
       'Measure your foot length from heel to toe',
       'Stand on a piece of paper and mark the longest points',
       'Measure the distance between the marks in centimeters',
       'For slides, you can go slightly larger for comfort',
-      'Consider your foot width for the best fit'
+      'Consider your foot width for the best fit',
     ],
     tips: [
       'Slides should be comfortable and easy to slip on/off',
-      'A little extra room is fine for slides - they\'re meant to be relaxed',
+      "A little extra room is fine for slides - they're meant to be relaxed",
       'Consider your foot width - wider feet may need to size up',
       'Slides are perfect for post-workout recovery and casual wear',
-      'Our slides feature arch support for all-day comfort'
-    ]
+      'Our slides feature arch support for all-day comfort',
+    ],
   },
 
   // Socks
@@ -259,57 +262,57 @@ export const SIZE_CHARTS: { [key: string]: SizeChartData } = {
     title: 'ProGrip Socks Size Chart',
     description: 'Choose the right sock size for optimal grip and comfort.',
     measurements: {
-      'Size': {
-        'XS': 'XS',
-        'S': 'S',
-        'M': 'M',
-        'L': 'L',
-        'XL': 'XL'
+      Size: {
+        XS: 'XS',
+        S: 'S',
+        M: 'M',
+        L: 'L',
+        XL: 'XL',
       },
       'US Shoe Size': {
-        'XS': '4-6',
-        'S': '6-8',
-        'M': '8-10',
-        'L': '10-12',
-        'XL': '12-14'
+        XS: '4-6',
+        S: '6-8',
+        M: '8-10',
+        L: '10-12',
+        XL: '12-14',
       },
       'UK Shoe Size': {
-        'XS': '3-5',
-        'S': '5-7',
-        'M': '7-9',
-        'L': '9-11',
-        'XL': '11-13'
+        XS: '3-5',
+        S: '5-7',
+        M: '7-9',
+        L: '9-11',
+        XL: '11-13',
       },
       'EU Shoe Size': {
-        'XS': '36-39',
-        'S': '39-42',
-        'M': '42-45',
-        'L': '45-48',
-        'XL': '48-51'
+        XS: '36-39',
+        S: '39-42',
+        M: '42-45',
+        L: '45-48',
+        XL: '48-51',
       },
       'Foot Length (cm)': {
-        'XS': '22-24',
-        'S': '24-26',
-        'M': '26-28',
-        'L': '28-30',
-        'XL': '30-32'
-      }
+        XS: '22-24',
+        S: '24-26',
+        M: '26-28',
+        L: '28-30',
+        XL: '30-32',
+      },
     },
     sizeGuide: [
       'Check your current shoe size',
       'Socks should fit snugly but not constrict circulation',
       'Consider the thickness of the sock material',
       'Our ProGrip socks are designed for athletic performance',
-      'If between sizes, choose the smaller size for better grip'
+      'If between sizes, choose the smaller size for better grip',
     ],
     tips: [
       'Socks should fit snugly for maximum grip and performance',
       'Avoid socks that are too loose as they can cause blisters',
       'Our ProGrip technology works best with proper fit',
-      'Consider the type of shoes you\'ll be wearing with the socks',
-      'Socks should cover your entire foot without bunching up'
-    ]
-  }
+      "Consider the type of shoes you'll be wearing with the socks",
+      'Socks should cover your entire foot without bunching up',
+    ],
+  },
 };
 
 // Size Recommendation Questionnaire
@@ -318,17 +321,39 @@ export const SIZE_QUESTIONNAIRE: SizeQuestionnaire[] = [
     id: 'current_shoe_size',
     question: 'What is your current shoe size?',
     type: 'select',
-    options: ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12'],
+    options: [
+      '6',
+      '6.5',
+      '7',
+      '7.5',
+      '8',
+      '8.5',
+      '9',
+      '9.5',
+      '10',
+      '10.5',
+      '11',
+      '11.5',
+      '12',
+    ],
     required: true,
-    category: ['futsal', 'slides', 'socks']
+    category: ['futsal', 'slides', 'socks'],
   },
   {
     id: 'shoe_brand',
     question: 'What brand of shoes do you currently wear?',
     type: 'select',
-    options: ['Nike', 'Adidas', 'Puma', 'New Balance', 'Under Armour', 'Reebok', 'Other'],
+    options: [
+      'Nike',
+      'Adidas',
+      'Puma',
+      'New Balance',
+      'Under Armour',
+      'Reebok',
+      'Other',
+    ],
     required: false,
-    category: ['futsal', 'slides']
+    category: ['futsal', 'slides'],
   },
   {
     id: 'foot_width',
@@ -336,15 +361,23 @@ export const SIZE_QUESTIONNAIRE: SizeQuestionnaire[] = [
     type: 'radio',
     options: ['Narrow', 'Medium', 'Wide'],
     required: false,
-    category: ['futsal', 'slides', 'socks']
+    category: ['futsal', 'slides', 'socks'],
   },
   {
     id: 'chest_measurement',
     question: 'What is your chest measurement?',
     type: 'select',
-    options: ['XS (86-91cm)', 'S (91-96cm)', 'M (96-101cm)', 'L (101-106cm)', 'XL (106-111cm)', 'XXL (111-116cm)', '3XL (116-121cm)'],
+    options: [
+      'XS (86-91cm)',
+      'S (91-96cm)',
+      'M (96-101cm)',
+      'L (101-106cm)',
+      'XL (106-111cm)',
+      'XXL (111-116cm)',
+      '3XL (116-121cm)',
+    ],
     required: true,
-    category: ['jersey']
+    category: ['jersey'],
   },
   {
     id: 'jersey_fit_preference',
@@ -352,7 +385,7 @@ export const SIZE_QUESTIONNAIRE: SizeQuestionnaire[] = [
     type: 'radio',
     options: ['Slim/Fitted', 'Regular', 'Loose/Comfortable'],
     required: false,
-    category: ['jersey']
+    category: ['jersey'],
   },
   {
     id: 'current_sock_size',
@@ -360,7 +393,7 @@ export const SIZE_QUESTIONNAIRE: SizeQuestionnaire[] = [
     type: 'select',
     options: ['XS', 'S', 'M', 'L', 'XL'],
     required: true,
-    category: ['socks']
+    category: ['socks'],
   },
   {
     id: 'sock_thickness_preference',
@@ -368,14 +401,14 @@ export const SIZE_QUESTIONNAIRE: SizeQuestionnaire[] = [
     type: 'radio',
     options: ['Thin', 'Medium', 'Thick'],
     required: false,
-    category: ['socks']
-  }
+    category: ['socks'],
+  },
 ];
 
 // Size recommendation logic
 export const getSizeRecommendation = (
   category: string,
-  answers: { [key: string]: string }
+  answers: { [key: string]: string },
 ): SizeRecommendation => {
   switch (category) {
     case 'futsal':
@@ -390,12 +423,14 @@ export const getSizeRecommendation = (
       return {
         recommendedSize: 'M',
         confidence: 0,
-        reasoning: 'Unable to determine size recommendation'
+        reasoning: 'Unable to determine size recommendation',
       };
   }
 };
 
-const getFutsalSizeRecommendation = (answers: { [key: string]: string }): SizeRecommendation => {
+const getFutsalSizeRecommendation = (answers: {
+  [key: string]: string;
+}): SizeRecommendation => {
   const currentSize = answers.current_shoe_size;
   const brand = answers.shoe_brand;
   const footWidth = answers.foot_width;
@@ -404,7 +439,8 @@ const getFutsalSizeRecommendation = (answers: { [key: string]: string }): SizeRe
     return {
       recommendedSize: 'M',
       confidence: 0,
-      reasoning: 'Please provide your current shoe size for accurate recommendation'
+      reasoning:
+        'Please provide your current shoe size for accurate recommendation',
     };
   }
 
@@ -434,11 +470,13 @@ const getFutsalSizeRecommendation = (answers: { [key: string]: string }): SizeRe
   return {
     recommendedSize,
     confidence,
-    reasoning
+    reasoning,
   };
 };
 
-const getJerseySizeRecommendation = (answers: { [key: string]: string }): SizeRecommendation => {
+const getJerseySizeRecommendation = (answers: {
+  [key: string]: string;
+}): SizeRecommendation => {
   const chestMeasurement = answers.chest_measurement;
   const fitPreference = answers.jersey_fit_preference;
 
@@ -446,7 +484,8 @@ const getJerseySizeRecommendation = (answers: { [key: string]: string }): SizeRe
     return {
       recommendedSize: 'M',
       confidence: 0,
-      reasoning: 'Please provide your chest measurement for accurate recommendation'
+      reasoning:
+        'Please provide your chest measurement for accurate recommendation',
     };
   }
 
@@ -468,11 +507,13 @@ const getJerseySizeRecommendation = (answers: { [key: string]: string }): SizeRe
   return {
     recommendedSize,
     confidence,
-    reasoning
+    reasoning,
   };
 };
 
-const getSlidesSizeRecommendation = (answers: { [key: string]: string }): SizeRecommendation => {
+const getSlidesSizeRecommendation = (answers: {
+  [key: string]: string;
+}): SizeRecommendation => {
   const currentSize = answers.current_shoe_size;
   const footWidth = answers.foot_width;
 
@@ -480,7 +521,8 @@ const getSlidesSizeRecommendation = (answers: { [key: string]: string }): SizeRe
     return {
       recommendedSize: 'M',
       confidence: 0,
-      reasoning: 'Please provide your current shoe size for accurate recommendation'
+      reasoning:
+        'Please provide your current shoe size for accurate recommendation',
     };
   }
 
@@ -500,11 +542,13 @@ const getSlidesSizeRecommendation = (answers: { [key: string]: string }): SizeRe
   return {
     recommendedSize,
     confidence,
-    reasoning
+    reasoning,
   };
 };
 
-const getSocksSizeRecommendation = (answers: { [key: string]: string }): SizeRecommendation => {
+const getSocksSizeRecommendation = (answers: {
+  [key: string]: string;
+}): SizeRecommendation => {
   const currentSockSize = answers.current_sock_size;
   const shoeSize = answers.current_shoe_size;
   const thicknessPreference = answers.sock_thickness_preference;
@@ -513,11 +557,12 @@ const getSocksSizeRecommendation = (answers: { [key: string]: string }): SizeRec
     return {
       recommendedSize: 'M',
       confidence: 0,
-      reasoning: 'Please provide your current sock size or shoe size for accurate recommendation'
+      reasoning:
+        'Please provide your current sock size or shoe size for accurate recommendation',
     };
   }
 
-  let recommendedSize = currentSockSize || getSockSizeFromShoeSize(shoeSize);
+  const recommendedSize = currentSockSize || getSockSizeFromShoeSize(shoeSize);
   let confidence = 85;
   let reasoning = `Based on your current sock size ${recommendedSize}`;
 
@@ -532,13 +577,27 @@ const getSocksSizeRecommendation = (answers: { [key: string]: string }): SizeRec
   return {
     recommendedSize,
     confidence,
-    reasoning
+    reasoning,
   };
 };
 
 // Helper functions
 const getNextSizeUp = (size: string): string => {
-  const sizes = ['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12'];
+  const sizes = [
+    '6',
+    '6.5',
+    '7',
+    '7.5',
+    '8',
+    '8.5',
+    '9',
+    '9.5',
+    '10',
+    '10.5',
+    '11',
+    '11.5',
+    '12',
+  ];
   const index = sizes.indexOf(size);
   return index < sizes.length - 1 ? sizes[index + 1] : size;
 };

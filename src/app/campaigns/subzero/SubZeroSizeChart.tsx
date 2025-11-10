@@ -12,14 +12,14 @@ const SubZeroSizeChart = () => {
   ];
 
   return (
-    <section className="bg-gradient-to-b from-gray-50 to-white py-16 md:py-24">
+    <section className="from-gray-50 bg-gradient-to-b to-white py-16 md:py-24">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="mx-auto max-w-4xl">
           <h2 className="mb-12 text-center text-4xl font-bold italic md:text-5xl">
             Size Chart
           </h2>
 
-          <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+          <div className="border-gray-200 overflow-x-auto rounded-lg border bg-white shadow-lg">
             <table className="w-full">
               <thead>
                 <tr className="bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] text-white">
@@ -34,21 +34,21 @@ const SubZeroSizeChart = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-gray-200 divide-y">
                 {sizeData.map((size, index) => (
                   <tr
                     key={size.eu}
-                    className={`transition-colors hover:bg-gray-50 ${
+                    className={`hover:bg-gray-50 transition-colors ${
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                     }`}
                   >
-                    <td className="whitespace-nowrap px-6 py-4 text-center text-lg font-semibold text-gray-900">
+                    <td className="text-gray-900 whitespace-nowrap px-6 py-4 text-center text-lg font-semibold">
                       {size.eu}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-center text-lg text-gray-700">
+                    <td className="text-gray-700 whitespace-nowrap px-6 py-4 text-center text-lg">
                       {size.uk}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-center text-lg text-gray-700">
+                    <td className="text-gray-700 whitespace-nowrap px-6 py-4 text-center text-lg">
                       {size.mm} mm
                     </td>
                   </tr>
@@ -57,7 +57,7 @@ const SubZeroSizeChart = () => {
             </table>
           </div>
 
-          <div className="mt-8 rounded-lg bg-blue-50 p-6 border border-blue-200">
+          <div className="mt-8 rounded-lg border border-blue-200 bg-blue-50 p-6">
             <h3 className="mb-3 text-lg font-bold text-blue-900">
               📏 How to Measure Your Foot
             </h3>

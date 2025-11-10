@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
 
 interface PreOrderFormProps {
   productName?: string;
@@ -121,9 +121,9 @@ const SubZeroPreOrderForm = ({
 
   if (success) {
     return (
-      <div className="text-center p-8">
+      <div className="p-8 text-center">
         <div className="mb-4 text-6xl">🎉</div>
-        <h3 className="text-2xl font-bold text-green-600 mb-2">
+        <h3 className="mb-2 text-2xl font-bold text-green-600">
           Pre-Order Confirmed!
         </h3>
         {/* <p className="text-gray-600">
@@ -134,20 +134,20 @@ const SubZeroPreOrderForm = ({
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="mx-auto max-w-2xl">
       {onClose && (
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+          className="text-gray-400 hover:text-gray-600 absolute right-4 top-4"
         >
-          <XMarkIcon className="h-6 w-6" />
+          <XMarkIcon className="size-6" />
         </button>
       )}
 
-      <h2 className="text-3xl font-bold mb-6">Pre-Order {productName}</h2>
+      <h2 className="mb-6 text-3xl font-bold">Pre-Order {productName}</h2>
 
       {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
+        <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 text-red-600">
           {error}
         </div>
       )}
@@ -155,10 +155,10 @@ const SubZeroPreOrderForm = ({
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Customer Information */}
         <div>
-          <h3 className="text-lg font-semibold mb-4">Your Information</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h3 className="mb-4 text-lg font-semibold">Your Information</h3>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 Full Name *
               </label>
               <input
@@ -167,12 +167,12 @@ const SubZeroPreOrderForm = ({
                 value={formData.customerName}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 Email *
               </label>
               <input
@@ -181,12 +181,12 @@ const SubZeroPreOrderForm = ({
                 value={formData.customerEmail}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 Phone Number
               </label>
               <input
@@ -195,7 +195,7 @@ const SubZeroPreOrderForm = ({
                 value={formData.customerPhone}
                 onChange={handleInputChange}
                 placeholder="+60123456789"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -203,10 +203,10 @@ const SubZeroPreOrderForm = ({
 
         {/* Product Selection */}
         <div>
-          <h3 className="text-lg font-semibold mb-4">Product Details</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <h3 className="mb-4 text-lg font-semibold">Product Details</h3>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 Size *
               </label>
               <select
@@ -214,7 +214,7 @@ const SubZeroPreOrderForm = ({
                 value={formData.size}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select Size</option>
                 {sizes.map((size) => (
@@ -226,7 +226,7 @@ const SubZeroPreOrderForm = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 Color *
               </label>
               <select
@@ -234,7 +234,7 @@ const SubZeroPreOrderForm = ({
                 value={formData.color}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               >
                 {colors.map((color) => (
                   <option key={color} value={color}>
@@ -245,7 +245,7 @@ const SubZeroPreOrderForm = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 Quantity *
               </label>
               <input
@@ -256,7 +256,7 @@ const SubZeroPreOrderForm = ({
                 min="1"
                 max="10"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -264,10 +264,10 @@ const SubZeroPreOrderForm = ({
 
         {/* Shipping Address */}
         <div>
-          <h3 className="text-lg font-semibold mb-4">Shipping Address</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h3 className="mb-4 text-lg font-semibold">Shipping Address</h3>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 First Name *
               </label>
               <input
@@ -276,12 +276,12 @@ const SubZeroPreOrderForm = ({
                 value={formData.shippingAddress.fname}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 Last Name *
               </label>
               <input
@@ -290,12 +290,12 @@ const SubZeroPreOrderForm = ({
                 value={formData.shippingAddress.lname}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 Address Line 1 *
               </label>
               <input
@@ -304,12 +304,12 @@ const SubZeroPreOrderForm = ({
                 value={formData.shippingAddress.address_1}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 Address Line 2
               </label>
               <input
@@ -317,12 +317,12 @@ const SubZeroPreOrderForm = ({
                 name="shipping_address_2"
                 value={formData.shippingAddress.address_2}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 City *
               </label>
               <input
@@ -331,12 +331,12 @@ const SubZeroPreOrderForm = ({
                 value={formData.shippingAddress.city}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 State *
               </label>
               <input
@@ -345,12 +345,12 @@ const SubZeroPreOrderForm = ({
                 value={formData.shippingAddress.state}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="text-gray-700 mb-1 block text-sm font-medium">
                 Postal Code *
               </label>
               <input
@@ -359,7 +359,7 @@ const SubZeroPreOrderForm = ({
                 value={formData.shippingAddress.postal_code}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -381,16 +381,16 @@ const SubZeroPreOrderForm = ({
         </div> */}
 
         {/* Price Summary */}
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <div className="flex justify-between mb-2">
+        <div className="bg-gray-50 rounded-lg p-6">
+          <div className="mb-2 flex justify-between">
             <span className="text-gray-700">Price per item:</span>
             <span className="font-semibold">RM {defaultPrice.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between mb-2">
+          <div className="mb-2 flex justify-between">
             <span className="text-gray-700">Quantity:</span>
             <span className="font-semibold">{formData.quantity}</span>
           </div>
-          <div className="border-t pt-2 mt-2">
+          <div className="mt-2 border-t pt-2">
             <div className="flex justify-between text-lg">
               <span className="font-bold">Total:</span>
               <span className="font-bold text-blue-600">
@@ -407,12 +407,12 @@ const SubZeroPreOrderForm = ({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] text-white py-4 rounded-lg font-semibold text-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          className="w-full rounded-lg bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] py-4 text-lg font-semibold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isSubmitting ? 'Submitting...' : 'Submit Pre-Order'}
         </button>
 
-        <p className="text-sm text-gray-600 text-center">
+        <p className="text-gray-600 text-center text-sm">
           Expected delivery: Within 5 days from 12/12 once full payment is made.
         </p>
       </form>

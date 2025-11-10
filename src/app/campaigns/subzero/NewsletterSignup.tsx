@@ -18,24 +18,27 @@ const NewsletterSignup = () => {
           <h2 className="mb-4 text-3xl font-bold italic text-white md:text-4xl">
             JOIN THE COMMUNITY
           </h2>
-          <p className="mb-8 text-gray-300">
+          <p className="text-gray-300 mb-8">
             Keep up with all things QYVE, from upcoming launches to events.
             <br />
             Be part of the next big thing.
           </p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row sm:gap-2">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-3 sm:flex-row sm:gap-2"
+          >
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter Your Email"
-              className="flex-1 rounded-full bg-gray-400/50 px-6 py-3 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white"
+              className="bg-gray-400/50 placeholder:text-gray-300 flex-1 rounded-full px-6 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white"
               required
             />
             <button
               type="submit"
-              className="rounded-full bg-white px-8 py-3 font-semibold text-gray-900 transition-colors hover:bg-gray-100"
+              className="text-gray-900 hover:bg-gray-100 rounded-full bg-white px-8 py-3 font-semibold transition-colors"
             >
               SIGN UP
             </button>

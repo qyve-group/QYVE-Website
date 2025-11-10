@@ -1,10 +1,15 @@
 'use client';
 
 import React from 'react';
-import { getCampaignBySlug, getFeaturedProducts, getLookbookItems } from '@/data/campaign-types';
-import CampaignHeroBanner from '@/components/CampaignHeroBanner';
+
 import CampaignFeaturedProducts from '@/components/CampaignFeaturedProducts';
+import CampaignHeroBanner from '@/components/CampaignHeroBanner';
 import CampaignLookbook from '@/components/CampaignLookbook';
+import {
+  getCampaignBySlug,
+  getFeaturedProducts,
+  getLookbookItems,
+} from '@/data/campaign-types';
 
 interface CampaignPageProps {
   params: {
@@ -14,7 +19,7 @@ interface CampaignPageProps {
 
 const CampaignPage: React.FC<CampaignPageProps> = ({ params }) => {
   const { slug } = params;
-  
+
   // Get campaign data
   const campaign = getCampaignBySlug(slug);
   const featuredProducts = getFeaturedProducts(slug);
@@ -22,13 +27,17 @@ const CampaignPage: React.FC<CampaignPageProps> = ({ params }) => {
 
   if (!campaign) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="bg-gray-50 flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Campaign Not Found</h1>
-          <p className="text-gray-600 mb-8">The requested campaign could not be found.</p>
+          <h1 className="text-gray-900 mb-4 text-4xl font-bold">
+            Campaign Not Found
+          </h1>
+          <p className="text-gray-600 mb-8">
+            The requested campaign could not be found.
+          </p>
           <a
             href="/shop"
-            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-block rounded-lg bg-blue-600 px-6 py-3 text-white transition-colors hover:bg-blue-700"
           >
             Browse All Products
           </a>
@@ -44,40 +53,51 @@ const CampaignPage: React.FC<CampaignPageProps> = ({ params }) => {
 
       {/* Featured Products */}
       {featuredProducts.length > 0 && (
-        <CampaignFeaturedProducts 
-          products={featuredProducts} 
+        <CampaignFeaturedProducts
+          products={featuredProducts}
           campaignName={campaign.name}
         />
       )}
 
       {/* Campaign Story Section */}
-      <section className="py-20 bg-gray-900 text-white">
+      <section className="bg-gray-900 py-20 text-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="mb-8 text-4xl font-bold md:text-5xl">
               {campaign.name} Collection
             </h2>
-            <p className="text-xl leading-relaxed mb-12">
+            <p className="mb-12 text-xl leading-relaxed">
               {campaign.description}
             </p>
-            
+
             {/* Campaign Status */}
-            <div className="flex items-center justify-center gap-4 text-sm mb-8">
-              <span className={`px-4 py-2 rounded-full font-semibold ${
-                campaign.status === 'active' ? 'bg-green-600' :
-                campaign.status === 'upcoming' ? 'bg-yellow-600' :
-                'bg-gray-600'
-              }`}>
-                {campaign.status === 'active' ? 'Now Available' : 
-                 campaign.status === 'upcoming' ? 'Coming Soon' : 'Campaign Ended'}
+            <div className="mb-8 flex items-center justify-center gap-4 text-sm">
+              <span
+                className={`rounded-full px-4 py-2 font-semibold ${
+                  // eslint-disable-next-line no-nested-ternary
+                  campaign.status === 'active'
+                    ? 'bg-green-600'
+                    : campaign.status === 'upcoming'
+                      ? 'bg-yellow-600'
+                      : 'bg-gray-600'
+                }`}
+              >
+                {
+                  // eslint-disable-next-line no-nested-ternary
+                  campaign.status === 'active'
+                    ? 'Now Available'
+                    : campaign.status === 'upcoming'
+                      ? 'Coming Soon'
+                      : 'Campaign Ended'
+                }
               </span>
-              
+
               {campaign.startDate && (
                 <span className="text-gray-200">
                   Launched: {new Date(campaign.startDate).toLocaleDateString()}
                 </span>
               )}
-              
+
               {campaign.endDate && (
                 <span className="text-gray-200">
                   Until: {new Date(campaign.endDate).toLocaleDateString()}
@@ -90,60 +110,93 @@ const CampaignPage: React.FC<CampaignPageProps> = ({ params }) => {
 
       {/* Lookbook */}
       {lookbookItems.length > 0 && (
-        <CampaignLookbook 
-          lookbookItems={lookbookItems} 
+        <CampaignLookbook
+          lookbookItems={lookbookItems}
           campaignName={campaign.name}
         />
       )}
 
       {/* Campaign Features Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="bg-gray-50 py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-16 text-center">
+              <h2 className="text-gray-900 mb-4 text-4xl font-bold md:text-5xl">
                 Why Choose {campaign.name}?
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className="text-gray-600 text-xl">
                 Discover what makes the {campaign.name} collection special.
               </p>
             </div>
-            
+
             {/* Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               <div className="text-center">
-                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-blue-600">
+                  <svg
+                    className="size-8 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Premium Quality</h3>
+                <h3 className="mb-2 text-xl font-bold">Premium Quality</h3>
                 <p className="text-gray-600">
-                  Built with the finest materials and attention to detail for lasting performance.
+                  Built with the finest materials and attention to detail for
+                  lasting performance.
                 </p>
               </div>
-              
+
               <div className="text-center">
-                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-blue-600">
+                  <svg
+                    className="size-8 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Performance Driven</h3>
+                <h3 className="mb-2 text-xl font-bold">Performance Driven</h3>
                 <p className="text-gray-600">
-                  Engineered for athletes who demand the best in every condition.
+                  Engineered for athletes who demand the best in every
+                  condition.
                 </p>
               </div>
-              
+
               <div className="text-center">
-                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-blue-600">
+                  <svg
+                    className="size-8 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Designed for You</h3>
+                <h3 className="mb-2 text-xl font-bold">Designed for You</h3>
                 <p className="text-gray-600">
-                  Every detail crafted with the athlete in mind for ultimate comfort and style.
+                  Every detail crafted with the athlete in mind for ultimate
+                  comfort and style.
                 </p>
               </div>
             </div>
@@ -152,26 +205,27 @@ const CampaignPage: React.FC<CampaignPageProps> = ({ params }) => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gray-900 text-white">
+      <section className="bg-gray-900 py-20 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="mb-6 text-4xl font-bold md:text-5xl">
             Experience {campaign.name}
           </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            Join the community of athletes who trust {campaign.name} for their performance needs.
+          <p className="text-gray-300 mx-auto mb-8 max-w-3xl text-xl">
+            Join the community of athletes who trust {campaign.name} for their
+            performance needs.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
             {featuredProducts.length > 0 && (
               <a
                 href="#featured-products"
-                className="inline-block bg-white text-black px-8 py-4 text-lg font-semibold rounded-lg hover:bg-gray-100 transition-colors"
+                className="hover:bg-gray-100 inline-block rounded-lg bg-white px-8 py-4 text-lg font-semibold text-black transition-colors"
               >
                 Shop {campaign.name} Collection
               </a>
             )}
             <a
               href="/shop"
-              className="inline-block border-2 border-white text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-white hover:text-black transition-colors"
+              className="inline-block rounded-lg border-2 border-white px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-white hover:text-black"
             >
               View All Products
             </a>

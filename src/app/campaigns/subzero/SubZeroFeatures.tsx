@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import { useState } from 'react';
 
 const features = [
   {
@@ -44,7 +44,7 @@ const SubZeroFeatures = () => {
       <div className="container mx-auto px-4">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left - Product Image */}
-          <div className="relative h-full min-h-[400px] overflow-hidden rounded-lg bg-gray-200 lg:min-h-[600px]">
+          <div className="bg-gray-200 relative h-full min-h-[400px] overflow-hidden rounded-lg lg:min-h-[600px]">
             <Image
               src="/subzero-breakdown.jpeg"
               alt="SubZero Futsal Shoes Features Breakdown"
@@ -62,7 +62,7 @@ const SubZeroFeatures = () => {
               <span className="text-black">PRECISION</span>
             </h2>
 
-            <p className="text-lg text-gray-700">
+            <p className="text-gray-700 text-lg">
               This isn&apos;t just a futsal shoe – it&apos;s a system of
               control, built with advanced materials to help you freeze the
               chaos and move with precision.
@@ -72,17 +72,18 @@ const SubZeroFeatures = () => {
               {features.map((feature) => (
                 <div
                   key={feature.id}
-                  className="overflow-hidden rounded-lg border border-gray-200"
+                  className="border-gray-200 overflow-hidden rounded-lg border"
                 >
                   <button
+                    type="button"
                     onClick={() => toggleItem(feature.id)}
-                    className="flex w-full items-center justify-between bg-white p-6 text-left transition-colors hover:bg-gray-50"
+                    className="hover:bg-gray-50 flex w-full items-center justify-between bg-white p-6 text-left transition-colors"
                   >
                     <span className="text-lg font-semibold">
                       {feature.id} – {feature.title}
                     </span>
                     <ChevronDownIcon
-                      className={`h-6 w-6 transition-transform ${
+                      className={`size-6 transition-transform ${
                         openItem === feature.id ? 'rotate-180' : ''
                       }`}
                     />
@@ -95,8 +96,9 @@ const SubZeroFeatures = () => {
                         : 'max-h-0 opacity-0'
                     }`}
                   >
-                    <div className="space-y-3 bg-gray-50 p-6 pt-0">
+                    <div className="bg-gray-50 space-y-3 p-6 pt-0">
                       {feature.content.map((paragraph, idx) => (
+                        //eslint-disable-next-line react/no-array-index-key
                         <p key={idx} className="text-gray-700">
                           {paragraph}
                         </p>
