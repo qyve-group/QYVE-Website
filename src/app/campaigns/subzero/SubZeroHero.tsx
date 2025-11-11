@@ -35,21 +35,24 @@ const SubZeroHero = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(79,209,197,0.3),transparent_50%)]" />
       </div>
 
-      {/* Content - Bottom center on mobile, hidden on desktop */}
-      <div className="container relative z-10 mx-auto flex h-[600px] items-end justify-center px-4 pb-12 md:hidden">
-        <div className="flex flex-col items-center space-y-6 text-center">
+      {/* Content - Bottom center on mobile, bottom center on desktop */}
+      <div className="container relative z-10 mx-auto flex h-[600px] items-end justify-center px-4 pb-12 md:pb-16">
+        <div className="flex flex-col items-center space-y-6 text-center md:space-y-8">
           <h1 className="font-bold italic leading-none">
-            <span className="mt-2 block text-2xl text-[#4FD1C5]">
+            {/* <span className="md:text-7xl lg:text-8xl block text-5xl text-white">
+              SUBZERO
+            </span> */}
+            <span className="mt-2 block text-2xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
               THE GAME,
             </span>
-            <span className="block text-2xl text-[#4FD1C5]">
+            <span className="block text-2xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
               REDEFINED
             </span>
           </h1>
 
           <Link
             href="#preorder"
-            className="text-gray-900 hover:bg-gray-100 inline-block rounded-full bg-white px-10 py-3 text-base font-semibold transition-all hover:scale-105"
+            className="text-gray-900 hover:bg-gray-100 inline-block rounded-full bg-white px-10 py-3 text-base font-semibold transition-all hover:scale-105 md:px-12 md:py-4 md:text-lg"
           >
             PREORDER
           </Link>
