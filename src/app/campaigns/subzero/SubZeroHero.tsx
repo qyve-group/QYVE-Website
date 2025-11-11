@@ -6,15 +6,17 @@ import Link from 'next/link';
 const SubZeroHero = () => {
   return (
     <section className="relative min-h-[600px] overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a] md:min-h-[700px] lg:min-h-[800px]">
-      {/* Background Shoe Image - Mobile: portrait, Desktop: landscape */}
+      {/* Background Shoe Image - Mobile: portrait, Desktop: landscape with smaller scale */}
       <div className="absolute inset-0 hidden md:block">
-        <Image
-          src="/subzero-shoe-landscape.jpeg"
-          alt="SubZero Futsal Shoes - The Game Redefined"
-          fill
-          className="object-cover object-center"
-          priority
-        />
+        <div className="relative h-full w-[85%]">
+          <Image
+            src="/subzero-shoe-landscape.jpeg"
+            alt="SubZero Futsal Shoes - The Game Redefined"
+            fill
+            className="object-cover object-center"
+            priority
+          />
+        </div>
       </div>
 
       <div className="absolute inset-0 md:hidden">
@@ -35,8 +37,8 @@ const SubZeroHero = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(79,209,197,0.3),transparent_50%)]" />
       </div>
 
-      {/* Content - Bottom center on mobile, bottom right on desktop */}
-      <div className="container relative z-10 mx-auto flex h-[600px] items-end justify-center px-4 pb-12 md:h-[700px] md:justify-end md:pb-16 lg:h-[800px]">
+      {/* Content - Bottom center on mobile, middle right on desktop */}
+      <div className="container relative z-10 mx-auto flex h-[600px] items-end justify-center px-4 pb-12 md:h-[700px] md:items-center md:justify-end md:pb-0 md:pr-8 lg:h-[800px] lg:pr-12">
         <div className="flex flex-col items-center space-y-6 text-center md:items-end md:space-y-8 md:text-right">
           <h1 className="font-bold italic leading-none">
             {/* <span className="md:text-7xl lg:text-8xl block text-5xl text-white">
