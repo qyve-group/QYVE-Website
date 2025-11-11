@@ -42,12 +42,12 @@ const SubZeroHero = () => {
             {/* <span className="md:text-7xl lg:text-8xl block text-5xl text-white">
               SUBZERO
             </span> */}
-            <span className="mt-2 block text-2xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
+            {/* <span className="mt-2 block text-2xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
               THE GAME,
             </span>
             <span className="block text-2xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
               REDEFINED
-            </span>
+            </span> */}
           </h1>
 
           <Link
