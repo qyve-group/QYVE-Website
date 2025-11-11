@@ -49,24 +49,24 @@ const SubZeroPreOrder = () => {
               {/* <p className="text-sm text-gray-500">30% deposit required (RM 64.26)</p> */}
             </div>
 
-            <ul className="mb-8 space-y-3">
-              <li className="text-gray-700 flex items-center gap-2">
-                {/* <span className="text-green-600">✓</span> */}
+            {/* <ul className="mb-8 space-y-3">
+              <li className="text-gray-700 flex items-center gap-2 mx-auto">
+                <span className="text-green-600">✓</span>
                 SubZero-Weave Tech upper
               </li>
               <li className="text-gray-700 flex items-center gap-2">
-                {/* <span className="text-green-600">✓</span> */}
+                <span className="text-green-600">✓</span>
                 Energy return foam midsole
               </li>
               <li className="text-gray-700 flex items-center gap-2">
-                {/* <span className="text-green-600">✓</span> */}
+                <span className="text-green-600">✓</span>
                 Multi-directional traction grip
               </li>
               <li className="text-gray-700 flex items-center gap-2">
-                {/* <span className="text-green-600">✓</span> */}
+                <span className="text-green-600">✓</span>
                 Sizes 38-44 EU
               </li>
-            </ul>
+            </ul> */}
 
             <button
               type="button"
