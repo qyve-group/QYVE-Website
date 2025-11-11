@@ -57,6 +57,9 @@ To fully run this application, you'll need to configure:
    - Google Analytics ID
 
 ## Recent Changes
+- 2025-11-11: Updated SubZero hero banner - desktop now uses landscape image filling whole div with centered caption at bottom
+- 2025-11-11: Fixed SubZero breakdown image cutting on mobile - uses object-contain on mobile, object-cover on desktop
+- 2025-11-11: Implemented responsive image handling for SubZero campaign (portrait for mobile, landscape for desktop)
 - 2025-09-06: Set up environment-aware Stripe configuration (test keys for Replit, production for Vercel)
 - 2025-09-06: Fixed CollapsibleCheckout component to properly call Stripe API
 - 2025-09-06: Implemented automated Stripe webhook system for payment confirmations
