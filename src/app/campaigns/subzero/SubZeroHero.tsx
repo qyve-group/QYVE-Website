@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const SubZeroHero = () => {
   return (
-    <section className="relative min-h-[600px] overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a] md:min-h-[700px] lg:min-h-[800px]">
+    <section className="relative w-full min-h-[600px] overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a] md:min-h-[700px] lg:min-h-[800px]">
       {/* Background Shoe Image - Mobile: portrait, Desktop: landscape full width */}
       <div className="absolute left-0 top-0 hidden h-full md:block md:w-[70%] lg:w-[75%]">
         <Image

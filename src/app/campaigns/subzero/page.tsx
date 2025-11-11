@@ -12,7 +12,7 @@ import SubZeroSizeChart from './SubZeroSizeChart';
 
 const SubZeroPage = () => {
   return (
-    <div>
+    <div className="w-full">
       {/* SubZero Landing Page Sections */}
       <SubZeroHero />
       <SubZeroFeatures />
