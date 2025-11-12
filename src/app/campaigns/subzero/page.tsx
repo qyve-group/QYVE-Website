@@ -18,10 +18,11 @@ const SubZeroPage = () => {
       {/* SubZero Landing Page Sections */}
       <SubZeroHero />
       <SubZeroFeatures />
+      <SubZeroPreOrder />
       <SubZeroSizeChart />
       <SubZeroTestimonials />
       <SubZeroFAQs />
-      <SubZeroPreOrder />
+
       {/* <SubZeroCTA /> */}
       {/* <ProudlyMalaysian /> */}
       {/* <NewsletterSignup /> */}
