@@ -57,7 +57,10 @@ To fully run this application, you'll need to configure:
    - Google Analytics ID
 
 ## Recent Changes
-- 2025-11-11: Updated SubZero hero banner - desktop now uses landscape image filling whole div with centered caption at bottom
+- 2025-11-12: Added Testimonials section to SubZero landing page with 3 customer testimonials
+- 2025-11-12: Added FAQs section to SubZero landing page with 8 comprehensive questions and answers
+- 2025-11-12: Increased desktop hero banner height to 700px for better landscape image display
+- 2025-11-11: Updated SubZero hero banner - desktop uses landscape image, mobile uses portrait image
 - 2025-11-11: Fixed SubZero breakdown image cutting on mobile - uses object-contain on mobile, object-cover on desktop
 - 2025-11-11: Implemented responsive image handling for SubZero campaign (portrait for mobile, landscape for desktop)
 - 2025-09-06: Set up environment-aware Stripe configuration (test keys for Replit, production for Vercel)
