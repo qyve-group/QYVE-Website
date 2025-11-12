@@ -8,7 +8,7 @@ const faqs = [
     id: '1',
     question: 'When will SubZero be delivered?',
     answer:
-      'SubZero pre-orders are expected to ship in late December 2025. All Early Bird customers will receive priority shipping and tracking information via email.',
+      'SubZero pre-orders are expected to ship in mid December 2025. All Early Bird customers will receive priority shipping and tracking information via email.',
   },
   {
     id: '2',
@@ -18,9 +18,9 @@ const faqs = [
   },
   {
     id: '3',
-    question: 'Can I use SubZero for outdoor football?',
+    question: 'Can I use SubZero for other activities?',
     answer:
-      'SubZero is specifically engineered for futsal and indoor court surfaces. The specialized traction pattern is optimized for hard court performance. Using them outdoors may reduce their lifespan and effectiveness.',
+      'Certainly, while it is engineered for futsal, players can still use it for other court activites such as badminton, pickleball, etc. The specialized traction pattern is optimized for hard court performance. Using them outdoors may reduce their lifespan and effectiveness.',
   },
   {
     id: '4',
@@ -32,19 +32,19 @@ const faqs = [
     id: '5',
     question: 'Is the Early Bird discount still available?',
     answer:
-      'Yes! The Early Bird price of RM 214.20 (10% off RM 238) is available for pre-orders. This is a limited-time offer exclusively for early supporters.',
+      'Yes! The Early Bird price of RM 214.20 (10% off RM 238) is available for pre-orders. This is a limited-time offer exclusively for the first 50 orders.',
   },
   {
     id: '6',
     question: 'What is your return policy for SubZero?',
     answer:
-      'We offer a 30-day return policy from the delivery date. If you\'re not satisfied with your SubZero shoes, you can return them for a full refund, provided they\'re unworn and in original packaging.',
+      "We offer a 30-day return policy from the delivery date. If you're not satisfied with your SubZero shoes, you can return them for a full refund, provided they're unworn and in original packaging.",
   },
   {
     id: '7',
     question: 'Are SubZero shoes suitable for wide feet?',
     answer:
-      'SubZero has a standard fit design. If you have wider feet, we recommend ordering one size up for optimal comfort. Please check our detailed size chart for measurements.',
+      'SubZero has a standard to wide fit design. It caters to most wide feet players.',
   },
   {
     id: '8',
@@ -91,7 +91,7 @@ const SubZeroFAQs = () => {
                   {faq.question}
                 </span>
                 <ChevronDownIcon
-                  className={`size-6 flex-shrink-0 text-[#4FD1C5] transition-transform ${
+                  className={`size-6 shrink-0 text-[#4FD1C5] transition-transform ${
                     openId === faq.id ? 'rotate-180' : ''
                   }`}
                 />
@@ -116,7 +116,7 @@ const SubZeroFAQs = () => {
         <div className="mt-12 text-center">
           <p className="text-gray-600 mb-4">Still have questions?</p>
           <a
-            href="https://wa.me/60123456789?text=Hi%20QYVE%20team%2C%20I%20have%20questions%20about%20SubZero"
+            href="https://wa.me/601160974239?text=Hi%20QYVE%20team%2C%20I%20have%20questions%20about%20SubZero"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:bg-gray-100 inline-block rounded-full border-2 border-black px-8 py-3 font-semibold text-black transition-all hover:scale-105"

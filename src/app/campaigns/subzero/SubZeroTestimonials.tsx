@@ -3,26 +3,26 @@
 const testimonials = [
   {
     id: 1,
-    name: 'Ahmad Haziq',
-    role: 'Futsal Player',
+    name: 'Ciyo',
+    role: 'Keeper, Pahang Rangers',
     quote:
-      'The grip is insane! I can make quick cuts and stops without any slipping. Best futsal shoes I\'ve owned.',
+      'Walaupun saya keeper, shooting rasa sedap dan ringan. Senang nak split.',
     rating: 5,
   },
   {
     id: 2,
-    name: 'Fariz Rahman',
-    role: 'Semi-Pro Player',
+    name: 'Emir',
+    role: 'Casual Player',
     quote:
-      'Lightweight and breathable. My feet stay cool even during intense matches. The energy return is noticeable.',
+      'Honestly, toe-poking feels great and this shoe is surpisingly lighter than it looks',
     rating: 5,
   },
   {
     id: 3,
-    name: 'Daniel Tan',
-    role: 'Weekend Warrior',
+    name: 'Coach Faiq',
+    role: 'Nottingham University Futsal Head Coach ',
     quote:
-      'Worth every ringgit! The build quality is exceptional and they look absolutely stunning on court.',
+      'Serious tak expect untuk kasut ni rasa macam brand-brand kat luar sana.',
     rating: 5,
   },
 ];
@@ -36,7 +36,7 @@ const SubZeroTestimonials = () => {
           <h2 className="mb-4 text-4xl font-bold italic text-white md:text-5xl">
             WHAT PLAYERS SAY
           </h2>
-          <p className="text-[#4FD1C5] text-lg md:text-xl">
+          <p className="text-lg text-[#4FD1C5] md:text-xl">
             Real feedback from real players
           </p>
         </div>
@@ -52,8 +52,9 @@ const SubZeroTestimonials = () => {
               <div className="mb-4 flex gap-1">
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <svg
+                    // eslint-disable-next-line react/no-array-index-key
                     key={i}
-                    className="text-[#4FD1C5] size-5"
+                    className="size-5 text-[#4FD1C5]"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -79,7 +80,7 @@ const SubZeroTestimonials = () => {
                   <div className="font-semibold text-white">
                     {testimonial.name}
                   </div>
-                  <div className="text-[#4FD1C5] text-sm">
+                  <div className="text-sm text-[#4FD1C5]">
                     {testimonial.role}
                   </div>
                 </div>
