@@ -57,6 +57,9 @@ To fully run this application, you'll need to configure:
    - Google Analytics ID
 
 ## Recent Changes
+- 2025-11-13: Fixed SubZero pre-order form API endpoint (was calling non-existent route)
+- 2025-11-13: Created pre_orders and pre_order_status_history database tables in Supabase
+- 2025-11-13: Connected pre-order form to existing /api/products/pre-orders/submit route
 - 2025-11-12: Added Testimonials section to SubZero landing page with 3 customer testimonials
 - 2025-11-12: Added FAQs section to SubZero landing page with 8 comprehensive questions and answers
 - 2025-11-12: Increased desktop hero banner height to 700px for better landscape image display

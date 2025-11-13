@@ -78,7 +78,7 @@ const SubZeroPreOrderForm = ({
       const totalPrice = defaultPrice * formData.quantity;
       const productVariant = `Size: ${formData.size}, Color: ${formData.color}`;
 
-      const response = await fetch('/api/pre-orders/submit', {
+      const response = await fetch('/api/products/pre-orders/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
