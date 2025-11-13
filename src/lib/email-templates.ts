@@ -782,7 +782,7 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
           </div>
         </div>
         <p><strong>QYVE</strong> </p>
-        <p>Questions about your pre-order? Contact us at <a href="mailto:qyveshoe@gmail.com">qyveshoe@gmail.com</a></p>
+        <p>Questions about your pre-order? Contact us at <a href="mailto:support@qyveofficial.com">support@qyveofficial.com</a></p>
         <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e9ecef;">
           <p style="font-size: 12px; color: ${QYVE_BRAND.textLight};">© 2025 QYVE. All rights reserved.</p>
         </div>
