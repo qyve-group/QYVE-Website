@@ -17,8 +17,15 @@ export const preOrderSchema = z.object({
   customerPhone: z.string().optional(),
   productName: z.string().min(1, 'Product name is required'),
   productVariant: z.string().optional(),
-  quantity: z.number().int().min(1, 'Quantity must be at least 1').max(100, 'Quantity too large'),
-  unitPrice: z.number().positive('Price must be positive').max(100000, 'Price too large'),
+  quantity: z
+    .number()
+    .int()
+    .min(1, 'Quantity must be at least 1')
+    .max(100, 'Quantity too large'),
+  unitPrice: z
+    .number()
+    .positive('Price must be positive')
+    .max(100000, 'Price too large'),
   totalPrice: z.number().positive('Total must be positive'),
   shippingAddress: shippingAddressSchema.optional(),
   bundleId: z.string().uuid().optional(),

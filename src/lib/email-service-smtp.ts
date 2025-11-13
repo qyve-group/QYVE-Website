@@ -2,7 +2,8 @@
 // Uses Nodemailer with Brevo SMTP for reliable email delivery
 
 import nodemailer from 'nodemailer';
-import type { OrderData, RefundData, PreOrderData } from './email-templates';
+
+import type { OrderData, PreOrderData, RefundData } from './email-templates';
 import {
   generateOrderCancellationEmail,
   generateOrderConfirmationEmail,

@@ -51,13 +51,13 @@ export interface PreOrderData {
 
 // QYVE Brand Colors and Styles
 const QYVE_BRAND = {
-  primary: '#1a1a1a',      // QYVE Black
-  secondary: '#ff6b35',    // QYVE Orange
-  accent: '#f7931e',       // QYVE Gold
-  light: '#f8f9fa',        // Light Gray
-  white: '#ffffff',        // White
-  text: '#333333',         // Dark Gray
-  textLight: '#6c757d',    // Medium Gray
+  primary: '#1a1a1a', // QYVE Black
+  secondary: '#ff6b35', // QYVE Orange
+  accent: '#f7931e', // QYVE Gold
+  light: '#f8f9fa', // Light Gray
+  white: '#ffffff', // White
+  text: '#333333', // Dark Gray
+  textLight: '#6c757d', // Medium Gray
 };
 
 // Get absolute logo URL for email templates
@@ -792,15 +792,13 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
   </html>
 `;
 
-
 // <p><strong>Status:</strong> <span class="status-badge" style="background-color: #ffc107; color: #000;">Awaiting Deposit</span></p>
 
- // <h3 style="margin-top: 30px;">💰 Deposit Required</h3>
- //  <div style="background: linear-gradient(135deg, #fff8e1 0%, #ffffff 100%); padding: 20px; border-radius: 12px; border-left: 4px solid #ffc107; margin: 20px 0;">
- //    <p style="font-size: 18px; margin-bottom: 10px;"><strong>30% Deposit:</strong> <span style="color: #f7931e; font-size: 24px; font-weight: 800;">RM ${data.depositAmount.toFixed(2)}</span></p>
- //    <p style="font-size: 14px; color: #6c757d;">Balance due at delivery: RM ${(data.totalPrice - data.depositAmount).toFixed(2)}</p>
- //  </div>
-
+// <h3 style="margin-top: 30px;">💰 Deposit Required</h3>
+//  <div style="background: linear-gradient(135deg, #fff8e1 0%, #ffffff 100%); padding: 20px; border-radius: 12px; border-left: 4px solid #ffc107; margin: 20px 0;">
+//    <p style="font-size: 18px; margin-bottom: 10px;"><strong>30% Deposit:</strong> <span style="color: #f7931e; font-size: 24px; font-weight: 800;">RM ${data.depositAmount.toFixed(2)}</span></p>
+//    <p style="font-size: 14px; color: #6c757d;">Balance due at delivery: RM ${(data.totalPrice - data.depositAmount).toFixed(2)}</p>
+//  </div>
 
 // <div style="background: #e8f5e9; padding: 20px; border-radius: 12px; border-left: 4px solid #4caf50; margin: 20px 0;">
 //   <h3 style="margin-top: 0; color: #2e7d32;">📧 Payment Instructions Coming Soon</h3>
