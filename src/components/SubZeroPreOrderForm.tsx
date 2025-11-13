@@ -52,7 +52,7 @@ const SubZeroPreOrderForm = ({
     >,
   ) => {
     const { name, value, type } = e.target;
-    const checked = (e.target as HTMLInputElement).checked;
+    const { checked } = e.target as HTMLInputElement;
 
     if (name.startsWith('shipping_')) {
       const field = name.replace('shipping_', '');
@@ -409,7 +409,7 @@ const SubZeroPreOrderForm = ({
         </div>
 
         {/* Data Consent Checkbox */}
-        <div className="rounded-lg border border-gray-200 bg-blue-50 p-4">
+        <div className="border-gray-200 rounded-lg border bg-blue-50 p-4">
           <div className="flex items-start gap-3">
             <input
               type="checkbox"
@@ -418,10 +418,15 @@ const SubZeroPreOrderForm = ({
               checked={formData.dataConsent}
               onChange={handleInputChange}
               required
-              className="mt-1 size-4 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+              className="border-gray-300 mt-1 size-4 rounded text-blue-600 focus:ring-2 focus:ring-blue-500"
             />
-            <label htmlFor="dataConsent" className="text-gray-700 cursor-pointer text-sm">
-              I agree to the collection and use of my personal data for order processing, customer support, and updates about products or services. *
+            <label
+              htmlFor="dataConsent"
+              className="text-gray-700 cursor-pointer text-sm"
+            >
+              I agree to the collection and use of my personal data for order
+              processing, customer support, and updates about products or
+              services. *
             </label>
           </div>
         </div>
