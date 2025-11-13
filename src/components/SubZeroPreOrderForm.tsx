@@ -36,6 +36,7 @@ const SubZeroPreOrderForm = ({
       country: 'Malaysia',
     },
     preOrderNotes: '',
+    dataConsent: false,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,7 +51,8 @@ const SubZeroPreOrderForm = ({
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
 
     if (name.startsWith('shipping_')) {
       const field = name.replace('shipping_', '');
@@ -64,7 +66,7 @@ const SubZeroPreOrderForm = ({
     } else {
       setFormData((prev) => ({
         ...prev,
-        [name]: value,
+        [name]: type === 'checkbox' ? checked : value,
       }));
     }
   };
@@ -406,10 +408,28 @@ const SubZeroPreOrderForm = ({
           </div>
         </div>
 
+        {/* Data Consent Checkbox */}
+        <div className="rounded-lg border border-gray-200 bg-blue-50 p-4">
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="dataConsent"
+              name="dataConsent"
+              checked={formData.dataConsent}
+              onChange={handleInputChange}
+              required
+              className="mt-1 size-4 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+            />
+            <label htmlFor="dataConsent" className="text-gray-700 cursor-pointer text-sm">
+              I agree to the collection and use of my personal data for order processing, customer support, and updates about products or services. *
+            </label>
+          </div>
+        </div>
+
         {/* Submit Button */}
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !formData.dataConsent}
           className="w-full rounded-lg bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] py-4 text-lg font-semibold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isSubmitting ? 'Submitting...' : 'Submit Pre-Order'}

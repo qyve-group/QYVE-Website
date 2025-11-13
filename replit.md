@@ -57,6 +57,7 @@ To fully run this application, you'll need to configure:
    - Google Analytics ID
 
 ## Recent Changes
+- 2025-11-13: Added GDPR/privacy consent checkbox to SubZero pre-order form
 - 2025-11-13: Fixed SubZero pre-order form API endpoint (was calling non-existent route)
 - 2025-11-13: Created pre_orders and pre_order_status_history database tables in Supabase
 - 2025-11-13: Connected pre-order form to existing /api/products/pre-orders/submit route
