@@ -825,7 +825,15 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
           </table>
           
           <!-- Price Amount -->
-          <div style="font-size: 36px !important; font-weight: 800 !important; color: #0a1f3d !important; text-align: center !important; margin: 30px 0 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">RM ${data.totalPrice.toFixed(2)}</div>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 30px 0 !important;">
+            <tr>
+              <td align="center">
+                <div style="display: inline-block !important; padding: 20px 30px !important; background-color: #f8f9fa !important; border: 3px solid #4FD1C5 !important; border-radius: 12px !important;">
+                  <div style="font-size: 36px !important; font-weight: 800 !important; color: #000000 !important; text-align: center !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;" data-ogsc="#ffffff" data-ogsb="#000000">RM ${data.totalPrice.toFixed(2)}</div>
+                </div>
+              </td>
+            </tr>
+          </table>
           
           <h3 style="color: #000000 !important; margin: 30px 0 16px 0 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 20px !important; font-weight: 700 !important;">📦 Delivery Information</h3>
           <p style="color: #000000 !important; margin: 8px 0 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 16px !important;"><strong style="color: #000000 !important;">Estimated Delivery:</strong> <span style="color: #000000 !important;">Within 5 days after 12/12 once full payment is made.</span></p>
