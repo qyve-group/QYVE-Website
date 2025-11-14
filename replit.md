@@ -57,6 +57,7 @@ To fully run this application, you'll need to configure:
    - Google Analytics ID
 
 ## Recent Changes
+- 2025-11-14: Fixed header text to stay white in dark mode emails - corrected Outlook dark mode attributes (data-ogsc/data-ogsb)
 - 2025-11-14: Fixed header gradient in dark mode emails - changed from very dark blue (#0a1f3d → #1a5a7a) to lighter blue (#2E5C8A → #4A90C8)
 - 2025-11-14: Fixed price visibility in dark mode emails - changed to pure black with teal accent border
 - 2025-11-14: Updated email templates to support both light and dark mode email clients
