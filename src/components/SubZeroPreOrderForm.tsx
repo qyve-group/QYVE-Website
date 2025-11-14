@@ -126,10 +126,11 @@ const SubZeroPreOrderForm = ({
   if (success) {
     return (
       <div className="p-8 text-center">
-        <div className="mb-4 text-6xl">🎉</div>
+        {/* <div className="mb-4 text-6xl">🎉</div> */}
         <h3 className="mb-2 text-2xl font-bold text-green-600">
-          Pre-Order Confirmed!
+          Pre-Order Confirmed! Please check your email address.
         </h3>
+        <p className="text-gray-600 mb-4">Please check your email</p>
         {/* <p className="text-gray-600">
           Thank you! We&apos;ll send you an email with payment instructions.
         </p> */}
