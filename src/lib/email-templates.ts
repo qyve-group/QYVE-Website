@@ -72,28 +72,39 @@ const getLogoUrl = () => {
   return 'https://qyveofficial.com/qyve-logo.png';
 };
 
-// Base template styles with QYVE branding
+// Base template styles with QYVE branding - Dark Mode Compatible
 const getBaseStyles = () => `
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       line-height: 1.6; 
-      color: ${QYVE_BRAND.text}; 
-      background-color: ${QYVE_BRAND.light};
+      color: #1a1a1a !important; 
+      background-color: #f8f9fa !important;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1a1a1a !important;
+      }
     }
     .email-container { 
       max-width: 600px; 
       margin: 0 auto; 
-      background-color: ${QYVE_BRAND.white};
+      background-color: #ffffff !important;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       border: 1px solid #e9ecef;
     }
+    @media (prefers-color-scheme: dark) {
+      .email-container {
+        background-color: #2c2c2c !important;
+        border: 1px solid #4a4a4a;
+      }
+    }
     .header { 
-      background: linear-gradient(135deg, ${QYVE_BRAND.primary} 0%, #2c2c2c 100%);
-      color: ${QYVE_BRAND.white}; 
+      background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%) !important;
+      color: #ffffff !important; 
       text-align: center; 
       padding: 40px 20px;
       position: relative;
@@ -124,45 +135,78 @@ const getBaseStyles = () => `
       margin-bottom: 8px;
       letter-spacing: -1px;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      color: #ffffff !important;
     }
     .header p { 
       font-size: 16px; 
       opacity: 0.9;
       font-weight: 500;
+      color: #ffffff !important;
     }
     .content { 
-      padding: 40px 30px; 
+      padding: 40px 30px;
+      color: #1a1a1a !important;
+    }
+    @media (prefers-color-scheme: dark) {
+      .content {
+        color: #f8f9fa !important;
+      }
+      .content p, .content h3, .content strong {
+        color: #f8f9fa !important;
+      }
     }
     .order-details { 
-      background: linear-gradient(135deg, ${QYVE_BRAND.light} 0%, #ffffff 100%);
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%) !important;
       padding: 25px; 
       border-radius: 12px; 
       margin: 25px 0;
-      border-left: 4px solid ${QYVE_BRAND.secondary};
+      border-left: 4px solid #304563;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      color: #1a1a1a !important;
+    }
+    @media (prefers-color-scheme: dark) {
+      .order-details {
+        background: linear-gradient(135deg, #3a3a3a 0%, #2c2c2c 100%) !important;
+        border-left: 4px solid #4FD1C5;
+        color: #f8f9fa !important;
+      }
+      .order-details p, .order-details h3 {
+        color: #f8f9fa !important;
+      }
     }
     .amount { 
       font-size: 36px; 
       font-weight: 800; 
-      color: ${QYVE_BRAND.secondary}; 
+      color: #304563 !important; 
       text-align: center; 
       margin: 20px 0;
       letter-spacing: -1px;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+    @media (prefers-color-scheme: dark) {
+      .amount {
+        color: #4FD1C5 !important;
+      }
+    }
     .items-table {
       width: 100%;
       border-collapse: collapse;
       margin: 20px 0;
-      background-color: ${QYVE_BRAND.white};
+      background-color: #ffffff !important;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
       border: 1px solid #e9ecef;
     }
+    @media (prefers-color-scheme: dark) {
+      .items-table {
+        background-color: #2c2c2c !important;
+        border: 1px solid #4a4a4a;
+      }
+    }
     .items-table th {
-      background: linear-gradient(135deg, ${QYVE_BRAND.primary} 0%, #2c2c2c 100%);
-      color: ${QYVE_BRAND.white};
+      background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%) !important;
+      color: #ffffff !important;
       padding: 18px 15px;
       text-align: left;
       font-weight: 700;
@@ -173,6 +217,13 @@ const getBaseStyles = () => `
     .items-table td {
       padding: 15px;
       border-bottom: 1px solid #e9ecef;
+      color: #1a1a1a !important;
+    }
+    @media (prefers-color-scheme: dark) {
+      .items-table td {
+        border-bottom: 1px solid #4a4a4a;
+        color: #f8f9fa !important;
+      }
     }
     .items-table tr:last-child td {
       border-bottom: none;
@@ -224,16 +275,31 @@ const getBaseStyles = () => `
       padding: 40px 30px;
       border-top: 1px solid #e9ecef; 
       font-size: 14px; 
-      color: ${QYVE_BRAND.textLight};
-      background: linear-gradient(135deg, ${QYVE_BRAND.light} 0%, #ffffff 100%);
+      color: #6c757d !important;
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%) !important;
+    }
+    @media (prefers-color-scheme: dark) {
+      .footer {
+        background: linear-gradient(135deg, #3a3a3a 0%, #2c2c2c 100%) !important;
+        border-top: 1px solid #4a4a4a;
+        color: #b8b8b8 !important;
+      }
+      .footer p {
+        color: #b8b8b8 !important;
+      }
     }
     .footer a { 
-      color: ${QYVE_BRAND.secondary}; 
+      color: #304563 !important; 
       text-decoration: none; 
       font-weight: 600;
     }
+    @media (prefers-color-scheme: dark) {
+      .footer a {
+        color: #4FD1C5 !important;
+      }
+    }
     .footer a:hover {
-      color: ${QYVE_BRAND.accent};
+      color: #f7931e !important;
     }
     .status-badge {
       display: inline-block;
@@ -724,56 +790,67 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
     <title>Pre-Order Confirmation - QYVE</title>
-    ${getBaseStyles()}
   </head>
-  <body>
-    <div class="email-container">
-      <div class="header">
-       
-        <h1>Pre-Order Confirmed!</h1>
-        <p>Thank you for pre-ordering with QYVE</p>
-      </div>
+  <body style="margin: 0 !important; padding: 20px !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important; background-color: #f0f0f0 !important;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px !important; margin: 0 auto !important; background-color: #ffffff !important; border-radius: 12px !important; overflow: hidden !important; border: 1px solid #e0e0e0 !important;">
+      <!-- Header Section -->
+      <tr>
+        <td style="background-color: #0a1f3d !important; background-image: linear-gradient(135deg, #0a1f3d 0%, #1a5a7a 100%) !important; color: #ffffff !important; text-align: center !important; padding: 40px 20px !important;">
+          <h1 style="font-size: 32px !important; font-weight: 800 !important; margin: 0 0 8px 0 !important; color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">🎉 Pre-Order Confirmed!</h1>
+          <p style="font-size: 16px !important; margin: 0 !important; color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">Thank you for pre-ordering with QYVE</p>
+        </td>
+      </tr>
       
-      <div class="content">
-        <p>Hi <strong>${data.customerName}</strong>,</p>
-        
-        <p>We're thrilled to confirm your pre-order! You're one of the first to secure this exclusive product.</p>
-        
-        <div class="order-details">
-          <h3>Pre-Order Details</h3>
-          <p><strong>Pre-Order ID:</strong> ${data.preOrderId}</p>
-          <p><strong>Product:</strong> ${data.productName}</p>
-          <p><strong>Variant:</strong> ${data.productVariant}</p>
-          <p><strong>Quantity:</strong> ${data.quantity}</p>
-
-        </div>
-        
-        <div class="amount">RM ${data.totalPrice.toFixed(2)}</div>
-        
- 
-        
-        
-        <h3>Delivery Information</h3>
-        <p><strong>Estimated Delivery:</strong> Within 5 days after 12/12 once full payment is made.</p>
-        <p style="font-size: 14px; color: #6c757d;">We'll keep you updated on the production and delivery status.</p>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="${process.env.NEXT_PUBLIC_BASE_URL}/campaigns/subzero" class="btn-subzero" style="color: #ffffff !important; text-decoration: none;">View SubZero Page</a>
-        </div>
-      </div>
-      
-      <div class="footer">
-        <div style="margin-bottom: 20px;">
+      <!-- Content Section -->
+      <tr>
+        <td style="padding: 40px 30px !important; background-color: #ffffff !important;">
+          <p style="color: #000000 !important; line-height: 1.6 !important; margin: 0 0 16px 0 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 16px !important;">Hi <strong style="color: #000000 !important;">${data.customerName}</strong>,</p>
           
-        </div>
-        <p><strong>QYVE</strong> </p>
-        <p>Questions about your pre-order? Contact us at <a href="mailto:support@qyveofficial.com">support@qyveofficial.com</a></p>
-        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e9ecef;">
-          <p style="font-size: 12px; color: ${QYVE_BRAND.primary};">© 2025 QYVE. All rights reserved.</p>
-        </div>
-      </div>
-    </div>
+          <p style="color: #000000 !important; line-height: 1.6 !important; margin: 0 0 24px 0 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 16px !important;">We're thrilled to confirm your pre-order! You're one of the first to secure this exclusive product.</p>
+          
+          <!-- Order Details Box -->
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f8f9fa !important; padding: 25px !important; border-radius: 12px !important; margin: 25px 0 !important; border-left: 4px solid #4FD1C5 !important;">
+            <tr>
+              <td>
+                <h3 style="margin: 0 0 16px 0 !important; color: #000000 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 20px !important; font-weight: 700 !important;">Pre-Order Details</h3>
+                <p style="margin: 8px 0 !important; color: #000000 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 15px !important;"><strong style="color: #000000 !important;">Pre-Order ID:</strong> <span style="color: #000000 !important;">${data.preOrderId}</span></p>
+                <p style="margin: 8px 0 !important; color: #000000 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 15px !important;"><strong style="color: #000000 !important;">Product:</strong> <span style="color: #000000 !important;">${data.productName}</span></p>
+                <p style="margin: 8px 0 !important; color: #000000 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 15px !important;"><strong style="color: #000000 !important;">Variant:</strong> <span style="color: #000000 !important;">${data.productVariant}</span></p>
+                <p style="margin: 8px 0 !important; color: #000000 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 15px !important;"><strong style="color: #000000 !important;">Quantity:</strong> <span style="color: #000000 !important;">${data.quantity}</span></p>
+              </td>
+            </tr>
+          </table>
+          
+          <!-- Price Amount -->
+          <div style="font-size: 36px !important; font-weight: 800 !important; color: #0a1f3d !important; text-align: center !important; margin: 30px 0 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">RM ${data.totalPrice.toFixed(2)}</div>
+          
+          <h3 style="color: #000000 !important; margin: 30px 0 16px 0 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 20px !important; font-weight: 700 !important;">📦 Delivery Information</h3>
+          <p style="color: #000000 !important; margin: 8px 0 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 16px !important;"><strong style="color: #000000 !important;">Estimated Delivery:</strong> <span style="color: #000000 !important;">Within 5 days after 12/12 once full payment is made.</span></p>
+          <p style="font-size: 14px !important; color: #555555 !important; line-height: 1.6 !important; margin: 8px 0 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">We'll keep you updated on the production and delivery status.</p>
+          
+          <!-- CTA Button -->
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 30px 0 !important;">
+            <tr>
+              <td align="center">
+                <a href="${process.env.NEXT_PUBLIC_BASE_URL}/campaigns/subzero" style="display: inline-block !important; padding: 16px 32px !important; background-color: #0a1f3d !important; color: #ffffff !important; text-decoration: none !important; border-radius: 8px !important; font-weight: 700 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 16px !important; border: 2px solid #4FD1C5 !important;">View SubZero Page</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      
+      <!-- Footer Section -->
+      <tr>
+        <td style="text-align: center !important; padding: 40px 30px !important; border-top: 2px solid #e0e0e0 !important; background-color: #f8f9fa !important;">
+          <p style="color: #000000 !important; font-weight: 700 !important; margin: 0 0 12px 0 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-size: 16px !important;">QYVE</p>
+          <p style="color: #555555 !important; font-size: 14px !important; margin: 0 0 20px 0 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">Questions about your pre-order? Contact us at <a href="mailto:support@qyveofficial.com" style="color: #0a1f3d !important; text-decoration: underline !important; font-weight: 600 !important;">support@qyveofficial.com</a></p>
+          <p style="font-size: 12px !important; color: #888888 !important; margin: 0 !important; padding-top: 20px !important; border-top: 1px solid #e0e0e0 !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">© 2025 QYVE. All rights reserved.</p>
+        </td>
+      </tr>
+    </table>
   </body>
   </html>
 `;
