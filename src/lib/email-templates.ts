@@ -790,17 +790,55 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <meta name="supported-color-schemes" content="light dark">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
+    <style type="text/css">
+      /* Gmail Web Dark Mode */
+      u + .gmail-body .darkmode-text,
+      u + .gmail-body .darkmode-text a,
+      u + .gmail-body .darkmode-text span {
+        color: #ffffff !important;
+      }
+      u + .gmail-body .darkmode-bg {
+        background-color: #2E5C8A !important;
+      }
+      /* Gmail Mobile Dark Mode */
+      @media (prefers-color-scheme: dark) {
+        :root .gmail_dark_mode .darkmode-text,
+        :root .gmail_dark_mode .darkmode-text a,
+        :root .gmail_dark_mode .darkmode-text span {
+          color: #ffffff !important;
+        }
+        :root .gmail_dark_mode .darkmode-bg {
+          background-color: #2E5C8A !important;
+        }
+        .darkmode-text { color: #ffffff !important; }
+        .darkmode-bg { background-color: #2E5C8A !important; }
+      }
+      /* Apple Mail & Others */
+      .darkmode-text { color: #ffffff !important; }
+      .darkmode-text a { color: #ffffff !important; }
+      .darkmode-text span { color: #ffffff !important; }
+    </style>
     <title>Pre-Order Confirmation - QYVE</title>
   </head>
-  <body style="margin: 0 !important; padding: 20px !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important; background-color: #f0f0f0 !important;">
+  <body class="gmail-body" style="margin: 0 !important; padding: 20px !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important; background-color: #f0f0f0 !important;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px !important; margin: 0 auto !important; background-color: #ffffff !important; border-radius: 12px !important; overflow: hidden !important; border: 1px solid #e0e0e0 !important;">
       <!-- Header Section -->
       <tr>
-        <td style="background-color: #2E5C8A !important; background-image: linear-gradient(135deg, #2E5C8A 0%, #4A90C8 100%) !important; color: #ffffff !important; text-align: center !important; padding: 40px 20px !important;" data-ogsc="#ffffff" data-ogsb="#2E5C8A">
-          <h1 style="font-size: 32px !important; font-weight: 800 !important; margin: 0 0 8px 0 !important; color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">🎉 Pre-Order Confirmed!</h1>
-          <p style="font-size: 16px !important; margin: 0 !important; color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">Thank you for pre-ordering with QYVE</p>
+        <td class="darkmode-bg" style="background-color: #2E5C8A !important; background-image: linear-gradient(135deg, #2E5C8A 0%, #4A90C8 100%) !important; color: #ffffff !important; text-align: center !important; padding: 40px 20px !important;" data-ogsc="#ffffff" data-ogsb="#2E5C8A">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td style="text-align: center !important;">
+                <h1 class="darkmode-text" style="font-size: 32px !important; font-weight: 800 !important; margin: 0 0 8px 0 !important; color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; mso-line-height-rule: exactly !important; line-height: 38px !important;">
+                  <span class="darkmode-text" style="color: #ffffff !important; text-decoration: none !important; mso-color-alt: #ffffff;">🎉 Pre-Order Confirmed!</span>
+                </h1>
+                <p class="darkmode-text" style="font-size: 16px !important; margin: 0 !important; color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; mso-line-height-rule: exactly !important; line-height: 24px !important;">
+                  <span class="darkmode-text" style="color: #ffffff !important; text-decoration: none !important; mso-color-alt: #ffffff;">Thank you for pre-ordering with QYVE</span>
+                </p>
+              </td>
+            </tr>
+          </table>
         </td>
       </tr>
       
