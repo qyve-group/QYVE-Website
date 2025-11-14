@@ -798,9 +798,9 @@ export const generatePreOrderConfirmationEmail = (data: PreOrderData) => `
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px !important; margin: 0 auto !important; background-color: #ffffff !important; border-radius: 12px !important; overflow: hidden !important; border: 1px solid #e0e0e0 !important;">
       <!-- Header Section -->
       <tr>
-        <td style="background-color: #0a1f3d !important; background-image: linear-gradient(135deg, #0a1f3d 0%, #1a5a7a 100%) !important; color: #ffffff !important; text-align: center !important; padding: 40px 20px !important;">
-          <h1 style="font-size: 32px !important; font-weight: 800 !important; margin: 0 0 8px 0 !important; color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">🎉 Pre-Order Confirmed!</h1>
-          <p style="font-size: 16px !important; margin: 0 !important; color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">Thank you for pre-ordering with QYVE</p>
+        <td style="background-color: #2E5C8A !important; background-image: linear-gradient(135deg, #2E5C8A 0%, #4A90C8 100%) !important; color: #ffffff !important; text-align: center !important; padding: 40px 20px !important;" data-ogsc="#2E5C8A" data-ogsb="#ffffff">
+          <h1 style="font-size: 32px !important; font-weight: 800 !important; margin: 0 0 8px 0 !important; color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;" data-ogsc="#ffffff">🎉 Pre-Order Confirmed!</h1>
+          <p style="font-size: 16px !important; margin: 0 !important; color: #ffffff !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;" data-ogsc="#ffffff">Thank you for pre-ordering with QYVE</p>
         </td>
       </tr>
       
