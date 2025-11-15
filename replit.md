@@ -57,7 +57,19 @@ To fully run this application, you'll need to configure:
    - Google Analytics ID
 
 ## Recent Changes
-- 2025-11-11: Updated SubZero hero banner - desktop now uses landscape image filling whole div with centered caption at bottom
+- 2025-11-14: Implemented cross-client dark mode CSS for Gmail/Outlook/Apple Mail - uses Gmail-specific selectors (u + .gmail-body) and mobile dark mode media queries
+- 2025-11-14: Fixed header text to stay white in dark mode emails - corrected Outlook dark mode attributes (data-ogsc/data-ogsb)
+- 2025-11-14: Fixed header gradient in dark mode emails - changed from very dark blue (#0a1f3d → #1a5a7a) to lighter blue (#2E5C8A → #4A90C8)
+- 2025-11-14: Fixed price visibility in dark mode emails - changed to pure black with teal accent border
+- 2025-11-14: Updated email templates to support both light and dark mode email clients
+- 2025-11-13: Added GDPR/privacy consent checkbox to SubZero pre-order form
+- 2025-11-13: Fixed SubZero pre-order form API endpoint (was calling non-existent route)
+- 2025-11-13: Created pre_orders and pre_order_status_history database tables in Supabase
+- 2025-11-13: Connected pre-order form to existing /api/products/pre-orders/submit route
+- 2025-11-12: Added Testimonials section to SubZero landing page with 3 customer testimonials
+- 2025-11-12: Added FAQs section to SubZero landing page with 8 comprehensive questions and answers
+- 2025-11-12: Increased desktop hero banner height to 700px for better landscape image display
+- 2025-11-11: Updated SubZero hero banner - desktop uses landscape image, mobile uses portrait image
 - 2025-11-11: Fixed SubZero breakdown image cutting on mobile - uses object-contain on mobile, object-cover on desktop
 - 2025-11-11: Implemented responsive image handling for SubZero campaign (portrait for mobile, landscape for desktop)
 - 2025-09-06: Set up environment-aware Stripe configuration (test keys for Replit, production for Vercel)

@@ -5,10 +5,12 @@ import React from 'react';
 // import NewsletterSignup from './NewsletterSignup';
 // import ProudlyMalaysian from './ProudlyMalaysian';
 // import SubZeroCTA from './SubZeroCTA';
+import SubZeroFAQs from './SubZeroFAQs';
 import SubZeroFeatures from './SubZeroFeatures';
 import SubZeroHero from './SubZeroHero';
 import SubZeroPreOrder from './SubZeroPreOrder';
 import SubZeroSizeChart from './SubZeroSizeChart';
+import SubZeroTestimonials from './SubZeroTestimonials';
 
 const SubZeroPage = () => {
   return (
@@ -16,8 +18,11 @@ const SubZeroPage = () => {
       {/* SubZero Landing Page Sections */}
       <SubZeroHero />
       <SubZeroFeatures />
-      <SubZeroSizeChart />
       <SubZeroPreOrder />
+      <SubZeroSizeChart />
+      <SubZeroTestimonials />
+      <SubZeroFAQs />
+
       {/* <SubZeroCTA /> */}
       {/* <ProudlyMalaysian /> */}
       {/* <NewsletterSignup /> */}

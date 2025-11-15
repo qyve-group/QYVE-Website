@@ -36,6 +36,7 @@ const SubZeroPreOrderForm = ({
       country: 'Malaysia',
     },
     preOrderNotes: '',
+    dataConsent: false,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,7 +51,8 @@ const SubZeroPreOrderForm = ({
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+    const { checked } = e.target as HTMLInputElement;
 
     if (name.startsWith('shipping_')) {
       const field = name.replace('shipping_', '');
@@ -64,7 +66,7 @@ const SubZeroPreOrderForm = ({
     } else {
       setFormData((prev) => ({
         ...prev,
-        [name]: value,
+        [name]: type === 'checkbox' ? checked : value,
       }));
     }
   };
@@ -78,7 +80,7 @@ const SubZeroPreOrderForm = ({
       const totalPrice = defaultPrice * formData.quantity;
       const productVariant = `Size: ${formData.size}, Color: ${formData.color}`;
 
-      const response = await fetch('/api/pre-orders/submit', {
+      const response = await fetch('/api/products/pre-orders/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -124,10 +126,11 @@ const SubZeroPreOrderForm = ({
   if (success) {
     return (
       <div className="p-8 text-center">
-        <div className="mb-4 text-6xl">🎉</div>
+        {/* <div className="mb-4 text-6xl">🎉</div> */}
         <h3 className="mb-2 text-2xl font-bold text-green-600">
-          Pre-Order Confirmed!
+          Pre-Order Confirmed! Please check your email address.
         </h3>
+        <p className="text-gray-600 mb-4">Please check your email</p>
         {/* <p className="text-gray-600">
           Thank you! We&apos;ll send you an email with payment instructions.
         </p> */}
@@ -406,10 +409,33 @@ const SubZeroPreOrderForm = ({
           </div>
         </div>
 
+        {/* Data Consent Checkbox */}
+        <div className="border-gray-200 rounded-lg border bg-blue-50 p-4">
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="dataConsent"
+              name="dataConsent"
+              checked={formData.dataConsent}
+              onChange={handleInputChange}
+              required
+              className="border-gray-300 mt-1 size-4 rounded text-blue-600 focus:ring-2 focus:ring-blue-500"
+            />
+            <label
+              htmlFor="dataConsent"
+              className="text-gray-700 cursor-pointer text-sm"
+            >
+              I agree to the collection and use of my personal data for order
+              processing, customer support, and updates about products or
+              services. *
+            </label>
+          </div>
+        </div>
+
         {/* Submit Button */}
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !formData.dataConsent}
           className="w-full rounded-lg bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] py-4 text-lg font-semibold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isSubmitting ? 'Submitting...' : 'Submit Pre-Order'}
