@@ -14,7 +14,7 @@ interface PreOrderFormProps {
 
 const SubZeroPreOrderForm = ({
   productName = 'SubZero Futsal Shoes (Early Bird)',
-  defaultPrice = 214.2,
+  defaultPrice = 218,
   onClose,
   onSuccess,
 }: PreOrderFormProps) => {
@@ -128,7 +128,7 @@ const SubZeroPreOrderForm = ({
       <div className="p-8 text-center">
         {/* <div className="mb-4 text-6xl">🎉</div> */}
         <h3 className="mb-2 text-2xl font-bold text-green-600">
-          Pre-Order Confirmed! Please check your email address.
+          Pre-Order Confirmed!
         </h3>
         <p className="text-gray-600 mb-4">Please check your email</p>
         {/* <p className="text-gray-600">
@@ -400,7 +400,8 @@ const SubZeroPreOrderForm = ({
             <div className="flex justify-between text-lg">
               <span className="font-bold">Total:</span>
               <span className="font-bold text-blue-600">
-                RM {(defaultPrice * formData.quantity).toFixed(2)}
+                {/* RM {(defaultPrice * formData.quantity).toFixed(2)} */}
+                RM 218
               </span>
             </div>
             {/* <p className="text-sm text-gray-600 mt-2">

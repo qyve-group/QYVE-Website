@@ -32,7 +32,7 @@ const faqs = [
     id: '5',
     question: 'Is the Early Bird discount still available?',
     answer:
-      'Yes! The Early Bird price of RM 214.20 (10% off RM 238) is available for pre-orders. This is a limited-time offer exclusively for the first 50 orders.',
+      'Yes! The Early Bird price of RM 218 (RM 20 off RM 238) is available for pre-orders. This is a limited-time offer exclusively for the first 50 orders.',
   },
   {
     id: '6',
