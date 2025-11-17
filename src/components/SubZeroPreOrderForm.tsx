@@ -400,7 +400,8 @@ const SubZeroPreOrderForm = ({
             <div className="flex justify-between text-lg">
               <span className="font-bold">Total:</span>
               <span className="font-bold text-blue-600">
-                RM {(defaultPrice * formData.quantity).toFixed(2)}
+                {/* RM {(defaultPrice * formData.quantity).toFixed(2)} */}
+                RM 218
               </span>
             </div>
             {/* <p className="text-sm text-gray-600 mt-2">
