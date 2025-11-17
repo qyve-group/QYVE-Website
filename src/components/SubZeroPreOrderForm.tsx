@@ -14,7 +14,7 @@ interface PreOrderFormProps {
 
 const SubZeroPreOrderForm = ({
   productName = 'SubZero Futsal Shoes (Early Bird)',
-  defaultPrice = 214.2,
+  defaultPrice = 218,
   onClose,
   onSuccess,
 }: PreOrderFormProps) => {
