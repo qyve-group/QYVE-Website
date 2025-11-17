@@ -129,7 +129,7 @@ const SubZeroPreOrder = () => {
                 <Dialog.Panel className="w-full max-w-4xl overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
                   <SubZeroPreOrderForm
                     productName="SubZero Futsal Shoes (Early Bird)"
-                    defaultPrice={214.2}
+                    defaultPrice={218}
                     onClose={() => setIsPreOrderOpen(false)}
                     onSuccess={(id) => {
                       console.log('Pre-order created:', id);

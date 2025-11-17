@@ -128,7 +128,7 @@ const SubZeroPreOrderForm = ({
       <div className="p-8 text-center">
         {/* <div className="mb-4 text-6xl">🎉</div> */}
         <h3 className="mb-2 text-2xl font-bold text-green-600">
-          Pre-Order Confirmed! Please check your email address.
+          Pre-Order Confirmed!
         </h3>
         <p className="text-gray-600 mb-4">Please check your email</p>
         {/* <p className="text-gray-600">
