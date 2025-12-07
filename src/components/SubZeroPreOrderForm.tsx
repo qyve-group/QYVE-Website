@@ -43,7 +43,20 @@ const SubZeroPreOrderForm = ({
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const sizes = ['38', '39', '40', '41', '42', '43', '44'];
+  const sizes = [
+    'US   6 /  UK   5 /  EU   37 /  CM   24',
+    'US   6.5 / UK   5.5 / EU   38.5 / CM   24.5',
+    'US   7 / UK   6 / EU   39 / CM   25',
+    'US   7.5 / UK   6.5 / EU   40 / CM   25.5',
+    'US   8 / UK   7 / EU   40.5 / CM   26',
+    'US   8.5 / UK   7.5 / EU   41 / CM   26.5',
+    'US   9 / UK   8 / EU   42 / CM   27',
+    'US   9.5 / UK   8.5 / EU   42.5 / CM   27.5',
+    'US   10 / UK   9 / EU   43 / CM   28',
+    'US   10.5 / UK   9.5 / EU   43 / CM   28.5',
+    'US   11 / UK   10 / EU   44.5 / CM   29',
+    'US   11.5 / UK   10.5 / EU   45 / CM   29.5',
+  ];
   const colors = ['White'];
 
   const handleInputChange = (
@@ -225,7 +238,7 @@ const SubZeroPreOrderForm = ({
                 <option value="">Select Size</option>
                 {sizes.map((size) => (
                   <option key={size} value={size}>
-                    {size} EU
+                    {size}
                   </option>
                 ))}
               </select>
@@ -443,7 +456,9 @@ const SubZeroPreOrderForm = ({
         </button>
 
         <p className="text-gray-600 text-center text-sm">
-          Expected delivery: Within 5 days from 12/12 once full payment is made.
+          Expected delivery will be 5-7 days from week of 22/12. You will be
+          added to a WhatsApp Group once paid for updates on the shipment and
+          the behind the scenes of the shoe. Thank you!
         </p>
       </form>
     </div>

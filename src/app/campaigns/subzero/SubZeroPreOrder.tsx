@@ -19,10 +19,10 @@ const SubZeroPreOrder = () => {
             <span className="text-black">SECURE YOUR</span>{' '}
             <span className="text-[#4FD1C5]">SUBZERO</span>
           </h2>
-          <p className="text-gray-600 mx-auto max-w-2xl text-lg">
+          {/* <p className="text-gray-600 mx-auto max-w-2xl text-lg">
             Limited pre-order of up to 50 pairs ONLY. Be among the first to
             experience the future of futsal performance.
-          </p>
+          </p> */}
         </div>
 
         {/* Pre-Order Card */}
