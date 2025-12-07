@@ -2,13 +2,18 @@ import React from 'react';
 
 const SubZeroSizeChart = () => {
   const sizeData = [
-    { eu: '38', uk: '5.5', cm: '25.3' },
-    { eu: '39', uk: '6', cm: '26.0' },
-    { eu: '40', uk: '7', cm: '26.6' },
-    { eu: '41', uk: '7.5', cm: '27.3' },
-    { eu: '42', uk: '8.5', cm: '28.0' },
-    { eu: '43', uk: '9', cm: '28.6' },
-    { eu: '44', uk: '10', cm: '29.3' },
+    { us: '6', uk: '5', eu: '37', cm: '24' },
+    { us: '6.5', uk: '5.5', eu: '38.5', cm: '24.5' },
+    { us: '7', uk: '6', eu: '39', cm: '25' },
+    { us: '7.5', uk: '6.5', eu: '40', cm: '25.5' },
+    { us: '8', uk: '7', eu: '40.5', cm: '26' },
+    { us: '8.5', uk: '7.5', eu: '41', cm: '26.5' },
+    { us: '9', uk: '8', eu: '42', cm: '27' },
+    { us: '9.5', uk: '8.5', eu: '42.5', cm: '27.5' },
+    { us: '10', uk: '9', eu: '43', cm: '28' },
+    { us: '10.5', uk: '9.5', eu: '43', cm: '28.5' },
+    { us: '11', uk: '10', eu: '44.5', cm: '29' },
+    { us: '11.5', uk: '10.5', eu: '45', cm: '29.5' },
   ];
 
   return (
@@ -42,6 +47,9 @@ const SubZeroSizeChart = () => {
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                     }`}
                   >
+                    <td className="text-gray-900 whitespace-nowrap px-6 py-4 text-center text-lg font-semibold">
+                      {size.us}
+                    </td>
                     <td className="text-gray-900 whitespace-nowrap px-6 py-4 text-center text-lg font-semibold">
                       {size.eu}
                     </td>
