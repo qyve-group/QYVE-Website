@@ -2,18 +2,17 @@ import React from 'react';
 
 const SubZeroSizeChart = () => {
   const sizeData = [
-    { us: '6', uk: '5', eu: '37', cm: '24' },
-    { us: '6.5', uk: '5.5', eu: '38.5', cm: '24.5' },
-    { us: '7', uk: '6', eu: '39', cm: '25' },
-    { us: '7.5', uk: '6.5', eu: '40', cm: '25.5' },
-    { us: '8', uk: '7', eu: '40.5', cm: '26' },
-    { us: '8.5', uk: '7.5', eu: '41', cm: '26.5' },
-    { us: '9', uk: '8', eu: '42', cm: '27' },
-    { us: '9.5', uk: '8.5', eu: '42.5', cm: '27.5' },
-    { us: '10', uk: '9', eu: '43', cm: '28' },
-    { us: '10.5', uk: '9.5', eu: '43', cm: '28.5' },
-    { us: '11', uk: '10', eu: '44.5', cm: '29' },
-    { us: '11.5', uk: '10.5', eu: '45', cm: '29.5' },
+    { uk: '5.5', eu: '39', cm: '24.5' },
+    { uk: '6', eu: '40', cm: '25' },
+    { uk: '6.5', eu: '40.5', cm: '25.5' },
+    { uk: '7', eu: '41', cm: '26' },
+    { uk: '7.5', eu: '42', cm: '26.5' },
+    { uk: '8', eu: '42.5', cm: '27' },
+    { uk: '8.5', eu: '43', cm: '27.5' },
+    { uk: '9', eu: '44', cm: '28' },
+    { uk: '9.5', eu: '44.5', cm: '28.5' },
+    { uk: '10', eu: '45', cm: '29' },
+    { uk: '10.5', eu: '45.5', cm: '29.5' },
   ];
 
   return (
@@ -29,13 +28,13 @@ const SubZeroSizeChart = () => {
               <thead>
                 <tr className="bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] text-white">
                   <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
-                    EU Size
-                  </th>
-                  <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
                     UK Size
                   </th>
                   <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
-                    Foot Length (cm)
+                    EU Size
+                  </th>
+                  <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
+                    CM Length
                   </th>
                 </tr>
               </thead>
@@ -48,16 +47,13 @@ const SubZeroSizeChart = () => {
                     }`}
                   >
                     <td className="text-gray-900 whitespace-nowrap px-6 py-4 text-center text-lg font-semibold">
-                      {size.us}
-                    </td>
-                    <td className="text-gray-900 whitespace-nowrap px-6 py-4 text-center text-lg font-semibold">
-                      {size.eu}
-                    </td>
-                    <td className="text-gray-700 whitespace-nowrap px-6 py-4 text-center text-lg">
                       {size.uk}
                     </td>
                     <td className="text-gray-700 whitespace-nowrap px-6 py-4 text-center text-lg">
-                      {size.cm} cm
+                      {size.eu}
+                    </td>
+                    <td className="text-gray-700 whitespace-nowrap px-6 py-4 text-center text-lg">
+                      {size.cm}
                     </td>
                   </tr>
                 ))}
