@@ -55,7 +55,6 @@ const SubZeroPreOrderForm = ({
     'UK 9.5/ EU 44.5/ 28.5 cm',
     'UK 10/ EU 45/ 29 cm',
     'UK 10.5/ EU 45.5/ 29.5 cm',
-    ,
   ];
   const colors = ['White'];
 
