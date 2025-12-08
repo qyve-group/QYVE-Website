@@ -44,18 +44,18 @@ const SubZeroPreOrderForm = ({
   const [success, setSuccess] = useState(false);
 
   const sizes = [
-    'US   6 /  UK   5 /  EU   37 /  CM   24',
-    'US   6.5 / UK   5.5 / EU   38.5 / CM   24.5',
-    'US   7 / UK   6 / EU   39 / CM   25',
-    'US   7.5 / UK   6.5 / EU   40 / CM   25.5',
-    'US   8 / UK   7 / EU   40.5 / CM   26',
-    'US   8.5 / UK   7.5 / EU   41 / CM   26.5',
-    'US   9 / UK   8 / EU   42 / CM   27',
-    'US   9.5 / UK   8.5 / EU   42.5 / CM   27.5',
-    'US   10 / UK   9 / EU   43 / CM   28',
-    'US   10.5 / UK   9.5 / EU   43 / CM   28.5',
-    'US   11 / UK   10 / EU   44.5 / CM   29',
-    'US   11.5 / UK   10.5 / EU   45 / CM   29.5',
+    'UK 5.5/ EU 39/ 24.5 cm',
+    'UK 6/ EU 40/ 25 cm',
+    'UK 6.5/ EU 40.5/ 25.5 cm',
+    'UK 7/ EU 41/ 26 cm',
+    'UK 7.5/ EU 42/ 26.5 cm',
+    'UK 8/ EU 42.5/ 27 cm',
+    'UK 8.5/ EU 43/ 27.5 cm',
+    'UK 9/ EU 44/ 28 cm',
+    'UK 9.5/ EU 44.5/ 28.5 cm',
+    'UK 10/ EU 45/ 29 cm',
+    'UK 10.5/ EU 45.5/ 29.5 cm',
+    ,
   ];
   const colors = ['White'];
 
