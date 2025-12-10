@@ -100,6 +100,104 @@ export async function POST(req: Request) {
   if (event.type === 'checkout.session.completed') {
     console.log('✅ Processing checkout.session.completed event');
     const session = event.data.object;
+    
+    // Check if this is a SubZero pre-order
+    if (session.metadata?.product_type === 'subzero_preorder') {
+      console.log('🥶 Processing SubZero pre-order payment');
+      
+      const orderRef = session.id.slice(-12).toUpperCase();
+      const metadata = session.metadata;
+      
+      try {
+        // Store pre-order in database
+        const { data: preOrderData, error: preOrderError } = await supabaseAdmin
+          .from('pre_orders')
+          .insert({
+            customer_email: metadata.customer_email,
+            customer_name: metadata.customer_name,
+            customer_phone: metadata.customer_phone || null,
+            product_name: 'SubZero Futsal Shoes (Early Bird)',
+            product_variant: `Size: ${metadata.size}, Color: ${metadata.color}`,
+            quantity: parseInt(metadata.quantity || '1'),
+            unit_price: 218,
+            total_price: session.amount_total ? session.amount_total / 100 : 218,
+            shipping_address: {
+              name: metadata.shipping_name,
+              address_1: metadata.shipping_address_1,
+              address_2: metadata.shipping_address_2,
+              city: metadata.shipping_city,
+              state: metadata.shipping_state,
+              postal_code: metadata.shipping_postal_code,
+              country: metadata.shipping_country,
+            },
+            status: 'confirmed',
+            payment_status: 'paid',
+            source: 'stripe',
+            stripe_session_id: session.id,
+          })
+          .select()
+          .single();
+
+        if (preOrderError) {
+          console.error('❌ Failed to store SubZero pre-order:', preOrderError);
+        } else {
+          console.log('✅ SubZero pre-order stored:', preOrderData?.id);
+        }
+
+        // Send confirmation email via Brevo
+        const email = new SendSmtpEmail();
+        email.templateId = 5; // SubZero confirmation template (create in Brevo)
+        email.to = [{ email: metadata.customer_email as string }];
+        email.params = {
+          subject: 'SubZero Pre-Order Confirmed - Payment Received!',
+          orderRef,
+          customerName: metadata.customer_name,
+          size: metadata.size,
+          color: metadata.color,
+          quantity: metadata.quantity,
+          totalPrice: metadata.total_price,
+          shippingName: metadata.shipping_name,
+          shippingAddress: `${metadata.shipping_address_1}${metadata.shipping_address_2 ? ', ' + metadata.shipping_address_2 : ''}, ${metadata.shipping_city}, ${metadata.shipping_state} ${metadata.shipping_postal_code}`,
+        };
+
+        await brevoClient.sendTransacEmail(email);
+        console.log('✅ SubZero confirmation email sent to:', metadata.customer_email);
+
+        // Send Telegram notification
+        const telegramMessage = `🥶 NEW SUBZERO PRE-ORDER PAID!\n\n` +
+          `Order Ref: ${orderRef}\n` +
+          `Customer: ${metadata.customer_name}\n` +
+          `Email: ${metadata.customer_email}\n` +
+          `Phone: ${metadata.customer_phone || 'Not provided'}\n\n` +
+          `Size: ${metadata.size}\n` +
+          `Color: ${metadata.color}\n` +
+          `Quantity: ${metadata.quantity}\n` +
+          `Total: ${metadata.total_price}\n\n` +
+          `Ship to: ${metadata.shipping_name}\n` +
+          `${metadata.shipping_address_1}\n` +
+          `${metadata.shipping_city}, ${metadata.shipping_state} ${metadata.shipping_postal_code}`;
+
+        await fetch(
+          `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: process.env.GROUP_CHAT_ID,
+              text: telegramMessage,
+            }),
+          },
+        );
+        console.log('✅ SubZero Telegram notification sent');
+
+      } catch (subzeroError) {
+        console.error('❌ SubZero processing error:', subzeroError);
+      }
+
+      return NextResponse.json({ received: true, type: 'subzero_preorder' });
+    }
+
+    // Regular order processing continues below
     const userId = session.metadata?.user_id || '';
     const isGuestCheckout =
       userId === 'guest' || session.metadata?.is_guest_checkout === 'true';
