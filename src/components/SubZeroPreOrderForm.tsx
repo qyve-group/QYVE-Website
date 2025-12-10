@@ -16,7 +16,6 @@ const SubZeroPreOrderForm = ({
   productName = 'SubZero Futsal Shoes (Early Bird)',
   defaultPrice = 218,
   onClose,
-  onSuccess,
 }: PreOrderFormProps) => {
   const [formData, setFormData] = useState({
     customerName: '',
@@ -41,7 +40,6 @@ const SubZeroPreOrderForm = ({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
 
   const sizes = [
     'UK 5.5/ EU 39/ 24.5 cm',
@@ -90,65 +88,41 @@ const SubZeroPreOrderForm = ({
 
     try {
       const totalPrice = defaultPrice * formData.quantity;
-      const productVariant = `Size: ${formData.size}, Color: ${formData.color}`;
 
-      const response = await fetch('/api/products/pre-orders/submit', {
+      const response = await fetch('/api/subzero/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           customerEmail: formData.customerEmail,
           customerName: formData.customerName,
           customerPhone: formData.customerPhone,
-          productName,
-          productVariant,
+          size: formData.size,
+          color: formData.color,
           quantity: formData.quantity,
           unitPrice: defaultPrice,
           totalPrice,
           shippingAddress: formData.shippingAddress,
-          preOrderNotes: formData.preOrderNotes,
-          depositRequired: true,
-          depositAmount: totalPrice * 0.3,
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to submit pre-order');
+        throw new Error(data.error || 'Failed to create checkout session');
       }
 
-      setSuccess(true);
-
-      if (onSuccess) {
-        onSuccess(data.preOrderId);
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL received');
       }
-
-      setTimeout(() => {
-        if (onClose) onClose();
-      }, 3000);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : 'Failed to submit pre-order',
+        err instanceof Error ? err.message : 'Failed to proceed to payment',
       );
-    } finally {
       setIsSubmitting(false);
     }
   };
-
-  if (success) {
-    return (
-      <div className="p-8 text-center">
-        {/* <div className="mb-4 text-6xl">🎉</div> */}
-        <h3 className="mb-2 text-2xl font-bold text-green-600">
-          Pre-Order Confirmed!
-        </h3>
-        <p className="text-gray-600 mb-4">Please check your email</p>
-        {/* <p className="text-gray-600">
-          Thank you! We&apos;ll send you an email with payment instructions.
-        </p> */}
-      </div>
-    );
-  }
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -451,7 +425,7 @@ const SubZeroPreOrderForm = ({
           disabled={isSubmitting || !formData.dataConsent}
           className="w-full rounded-lg bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] py-4 text-lg font-semibold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {isSubmitting ? 'Submitting...' : 'Submit Pre-Order'}
+          {isSubmitting ? 'Redirecting to Payment...' : 'Proceed to Payment'}
         </button>
 
         <p className="text-gray-600 text-center text-sm">

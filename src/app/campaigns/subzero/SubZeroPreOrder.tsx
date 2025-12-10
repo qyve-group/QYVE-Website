@@ -131,10 +131,6 @@ const SubZeroPreOrder = () => {
                     productName="SubZero Futsal Shoes (Early Bird)"
                     defaultPrice={218}
                     onClose={() => setIsPreOrderOpen(false)}
-                    onSuccess={(id) => {
-                      console.log('Pre-order created:', id);
-                      setTimeout(() => setIsPreOrderOpen(false), 3000);
-                    }}
                   />
                 </Dialog.Panel>
               </Transition.Child>
