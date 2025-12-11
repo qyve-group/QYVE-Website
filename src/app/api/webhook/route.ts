@@ -679,7 +679,7 @@ export async function POST(req: Request) {
         orderItemsText = cartItems
           .map(
             (item: any) =>
-              `${item.name} (${item.products_sizes.size || 'N/A'}) x${item.quantity} - RM${item.price}`,
+              `${item.name} (${item.product_size || 'N/A'}) x${item.quantity} - RM${item.price}`,
           )
           .join('\n');
       } else {
