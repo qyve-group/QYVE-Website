@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable no-nested-ternary */
 
 'use client';
 
@@ -9,14 +10,45 @@ interface PreOrderFormProps {
   productName?: string;
   defaultPrice?: number;
   onClose?: () => void;
-  onSuccess?: (preOrderId: string) => void;
+  // onSuccess?: (preOrderId: string) => void;
 }
+
+// Shipping rates
+const SHIPPING_RATES = {
+  semenanjung: 8,
+  eastMalaysia: 15,
+};
+
+// States in Semenanjung (Peninsular Malaysia)
+const SEMENANJUNG_STATES = [
+  'Johor',
+  'Kedah',
+  'Kelantan',
+  'Kuala Lumpur',
+  'Labuan',
+  'Melaka',
+  'Negeri Sembilan',
+  'Pahang',
+  'Penang',
+  'Perak',
+  'Perlis',
+  'Putrajaya',
+  'Selangor',
+  'Terengganu',
+];
+
+// States in East Malaysia
+const EAST_MALAYSIA_STATES = ['Sabah', 'Sarawak'];
+
+const ALL_MALAYSIA_STATES = [
+  ...SEMENANJUNG_STATES,
+  ...EAST_MALAYSIA_STATES,
+].sort();
 
 const SubZeroPreOrderForm = ({
   productName = 'SubZero Futsal Shoes (Early Bird)',
   defaultPrice = 218,
   onClose,
-  onSuccess,
 }: PreOrderFormProps) => {
   const [formData, setFormData] = useState({
     customerName: '',
@@ -41,7 +73,19 @@ const SubZeroPreOrderForm = ({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+
+  // Calculate shipping cost based on state
+  const getShippingCost = () => {
+    const { state } = formData.shippingAddress;
+    if (!state) return 0;
+    if (EAST_MALAYSIA_STATES.includes(state))
+      return SHIPPING_RATES.eastMalaysia;
+    return SHIPPING_RATES.semenanjung;
+  };
+
+  const shippingCost = getShippingCost();
+  const subtotal = defaultPrice * formData.quantity;
+  const totalPrice = subtotal + shippingCost;
 
   const sizes = [
     'UK 5.5/ EU 39/ 24.5 cm',
@@ -89,66 +133,42 @@ const SubZeroPreOrderForm = ({
     setIsSubmitting(true);
 
     try {
-      const totalPrice = defaultPrice * formData.quantity;
-      const productVariant = `Size: ${formData.size}, Color: ${formData.color}`;
-
-      const response = await fetch('/api/products/pre-orders/submit', {
+      const response = await fetch('/api/subzero/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           customerEmail: formData.customerEmail,
           customerName: formData.customerName,
           customerPhone: formData.customerPhone,
-          productName,
-          productVariant,
+          size: formData.size,
+          color: formData.color,
           quantity: formData.quantity,
           unitPrice: defaultPrice,
+          subtotal,
+          shippingCost,
           totalPrice,
           shippingAddress: formData.shippingAddress,
-          preOrderNotes: formData.preOrderNotes,
-          depositRequired: true,
-          depositAmount: totalPrice * 0.3,
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to submit pre-order');
+        throw new Error(data.error || 'Failed to create checkout session');
       }
 
-      setSuccess(true);
-
-      if (onSuccess) {
-        onSuccess(data.preOrderId);
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL received');
       }
-
-      setTimeout(() => {
-        if (onClose) onClose();
-      }, 3000);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : 'Failed to submit pre-order',
+        err instanceof Error ? err.message : 'Failed to proceed to payment',
       );
-    } finally {
       setIsSubmitting(false);
     }
   };
-
-  if (success) {
-    return (
-      <div className="p-8 text-center">
-        {/* <div className="mb-4 text-6xl">🎉</div> */}
-        <h3 className="mb-2 text-2xl font-bold text-green-600">
-          Pre-Order Confirmed!
-        </h3>
-        <p className="text-gray-600 mb-4">Please check your email</p>
-        {/* <p className="text-gray-600">
-          Thank you! We&apos;ll send you an email with payment instructions.
-        </p> */}
-      </div>
-    );
-  }
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -357,14 +377,23 @@ const SubZeroPreOrderForm = ({
               <label className="text-gray-700 mb-1 block text-sm font-medium">
                 State *
               </label>
-              <input
-                type="text"
+              <select
                 name="shipping_state"
                 value={formData.shippingAddress.state}
                 onChange={handleInputChange}
                 required
                 className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
-              />
+              >
+                <option value="">Select State</option>
+                {ALL_MALAYSIA_STATES.map((state) => (
+                  <option key={state} value={state}>
+                    {state}{' '}
+                    {EAST_MALAYSIA_STATES.includes(state)
+                      ? '(East Malaysia)'
+                      : ''}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
@@ -408,17 +437,33 @@ const SubZeroPreOrderForm = ({
             <span className="text-gray-700">Quantity:</span>
             <span className="font-semibold">{formData.quantity}</span>
           </div>
+          <div className="mb-2 flex justify-between">
+            <span className="text-gray-700">Subtotal:</span>
+            <span className="font-semibold">RM {subtotal.toFixed(2)}</span>
+          </div>
+          <div className="mb-2 flex justify-between">
+            <span className="text-gray-700">
+              Shipping{' '}
+              {formData.shippingAddress.state
+                ? EAST_MALAYSIA_STATES.includes(formData.shippingAddress.state)
+                  ? '(Sabah/Sarawak)'
+                  : '(Semenanjung)'
+                : ''}
+              :
+            </span>
+            <span className="font-semibold">
+              {formData.shippingAddress.state
+                ? `RM ${shippingCost.toFixed(2)}`
+                : 'Select state'}
+            </span>
+          </div>
           <div className="mt-2 border-t pt-2">
             <div className="flex justify-between text-lg">
               <span className="font-bold">Total:</span>
               <span className="font-bold text-blue-600">
-                {/* RM {(defaultPrice * formData.quantity).toFixed(2)} */}
-                RM 218
+                RM {totalPrice.toFixed(2)}
               </span>
             </div>
-            {/* <p className="text-sm text-gray-600 mt-2">
-              30% deposit required: RM {(defaultPrice * formData.quantity * 0.3).toFixed(2)}
-            </p> */}
           </div>
         </div>
 
@@ -451,7 +496,7 @@ const SubZeroPreOrderForm = ({
           disabled={isSubmitting || !formData.dataConsent}
           className="w-full rounded-lg bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] py-4 text-lg font-semibold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {isSubmitting ? 'Submitting...' : 'Submit Pre-Order'}
+          {isSubmitting ? 'Redirecting to Payment...' : 'Proceed to Payment'}
         </button>
 
         <p className="text-gray-600 text-center text-sm">

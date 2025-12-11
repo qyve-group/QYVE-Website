@@ -29,23 +29,24 @@ const SubZeroPreOrder = () => {
         <div className="mx-auto max-w-2xl">
           <div className="border-gray-200 rounded-2xl border-2 bg-white p-8 shadow-lg transition-all hover:border-blue-500">
             <div className="mb-6 text-center">
-              <div className="mb-3 inline-block rounded-full bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] px-4 py-1 text-sm font-bold text-white">
+              {/* <div className="mb-3 inline-block rounded-full bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] px-4 py-1 text-sm font-bold text-white">
                 EARLY BIRD - RM 20 OFF
-              </div>
+              </div> */}
               {/* <div className="text-5xl mb-4">👟</div> */}
               <h3 className="mb-2 text-2xl font-bold">SubZero Futsal Shoes</h3>
               <p className="text-gray-600 mb-4">
                 Get the revolutionary SubZero futsal shoes
               </p>
               <div className="mb-2 flex items-baseline justify-center gap-3">
-                <span className="text-gray-400 text-2xl line-through">
+                <span className="text-gray-800 text-4xl">RM 238</span>
+                {/* <span className="text-gray-400 text-2xl line-through">
                   RM 238
-                </span>
-                <span className="text-4xl font-bold text-blue-600">RM 218</span>
+                </span> */}
+                {/* <span className="text-4xl font-bold text-blue-600">RM 218</span> */}
               </div>
-              <p className="mb-1 text-sm font-semibold text-green-600">
+              {/* <p className="mb-1 text-sm font-semibold text-green-600">
                 Save RM 20!
-              </p>
+              </p> */}
               {/* <p className="text-sm text-gray-500">30% deposit required (RM 64.26)</p> */}
             </div>
 
@@ -129,12 +130,8 @@ const SubZeroPreOrder = () => {
                 <Dialog.Panel className="w-full max-w-4xl overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
                   <SubZeroPreOrderForm
                     productName="SubZero Futsal Shoes (Early Bird)"
-                    defaultPrice={218}
+                    defaultPrice={238}
                     onClose={() => setIsPreOrderOpen(false)}
-                    onSuccess={(id) => {
-                      console.log('Pre-order created:', id);
-                      setTimeout(() => setIsPreOrderOpen(false), 3000);
-                    }}
                   />
                 </Dialog.Panel>
               </Transition.Child>
