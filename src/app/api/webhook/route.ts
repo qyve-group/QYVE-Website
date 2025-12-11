@@ -146,22 +146,49 @@ export async function POST(req: Request) {
 
         // Send confirmation email via Brevo
         const email = new SendSmtpEmail();
-        email.templateId = 12; // SubZero confirmation template (create in Brevo)
-        email.to = [{ email: metadata.customer_email as string }];
-        email.params = {
-          subject: 'SubZero Pre-Order Confirmed - Payment Received!',
-          orderRef,
-          customerName: metadata.customer_name,
-          size: metadata.size,
-          color: metadata.color,
-          quantity: metadata.quantity,
-          totalPrice: metadata.total_price,
-          shippingName: metadata.shipping_name,
-          shippingAddress: `${metadata.shipping_address_1}${metadata.shipping_address_2 ? ', ' + metadata.shipping_address_2 : ''}, ${metadata.shipping_city}, ${metadata.shipping_state} ${metadata.shipping_postal_code}`,
-        };
+        email.sender = { name: 'QYVE', email: 'noreply@qyveofficial.com' };
+        email.to = [{ email: metadata.customer_email as string, name: metadata.customer_name as string }];
+        email.subject = 'SubZero Pre-Order Confirmed - Payment Received!';
+        email.htmlContent = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #1a5a7a 0%, #2E5C8A 100%); padding: 30px; text-align: center;">
+              <h1 style="color: white; margin: 0;">SubZero Pre-Order Confirmed!</h1>
+            </div>
+            <div style="padding: 30px; background: #f9f9f9;">
+              <p>Hi <strong>${metadata.customer_name}</strong>,</p>
+              <p>Thank you for your SubZero Early Bird pre-order! Your payment has been received.</p>
+              
+              <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                <h3 style="margin-top: 0; color: #1a5a7a;">Order Details</h3>
+                <p><strong>Order Reference:</strong> ${orderRef}</p>
+                <p><strong>Product:</strong> SubZero Futsal Shoes (Early Bird)</p>
+                <p><strong>Size:</strong> ${metadata.size}</p>
+                <p><strong>Color:</strong> ${metadata.color}</p>
+                <p><strong>Quantity:</strong> ${metadata.quantity}</p>
+                <p><strong>Total Paid:</strong> ${metadata.total_price}</p>
+              </div>
+              
+              <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                <h3 style="margin-top: 0; color: #1a5a7a;">Shipping Address</h3>
+                <p>${metadata.shipping_name}<br>
+                ${metadata.shipping_address_1}<br>
+                ${metadata.shipping_address_2 ? metadata.shipping_address_2 + '<br>' : ''}
+                ${metadata.shipping_city}, ${metadata.shipping_state} ${metadata.shipping_postal_code}<br>
+                ${metadata.shipping_country}</p>
+              </div>
+              
+              <p><strong>Expected Delivery:</strong> 5-7 days from week of 22/12/2025</p>
+              
+              <p style="color: #666; font-size: 14px;">If you have any questions, reply to this email or contact us via WhatsApp.</p>
+            </div>
+            <div style="background: #1a5a7a; padding: 20px; text-align: center;">
+              <p style="color: white; margin: 0; font-size: 14px;">QYVE Official | www.qyveofficial.com</p>
+            </div>
+          </div>
+        `;
 
-        await brevoClient.sendTransacEmail(email);
-        console.log('✅ SubZero confirmation email sent to:', metadata.customer_email);
+        const emailResult = await brevoClient.sendTransacEmail(email);
+        console.log('✅ SubZero confirmation email sent to:', metadata.customer_email, 'Message ID:', emailResult.body?.messageId);
 
         // Send Telegram notification
         const telegramMessage = `🥶 NEW SUBZERO PRE-ORDER PAID!\n\n` +
