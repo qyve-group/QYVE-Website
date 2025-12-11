@@ -12,6 +12,24 @@ interface PreOrderFormProps {
   onSuccess?: (preOrderId: string) => void;
 }
 
+// Shipping rates
+const SHIPPING_RATES = {
+  semenanjung: 8,
+  eastMalaysia: 15,
+};
+
+// States in Semenanjung (Peninsular Malaysia)
+const SEMENANJUNG_STATES = [
+  'Johor', 'Kedah', 'Kelantan', 'Kuala Lumpur', 'Labuan', 'Melaka', 
+  'Negeri Sembilan', 'Pahang', 'Penang', 'Perak', 'Perlis', 
+  'Putrajaya', 'Selangor', 'Terengganu'
+];
+
+// States in East Malaysia
+const EAST_MALAYSIA_STATES = ['Sabah', 'Sarawak'];
+
+const ALL_MALAYSIA_STATES = [...SEMENANJUNG_STATES, ...EAST_MALAYSIA_STATES].sort();
+
 const SubZeroPreOrderForm = ({
   productName = 'SubZero Futsal Shoes (Early Bird)',
   defaultPrice = 218,
@@ -40,6 +58,18 @@ const SubZeroPreOrderForm = ({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+
+  // Calculate shipping cost based on state
+  const getShippingCost = () => {
+    const state = formData.shippingAddress.state;
+    if (!state) return 0;
+    if (EAST_MALAYSIA_STATES.includes(state)) return SHIPPING_RATES.eastMalaysia;
+    return SHIPPING_RATES.semenanjung;
+  };
+
+  const shippingCost = getShippingCost();
+  const subtotal = defaultPrice * formData.quantity;
+  const totalPrice = subtotal + shippingCost;
 
   const sizes = [
     'UK 5.5/ EU 39/ 24.5 cm',
@@ -87,8 +117,6 @@ const SubZeroPreOrderForm = ({
     setIsSubmitting(true);
 
     try {
-      const totalPrice = defaultPrice * formData.quantity;
-
       const response = await fetch('/api/subzero/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -100,6 +128,8 @@ const SubZeroPreOrderForm = ({
           color: formData.color,
           quantity: formData.quantity,
           unitPrice: defaultPrice,
+          subtotal,
+          shippingCost,
           totalPrice,
           shippingAddress: formData.shippingAddress,
         }),
@@ -331,14 +361,20 @@ const SubZeroPreOrderForm = ({
               <label className="text-gray-700 mb-1 block text-sm font-medium">
                 State *
               </label>
-              <input
-                type="text"
+              <select
                 name="shipping_state"
                 value={formData.shippingAddress.state}
                 onChange={handleInputChange}
                 required
                 className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
-              />
+              >
+                <option value="">Select State</option>
+                {ALL_MALAYSIA_STATES.map((state) => (
+                  <option key={state} value={state}>
+                    {state} {EAST_MALAYSIA_STATES.includes(state) ? '(East Malaysia)' : ''}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
@@ -382,17 +418,27 @@ const SubZeroPreOrderForm = ({
             <span className="text-gray-700">Quantity:</span>
             <span className="font-semibold">{formData.quantity}</span>
           </div>
+          <div className="mb-2 flex justify-between">
+            <span className="text-gray-700">Subtotal:</span>
+            <span className="font-semibold">RM {subtotal.toFixed(2)}</span>
+          </div>
+          <div className="mb-2 flex justify-between">
+            <span className="text-gray-700">
+              Shipping {formData.shippingAddress.state ? 
+                (EAST_MALAYSIA_STATES.includes(formData.shippingAddress.state) ? '(Sabah/Sarawak)' : '(Semenanjung)') 
+                : ''}:
+            </span>
+            <span className="font-semibold">
+              {formData.shippingAddress.state ? `RM ${shippingCost.toFixed(2)}` : 'Select state'}
+            </span>
+          </div>
           <div className="mt-2 border-t pt-2">
             <div className="flex justify-between text-lg">
               <span className="font-bold">Total:</span>
               <span className="font-bold text-blue-600">
-                {/* RM {(defaultPrice * formData.quantity).toFixed(2)} */}
-                RM 218
+                RM {totalPrice.toFixed(2)}
               </span>
             </div>
-            {/* <p className="text-sm text-gray-600 mt-2">
-              30% deposit required: RM {(defaultPrice * formData.quantity * 0.3).toFixed(2)}
-            </p> */}
           </div>
         </div>
 

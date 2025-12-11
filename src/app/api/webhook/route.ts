@@ -165,6 +165,8 @@ export async function POST(req: Request) {
                 <p><strong>Size:</strong> ${metadata.size}</p>
                 <p><strong>Color:</strong> ${metadata.color}</p>
                 <p><strong>Quantity:</strong> ${metadata.quantity}</p>
+                <p><strong>Subtotal:</strong> ${metadata.subtotal || metadata.unit_price}</p>
+                <p><strong>Shipping:</strong> ${metadata.shipping_cost || 'RM 0'}</p>
                 <p><strong>Total Paid:</strong> ${metadata.total_price}</p>
               </div>
               
@@ -199,6 +201,8 @@ export async function POST(req: Request) {
           `Size: ${metadata.size}\n` +
           `Color: ${metadata.color}\n` +
           `Quantity: ${metadata.quantity}\n` +
+          `Subtotal: ${metadata.subtotal || metadata.unit_price}\n` +
+          `Shipping: ${metadata.shipping_cost || 'RM 0'}\n` +
           `Total: ${metadata.total_price}\n\n` +
           `Ship to: ${metadata.shipping_name}\n` +
           `${metadata.shipping_address_1}\n` +
