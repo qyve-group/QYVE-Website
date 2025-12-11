@@ -33,12 +33,14 @@ const SubZeroPreOrder = () => {
                 EARLY BIRD - RM 20 OFF
               </div> */}
               {/* <div className="text-5xl mb-4">👟</div> */}
-              <h3 className="mb-2 text-2xl font-bold">SubZero Futsal Shoes</h3>
+              <h3 className="mb-2 text-2xl font-bold">Subzero Futsal Shoes</h3>
               <p className="text-gray-600 mb-4">
-                Get the revolutionary SubZero futsal shoes
+                Get the revolutionary Subzero futsal shoes
               </p>
               <div className="mb-2 flex items-baseline justify-center gap-3">
-                <span className="text-gray-800 text-4xl">RM 238</span>
+                <span className="font-myFontSS text-4xl text-[#4FD1C5]">
+                  RM 238
+                </span>
                 {/* <span className="text-gray-400 text-2xl line-through">
                   RM 238
                 </span> */}
