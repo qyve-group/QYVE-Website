@@ -133,7 +133,7 @@ export async function POST(req: Request) {
             status: 'confirmed',
             payment_status: 'paid',
             source: 'stripe',
-            stripe_session_id: session.id,
+            pre_order_notes: `Stripe Session: ${session.id}`,
           })
           .select()
           .single();
