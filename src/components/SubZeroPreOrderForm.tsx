@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable no-nested-ternary */
 
 'use client';
 
@@ -9,7 +10,7 @@ interface PreOrderFormProps {
   productName?: string;
   defaultPrice?: number;
   onClose?: () => void;
-  onSuccess?: (preOrderId: string) => void;
+  // onSuccess?: (preOrderId: string) => void;
 }
 
 // Shipping rates
@@ -20,15 +21,29 @@ const SHIPPING_RATES = {
 
 // States in Semenanjung (Peninsular Malaysia)
 const SEMENANJUNG_STATES = [
-  'Johor', 'Kedah', 'Kelantan', 'Kuala Lumpur', 'Labuan', 'Melaka', 
-  'Negeri Sembilan', 'Pahang', 'Penang', 'Perak', 'Perlis', 
-  'Putrajaya', 'Selangor', 'Terengganu'
+  'Johor',
+  'Kedah',
+  'Kelantan',
+  'Kuala Lumpur',
+  'Labuan',
+  'Melaka',
+  'Negeri Sembilan',
+  'Pahang',
+  'Penang',
+  'Perak',
+  'Perlis',
+  'Putrajaya',
+  'Selangor',
+  'Terengganu',
 ];
 
 // States in East Malaysia
 const EAST_MALAYSIA_STATES = ['Sabah', 'Sarawak'];
 
-const ALL_MALAYSIA_STATES = [...SEMENANJUNG_STATES, ...EAST_MALAYSIA_STATES].sort();
+const ALL_MALAYSIA_STATES = [
+  ...SEMENANJUNG_STATES,
+  ...EAST_MALAYSIA_STATES,
+].sort();
 
 const SubZeroPreOrderForm = ({
   productName = 'SubZero Futsal Shoes (Early Bird)',
@@ -61,9 +76,10 @@ const SubZeroPreOrderForm = ({
 
   // Calculate shipping cost based on state
   const getShippingCost = () => {
-    const state = formData.shippingAddress.state;
+    const { state } = formData.shippingAddress;
     if (!state) return 0;
-    if (EAST_MALAYSIA_STATES.includes(state)) return SHIPPING_RATES.eastMalaysia;
+    if (EAST_MALAYSIA_STATES.includes(state))
+      return SHIPPING_RATES.eastMalaysia;
     return SHIPPING_RATES.semenanjung;
   };
 
@@ -371,7 +387,10 @@ const SubZeroPreOrderForm = ({
                 <option value="">Select State</option>
                 {ALL_MALAYSIA_STATES.map((state) => (
                   <option key={state} value={state}>
-                    {state} {EAST_MALAYSIA_STATES.includes(state) ? '(East Malaysia)' : ''}
+                    {state}{' '}
+                    {EAST_MALAYSIA_STATES.includes(state)
+                      ? '(East Malaysia)'
+                      : ''}
                   </option>
                 ))}
               </select>
@@ -424,12 +443,18 @@ const SubZeroPreOrderForm = ({
           </div>
           <div className="mb-2 flex justify-between">
             <span className="text-gray-700">
-              Shipping {formData.shippingAddress.state ? 
-                (EAST_MALAYSIA_STATES.includes(formData.shippingAddress.state) ? '(Sabah/Sarawak)' : '(Semenanjung)') 
-                : ''}:
+              Shipping{' '}
+              {formData.shippingAddress.state
+                ? EAST_MALAYSIA_STATES.includes(formData.shippingAddress.state)
+                  ? '(Sabah/Sarawak)'
+                  : '(Semenanjung)'
+                : ''}
+              :
             </span>
             <span className="font-semibold">
-              {formData.shippingAddress.state ? `RM ${shippingCost.toFixed(2)}` : 'Select state'}
+              {formData.shippingAddress.state
+                ? `RM ${shippingCost.toFixed(2)}`
+                : 'Select state'}
             </span>
           </div>
           <div className="mt-2 border-t pt-2">

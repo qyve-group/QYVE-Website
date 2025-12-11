@@ -13,17 +13,19 @@ function SuccessContent() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#0d3d5c] to-[#1a5a7a] px-4">
       <div className="w-full max-w-lg rounded-2xl bg-white p-8 text-center shadow-2xl">
         <CheckCircleIcon className="mx-auto mb-6 size-20 text-green-500" />
-        
-        <h1 className="mb-4 text-3xl font-bold text-gray-900">
+
+        <h1 className="text-gray-900 mb-4 text-3xl font-bold">
           Payment Successful!
         </h1>
-        
+
         <p className="text-gray-600 mb-6 text-lg">
           Thank you for your SubZero Futsal Shoes pre-order!
         </p>
 
         <div className="border-gray-200 mb-6 rounded-lg border bg-blue-50 p-4 text-left">
-          <h3 className="mb-2 font-semibold text-blue-800">What happens next?</h3>
+          <h3 className="mb-2 font-semibold text-blue-800">
+            What happens next?
+          </h3>
           <ul className="text-gray-700 list-inside list-disc space-y-2 text-sm">
             <li>You will receive a confirmation email shortly</li>
             <li>You will be added to our WhatsApp group for updates</li>
@@ -58,11 +60,13 @@ function SuccessContent() {
 
 export default function SubZeroSuccessPage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#0d3d5c] to-[#1a5a7a]">
-        <div className="text-white">Loading...</div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#0d3d5c] to-[#1a5a7a]">
+          <div className="text-white">Loading...</div>
+        </div>
+      }
+    >
       <SuccessContent />
     </Suspense>
   );

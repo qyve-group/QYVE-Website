@@ -34,12 +34,16 @@ export async function POST(req: Request) {
 
     if (!customerEmail || !customerName || !size) {
       return NextResponse.json(
-        { error: 'Missing required fields: name, email, and size are required' },
+        {
+          error: 'Missing required fields: name, email, and size are required',
+        },
         { status: 400 },
       );
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `https://${process.env.REPLIT_DEV_DOMAIN}`;
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      `https://${process.env.REPLIT_DEV_DOMAIN}`;
 
     // Build line items array with product and shipping
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
@@ -49,22 +53,28 @@ export async function POST(req: Request) {
           product_data: {
             name: 'SubZero Futsal Shoes (Early Bird)',
             description: `Size: ${size} | Color: ${color}`,
-            images: ['https://qyveofficial.com/assets/images/subzero/subzero-white-side.png'],
+            images: [
+              'https://qyveofficial.com/assets/images/subzero/subzero-white-side.png',
+            ],
           },
           unit_amount: Math.round(unitPrice * 100),
         },
-        quantity: quantity,
+        quantity,
       },
     ];
 
     // Add shipping as a line item if applicable
     if (shippingCost > 0) {
-      const isEastMalaysia = ['Sabah', 'Sarawak'].includes(shippingAddress.state);
+      const isEastMalaysia = ['Sabah', 'Sarawak'].includes(
+        shippingAddress.state,
+      );
       lineItems.push({
         price_data: {
           currency: 'myr',
           product_data: {
-            name: isEastMalaysia ? 'Shipping (Sabah/Sarawak)' : 'Shipping (Semenanjung)',
+            name: isEastMalaysia
+              ? 'Shipping (Sabah/Sarawak)'
+              : 'Shipping (Semenanjung)',
           },
           unit_amount: Math.round(shippingCost * 100),
         },
@@ -82,8 +92,8 @@ export async function POST(req: Request) {
         customer_name: customerName,
         customer_email: customerEmail,
         customer_phone: customerPhone || 'Not provided',
-        size: size,
-        color: color,
+        size,
+        color,
         quantity: String(quantity),
         unit_price: `RM ${unitPrice}`,
         subtotal: `RM ${subtotal}`,

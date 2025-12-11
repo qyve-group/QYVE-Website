@@ -100,27 +100,30 @@ export async function POST(req: Request) {
   if (event.type === 'checkout.session.completed') {
     console.log('✅ Processing checkout.session.completed event');
     const session = event.data.object;
-    
+
     // Check if this is a SubZero pre-order
     if (session.metadata?.product_type === 'subzero_preorder') {
       console.log('🥶 Processing SubZero pre-order payment');
-      
+
       const orderRef = session.id.slice(-12).toUpperCase();
-      const metadata = session.metadata;
-      
+      const { metadata } = session;
+
       try {
         // Store pre-order in database
         const { data: preOrderData, error: preOrderError } = await supabaseAdmin
           .from('pre_orders')
           .insert({
+            order_id: orderRef,
             customer_email: metadata.customer_email,
             customer_name: metadata.customer_name,
             customer_phone: metadata.customer_phone || null,
-            product_name: 'SubZero Futsal Shoes (Early Bird)',
+            product_name: 'SubZero Futsal Shoes',
             product_variant: `Size: ${metadata.size}, Color: ${metadata.color}`,
-            quantity: parseInt(metadata.quantity || '1'),
-            unit_price: 218,
-            total_price: session.amount_total ? session.amount_total / 100 : 218,
+            quantity: parseInt(metadata.quantity || '1', 10),
+            unit_price: 238,
+            total_price: session.amount_total
+              ? session.amount_total / 100
+              : 238,
             shipping_address: {
               name: metadata.shipping_name,
               address_1: metadata.shipping_address_1,
@@ -147,7 +150,12 @@ export async function POST(req: Request) {
         // Send confirmation email via Brevo
         const email = new SendSmtpEmail();
         email.sender = { name: 'QYVE', email: 'noreply@qyveofficial.com' };
-        email.to = [{ email: metadata.customer_email as string, name: metadata.customer_name as string }];
+        email.to = [
+          {
+            email: metadata.customer_email as string,
+            name: metadata.customer_name as string,
+          },
+        ];
         email.subject = 'SubZero Pre-Order Confirmed - Payment Received!';
         email.htmlContent = `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -156,7 +164,7 @@ export async function POST(req: Request) {
             </div>
             <div style="padding: 30px; background: #f9f9f9;">
               <p>Hi <strong>${metadata.customer_name}</strong>,</p>
-              <p>Thank you for your SubZero Early Bird pre-order! Your payment has been received.</p>
+              <p>Thank you for your SubZero pre-order! Your payment has been received.</p>
               
               <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0;">
                 <h3 style="margin-top: 0; color: #1a5a7a;">Order Details</h3>
@@ -174,26 +182,39 @@ export async function POST(req: Request) {
                 <h3 style="margin-top: 0; color: #1a5a7a;">Shipping Address</h3>
                 <p>${metadata.shipping_name}<br>
                 ${metadata.shipping_address_1}<br>
-                ${metadata.shipping_address_2 ? metadata.shipping_address_2 + '<br>' : ''}
+                ${metadata.shipping_address_2 ? `${metadata.shipping_address_2}<br>` : ''}
                 ${metadata.shipping_city}, ${metadata.shipping_state} ${metadata.shipping_postal_code}<br>
                 ${metadata.shipping_country}</p>
               </div>
               
               <p><strong>Expected Delivery:</strong> 5-7 days from week of 22/12/2025</p>
               
-              <p style="color: #666; font-size: 14px;">If you have any questions, reply to this email or contact us via WhatsApp.</p>
+              <p style="color: #666; font-size: 14px;">
+                If you have any questions, you can reach us at 
+                <strong>support@qyveofficial.com</strong>, or contact us on 
+                <strong>Instagram (@qyveofficial)</strong>, 
+                <strong>TikTok (@qyveofficial)</strong>, or 
+                <a href="https://wa.me/601160974239" style="color: #666; text-decoration: underline;">WhatsApp</a>.
+              </p>
+
             </div>
-            <div style="background: #1a5a7a; padding: 20px; text-align: center;">
-              <p style="color: white; margin: 0; font-size: 14px;">QYVE Official | www.qyveofficial.com</p>
+            <div style="background: #000000; padding: 20px; text-align: center;">
+              <p style="color: white; margin: 0; font-size: 14px;">QYVE GROUP SDN BHD (202501005103 (1606517D))  | www.qyveofficial.com</p>
             </div>
           </div>
         `;
 
         const emailResult = await brevoClient.sendTransacEmail(email);
-        console.log('✅ SubZero confirmation email sent to:', metadata.customer_email, 'Message ID:', emailResult.body?.messageId);
+        console.log(
+          '✅ SubZero confirmation email sent to:',
+          metadata.customer_email,
+          'Message ID:',
+          emailResult.body?.messageId,
+        );
 
         // Send Telegram notification
-        const telegramMessage = `🥶 NEW SUBZERO PRE-ORDER PAID!\n\n` +
+        const telegramMessage =
+          `🥶 NEW SUBZERO PRE-ORDER PAID!\n\n` +
           `Order Ref: ${orderRef}\n` +
           `Customer: ${metadata.customer_name}\n` +
           `Email: ${metadata.customer_email}\n` +
@@ -220,7 +241,6 @@ export async function POST(req: Request) {
           },
         );
         console.log('✅ SubZero Telegram notification sent');
-
       } catch (subzeroError) {
         console.error('❌ SubZero processing error:', subzeroError);
       }
