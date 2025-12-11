@@ -406,6 +406,7 @@ export async function POST(req: Request) {
           try {
             const orderItemPromise = supabaseAdmin.from('order_items').insert({
               order_id: numericOrderId,
+              order_ref: orderRef,
               product_size_id: item.product_size_id || null,
               quantity: item.quantity,
               price: item.price,
@@ -466,6 +467,7 @@ export async function POST(req: Request) {
             // Create order item
             const orderItemPromise = supabaseAdmin.from('order_items').insert({
               order_id: numericOrderId,
+              order_ref: orderRef,
               product_size_id: item.product_size_id,
               quantity: item.quantity,
               price: item.price,
