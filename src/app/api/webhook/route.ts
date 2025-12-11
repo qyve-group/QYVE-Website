@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 // import { headers } from 'next/headers';
 import Stripe from 'stripe';
-import { v4 as uuidv4 } from 'uuid'; // Import UUID library
+// import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 // import { sendPaymentConfirmationEmail } from '@/lib/email';
 // import { subtle } from 'crypto';
@@ -380,7 +380,12 @@ export async function POST(req: Request) {
         );
       }
       numericOrderId = orderData?.id;
-      console.log('✅ Order inserted successfully:', numericOrderId, 'Ref:', orderRef);
+      console.log(
+        '✅ Order inserted successfully:',
+        numericOrderId,
+        'Ref:',
+        orderRef,
+      );
     } catch (err) {
       console.error('❌ Unexpected order creation error:', err);
       return NextResponse.json(
@@ -470,7 +475,11 @@ export async function POST(req: Request) {
 
             orderItemPromises.push(orderItemPromise);
           } catch (error) {
-            console.error('Error processing item:', item.product_size_id, error);
+            console.error(
+              'Error processing item:',
+              item.product_size_id,
+              error,
+            );
           }
         }
       }
@@ -479,7 +488,8 @@ export async function POST(req: Request) {
     // Execute all stock updates and order item insertions in parallel
     try {
       if (stockUpdatePromises.length > 0) {
-        const stockUpdateResults = await Promise.allSettled(stockUpdatePromises);
+        const stockUpdateResults =
+          await Promise.allSettled(stockUpdatePromises);
         stockUpdateResults.forEach((result, index) => {
           if (result.status === 'rejected') {
             console.error(`Stock update ${index} failed:`, result.reason);
