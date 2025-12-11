@@ -85,6 +85,8 @@ const PaymentSuccess = () => {
   // const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
 
+  const orderRef = sessionId ? sessionId.slice(-12).toUpperCase() : null;
+
   const [transaction, setTransaction] = useState<any>(null);
 
   useEffect(() => {
@@ -109,7 +111,7 @@ const PaymentSuccess = () => {
   const { amount } = transaction;
   const { paymentMethod } = transaction;
   // const currency = searchParams?.get('currency') || 'myr';
-  const dateTime = transaction.transactionDateTime;
+  // const dateTime = transaction.transactionDateTime;
   // const paymentMethod = searchParams?.get('payment_method') || 'card';
   // const last4 = searchParams?.get('last4') || '4242';
   // const brand = searchParams?.get('brand') || 'visa';
@@ -233,8 +235,8 @@ const PaymentSuccess = () => {
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="font-medium">Transaction Date</span>
-                <span>{dateTime}</span>
+                <span className="font-medium">Order ID</span>
+                <span>{orderRef}</span>
               </div>
 
               <div className="flex items-center justify-between">

@@ -337,27 +337,30 @@ export async function POST(req: Request) {
     console.log('cartItems: -webhook', cartItems);
 
     // Create an order linked to cart_id
-    const orderId = uuidv4(); // Generate a new UUID
+    // const orderId = uuidv4(); // Generate a new UUID
     // console.log('OrderID is: ', orderId);
-    const totalPrice = cartItems.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0,
-    );
-    const formattedTotalPrice = parseFloat(totalPrice.toFixed(2)); // Ensure precision
+    // const totalPrice = cartItems.reduce(
+    //   (sum, item) => sum + item.price * item.quantity,
+    //   0,
+    // );
+    // const formattedTotalPrice = parseFloat(totalPrice.toFixed(2)); // Ensure precision
 
-    console.log('About to insert order with values:', {
-      orderId,
-      userId,
-      formattedTotalPrice,
-      stripeSessionId: session.id,
-    });
+    // console.log('About to insert order with values:', {
+    //   orderId,
+    //   userId,
+    //   formattedTotalPrice,
+    //   stripeSessionId: session.id,
+    // });
+
+    const orderRef = session.id.slice(-12).toUpperCase();
+    let numericOrderId: number | null = null;
 
     try {
       const { data: orderData, error: orderError } = await supabaseAdmin
         .from('orders')
         .insert([
           {
-            id: orderId,
+            order_id: orderRef,
             user_id: isGuestCheckout ? null : userId,
             status: 'Paid',
             total_price: session.amount_total! / 100,
@@ -376,7 +379,8 @@ export async function POST(req: Request) {
           { status: 500 },
         );
       }
-      console.log('✅ Order inserted successfully:', orderData?.id);
+      numericOrderId = orderData?.id;
+      console.log('✅ Order inserted successfully:', numericOrderId, 'Ref:', orderRef);
     } catch (err) {
       console.error('❌ Unexpected order creation error:', err);
       return NextResponse.json(
@@ -389,83 +393,110 @@ export async function POST(req: Request) {
     const stockUpdatePromises = [];
     const orderItemPromises = [];
 
-    // Fetch all stock data first
-    const stockPromises = cartItems.map((item) =>
-      supabaseAdmin
-        .from('products_sizes')
-        .select('stock')
-        .eq('id', item.product_size_id)
-        .single()
-        .then((result) => ({ item, result })),
-    );
-
-    const stockResults = await Promise.all(stockPromises);
-
-    for (const { item, result } of stockResults) {
-      try {
-        const { data: productSize, error: fetchError } = result;
-
-        if (fetchError) {
-          console.error(
-            'Error fetching stock for item:',
-            item.product_size_id,
-            fetchError,
-          );
-          continue;
+    if (numericOrderId) {
+      if (isGuestCheckout) {
+        // Guest checkout: Insert order items directly (no stock update needed as guest items may not have product_size_id)
+        console.log('📦 Processing guest checkout order items...');
+        for (const item of cartItems) {
+          try {
+            const orderItemPromise = supabaseAdmin.from('order_items').insert({
+              order_id: numericOrderId,
+              product_size_id: item.product_size_id || null,
+              quantity: item.quantity,
+              price: item.price,
+              product_name: item.name || 'Unknown Product',
+              product_size: item.product_size || null,
+            });
+            orderItemPromises.push(orderItemPromise);
+            console.log(`📦 Queued order item: ${item.name} x${item.quantity}`);
+          } catch (error) {
+            console.error('Error creating guest order item:', error);
+          }
         }
-
-        if (!productSize || productSize.stock === undefined) {
-          console.error('Stock not found for item:', item);
-          continue;
-        }
-
-        // Calculate new stock
-        const newStock = Math.max(0, productSize.stock - item.quantity);
-        console.log(
-          `Updating stock for item ${item.product_size_id}: ${productSize.stock} -> ${newStock}`,
+      } else {
+        // Authenticated checkout: Update stock and insert order items
+        const stockPromises = cartItems.map((item) =>
+          supabaseAdmin
+            .from('products_sizes')
+            .select('stock')
+            .eq('id', item.product_size_id)
+            .single()
+            .then((result) => ({ item, result })),
         );
 
-        // Update stock
-        const stockUpdatePromise = supabaseAdmin
-          .from('products_sizes')
-          .update({ stock: newStock })
-          .eq('id', item.product_size_id);
+        const stockResults = await Promise.all(stockPromises);
 
-        stockUpdatePromises.push(stockUpdatePromise);
+        for (const { item, result } of stockResults) {
+          try {
+            const { data: productSize, error: fetchError } = result;
 
-        // Create order item
-        const orderItemsId = uuidv4();
-        const orderItemPromise = supabaseAdmin.from('order_items').insert({
-          id: orderItemsId,
-          order_id: orderId,
-          product_size_id: item.product_size_id,
-          quantity: item.quantity,
-          price: item.price,
-        });
+            if (fetchError) {
+              console.error(
+                'Error fetching stock for item:',
+                item.product_size_id,
+                fetchError,
+              );
+              continue;
+            }
 
-        orderItemPromises.push(orderItemPromise);
-      } catch (error) {
-        console.error('Error processing item:', item.product_size_id, error);
+            if (!productSize || productSize.stock === undefined) {
+              console.error('Stock not found for item:', item);
+              continue;
+            }
+
+            // Calculate new stock
+            const newStock = Math.max(0, productSize.stock - item.quantity);
+            console.log(
+              `Updating stock for item ${item.product_size_id}: ${productSize.stock} -> ${newStock}`,
+            );
+
+            // Update stock
+            const stockUpdatePromise = supabaseAdmin
+              .from('products_sizes')
+              .update({ stock: newStock })
+              .eq('id', item.product_size_id);
+
+            stockUpdatePromises.push(stockUpdatePromise);
+
+            // Create order item
+            const orderItemPromise = supabaseAdmin.from('order_items').insert({
+              order_id: numericOrderId,
+              product_size_id: item.product_size_id,
+              quantity: item.quantity,
+              price: item.price,
+              product_name: item.products_sizes?.description || 'Product',
+              product_size: item.products_sizes?.size || null,
+            });
+
+            orderItemPromises.push(orderItemPromise);
+          } catch (error) {
+            console.error('Error processing item:', item.product_size_id, error);
+          }
+        }
       }
     }
 
     // Execute all stock updates and order item insertions in parallel
     try {
-      const stockUpdateResults = await Promise.allSettled(stockUpdatePromises);
-      const orderItemResults = await Promise.allSettled(orderItemPromises);
+      if (stockUpdatePromises.length > 0) {
+        const stockUpdateResults = await Promise.allSettled(stockUpdatePromises);
+        stockUpdateResults.forEach((result, index) => {
+          if (result.status === 'rejected') {
+            console.error(`Stock update ${index} failed:`, result.reason);
+          }
+        });
+      }
 
-      // Log any failures
-      stockUpdateResults.forEach((result, index) => {
-        if (result.status === 'rejected') {
-          console.error(`Stock update ${index} failed:`, result.reason);
-        }
-      });
-
-      orderItemResults.forEach((result, index) => {
-        if (result.status === 'rejected') {
-          console.error(`Order item ${index} failed:`, result.reason);
-        }
-      });
+      if (orderItemPromises.length > 0) {
+        const orderItemResults = await Promise.allSettled(orderItemPromises);
+        orderItemResults.forEach((result, index) => {
+          if (result.status === 'rejected') {
+            console.error(`Order item ${index} failed:`, result.reason);
+          } else {
+            console.log(`✅ Order item ${index} inserted successfully`);
+          }
+        });
+      }
 
       console.log('✅ Stock updates and order items processed');
     } catch (error) {
@@ -484,12 +515,12 @@ export async function POST(req: Request) {
           address_line_2: orderAddress.shipping_address_2,
           first_name: orderAddress.fname,
           last_name: orderAddress.lname,
-          order_id: orderId,
+          order_id: orderRef,
         }),
         supabaseAdmin.from('order_contact_info').insert({
           phone: contactInfo.phone,
           email: contactInfo.email,
-          order_id: orderId,
+          order_id: orderRef,
         }),
       ]);
 
@@ -644,11 +675,17 @@ export async function POST(req: Request) {
 
     // Send Telegram notification (non-blocking)
     console.log('🚀 Starting Telegram notification process...');
-    console.log('🚀 Order ID:', orderId);
+    console.log('🚀 Order ID:', orderRef);
     console.log('🚀 Cart items for Telegram:', cartItems);
     try {
       console.log('🚀 Calling notifyTelegram function...');
-      await notifyTelegram(orderId, orderAddress, contactInfo, cartItems, session.id);
+      await notifyTelegram(
+        orderRef,
+        orderAddress,
+        contactInfo,
+        cartItems,
+        session.id,
+      );
       console.log('✅ Telegram notification sent successfully');
     } catch (telegramError) {
       console.error(
@@ -700,9 +737,16 @@ export async function POST(req: Request) {
 
       console.log('📨 Formatted order items text:', orderItemsText);
 
-      // Generate order reference from session ID (last 12 chars uppercase)
-      const orderRef = session.id.slice(-12).toUpperCase();
-      const totalAmount = session.amount_total ? (session.amount_total / 100).toFixed(2) : '0.00';
+      // Calculate amounts from Stripe session
+      const subtotalAmount = session.amount_subtotal
+        ? (session.amount_subtotal / 100).toFixed(2)
+        : '0.00';
+      const shippingAmount = session.total_details?.amount_shipping
+        ? (session.total_details.amount_shipping / 100).toFixed(2)
+        : '0.00';
+      const totalAmount = session.amount_total
+        ? (session.amount_total / 100).toFixed(2)
+        : '0.00';
 
       // Build items HTML for email
       const itemsHtml = cartItems
@@ -733,7 +777,9 @@ export async function POST(req: Request) {
               <p><strong>Order Reference:</strong> ${orderRef}</p>
               ${itemsHtml}
               <hr style="border: none; border-top: 1px solid #eee; margin: 15px 0;">
-              <p><strong>Total Paid:</strong> RM ${totalAmount}</p>
+              <p>Subtotal: RM ${subtotalAmount}</p>
+              <p>Shipping: RM ${shippingAmount}</p>
+              <p style="font-size: 18px; margin-top: 10px;"><strong>Total Paid: RM ${totalAmount}</strong></p>
             </div>
             
             <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0;">
@@ -756,7 +802,12 @@ export async function POST(req: Request) {
       `;
 
       const emailResult = await brevoClient.sendTransacEmail(email);
-      console.log('✅ Order confirmation email sent to:', customerEmail, 'Message ID:', emailResult.body?.messageId);
+      console.log(
+        '✅ Order confirmation email sent to:',
+        customerEmail,
+        'Message ID:',
+        emailResult.body?.messageId,
+      );
     } catch (emailError) {
       console.error('❌ Email receipt failed (non-critical):', emailError);
       console.error('❌ Email error stack:', (emailError as Error).stack);
@@ -765,7 +816,7 @@ export async function POST(req: Request) {
 
     console.log(
       '✅ Webhook processing completed successfully for order:',
-      orderId,
+      orderRef,
     );
   }
 
