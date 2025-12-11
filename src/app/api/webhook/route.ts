@@ -146,7 +146,7 @@ export async function POST(req: Request) {
 
         // Send confirmation email via Brevo
         const email = new SendSmtpEmail();
-        email.templateId = 5; // SubZero confirmation template (create in Brevo)
+        email.templateId = 12; // SubZero confirmation template (create in Brevo)
         email.to = [{ email: metadata.customer_email as string }];
         email.params = {
           subject: 'SubZero Pre-Order Confirmed - Payment Received!',
