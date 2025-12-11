@@ -648,7 +648,7 @@ export async function POST(req: Request) {
     console.log('🚀 Cart items for Telegram:', cartItems);
     try {
       console.log('🚀 Calling notifyTelegram function...');
-      await notifyTelegram(orderId, orderAddress, contactInfo, cartItems);
+      await notifyTelegram(orderId, orderAddress, contactInfo, cartItems, session.id);
       console.log('✅ Telegram notification sent successfully');
     } catch (telegramError) {
       console.error(
@@ -700,26 +700,63 @@ export async function POST(req: Request) {
 
       console.log('📨 Formatted order items text:', orderItemsText);
 
-      const email = new SendSmtpEmail();
-      email.templateId = 4; // 👈 replace with your Brevo template ID
-      email.to = [{ email: customerEmail as string }];
-      email.params = {
-        subject: 'Your Order Confirmation',
-        // parameter: "Thanks for your order!", // maps to {{params.parameter}} in template
-        orderId,
-        customerName,
-        customerAddress: `${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}`,
-        // amount: session.amount_total ? session.amount_total / 100 : "N/A",
-      };
+      // Generate order reference from session ID (last 12 chars uppercase)
+      const orderRef = session.id.slice(-12).toUpperCase();
+      const totalAmount = session.amount_total ? (session.amount_total / 100).toFixed(2) : '0.00';
 
-      // try {
-      await brevoClient.sendTransacEmail(email);
-      console.log(
-        '✅ Order confirmation email sent to:',
-        session.customer_email,
-      );
-      // } catch (error) {
-      //   console.error("❌ Failed to send Brevo email:", error);
+      // Build items HTML for email
+      const itemsHtml = cartItems
+        .map((item: any) => {
+          const name = item.name || 'Product';
+          const size = item.product_size || item.products_sizes?.size || 'N/A';
+          const qty = item.quantity || 1;
+          const price = item.price || 0;
+          return `<p><strong>${name}</strong> (${size}) x${qty} - RM ${price}</p>`;
+        })
+        .join('');
+
+      const email = new SendSmtpEmail();
+      email.sender = { name: 'QYVE', email: 'noreply@qyveofficial.com' };
+      email.to = [{ email: customerEmail as string, name: customerName }];
+      email.subject = 'Order Confirmed - Payment Received!';
+      email.htmlContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 30px; text-align: center;">
+            <h1 style="color: white; margin: 0;">Order Confirmed!</h1>
+          </div>
+          <div style="padding: 30px; background: #f9f9f9;">
+            <p>Hi <strong>${customerName}</strong>,</p>
+            <p>Thank you for your order! Your payment has been received.</p>
+            
+            <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0;">
+              <h3 style="margin-top: 0; color: #1a1a2e;">Order Details</h3>
+              <p><strong>Order Reference:</strong> ${orderRef}</p>
+              ${itemsHtml}
+              <hr style="border: none; border-top: 1px solid #eee; margin: 15px 0;">
+              <p><strong>Total Paid:</strong> RM ${totalAmount}</p>
+            </div>
+            
+            <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0;">
+              <h3 style="margin-top: 0; color: #1a1a2e;">Shipping Address</h3>
+              <p>${orderAddress.fname} ${orderAddress.lname}<br>
+              ${orderAddress.shippingAddress1 || orderAddress.shipping_address_1}<br>
+              ${orderAddress.shippingAddress2 || orderAddress.shipping_address_2 ? (orderAddress.shippingAddress2 || orderAddress.shipping_address_2) + '<br>' : ''}
+              ${orderAddress.city}, ${orderAddress.state} ${orderAddress.postalCode || orderAddress.postal_code}<br>
+              Malaysia</p>
+            </div>
+            
+            <p><strong>Expected Delivery:</strong> 2-5 business days (Semenanjung) / 5-7 business days (Sabah/Sarawak)</p>
+            
+            <p style="color: #666; font-size: 14px;">If you have any questions, reply to this email or contact us via WhatsApp.</p>
+          </div>
+          <div style="background: #1a1a2e; padding: 20px; text-align: center;">
+            <p style="color: white; margin: 0; font-size: 14px;">QYVE Official | www.qyveofficial.com</p>
+          </div>
+        </div>
+      `;
+
+      const emailResult = await brevoClient.sendTransacEmail(email);
+      console.log('✅ Order confirmation email sent to:', customerEmail, 'Message ID:', emailResult.body?.messageId);
     } catch (emailError) {
       console.error('❌ Email receipt failed (non-critical):', emailError);
       console.error('❌ Email error stack:', (emailError as Error).stack);
