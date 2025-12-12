@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 // import { headers } from 'next/headers';
 import Stripe from 'stripe';
-// import { v4 as uuidv4 } from 'uuid'; // Import UUID library
+import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 
 // import { sendPaymentConfirmationEmail } from '@/lib/email';
 // import { subtle } from 'crypto';
@@ -337,7 +337,7 @@ export async function POST(req: Request) {
     console.log('cartItems: -webhook', cartItems);
 
     // Create an order linked to cart_id
-    // const orderId = uuidv4(); // Generate a new UUID
+    const orderId = uuidv4(); // Generate a new UUID
     // console.log('OrderID is: ', orderId);
     // const totalPrice = cartItems.reduce(
     //   (sum, item) => sum + item.price * item.quantity,
@@ -353,20 +353,21 @@ export async function POST(req: Request) {
     // });
 
     const orderRef = session.id.slice(-12).toUpperCase();
-    let numericOrderId: number | null = null;
+    // let numericOrderId: number | null = null;
 
     try {
-      const { data: orderData, error: orderError } = await supabaseAdmin
+      const { data: _orderData, error: orderError } = await supabaseAdmin
         .from('orders')
         .insert([
           {
-            order_id: orderRef,
+            id: orderId,
             user_id: isGuestCheckout ? null : userId,
             status: 'Paid',
             total_price: session.amount_total! / 100,
             stripe_session_id: session.id,
             tracking_no: 'Processing',
             subtotal: session.amount_subtotal! / 100,
+            order_ref: orderRef,
           },
         ])
         .select()
@@ -379,13 +380,13 @@ export async function POST(req: Request) {
           { status: 500 },
         );
       }
-      numericOrderId = orderData?.id;
-      console.log(
-        '✅ Order inserted successfully:',
-        numericOrderId,
-        'Ref:',
-        orderRef,
-      );
+      // numericOrderId = orderData?.id;
+      // console.log(
+      //   '✅ Order inserted successfully:',
+      //   numericOrderId,
+      //   'Ref:',
+      //   orderRef,
+      // );
     } catch (err) {
       console.error('❌ Unexpected order creation error:', err);
       return NextResponse.json(
@@ -398,94 +399,97 @@ export async function POST(req: Request) {
     const stockUpdatePromises = [];
     const orderItemPromises = [];
 
-    if (numericOrderId) {
-      if (isGuestCheckout) {
-        // Guest checkout: Insert order items directly (no stock update needed as guest items may not have product_size_id)
-        console.log('📦 Processing guest checkout order items...');
-        for (const item of cartItems) {
-          try {
-            const orderItemPromise = supabaseAdmin.from('order_items').insert({
-              order_id: numericOrderId,
-              order_ref: orderRef,
-              product_size_id: item.product_size_id || null,
-              quantity: item.quantity,
-              price: item.price,
-              product_name: item.name || 'Unknown Product',
-              product_size: item.product_size || null,
-            });
-            orderItemPromises.push(orderItemPromise);
-            console.log(`📦 Queued order item: ${item.name} x${item.quantity}`);
-          } catch (error) {
-            console.error('Error creating guest order item:', error);
-          }
+    // if (numericOrderId) {
+    if (isGuestCheckout) {
+      // Guest checkout: Insert order items directly (no stock update needed as guest items may not have product_size_id)
+      console.log('📦 Processing guest checkout order items...');
+      for (const item of cartItems) {
+        try {
+          const orderItemPromise = supabaseAdmin.from('order_items').insert({
+            // id: numericOrderId,
+            order_id: orderId,
+            order_ref: orderRef,
+            product_size_id: item.product_size_id || 'TBC',
+            quantity: item.quantity,
+            price: item.price,
+            product_name: item.name || 'Unknown Product',
+            product_size: item.product_size || 'TBC',
+          });
+          orderItemPromises.push(orderItemPromise);
+          console.log('order id: ', orderId);
+          console.log('order ref: ', orderRef);
+          console.log('product size id: ',item.product_size_id);
+          console.log('product_name: ', item.name);
+          console.log('product_size: ', item.product_size);
+          console.log(`📦 Queued order item: ${item.name} x${item.quantity}`);
+        } catch (error) {
+          console.error('Error creating guest order item:', error);
         }
-      } else {
-        // Authenticated checkout: Update stock and insert order items
-        const stockPromises = cartItems.map((item) =>
-          supabaseAdmin
-            .from('products_sizes')
-            .select('stock')
-            .eq('id', item.product_size_id)
-            .single()
-            .then((result) => ({ item, result })),
-        );
+      }
+    } else {
+      // Authenticated checkout: Update stock and insert order items
+      const stockPromises = cartItems.map((item) =>
+        supabaseAdmin
+          .from('products_sizes')
+          .select('stock')
+          .eq('id', item.product_size_id)
+          .single()
+          .then((result) => ({ item, result })),
+      );
 
-        const stockResults = await Promise.all(stockPromises);
+      const stockResults = await Promise.all(stockPromises);
 
-        for (const { item, result } of stockResults) {
-          try {
-            const { data: productSize, error: fetchError } = result;
+      for (const { item, result } of stockResults) {
+        try {
+          const { data: productSize, error: fetchError } = result;
 
-            if (fetchError) {
-              console.error(
-                'Error fetching stock for item:',
-                item.product_size_id,
-                fetchError,
-              );
-              continue;
-            }
-
-            if (!productSize || productSize.stock === undefined) {
-              console.error('Stock not found for item:', item);
-              continue;
-            }
-
-            // Calculate new stock
-            const newStock = Math.max(0, productSize.stock - item.quantity);
-            console.log(
-              `Updating stock for item ${item.product_size_id}: ${productSize.stock} -> ${newStock}`,
-            );
-
-            // Update stock
-            const stockUpdatePromise = supabaseAdmin
-              .from('products_sizes')
-              .update({ stock: newStock })
-              .eq('id', item.product_size_id);
-
-            stockUpdatePromises.push(stockUpdatePromise);
-
-            // Create order item
-            const orderItemPromise = supabaseAdmin.from('order_items').insert({
-              order_id: numericOrderId,
-              order_ref: orderRef,
-              product_size_id: item.product_size_id,
-              quantity: item.quantity,
-              price: item.price,
-              product_name: item.products_sizes?.description || 'Product',
-              product_size: item.products_sizes?.size || null,
-            });
-
-            orderItemPromises.push(orderItemPromise);
-          } catch (error) {
+          if (fetchError) {
             console.error(
-              'Error processing item:',
+              'Error fetching stock for item:',
               item.product_size_id,
-              error,
+              fetchError,
             );
+            continue;
           }
+
+          if (!productSize || productSize.stock === undefined) {
+            console.error('Stock not found for item:', item);
+            continue;
+          }
+
+          // Calculate new stock
+          const newStock = Math.max(0, productSize.stock - item.quantity);
+          console.log(
+            `Updating stock for item ${item.product_size_id}: ${productSize.stock} -> ${newStock}`,
+          );
+
+          // Update stock
+          const stockUpdatePromise = supabaseAdmin
+            .from('products_sizes')
+            .update({ stock: newStock })
+            .eq('id', item.product_size_id);
+
+          stockUpdatePromises.push(stockUpdatePromise);
+
+          // Create order item
+          const orderItemPromise = supabaseAdmin.from('order_items').insert({
+            // id: numericOrderId,
+            order_id: orderId,
+            order_ref: orderRef,
+            product_size_id: item.product_size_id,
+            quantity: item.quantity,
+            price: item.price,
+            product_name: item.products_sizes?.description || 'Product',
+            product_size: item.products_sizes?.size || null,
+          });
+
+          orderItemPromises.push(orderItemPromise);
+        } catch (error) {
+          console.error('Error processing item:', item.product_size_id, error);
         }
       }
     }
+    // }
 
     // Execute all stock updates and order item insertions in parallel
     try {

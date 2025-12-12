@@ -1,5 +1,11 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 // type ContactInfoData = {
 //   phone: string;
@@ -77,6 +83,39 @@ export async function POST(req: Request) {
       console.log('Processing guest checkout');
     } else {
       console.log('Processing authenticated user checkout for userId:', userId);
+    }
+
+    // Enrich guest cart items with product_size_id from database
+    let enrichedCartItems = cartItems;
+    if (isGuestCheckout) {
+      console.log('🔍 Enriching guest cart items with product_size_id...');
+      enrichedCartItems = await Promise.all(
+        cartItems.map(async (item: any) => {
+          // Look up product_size_id using product_id and size
+          const { data: productSize, error } = await supabaseAdmin
+            .from('products_sizes')
+            .select('id, product_id')
+            .eq('product_id', item.id)
+            .eq('size', item.product_size)
+            .single();
+
+          if (error || !productSize) {
+            console.log(`⚠️ Could not find product_size_id for product ${item.id} size ${item.product_size}`);
+            return {
+              ...item,
+              product_size_id: null,
+              product_id: item.id,
+            };
+          }
+
+          console.log(`✅ Found product_size_id ${productSize.id} for ${item.name} (${item.product_size})`);
+          return {
+            ...item,
+            product_size_id: productSize.id,
+            product_id: item.id,
+          };
+        })
+      );
     }
 
     // const productSubtotal = cartItems.reduce(
@@ -252,15 +291,15 @@ export async function POST(req: Request) {
         is_guest_checkout: isGuestCheckout ? 'true' : 'false',
         customer_email: orderContact.email,
         customer_name: `${orderAddress.fname} ${orderAddress.lname}`,
-        order_items: cartItems
+        order_items: enrichedCartItems
           .map(
             (item: any) =>
               `${item.name} (${item.product_size}) x${item.quantity}`,
           )
           .join(', '),
         order_id: `ORDER_${Date.now()}`,
-        // Store cart items in metadata for guest users
-        cart_items: isGuestCheckout ? JSON.stringify(cartItems) : '',
+        // Store enriched cart items in metadata for guest users (includes product_size_id)
+        cart_items: isGuestCheckout ? JSON.stringify(enrichedCartItems) : '',
       },
     });
 
