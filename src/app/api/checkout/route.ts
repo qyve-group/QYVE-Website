@@ -85,34 +85,34 @@ export async function POST(req: Request) {
       console.log('Processing authenticated user checkout for userId:', userId);
     }
 
-    // Enrich guest cart items with product_size_id from database
+    // Enrich guest cart items with product_id from database
+    // Note: cart item.id IS the product_size_id (from products_sizes table)
     let enrichedCartItems = cartItems;
     if (isGuestCheckout) {
-      console.log('🔍 Enriching guest cart items with product_size_id...');
+      console.log('🔍 Enriching guest cart items with product_id...');
       enrichedCartItems = await Promise.all(
         cartItems.map(async (item: any) => {
-          // Look up product_size_id using product_id and size
+          // Cart item.id is actually product_size_id, look up the product_id
           const { data: productSize, error } = await supabaseAdmin
             .from('products_sizes')
             .select('id, product_id')
-            .eq('product_id', item.id)
-            .eq('size', item.product_size)
+            .eq('id', item.id)
             .single();
 
           if (error || !productSize) {
-            console.log(`⚠️ Could not find product_size_id for product ${item.id} size ${item.product_size}`);
+            console.log(`⚠️ Could not find product for product_size_id ${item.id}`);
             return {
               ...item,
-              product_size_id: null,
-              product_id: item.id,
+              product_size_id: item.id, // item.id IS the product_size_id
+              product_id: null,
             };
           }
 
-          console.log(`✅ Found product_size_id ${productSize.id} for ${item.name} (${item.product_size})`);
+          console.log(`✅ Found product_id ${productSize.product_id} for ${item.name} (product_size_id: ${item.id})`);
           return {
             ...item,
-            product_size_id: productSize.id,
-            product_id: item.id,
+            product_size_id: item.id, // item.id IS the product_size_id
+            product_id: productSize.product_id,
           };
         })
       );

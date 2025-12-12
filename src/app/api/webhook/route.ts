@@ -403,10 +403,11 @@ export async function POST(req: Request) {
     if (isGuestCheckout) {
       // Guest checkout: Insert order items directly (no stock update needed as guest items may not have product_size_id)
       console.log('📦 Processing guest checkout order items...');
+      console.log('guest cart items: ', cartItems);
       for (const item of cartItems) {
         try {
           const orderItemPromise = supabaseAdmin.from('order_items').insert({
-            // id: numericOrderId,
+            id: uuidv4(),
             order_id: orderId,
             order_ref: orderRef,
             product_size_id: item.product_size_id || 'TBC',
@@ -418,7 +419,7 @@ export async function POST(req: Request) {
           orderItemPromises.push(orderItemPromise);
           console.log('order id: ', orderId);
           console.log('order ref: ', orderRef);
-          console.log('product size id: ',item.product_size_id);
+          console.log('product size id: ', item.product_size_id);
           console.log('product_name: ', item.name);
           console.log('product_size: ', item.product_size);
           console.log(`📦 Queued order item: ${item.name} x${item.quantity}`);
