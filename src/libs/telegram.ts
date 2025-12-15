@@ -83,10 +83,16 @@ export async function notifyTelegram(
   //     const finalDescription = itemDescription?.description ?? 'Check Supabase';
 
   // Generate order reference from session ID (last 12 chars) or fallback to orderId
-  const orderRef = sessionId ? sessionId.slice(-12).toUpperCase() : orderId.slice(0, 12).toUpperCase();
-  
+  const orderRef = sessionId
+    ? sessionId.slice(-12).toUpperCase()
+    : orderId.slice(0, 12).toUpperCase();
+
   // Calculate total from cart items
-  const total = cartItems?.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0) || 0;
+  const total =
+    cartItems?.reduce(
+      (sum, item) => sum + item.price * (item.quantity || 1),
+      0,
+    ) || 0;
 
   const res = await fetch(
     `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,

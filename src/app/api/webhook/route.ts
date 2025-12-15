@@ -187,7 +187,7 @@ export async function POST(req: Request) {
                 ${metadata.shipping_country}</p>
               </div>
               
-              <p><strong>Expected Delivery:</strong> 5-7 days from week of 22/12/2025</p>
+              <p><strong>Expected Delivery:</strong>Estimated delivery: Within 2 weeks</p>
               
               <p style="color: #666; font-size: 14px;">
                 If you have any questions, you can reach us at 
@@ -356,7 +356,7 @@ export async function POST(req: Request) {
     // let numericOrderId: number | null = null;
 
     try {
-      const { data: _orderData, error: orderError } = await supabaseAdmin
+      const { error: orderError } = await supabaseAdmin
         .from('orders')
         .insert([
           {
@@ -803,17 +803,17 @@ export async function POST(req: Request) {
               <h3 style="margin-top: 0; color: #1a1a2e;">Shipping Address</h3>
               <p>${orderAddress.fname} ${orderAddress.lname}<br>
               ${orderAddress.shippingAddress1 || orderAddress.shipping_address_1}<br>
-              ${orderAddress.shippingAddress2 || orderAddress.shipping_address_2 ? (orderAddress.shippingAddress2 || orderAddress.shipping_address_2) + '<br>' : ''}
+              ${orderAddress.shippingAddress2 || orderAddress.shipping_address_2 ? `${orderAddress.shippingAddress2 || orderAddress.shipping_address_2}<br>` : ''}
               ${orderAddress.city}, ${orderAddress.state} ${orderAddress.postalCode || orderAddress.postal_code}<br>
               Malaysia</p>
             </div>
             
-            <p><strong>Expected Delivery:</strong> 2-5 business days (Semenanjung) / 5-7 business days (Sabah/Sarawak)</p>
+            <p><strong>Expected Delivery:</strong>Estimated delivery: Within 2 weeks</p>
             
             <p style="color: #666; font-size: 14px;">If you have any questions, reply to this email or contact us via WhatsApp.</p>
           </div>
           <div style="background: #1a1a2e; padding: 20px; text-align: center;">
-            <p style="color: white; margin: 0; font-size: 14px;">QYVE Official | www.qyveofficial.com</p>
+            <p style="color: white; margin: 0; font-size: 14px;">QYVE GROUP SDN BHD (202501005103 (1606517D)) | www.qyveofficial.com</p>
           </div>
         </div>
       `;

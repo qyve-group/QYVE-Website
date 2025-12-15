@@ -211,7 +211,7 @@ const PaymentSuccess = () => {
             </CardTitle>
             <CardDescription className="text-muted-foreground">
               Thank you for your purchase. Your payment has been processed
-              successfully.
+              successfully. You will receive a confirmation email shortly.
             </CardDescription>
           </CardHeader>
 

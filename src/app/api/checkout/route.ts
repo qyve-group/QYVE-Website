@@ -1,10 +1,10 @@
+import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { createClient } from '@supabase/supabase-js';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
 // type ContactInfoData = {
@@ -100,7 +100,9 @@ export async function POST(req: Request) {
             .single();
 
           if (error || !productSize) {
-            console.log(`⚠️ Could not find product for product_size_id ${item.id}`);
+            console.log(
+              `⚠️ Could not find product for product_size_id ${item.id}`,
+            );
             return {
               ...item,
               product_size_id: item.id, // item.id IS the product_size_id
@@ -108,13 +110,15 @@ export async function POST(req: Request) {
             };
           }
 
-          console.log(`✅ Found product_id ${productSize.product_id} for ${item.name} (product_size_id: ${item.id})`);
+          console.log(
+            `✅ Found product_id ${productSize.product_id} for ${item.name} (product_size_id: ${item.id})`,
+          );
           return {
             ...item,
             product_size_id: item.id, // item.id IS the product_size_id
             product_id: productSize.product_id,
           };
-        })
+        }),
       );
     }
 
