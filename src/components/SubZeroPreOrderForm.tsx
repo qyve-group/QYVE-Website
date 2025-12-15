@@ -500,9 +500,10 @@ const SubZeroPreOrderForm = ({
         </button>
 
         <p className="text-gray-600 text-center text-sm">
-          Expected delivery will be 5-7 days from week of 22/12. You will be
-          added to a WhatsApp Group once paid for updates on the shipment and
-          the behind the scenes of the shoe. Thank you!
+          Expected delivery will be within a maximum of 2 weeks after payment
+          confirmation. You will be added to a WhatsApp group once payment is
+          completed for shipment updates and behind-the-scenes content of the
+          shoe. Thank you!
         </p>
       </form>
     </div>

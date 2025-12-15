@@ -1,0 +1,62 @@
+  try {
+      const { data: orderData, error: orderError } = await supabaseAdmin
+        .from('orders')
+        .insert([
+          {
+            order_id: orderRef,
+            user_id: isGuestCheckout ? null : userId,
+            status: 'Paid',
+            total_price: session.amount_total! / 100,
+            stripe_session_id: session.id,
+            tracking_no: 'Processing',
+            subtotal: session.amount_subtotal! / 100,
+          },
+        ])
+        .select()
+        .single();
+
+      if (orderError) {
+        console.error('❌ Order insert error:', orderError);
+        return NextResponse.json(
+          { error: 'Failed to create order' },
+          { status: 500 },
+        );
+      }
+      numericOrderId = orderData?.id;
+      console.log(
+        '✅ Order inserted successfully:',
+        numericOrderId,
+        'Ref:',
+        orderRef,
+      );
+    } catch (err) {
+      console.error('❌ Unexpected order creation error:', err);
+      return NextResponse.json(
+        { error: 'Order creation failed' },
+        { status: 500 },
+      );
+    }
+
+    // Process stock updates and order items with better error handling
+    const stockUpdatePromises = [];
+    const orderItemPromises = [];
+
+    // if (numericOrderId) {
+      if (isGuestCheckout) {
+        // Guest checkout: Insert order items directly (no stock update needed as guest items may not have product_size_id)
+        console.log('📦 Processing guest checkout order items...');
+        for (const item of cartItems) {
+          try {
+            const orderItemPromise = supabaseAdmin.from('order_items').insert({
+              order_id: orderRef,
+              product_size_id: item.product_size_id || null,
+              quantity: item.quantity,
+              price: item.price,
+              product_name: item.name || 'Unknown Product',
+              product_size: item.product_size || null,
+            });
+            orderItemPromises.push(orderItemPromise);
+            console.log(`📦 Queued order item: ${item.name} x${item.quantity}`);
+          } catch (error) {
+            console.error('Error creating guest order item:', error);
+          }
