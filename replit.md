@@ -100,3 +100,26 @@ To fully run this application, you'll need to configure:
 - SEO optimization with Next.js SEO
 - Admin features for product management
 - Order management system
+- Admin dashboard for stock management (subdomain: admin.domain.com)
+  - Stock overview with status indicators
+  - Manual stock adjustments (in/out/adjust)
+  - Stock movement history tracking
+  - Protected by admin email allowlist (ADMIN_EMAILS env var)
+
+## Admin Dashboard
+The admin dashboard is accessible via the `admin.` subdomain (e.g., admin.qyveofficial.com).
+
+**Features:**
+- Stock Overview: View all products with current stock levels and status indicators
+- Adjust Stock: Add or remove stock with movement type selection (IN/OUT/ADJUST)
+- Movement History: Track all stock changes with timestamps, references, and notes
+
+**Access Control:**
+- Requires authentication via Supabase Auth
+- Restricted to emails listed in ADMIN_EMAILS environment variable
+- Set ADMIN_EMAILS as comma-separated list (e.g., admin@example.com,manager@example.com)
+
+**Stock Movement Tracking:**
+- All manual adjustments are logged to stock_movements table
+- Order sales automatically create OUT movements via webhook
+- Each movement records: product, quantity change, balance after, notes, reference, timestamp
