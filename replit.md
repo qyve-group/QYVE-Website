@@ -57,6 +57,10 @@ To fully run this application, you'll need to configure:
    - Google Analytics ID
 
 ## Recent Changes
+- 2025-12-16: Enhanced admin dashboard with UI-friendly products CRUD (cards with images, modal forms, search/filter)
+- 2025-12-16: Added defense-in-depth authentication to all admin API endpoints
+- 2025-12-16: Created dashboard home with stats summary and quick actions
+- 2025-12-16: Added stock overview page with search, filtering, and status indicators
 - 2025-11-14: Updated SubZero Early Bird price from RM 214.20 to RM 218 (RM 20 off RM 238 instead of 10% off)
 - 2025-11-14: Implemented cross-client dark mode CSS for Gmail/Outlook/Apple Mail - uses Gmail-specific selectors (u + .gmail-body) and mobile dark mode media queries
 - 2025-11-14: Fixed header text to stay white in dark mode emails - corrected Outlook dark mode attributes (data-ogsc/data-ogsb)
@@ -100,3 +104,26 @@ To fully run this application, you'll need to configure:
 - SEO optimization with Next.js SEO
 - Admin features for product management
 - Order management system
+- Admin dashboard for stock management (subdomain: admin.domain.com)
+  - Stock overview with status indicators
+  - Manual stock adjustments (in/out/adjust)
+  - Stock movement history tracking
+  - Protected by admin email allowlist (ADMIN_EMAILS env var)
+
+## Admin Dashboard
+The admin dashboard is accessible via the `admin.` subdomain (e.g., admin.qyveofficial.com).
+
+**Features:**
+- Stock Overview: View all products with current stock levels and status indicators
+- Adjust Stock: Add or remove stock with movement type selection (IN/OUT/ADJUST)
+- Movement History: Track all stock changes with timestamps, references, and notes
+
+**Access Control:**
+- Requires authentication via Supabase Auth
+- Restricted to emails listed in ADMIN_EMAILS environment variable
+- Set ADMIN_EMAILS as comma-separated list (e.g., admin@example.com,manager@example.com)
+
+**Stock Movement Tracking:**
+- All manual adjustments are logged to stock_movements table
+- Order sales automatically create OUT movements via webhook
+- Each movement records: product, quantity change, balance after, notes, reference, timestamp
