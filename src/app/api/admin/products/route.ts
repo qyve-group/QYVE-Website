@@ -17,7 +17,7 @@ async function verifyAdminAuth(): Promise<{
   error?: string;
 }> {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const allCookies = cookieStore.getAll();
     console.log(
       'Admin auth - cookies found:',
@@ -82,6 +82,7 @@ export async function GET() {
       .select(
         `
         id,
+        products_sizes(stock),
         name,
         slug,
         price,
@@ -91,6 +92,20 @@ export async function GET() {
       );
     // .order('created_at', { ascending: false });
 
+    const productsWithStock = products?.map((product) => {
+      const totalStock = product.products_sizes.reduce(
+        (sum, row) => sum + (row.stock ?? 0),
+        0,
+      );
+
+      return {
+        ...product,
+        totalStock: totalStock, // 👈 add summed stock here
+      };
+    });
+
+    // console.log(productsWithStock);
+
     if (error) {
       console.error('Error fetching products:', error);
       return NextResponse.json(
@@ -99,22 +114,23 @@ export async function GET() {
       );
     }
 
-    const enrichedProducts =
-      products?.map((product: any) => {
-        let totalStock = 0;
-        product.product_colors?.forEach((color: any) => {
-          color.products_sizes?.forEach((size: any) => {
-            totalStock += size.stock || 0;
-          });
-        });
-        return {
-          ...product,
-          totalStock,
-          variantCount: product.product_colors?.length || 0,
-        };
-      }) || [];
+    // const enrichedProducts =
+    //   products?.map((product: any) => {
+    //     let totalStock = 0;
+    //     product.product_colors?.forEach((color: any) => {
+    //       color.products_sizes?.forEach((size: any) => {
+    //         totalStock += size.stock || 0;
+    //       });
+    //     });
+    //     return {
+    //       ...product,
+    //       totalStock,
+    //       variantCount: product.product_colors?.length || 0,
+    //     };
+    //   }) || [];
+    console.log('products:', productsWithStock);
 
-    return NextResponse.json({ products: enrichedProducts });
+    return NextResponse.json({ productsWithStock });
   } catch (error) {
     console.error('Products API error:', error);
     return NextResponse.json(

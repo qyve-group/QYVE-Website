@@ -32,10 +32,10 @@ export default function AdminLayout({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                    className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                       pathname === item.href
-                        ? 'bg-gray-900 text-white'
-                        : 'text-gray-600 hover:bg-gray-100'
+                        ? 'bg-teal-600 text-white'
+                        : 'text-gray-700 hover:bg-teal-50 hover:text-teal-700'
                     }`}
                   >
                     <span className="mr-2">{item.icon}</span>

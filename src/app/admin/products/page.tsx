@@ -88,13 +88,17 @@ export default function ProductsPage() {
       const response = await fetch('/api/admin/products');
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || `Failed to fetch products (${response.status})`);
+        throw new Error(
+          data.error || `Failed to fetch products (${response.status})`,
+        );
       }
-      setProducts(data.products || []);
+      console.log('Fetch products data:', data);
+      setProducts(data.productsWithStock || []);
     } catch (err) {
       console.error('Fetch products error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
+      console.log('Fetch products finished: ', products);
       setLoading(false);
     }
   };
@@ -137,20 +141,29 @@ export default function ProductsPage() {
       .replace(/(^-|-$)/g, '');
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
-    
-    setFormData(prev => {
+
+    setFormData((prev) => {
       const newData = {
         ...prev,
-        [name]: type === 'checkbox' ? checked : type === 'number' ? parseFloat(value) || 0 : value,
+        [name]:
+          type === 'checkbox'
+            ? checked
+            : type === 'number'
+              ? parseFloat(value) || 0
+              : value,
       };
-      
+
       if (name === 'name' && !isEditing && !prev.slug) {
         newData.slug = generateSlug(value);
       }
-      
+
       return newData;
     });
   };
@@ -159,7 +172,7 @@ export default function ProductsPage() {
     e.preventDefault();
     setSaving(true);
     setFormError(null);
-    
+
     try {
       const method = isEditing ? 'PUT' : 'POST';
       const response = await fetch('/api/admin/products', {
@@ -176,7 +189,9 @@ export default function ProductsPage() {
       await fetchProducts();
       handleCloseModal();
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : 'Failed to save product');
+      setFormError(
+        err instanceof Error ? err.message : 'Failed to save product',
+      );
     } finally {
       setSaving(false);
     }
@@ -201,15 +216,32 @@ export default function ProductsPage() {
   };
 
   const getStockBadge = (stock: number) => {
-    if (stock === 0) return <span className="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Out of Stock</span>;
-    if (stock <= 10) return <span className="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Low: {stock}</span>;
-    return <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">{stock} in stock</span>;
+    console.log('stock: ', stock);
+    if (stock === 0)
+      return (
+        <span className="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">
+          Out of Stock
+        </span>
+      );
+    if (stock <= 10)
+      return (
+        <span className="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
+          Low: {stock}
+        </span>
+      );
+    return (
+      <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+        {stock} in stock
+      </span>
+    );
   };
 
-  const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.slug.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || product.status === filterStatus;
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.slug.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      filterStatus === 'all' || product.status === filterStatus;
     return matchesSearch && matchesStatus;
   });
 
@@ -225,7 +257,10 @@ export default function ProductsPage() {
     return (
       <div className="bg-red-50 border border-red-200 rounded-lg p-4">
         <p className="text-red-800">{error}</p>
-        <button onClick={fetchProducts} className="mt-2 text-red-600 hover:text-red-800 underline">
+        <button
+          onClick={fetchProducts}
+          className="mt-2 text-red-600 hover:text-red-800 underline"
+        >
           Try again
         </button>
       </div>
@@ -243,8 +278,18 @@ export default function ProductsPage() {
           onClick={() => handleOpenModal()}
           className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          <svg
+            className="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
           </svg>
           Add Product
         </button>
@@ -274,7 +319,10 @@ export default function ProductsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProducts.map((product) => (
-          <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+          <div
+            key={product.id}
+            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+          >
             <div className="relative h-48 bg-gray-100">
               {product.image_cover ? (
                 <Image
@@ -286,42 +334,77 @@ export default function ProductsPage() {
                 />
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-400">
-                  <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  <svg
+                    className="w-16 h-16"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1}
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
                   </svg>
                 </div>
               )}
               <div className="absolute top-2 right-2 flex flex-col gap-1">
-                {product.is_featured && <span className="px-2 py-0.5 text-xs bg-purple-600 text-white rounded">Featured</span>}
-                {product.is_new_arrival && <span className="px-2 py-0.5 text-xs bg-blue-600 text-white rounded">New</span>}
-                {product.is_best_seller && <span className="px-2 py-0.5 text-xs bg-orange-600 text-white rounded">Best Seller</span>}
+                {product.is_featured && (
+                  <span className="px-2 py-0.5 text-xs bg-purple-600 text-white rounded">
+                    Featured
+                  </span>
+                )}
+                {product.is_new_arrival && (
+                  <span className="px-2 py-0.5 text-xs bg-blue-600 text-white rounded">
+                    New
+                  </span>
+                )}
+                {product.is_best_seller && (
+                  <span className="px-2 py-0.5 text-xs bg-orange-600 text-white rounded">
+                    Best Seller
+                  </span>
+                )}
               </div>
             </div>
-            
+
             <div className="p-4">
               <div className="flex items-start justify-between mb-2">
-                <h3 className="font-semibold text-gray-900 line-clamp-1">{product.name}</h3>
-                <span className={`px-2 py-0.5 text-xs rounded ${
-                  product.status === 'active' ? 'bg-green-100 text-green-800' :
-                  product.status === 'draft' ? 'bg-gray-100 text-gray-800' :
-                  'bg-red-100 text-red-800'
-                }`}>
+                <h3 className="font-semibold text-gray-900 line-clamp-1">
+                  {product.name}
+                </h3>
+                <span
+                  className={`px-2 py-0.5 text-xs rounded ${
+                    product.status === 'active'
+                      ? 'bg-green-100 text-green-800'
+                      : product.status === 'draft'
+                        ? 'bg-gray-100 text-gray-800'
+                        : 'bg-red-100 text-red-800'
+                  }`}
+                >
                   {product.status}
                 </span>
               </div>
-              
+
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-lg font-bold text-gray-900">RM {product.price.toFixed(2)}</span>
+                <span className="text-lg font-bold text-gray-900">
+                  RM {product.price.toFixed(2)}
+                </span>
                 {product.previous_price && (
-                  <span className="text-sm text-gray-500 line-through">RM {product.previous_price.toFixed(2)}</span>
+                  <span className="text-sm text-gray-500 line-through">
+                    RM {product.previous_price.toFixed(2)}
+                  </span>
                 )}
               </div>
-              
+
               <div className="flex items-center justify-between mb-4">
                 {getStockBadge(product.totalStock)}
-                <span className="text-sm text-gray-500">{product.variantCount} variant{product.variantCount !== 1 ? 's' : ''}</span>
+                <span className="text-sm text-gray-500">
+                  {product.variantCount} variant
+                  {product.variantCount !== 1 ? 's' : ''}
+                </span>
               </div>
-              
+
               <div className="flex gap-2">
                 <button
                   onClick={() => handleOpenModal(product)}
@@ -360,12 +443,26 @@ export default function ProductsPage() {
 
       {filteredProducts.length === 0 && (
         <div className="text-center py-12">
-          <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+          <svg
+            className="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1}
+              d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+            />
           </svg>
-          <h3 className="mt-2 text-sm font-medium text-gray-900">No products found</h3>
+          <h3 className="mt-2 text-sm font-medium text-gray-900">
+            No products found
+          </h3>
           <p className="mt-1 text-sm text-gray-500">
-            {searchTerm || filterStatus !== 'all' ? 'Try adjusting your filters' : 'Get started by adding a new product'}
+            {searchTerm || filterStatus !== 'all'
+              ? 'Try adjusting your filters'
+              : 'Get started by adding a new product'}
           </p>
         </div>
       )}
@@ -374,19 +471,23 @@ export default function ProductsPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b">
-              <h2 className="text-xl font-semibold">{isEditing ? 'Edit Product' : 'Add New Product'}</h2>
+              <h2 className="text-xl font-semibold">
+                {isEditing ? 'Edit Product' : 'Add New Product'}
+              </h2>
             </div>
-            
+
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               {formError && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-800">
                   {formError}
                 </div>
               )}
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Product Name *
+                  </label>
                   <input
                     type="text"
                     name="name"
@@ -397,7 +498,9 @@ export default function ProductsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Slug *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Slug *
+                  </label>
                   <input
                     type="text"
                     name="slug"
@@ -411,7 +514,9 @@ export default function ProductsPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Price (RM) *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Price (RM) *
+                  </label>
                   <input
                     type="number"
                     name="price"
@@ -424,7 +529,9 @@ export default function ProductsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Previous Price (RM)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Previous Price (RM)
+                  </label>
                   <input
                     type="number"
                     name="previous_price"
@@ -438,7 +545,9 @@ export default function ProductsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Image URL
+                </label>
                 <input
                   type="url"
                   name="image_cover"
@@ -450,7 +559,9 @@ export default function ProductsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Overview</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Overview
+                </label>
                 <textarea
                   name="overview"
                   value={formData.overview}
@@ -461,7 +572,9 @@ export default function ProductsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Status
+                </label>
                 <select
                   name="status"
                   value={formData.status}
@@ -530,7 +643,11 @@ export default function ProductsPage() {
                   disabled={saving}
                   className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
                 >
-                  {saving ? 'Saving...' : isEditing ? 'Update Product' : 'Create Product'}
+                  {saving
+                    ? 'Saving...'
+                    : isEditing
+                      ? 'Update Product'
+                      : 'Create Product'}
                 </button>
               </div>
             </form>
