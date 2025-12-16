@@ -14,6 +14,59 @@ async function checkAdminAuth(request: NextRequest): Promise<{ authorized: boole
   let supabaseResponse = NextResponse.next({ request });
   
   try {
+    const allCookies = request.cookies.getAll();
+    console.log('Middleware - cookies:', allCookies.map(c => c.name));
+    console.log('Middleware - ADMIN_EMAILS:', ADMIN_EMAILS);
+    
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return allCookies;
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value }) =>
+              request.cookies.set(name, value),
+            );
+            supabaseResponse = NextResponse.next({ request });
+            cookiesToSet.forEach(({ name, value, options }) =>
+              supabaseResponse.cookies.set(name, value, options),
+            );
+          },
+        },
+      },
+    );
+    
+    const { data: { user }, error } = await supabase.auth.getUser();
+    console.log('Middleware - user:', user?.email, 'error:', error?.message);
+    
+    if (!user) {
+      return { authorized: false };
+    }
+    
+    const userEmail = user.email?.toLowerCase() || '';
+    if (ADMIN_EMAILS.length > 0 && !ADMIN_EMAILS.includes(userEmail)) {
+      console.log('Middleware - email not in admin list:', userEmail);
+      return { authorized: false };
+    }
+    
+    return { authorized: true, response: supabaseResponse };
+  } catch (error) {
+    console.error('Admin auth check error:', error);
+    return { authorized: false };
+  }
+}
+
+export async function middleware(request: NextRequest) {
+  const hostname = request.headers.get('host') || '';
+  const pathname = request.nextUrl.pathname;
+  
+  const isAdminSubdomain = hostname.startsWith('admin.');
+  
+  if (pathname.startsWith('/api/admin')) {
+    let supabaseResponse = NextResponse.next({ request });
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -34,38 +87,8 @@ async function checkAdminAuth(request: NextRequest): Promise<{ authorized: boole
         },
       },
     );
-    
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    if (!user) {
-      return { authorized: false };
-    }
-    
-    const userEmail = user.email?.toLowerCase() || '';
-    if (ADMIN_EMAILS.length > 0 && !ADMIN_EMAILS.includes(userEmail)) {
-      return { authorized: false };
-    }
-    
-    return { authorized: true, response: supabaseResponse };
-  } catch (error) {
-    console.error('Admin auth check error:', error);
-    return { authorized: false };
-  }
-}
-
-export async function middleware(request: NextRequest) {
-  const hostname = request.headers.get('host') || '';
-  const pathname = request.nextUrl.pathname;
-  
-  const isAdminSubdomain = hostname.startsWith('admin.');
-  
-  if (pathname.startsWith('/api/admin')) {
-    const authResult = await checkAdminAuth(request);
-    console.log('Middleware /api/admin auth result:', authResult.authorized);
-    if (!authResult.authorized) {
-      return NextResponse.json({ error: 'Unauthorized - middleware blocked' }, { status: 401 });
-    }
-    return authResult.response || NextResponse.next();
+    await supabase.auth.getUser();
+    return supabaseResponse;
   }
 
   if (isAdminSubdomain) {
