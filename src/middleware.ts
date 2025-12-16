@@ -61,8 +61,9 @@ export async function middleware(request: NextRequest) {
   
   if (pathname.startsWith('/api/admin')) {
     const authResult = await checkAdminAuth(request);
+    console.log('Middleware /api/admin auth result:', authResult.authorized);
     if (!authResult.authorized) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized - middleware blocked' }, { status: 401 });
     }
     return authResult.response || NextResponse.next();
   }

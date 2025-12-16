@@ -13,28 +13,33 @@ const supabaseAdmin = createClient(
 async function verifyAdminAuth(): Promise<{ authorized: boolean; error?: string }> {
   try {
     const cookieStore = await cookies();
+    const allCookies = cookieStore.getAll();
+    console.log('Admin auth - cookies found:', allCookies.map(c => c.name));
+    console.log('Admin auth - ADMIN_EMAILS:', ADMIN_EMAILS);
+    
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
         cookies: {
           getAll() {
-            return cookieStore.getAll();
+            return allCookies;
           },
           setAll() {},
         },
       },
     );
 
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    console.log('Admin auth - user:', user?.email, 'error:', authError?.message);
     
     if (!user) {
-      return { authorized: false, error: 'Unauthorized' };
+      return { authorized: false, error: 'Unauthorized - No user session' };
     }
     
     const userEmail = user.email?.toLowerCase() || '';
     if (ADMIN_EMAILS.length > 0 && !ADMIN_EMAILS.includes(userEmail)) {
-      return { authorized: false, error: 'Forbidden - Admin access required' };
+      return { authorized: false, error: `Forbidden - ${userEmail} not in admin list` };
     }
     
     return { authorized: true };
