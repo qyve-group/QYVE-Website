@@ -187,7 +187,7 @@ export async function POST(req: Request) {
                 ${metadata.shipping_country}</p>
               </div>
               
-              <p><strong>Expected Delivery:</strong> 5-7 days from week of 22/12/2025</p>
+              <p><strong>Expected Delivery:</strong>Estimated delivery: Within 2 weeks</p>
               
               <p style="color: #666; font-size: 14px;">
                 If you have any questions, you can reach us at 
@@ -339,21 +339,24 @@ export async function POST(req: Request) {
     // Create an order linked to cart_id
     const orderId = uuidv4(); // Generate a new UUID
     // console.log('OrderID is: ', orderId);
-    const totalPrice = cartItems.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0,
-    );
-    const formattedTotalPrice = parseFloat(totalPrice.toFixed(2)); // Ensure precision
+    // const totalPrice = cartItems.reduce(
+    //   (sum, item) => sum + item.price * item.quantity,
+    //   0,
+    // );
+    // const formattedTotalPrice = parseFloat(totalPrice.toFixed(2)); // Ensure precision
 
-    console.log('About to insert order with values:', {
-      orderId,
-      userId,
-      formattedTotalPrice,
-      stripeSessionId: session.id,
-    });
+    // console.log('About to insert order with values:', {
+    //   orderId,
+    //   userId,
+    //   formattedTotalPrice,
+    //   stripeSessionId: session.id,
+    // });
+
+    const orderRef = session.id.slice(-12).toUpperCase();
+    // let numericOrderId: number | null = null;
 
     try {
-      const { data: orderData, error: orderError } = await supabaseAdmin
+      const { error: orderError } = await supabaseAdmin
         .from('orders')
         .insert([
           {
@@ -364,6 +367,7 @@ export async function POST(req: Request) {
             stripe_session_id: session.id,
             tracking_no: 'Processing',
             subtotal: session.amount_subtotal! / 100,
+            order_ref: orderRef,
           },
         ])
         .select()
@@ -376,7 +380,13 @@ export async function POST(req: Request) {
           { status: 500 },
         );
       }
-      console.log('✅ Order inserted successfully:', orderData?.id);
+      // numericOrderId = orderData?.id;
+      // console.log(
+      //   '✅ Order inserted successfully:',
+      //   numericOrderId,
+      //   'Ref:',
+      //   orderRef,
+      // );
     } catch (err) {
       console.error('❌ Unexpected order creation error:', err);
       return NextResponse.json(
@@ -389,103 +399,121 @@ export async function POST(req: Request) {
     const stockUpdatePromises = [];
     const orderItemPromises = [];
 
-    // Fetch all stock data first
-    const stockPromises = cartItems.map((item) =>
-      supabaseAdmin
-        .from('products_sizes')
-        .select('stock')
-        .eq('id', item.product_size_id)
-        .single()
-        .then((result) => ({ item, result })),
-    );
-
-    const stockResults = await Promise.all(stockPromises);
-
-    for (const { item, result } of stockResults) {
-      try {
-        const { data: productSize, error: fetchError } = result;
-
-        if (fetchError) {
-          console.error(
-            'Error fetching stock for item:',
-            item.product_size_id,
-            fetchError,
-          );
-          continue;
-        }
-
-        if (!productSize || productSize.stock === undefined) {
-          console.error('Stock not found for item:', item);
-          continue;
-        }
-
-        // Calculate new stock
-        const newStock = Math.max(0, productSize.stock - item.quantity);
-        console.log(
-          `Updating stock for item ${item.product_size_id}: ${productSize.stock} -> ${newStock}`,
-        );
-
-        // Update stock
-        const stockUpdatePromise = supabaseAdmin
-          .from('products_sizes')
-          .update({ stock: newStock })
-          .eq('id', item.product_size_id);
-
-        stockUpdatePromises.push(stockUpdatePromise);
-
-        // Record stock movement for tracking
-        const stockMovementPromise = supabaseAdmin
-          .from('stock_movements')
-          .insert({
-            product_id:
-              item.product_id || item.products_sizes?.product_id || null,
-            product_size_id: item.product_size_id,
-            product_name:
-              item.name || item.products_sizes?.description || 'Product',
-            product_size:
-              item.product_size || item.products_sizes?.size || null,
-            quantity_change: -item.quantity,
-            movement_type: 'OUT',
-            balance_after: newStock,
-            notes: 'Order sale',
-            reference: orderId,
-            created_by: 'system',
+    // if (numericOrderId) {
+    if (isGuestCheckout) {
+      // Guest checkout: Insert order items directly (no stock update needed as guest items may not have product_size_id)
+      console.log('📦 Processing guest checkout order items...');
+      console.log('guest cart items: ', cartItems);
+      for (const item of cartItems) {
+        try {
+          const orderItemPromise = supabaseAdmin.from('order_items').insert({
+            id: uuidv4(),
+            order_id: orderId,
+            order_ref: orderRef,
+            product_size_id: item.product_size_id || 'TBC',
+            quantity: item.quantity,
+            price: item.price,
+            product_name: item.name || 'Unknown Product',
+            product_size: item.product_size || 'TBC',
           });
-        stockUpdatePromises.push(stockMovementPromise);
+          orderItemPromises.push(orderItemPromise);
+          console.log('order id: ', orderId);
+          console.log('order ref: ', orderRef);
+          console.log('product size id: ', item.product_size_id);
+          console.log('product_name: ', item.name);
+          console.log('product_size: ', item.product_size);
+          console.log(`📦 Queued order item: ${item.name} x${item.quantity}`);
+        } catch (error) {
+          console.error('Error creating guest order item:', error);
+        }
+      }
+    } else {
+      // Authenticated checkout: Update stock and insert order items
+      const stockPromises = cartItems.map((item) =>
+        supabaseAdmin
+          .from('products_sizes')
+          .select('stock')
+          .eq('id', item.product_size_id)
+          .single()
+          .then((result) => ({ item, result })),
+      );
 
-        // Create order item
-        const orderItemsId = uuidv4();
-        const orderItemPromise = supabaseAdmin.from('order_items').insert({
-          id: orderItemsId,
-          order_id: orderId,
-          product_size_id: item.product_size_id,
-          quantity: item.quantity,
-          price: item.price,
-        });
+      const stockResults = await Promise.all(stockPromises);
 
-        orderItemPromises.push(orderItemPromise);
-      } catch (error) {
-        console.error('Error processing item:', item.product_size_id, error);
+      for (const { item, result } of stockResults) {
+        try {
+          const { data: productSize, error: fetchError } = result;
+
+          if (fetchError) {
+            console.error(
+              'Error fetching stock for item:',
+              item.product_size_id,
+              fetchError,
+            );
+            continue;
+          }
+
+          if (!productSize || productSize.stock === undefined) {
+            console.error('Stock not found for item:', item);
+            continue;
+          }
+
+          // Calculate new stock
+          const newStock = Math.max(0, productSize.stock - item.quantity);
+          console.log(
+            `Updating stock for item ${item.product_size_id}: ${productSize.stock} -> ${newStock}`,
+          );
+
+          // Update stock
+          const stockUpdatePromise = supabaseAdmin
+            .from('products_sizes')
+            .update({ stock: newStock })
+            .eq('id', item.product_size_id);
+
+          stockUpdatePromises.push(stockUpdatePromise);
+
+          // Create order item
+          const orderItemPromise = supabaseAdmin.from('order_items').insert({
+            // id: numericOrderId,
+            order_id: orderId,
+            order_ref: orderRef,
+            product_size_id: item.product_size_id,
+            quantity: item.quantity,
+            price: item.price,
+            product_name: item.products_sizes?.description || 'Product',
+            product_size: item.products_sizes?.size || null,
+          });
+
+          orderItemPromises.push(orderItemPromise);
+        } catch (error) {
+          console.error('Error processing item:', item.product_size_id, error);
+        }
       }
     }
+    // }
 
     // Execute all stock updates and order item insertions in parallel
     try {
-      const stockUpdateResults = await Promise.allSettled(stockUpdatePromises);
-      const orderItemResults = await Promise.allSettled(orderItemPromises);
+      if (stockUpdatePromises.length > 0) {
+        const stockUpdateResults =
+          await Promise.allSettled(stockUpdatePromises);
+        stockUpdateResults.forEach((result, index) => {
+          if (result.status === 'rejected') {
+            console.error(`Stock update ${index} failed:`, result.reason);
+          }
+        });
+      }
 
-      // Log any failures
-      stockUpdateResults.forEach((result, index) => {
-        if (result.status === 'rejected') {
-          console.error(`Stock update ${index} failed:`, result.reason);
-        }
-      });
-
-      orderItemResults.forEach((result, index) => {
-        if (result.status === 'rejected') {
-          console.error(`Order item ${index} failed:`, result.reason);
-        }
-      });
+      if (orderItemPromises.length > 0) {
+        const orderItemResults = await Promise.allSettled(orderItemPromises);
+        orderItemResults.forEach((result, index) => {
+          if (result.status === 'rejected') {
+            console.error(`Order item ${index} failed:`, result.reason);
+          } else {
+            console.log(`✅ Order item ${index} inserted successfully`);
+          }
+        });
+      }
 
       console.log('✅ Stock updates and order items processed');
     } catch (error) {
@@ -504,12 +532,12 @@ export async function POST(req: Request) {
           address_line_2: orderAddress.shipping_address_2,
           first_name: orderAddress.fname,
           last_name: orderAddress.lname,
-          order_id: orderId,
+          order_id: orderRef,
         }),
         supabaseAdmin.from('order_contact_info').insert({
           phone: contactInfo.phone,
           email: contactInfo.email,
-          order_id: orderId,
+          order_id: orderRef,
         }),
       ]);
 
@@ -664,11 +692,17 @@ export async function POST(req: Request) {
 
     // Send Telegram notification (non-blocking)
     console.log('🚀 Starting Telegram notification process...');
-    console.log('🚀 Order ID:', orderId);
+    console.log('🚀 Order ID:', orderRef);
     console.log('🚀 Cart items for Telegram:', cartItems);
     try {
       console.log('🚀 Calling notifyTelegram function...');
-      await notifyTelegram(orderId, orderAddress, contactInfo, cartItems);
+      await notifyTelegram(
+        orderRef,
+        orderAddress,
+        contactInfo,
+        cartItems,
+        session.id,
+      );
       console.log('✅ Telegram notification sent successfully');
     } catch (telegramError) {
       console.error(
@@ -699,7 +733,7 @@ export async function POST(req: Request) {
         orderItemsText = cartItems
           .map(
             (item: any) =>
-              `${item.name} (${item.products_sizes.size || 'N/A'}) x${item.quantity} - RM${item.price}`,
+              `${item.name} (${item.product_size || 'N/A'}) x${item.quantity} - RM${item.price}`,
           )
           .join('\n');
       } else {
@@ -720,26 +754,77 @@ export async function POST(req: Request) {
 
       console.log('📨 Formatted order items text:', orderItemsText);
 
-      const email = new SendSmtpEmail();
-      email.templateId = 4; // 👈 replace with your Brevo template ID
-      email.to = [{ email: customerEmail as string }];
-      email.params = {
-        subject: 'Your Order Confirmation',
-        // parameter: "Thanks for your order!", // maps to {{params.parameter}} in template
-        orderId,
-        customerName,
-        customerAddress: `${orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postal_code}`,
-        // amount: session.amount_total ? session.amount_total / 100 : "N/A",
-      };
+      // Calculate amounts from Stripe session
+      const subtotalAmount = session.amount_subtotal
+        ? (session.amount_subtotal / 100).toFixed(2)
+        : '0.00';
+      const shippingAmount = session.total_details?.amount_shipping
+        ? (session.total_details.amount_shipping / 100).toFixed(2)
+        : '0.00';
+      const totalAmount = session.amount_total
+        ? (session.amount_total / 100).toFixed(2)
+        : '0.00';
 
-      // try {
-      await brevoClient.sendTransacEmail(email);
+      // Build items HTML for email
+      const itemsHtml = cartItems
+        .map((item: any) => {
+          const name = item.name || 'Product';
+          const size = item.product_size || item.products_sizes?.size || 'N/A';
+          const qty = item.quantity || 1;
+          const price = item.price || 0;
+          return `<p><strong>${name}</strong> (${size}) x${qty} - RM ${price}</p>`;
+        })
+        .join('');
+
+      const email = new SendSmtpEmail();
+      email.sender = { name: 'QYVE', email: 'noreply@qyveofficial.com' };
+      email.to = [{ email: customerEmail as string, name: customerName }];
+      email.subject = 'Order Confirmed - Payment Received!';
+      email.htmlContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 30px; text-align: center;">
+            <h1 style="color: white; margin: 0;">Order Confirmed!</h1>
+          </div>
+          <div style="padding: 30px; background: #f9f9f9;">
+            <p>Hi <strong>${customerName}</strong>,</p>
+            <p>Thank you for your order! Your payment has been received.</p>
+            
+            <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0;">
+              <h3 style="margin-top: 0; color: #1a1a2e;">Order Details</h3>
+              <p><strong>Order Reference:</strong> ${orderRef}</p>
+              ${itemsHtml}
+              <hr style="border: none; border-top: 1px solid #eee; margin: 15px 0;">
+              <p>Subtotal: RM ${subtotalAmount}</p>
+              <p>Shipping: RM ${shippingAmount}</p>
+              <p style="font-size: 18px; margin-top: 10px;"><strong>Total Paid: RM ${totalAmount}</strong></p>
+            </div>
+            
+            <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0;">
+              <h3 style="margin-top: 0; color: #1a1a2e;">Shipping Address</h3>
+              <p>${orderAddress.fname} ${orderAddress.lname}<br>
+              ${orderAddress.shippingAddress1 || orderAddress.shipping_address_1}<br>
+              ${orderAddress.shippingAddress2 || orderAddress.shipping_address_2 ? `${orderAddress.shippingAddress2 || orderAddress.shipping_address_2}<br>` : ''}
+              ${orderAddress.city}, ${orderAddress.state} ${orderAddress.postalCode || orderAddress.postal_code}<br>
+              Malaysia</p>
+            </div>
+            
+            <p><strong>Expected Delivery:</strong>Estimated delivery: Within 2 weeks</p>
+            
+            <p style="color: #666; font-size: 14px;">If you have any questions, reply to this email or contact us via WhatsApp.</p>
+          </div>
+          <div style="background: #1a1a2e; padding: 20px; text-align: center;">
+            <p style="color: white; margin: 0; font-size: 14px;">QYVE GROUP SDN BHD (202501005103 (1606517D)) | www.qyveofficial.com</p>
+          </div>
+        </div>
+      `;
+
+      const emailResult = await brevoClient.sendTransacEmail(email);
       console.log(
         '✅ Order confirmation email sent to:',
-        session.customer_email,
+        customerEmail,
+        'Message ID:',
+        emailResult.body?.messageId,
       );
-      // } catch (error) {
-      //   console.error("❌ Failed to send Brevo email:", error);
     } catch (emailError) {
       console.error('❌ Email receipt failed (non-critical):', emailError);
       console.error('❌ Email error stack:', (emailError as Error).stack);
@@ -748,7 +833,7 @@ export async function POST(req: Request) {
 
     console.log(
       '✅ Webhook processing completed successfully for order:',
-      orderId,
+      orderRef,
     );
   }
 

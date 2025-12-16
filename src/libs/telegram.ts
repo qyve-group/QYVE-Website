@@ -7,6 +7,7 @@ export async function notifyTelegram(
   orderAddress: any,
   contactInfo: any,
   cartItems?: any[],
+  sessionId?: string,
 ) {
   console.log('calling notifyTelegram with items:', cartItems);
   console.log('Items count:', cartItems?.length);
@@ -81,6 +82,18 @@ export async function notifyTelegram(
   //       : (item.product_sizes as { description: string });
   //     const finalDescription = itemDescription?.description ?? 'Check Supabase';
 
+  // Generate order reference from session ID (last 12 chars) or fallback to orderId
+  const orderRef = sessionId
+    ? sessionId.slice(-12).toUpperCase()
+    : orderId.slice(0, 12).toUpperCase();
+
+  // Calculate total from cart items
+  const total =
+    cartItems?.reduce(
+      (sum, item) => sum + item.price * (item.quantity || 1),
+      0,
+    ) || 0;
+
   const res = await fetch(
     `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
     {
@@ -89,10 +102,15 @@ export async function notifyTelegram(
       body: JSON.stringify({
         chat_id: process.env.GROUP_CHAT_ID,
         text:
-          `📦 New Paid Order\n\nOrder ID: ${orderId}\nCustomer: ${orderAddress.fname} ${orderAddress.lname}\n` +
-          `Email: ${contactInfo.email}\nPhone: ${contactInfo.phone}\n\n` +
-          `Shipping Address:\n${orderAddress.shippingAddress1 || orderAddress.shipping_address_1}, ${orderAddress.city}, ${orderAddress.state}, ${orderAddress.postalCode || orderAddress.postal_code}\n\n` +
-          `Items:\n${itemsText}`,
+          `📦 NEW ORDER PAID!\n\n` +
+          `Order Ref: ${orderRef}\n` +
+          `Customer: ${orderAddress.fname} ${orderAddress.lname}\n` +
+          `Email: ${contactInfo.email}\n` +
+          `Phone: ${contactInfo.phone}\n\n` +
+          `Items:\n${itemsText}\n\n` +
+          `Total: RM ${total}\n\n` +
+          `Ship to:\n${orderAddress.shippingAddress1 || orderAddress.shipping_address_1}\n` +
+          `${orderAddress.city}, ${orderAddress.state} ${orderAddress.postalCode || orderAddress.postal_code}`,
       }),
     },
   );

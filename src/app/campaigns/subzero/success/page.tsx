@@ -29,7 +29,7 @@ function SuccessContent() {
           <ul className="text-gray-700 list-inside list-disc space-y-2 text-sm">
             <li>You will receive a confirmation email shortly</li>
             <li>You will be added to our WhatsApp group for updates</li>
-            <li>Expected delivery: 5-7 days from week of 22/12</li>
+            <li>Expected delivery: Within 2 weeks</li>
           </ul>
         </div>
 
