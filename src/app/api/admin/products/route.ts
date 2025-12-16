@@ -77,7 +77,7 @@ export async function GET() {
         product_colors (
           id,
           color,
-          images,
+          image,
           products_sizes (
             id,
             size,

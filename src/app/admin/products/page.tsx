@@ -12,7 +12,7 @@ interface ProductSize {
 interface ProductColor {
   id: number;
   color: string;
-  images: string[];
+  image: string | null;
   products_sizes: ProductSize[];
 }
 
