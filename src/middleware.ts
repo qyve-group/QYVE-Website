@@ -101,6 +101,14 @@ export async function middleware(request: NextRequest) {
     return supabaseResponse;
   }
 
+  // Block direct /admin access when NOT on admin subdomain
+  if (!isAdminSubdomain && pathname.startsWith('/admin')) {
+    // Redirect to home page or show 404
+    const url = request.nextUrl.clone();
+    url.pathname = '/';
+    return NextResponse.redirect(url);
+  }
+
   if (isAdminSubdomain) {
     if (pathname.startsWith('/api/webhook')) {
       return NextResponse.next();
