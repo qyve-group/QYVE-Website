@@ -57,6 +57,10 @@ To fully run this application, you'll need to configure:
    - Google Analytics ID
 
 ## Recent Changes
+- 2025-12-16: Enhanced admin dashboard with UI-friendly products CRUD (cards with images, modal forms, search/filter)
+- 2025-12-16: Added defense-in-depth authentication to all admin API endpoints
+- 2025-12-16: Created dashboard home with stats summary and quick actions
+- 2025-12-16: Added stock overview page with search, filtering, and status indicators
 - 2025-11-14: Updated SubZero Early Bird price from RM 214.20 to RM 218 (RM 20 off RM 238 instead of 10% off)
 - 2025-11-14: Implemented cross-client dark mode CSS for Gmail/Outlook/Apple Mail - uses Gmail-specific selectors (u + .gmail-body) and mobile dark mode media queries
 - 2025-11-14: Fixed header text to stay white in dark mode emails - corrected Outlook dark mode attributes (data-ogsc/data-ogsb)
