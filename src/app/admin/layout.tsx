@@ -11,9 +11,11 @@ export default function AdminLayout({
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/admin', label: 'Stock Overview', icon: '📦' },
+    { href: '/admin', label: 'Dashboard', icon: '🏠' },
+    { href: '/admin/products', label: 'Products', icon: '🛍️' },
+    { href: '/admin/stock', label: 'Stock', icon: '📦' },
     { href: '/admin/adjustments', label: 'Adjust Stock', icon: '✏️' },
-    { href: '/admin/history', label: 'Movement History', icon: '📋' },
+    { href: '/admin/history', label: 'History', icon: '📋' },
   ];
 
   return (
