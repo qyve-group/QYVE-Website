@@ -86,10 +86,13 @@ export default function ProductsPage() {
     try {
       setLoading(true);
       const response = await fetch('/api/admin/products');
-      if (!response.ok) throw new Error('Failed to fetch products');
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || `Failed to fetch products (${response.status})`);
+      }
       setProducts(data.products || []);
     } catch (err) {
+      console.error('Fetch products error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
