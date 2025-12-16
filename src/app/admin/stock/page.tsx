@@ -1,3 +1,8 @@
+/* eslint-disable
+  @typescript-eslint/no-use-before-define,
+  react/button-has-type
+*/
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -38,33 +43,52 @@ export default function StockPage() {
   };
 
   const getStockStatus = (stock: number) => {
-    if (stock === 0) return { label: 'Out of Stock', color: 'bg-red-100 text-red-800', value: 'out' };
-    if (stock <= 5) return { label: 'Low Stock', color: 'bg-yellow-100 text-yellow-800', value: 'low' };
-    return { label: 'In Stock', color: 'bg-green-100 text-green-800', value: 'in' };
+    if (stock === 0)
+      return {
+        label: 'Out of Stock',
+        color: 'bg-red-100 text-red-800',
+        value: 'out',
+      };
+    if (stock <= 5)
+      return {
+        label: 'Low Stock',
+        color: 'bg-yellow-100 text-yellow-800',
+        value: 'low',
+      };
+    return {
+      label: 'In Stock',
+      color: 'bg-green-100 text-green-800',
+      value: 'in',
+    };
   };
 
-  const filteredItems = stockItems.filter(item => {
-    const matchesSearch = item.product_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.color.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.size.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredItems = stockItems.filter((item) => {
+    const matchesSearch =
+      item.product_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.color.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.size.toLowerCase().includes(searchTerm.toLowerCase());
     const status = getStockStatus(item.stock);
-    const matchesFilter = filterStatus === 'all' || status.value === filterStatus;
+    const matchesFilter =
+      filterStatus === 'all' || status.value === filterStatus;
     return matchesSearch && matchesFilter;
   });
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      <div className="flex h-64 items-center justify-center">
+        <div className="border-gray-900 size-8 animate-spin rounded-full border-b-2" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+      <div className="rounded-lg border border-red-200 bg-red-50 p-4">
         <p className="text-red-800">{error}</p>
-        <button onClick={fetchStock} className="mt-2 text-red-600 hover:text-red-800 underline">
+        <button
+          onClick={fetchStock}
+          className="mt-2 text-red-600 underline hover:text-red-800"
+        >
           Try again
         </button>
       </div>
@@ -74,49 +98,54 @@ export default function StockPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Stock Overview</h1>
-        <p className="text-gray-600">View and manage your product inventory by size</p>
+        <h1 className="text-gray-900 text-2xl font-bold">Stock Overview</h1>
+        <p className="text-gray-600">
+          View and manage your product inventory by size
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">Total SKUs</div>
+      <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
+        <div className="rounded-lg bg-white p-4 shadow">
+          <div className="text-gray-500 text-sm">Total SKUs</div>
           <div className="text-2xl font-bold">{stockItems.length}</div>
         </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">Total Units</div>
+        <div className="rounded-lg bg-white p-4 shadow">
+          <div className="text-gray-500 text-sm">Total Units</div>
           <div className="text-2xl font-bold text-blue-600">
             {stockItems.reduce((sum, item) => sum + item.stock, 0)}
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">Low Stock</div>
+        <div className="rounded-lg bg-white p-4 shadow">
+          <div className="text-gray-500 text-sm">Low Stock</div>
           <div className="text-2xl font-bold text-yellow-600">
-            {stockItems.filter(item => item.stock > 0 && item.stock <= 5).length}
+            {
+              stockItems.filter((item) => item.stock > 0 && item.stock <= 5)
+                .length
+            }
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-sm text-gray-500">Out of Stock</div>
+        <div className="rounded-lg bg-white p-4 shadow">
+          <div className="text-gray-500 text-sm">Out of Stock</div>
           <div className="text-2xl font-bold text-red-600">
-            {stockItems.filter(item => item.stock === 0).length}
+            {stockItems.filter((item) => item.stock === 0).length}
           </div>
         </div>
       </div>
 
-      <div className="mb-4 flex flex-col sm:flex-row gap-4">
+      <div className="mb-4 flex flex-col gap-4 sm:flex-row">
         <div className="flex-1">
           <input
             type="text"
             placeholder="Search by product, color, or size..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="border-gray-300 w-full rounded-lg border px-4 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="border-gray-300 rounded-lg border px-4 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
         >
           <option value="all">All Stock</option>
           <option value="in">In Stock</option>
@@ -125,59 +154,63 @@ export default function StockPage() {
         </select>
         <button
           onClick={fetchStock}
-          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+          className="bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg px-4 py-2"
         >
           Refresh
         </button>
       </div>
 
-      <div className="bg-white shadow rounded-lg overflow-hidden">
+      <div className="overflow-hidden rounded-lg bg-white shadow">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="divide-gray-200 min-w-full divide-y">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                   Product
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                   Variant
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                   Size
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                   Stock
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-gray-500 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                   Status
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-gray-200 divide-y bg-white">
               {filteredItems.map((item) => {
                 const status = getStockStatus(item.stock);
                 return (
                   <tr key={item.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="text-gray-900 whitespace-nowrap px-6 py-4 text-sm font-medium">
                       {item.product_name}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="text-gray-500 whitespace-nowrap px-6 py-4 text-sm">
                       <span className="inline-flex items-center">
-                        <span 
-                          className="w-3 h-3 rounded-full mr-2 border border-gray-200" 
+                        <span
+                          className="border-gray-200 mr-2 size-3 rounded-full border"
                           style={{ backgroundColor: item.color.toLowerCase() }}
                         />
                         {item.color}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <span className="px-2 py-1 bg-gray-100 rounded">{item.size}</span>
+                    <td className="text-gray-500 whitespace-nowrap px-6 py-4 text-sm">
+                      <span className="bg-gray-100 rounded px-2 py-1">
+                        {item.size}
+                      </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                    <td className="text-gray-900 whitespace-nowrap px-6 py-4 text-sm font-medium">
                       {item.stock}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${status.color}`}>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      <span
+                        className={`rounded-full px-2 py-1 text-xs font-medium ${status.color}`}
+                      >
                         {status.label}
                       </span>
                     </td>
@@ -188,8 +221,10 @@ export default function StockPage() {
           </table>
         </div>
         {filteredItems.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
-            {searchTerm || filterStatus !== 'all' ? 'No items match your filters' : 'No stock data found'}
+          <div className="text-gray-500 py-8 text-center">
+            {searchTerm || filterStatus !== 'all'
+              ? 'No items match your filters'
+              : 'No stock data found'}
           </div>
         )}
       </div>

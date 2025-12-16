@@ -1,8 +1,10 @@
+import { createServerClient } from '@supabase/ssr';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { createServerClient } from '@supabase/ssr';
 
-const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase());
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '')
+  .split(',')
+  .map((e) => e.trim().toLowerCase());
 
 export const config = {
   matcher: [
@@ -10,14 +12,19 @@ export const config = {
   ],
 };
 
-async function checkAdminAuth(request: NextRequest): Promise<{ authorized: boolean; response?: NextResponse }> {
+async function checkAdminAuth(
+  request: NextRequest,
+): Promise<{ authorized: boolean; response?: NextResponse }> {
   let supabaseResponse = NextResponse.next({ request });
-  
+
   try {
     const allCookies = request.cookies.getAll();
-    console.log('Middleware - cookies:', allCookies.map(c => c.name));
+    console.log(
+      'Middleware - cookies:',
+      allCookies.map((c) => c.name),
+    );
     console.log('Middleware - ADMIN_EMAILS:', ADMIN_EMAILS);
-    
+
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -38,20 +45,23 @@ async function checkAdminAuth(request: NextRequest): Promise<{ authorized: boole
         },
       },
     );
-    
-    const { data: { user }, error } = await supabase.auth.getUser();
+
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
     console.log('Middleware - user:', user?.email, 'error:', error?.message);
-    
+
     if (!user) {
       return { authorized: false };
     }
-    
+
     const userEmail = user.email?.toLowerCase() || '';
     if (ADMIN_EMAILS.length > 0 && !ADMIN_EMAILS.includes(userEmail)) {
       console.log('Middleware - email not in admin list:', userEmail);
       return { authorized: false };
     }
-    
+
     return { authorized: true, response: supabaseResponse };
   } catch (error) {
     console.error('Admin auth check error:', error);
@@ -61,10 +71,10 @@ async function checkAdminAuth(request: NextRequest): Promise<{ authorized: boole
 
 export async function middleware(request: NextRequest) {
   const hostname = request.headers.get('host') || '';
-  const pathname = request.nextUrl.pathname;
-  
+  const { pathname } = request.nextUrl;
+
   const isAdminSubdomain = hostname.startsWith('admin.');
-  
+
   if (pathname.startsWith('/api/admin')) {
     let supabaseResponse = NextResponse.next({ request });
     const supabase = createServerClient(
@@ -95,7 +105,7 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith('/api/webhook')) {
       return NextResponse.next();
     }
-    
+
     if (pathname.startsWith('/api/') && !pathname.startsWith('/api/admin')) {
       const authResult = await checkAdminAuth(request);
       if (!authResult.authorized) {
@@ -105,8 +115,13 @@ export async function middleware(request: NextRequest) {
       url.pathname = `/api/admin${pathname.replace('/api', '')}`;
       return NextResponse.rewrite(url);
     }
-    
-    if (!pathname.startsWith('/admin') && !pathname.startsWith('/login') && !pathname.startsWith('/auth') && !pathname.startsWith('/api')) {
+
+    if (
+      !pathname.startsWith('/admin') &&
+      !pathname.startsWith('/login') &&
+      !pathname.startsWith('/auth') &&
+      !pathname.startsWith('/api')
+    ) {
       const authResult = await checkAdminAuth(request);
       if (!authResult.authorized) {
         const url = request.nextUrl.clone();
@@ -118,7 +133,7 @@ export async function middleware(request: NextRequest) {
       url.pathname = `/admin${pathname === '/' ? '' : pathname}`;
       return NextResponse.rewrite(url);
     }
-    
+
     if (pathname.startsWith('/admin')) {
       const authResult = await checkAdminAuth(request);
       if (!authResult.authorized) {
@@ -130,6 +145,6 @@ export async function middleware(request: NextRequest) {
       return authResult.response || NextResponse.next();
     }
   }
-  
+
   return NextResponse.next();
 }

@@ -1,7 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server';
+/* eslint-disable
+  no-console,
+  @typescript-eslint/naming-convention,
+  radix
+*/
+
+import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
-import { createServerClient } from '@supabase/ssr';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '')
   .split(',')
@@ -100,7 +107,7 @@ export async function GET() {
 
       return {
         ...product,
-        totalStock: totalStock, // 👈 add summed stock here
+        totalStock, // 👈 add summed stock here
       };
     });
 

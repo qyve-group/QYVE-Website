@@ -437,10 +437,13 @@ export async function POST(req: Request) {
         const stockMovementPromise = supabaseAdmin
           .from('stock_movements')
           .insert({
-            product_id: item.product_id || item.products_sizes?.product_id || null,
+            product_id:
+              item.product_id || item.products_sizes?.product_id || null,
             product_size_id: item.product_size_id,
-            product_name: item.name || item.products_sizes?.description || 'Product',
-            product_size: item.product_size || item.products_sizes?.size || null,
+            product_name:
+              item.name || item.products_sizes?.description || 'Product',
+            product_size:
+              item.product_size || item.products_sizes?.size || null,
             quantity_change: -item.quantity,
             movement_type: 'OUT',
             balance_after: newStock,

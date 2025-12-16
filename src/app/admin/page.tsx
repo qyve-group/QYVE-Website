@@ -1,7 +1,13 @@
+/* eslint-disable
+  @typescript-eslint/no-use-before-define,
+  react/button-has-type,
+  no-nested-ternary
+*/
+
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 interface DashboardStats {
   totalProducts: number;
@@ -50,10 +56,16 @@ export default function AdminDashboard() {
 
       setStats({
         totalProducts: products.length,
-        totalStock: stocks.reduce((sum: number, item: any) => sum + item.stock, 0),
-        lowStockItems: stocks.filter((item: any) => item.stock > 0 && item.stock <= 5).length,
+        totalStock: stocks.reduce(
+          (sum: number, item: any) => sum + item.stock,
+          0,
+        ),
+        lowStockItems: stocks.filter(
+          (item: any) => item.stock > 0 && item.stock <= 5,
+        ).length,
         outOfStockItems: stocks.filter((item: any) => item.stock === 0).length,
-        activeProducts: products.filter((p: any) => p.status === 'active').length,
+        activeProducts: products.filter((p: any) => p.status === 'active')
+          .length,
         recentMovements: movements,
       });
     } catch (err) {
@@ -65,17 +77,20 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      <div className="flex h-64 items-center justify-center">
+        <div className="border-gray-900 size-8 animate-spin rounded-full border-b-2" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+      <div className="rounded-lg border border-red-200 bg-red-50 p-4">
         <p className="text-red-800">{error}</p>
-        <button onClick={fetchDashboardData} className="mt-2 text-red-600 hover:text-red-800 underline">
+        <button
+          onClick={fetchDashboardData}
+          className="mt-2 text-red-600 underline hover:text-red-800"
+        >
           Try again
         </button>
       </div>
@@ -85,144 +100,193 @@ export default function AdminDashboard() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+        <h1 className="text-gray-900 text-2xl font-bold">Dashboard</h1>
         <p className="text-gray-600">Welcome to QYVE Admin</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Link href="/admin/products" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow">
+      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Link
+          href="/admin/products"
+          className="rounded-xl bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+        >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Products</p>
-              <p className="text-3xl font-bold text-gray-900">{stats?.totalProducts || 0}</p>
+              <p className="text-gray-500 text-sm">Total Products</p>
+              <p className="text-gray-900 text-3xl font-bold">
+                {stats?.totalProducts || 0}
+              </p>
             </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+            <div className="flex size-12 items-center justify-center rounded-lg bg-blue-100">
               <span className="text-2xl">🛍️</span>
             </div>
           </div>
-          <p className="text-sm text-gray-500 mt-2">{stats?.activeProducts || 0} active</p>
+          <p className="text-gray-500 mt-2 text-sm">
+            {stats?.activeProducts || 0} active
+          </p>
         </Link>
 
-        <Link href="/admin/stock" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow">
+        <Link
+          href="/admin/stock"
+          className="rounded-xl bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+        >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Stock</p>
-              <p className="text-3xl font-bold text-blue-600">{stats?.totalStock || 0}</p>
+              <p className="text-gray-500 text-sm">Total Stock</p>
+              <p className="text-3xl font-bold text-blue-600">
+                {stats?.totalStock || 0}
+              </p>
             </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+            <div className="flex size-12 items-center justify-center rounded-lg bg-blue-100">
               <span className="text-2xl">📦</span>
             </div>
           </div>
-          <p className="text-sm text-gray-500 mt-2">units in inventory</p>
+          <p className="text-gray-500 mt-2 text-sm">units in inventory</p>
         </Link>
 
-        <Link href="/admin/stock?filter=low" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow">
+        <Link
+          href="/admin/stock?filter=low"
+          className="rounded-xl bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+        >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Low Stock</p>
-              <p className="text-3xl font-bold text-yellow-600">{stats?.lowStockItems || 0}</p>
+              <p className="text-gray-500 text-sm">Low Stock</p>
+              <p className="text-3xl font-bold text-yellow-600">
+                {stats?.lowStockItems || 0}
+              </p>
             </div>
-            <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+            <div className="flex size-12 items-center justify-center rounded-lg bg-yellow-100">
               <span className="text-2xl">⚠️</span>
             </div>
           </div>
-          <p className="text-sm text-gray-500 mt-2">items need attention</p>
+          <p className="text-gray-500 mt-2 text-sm">items need attention</p>
         </Link>
 
-        <Link href="/admin/stock?filter=out" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow">
+        <Link
+          href="/admin/stock?filter=out"
+          className="rounded-xl bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+        >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Out of Stock</p>
-              <p className="text-3xl font-bold text-red-600">{stats?.outOfStockItems || 0}</p>
+              <p className="text-gray-500 text-sm">Out of Stock</p>
+              <p className="text-3xl font-bold text-red-600">
+                {stats?.outOfStockItems || 0}
+              </p>
             </div>
-            <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+            <div className="flex size-12 items-center justify-center rounded-lg bg-red-100">
               <span className="text-2xl">🚫</span>
             </div>
           </div>
-          <p className="text-sm text-gray-500 mt-2">items unavailable</p>
+          <p className="text-gray-500 mt-2 text-sm">items unavailable</p>
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Quick Actions</h2>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="rounded-xl bg-white p-6 shadow-sm">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-gray-900 text-lg font-semibold">
+              Quick Actions
+            </h2>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <Link
               href="/admin/products"
-              className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+              className="bg-gray-50 hover:bg-gray-100 flex items-center rounded-lg p-4 transition-colors"
             >
-              <span className="text-2xl mr-3">🛍️</span>
+              <span className="mr-3 text-2xl">🛍️</span>
               <div>
-                <p className="font-medium text-gray-900">Manage Products</p>
-                <p className="text-sm text-gray-500">Add, edit, delete</p>
+                <p className="text-gray-900 font-medium">Manage Products</p>
+                <p className="text-gray-500 text-sm">Add, edit, delete</p>
               </div>
             </Link>
             <Link
               href="/admin/adjustments"
-              className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+              className="bg-gray-50 hover:bg-gray-100 flex items-center rounded-lg p-4 transition-colors"
             >
-              <span className="text-2xl mr-3">✏️</span>
+              <span className="mr-3 text-2xl">✏️</span>
               <div>
-                <p className="font-medium text-gray-900">Adjust Stock</p>
-                <p className="text-sm text-gray-500">Update inventory</p>
+                <p className="text-gray-900 font-medium">Adjust Stock</p>
+                <p className="text-gray-500 text-sm">Update inventory</p>
               </div>
             </Link>
             <Link
               href="/admin/stock"
-              className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+              className="bg-gray-50 hover:bg-gray-100 flex items-center rounded-lg p-4 transition-colors"
             >
-              <span className="text-2xl mr-3">📦</span>
+              <span className="mr-3 text-2xl">📦</span>
               <div>
-                <p className="font-medium text-gray-900">View Stock</p>
-                <p className="text-sm text-gray-500">Check inventory</p>
+                <p className="text-gray-900 font-medium">View Stock</p>
+                <p className="text-gray-500 text-sm">Check inventory</p>
               </div>
             </Link>
             <Link
               href="/admin/history"
-              className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+              className="bg-gray-50 hover:bg-gray-100 flex items-center rounded-lg p-4 transition-colors"
             >
-              <span className="text-2xl mr-3">📋</span>
+              <span className="mr-3 text-2xl">📋</span>
               <div>
-                <p className="font-medium text-gray-900">View History</p>
-                <p className="text-sm text-gray-500">Stock movements</p>
+                <p className="text-gray-900 font-medium">View History</p>
+                <p className="text-gray-500 text-sm">Stock movements</p>
               </div>
             </Link>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Recent Activity</h2>
-            <Link href="/admin/history" className="text-sm text-blue-600 hover:text-blue-800">
+        <div className="rounded-xl bg-white p-6 shadow-sm">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-gray-900 text-lg font-semibold">
+              Recent Activity
+            </h2>
+            <Link
+              href="/admin/history"
+              className="text-sm text-blue-600 hover:text-blue-800"
+            >
               View all
             </Link>
           </div>
           {stats?.recentMovements && stats.recentMovements.length > 0 ? (
             <div className="space-y-3">
               {stats.recentMovements.map((movement) => (
-                <div key={movement.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div
+                  key={movement.id}
+                  className="bg-gray-50 flex items-center justify-between rounded-lg p-3"
+                >
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${
-                      movement.movement_type === 'IN' ? 'bg-green-100 text-green-600' :
-                      movement.movement_type === 'OUT' ? 'bg-red-100 text-red-600' :
-                      'bg-blue-100 text-blue-600'
-                    }`}>
-                      {movement.movement_type === 'IN' ? '+' : movement.movement_type === 'OUT' ? '-' : '~'}
+                    <span
+                      className={`flex size-8 items-center justify-center rounded-full text-sm ${
+                        movement.movement_type === 'IN'
+                          ? 'bg-green-100 text-green-600'
+                          : movement.movement_type === 'OUT'
+                            ? 'bg-red-100 text-red-600'
+                            : 'bg-blue-100 text-blue-600'
+                      }`}
+                    >
+                      {movement.movement_type === 'IN'
+                        ? '+'
+                        : movement.movement_type === 'OUT'
+                          ? '-'
+                          : '~'}
                     </span>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{movement.product_name}</p>
-                      <p className="text-xs text-gray-500">{movement.color} / {movement.size}</p>
+                      <p className="text-gray-900 text-sm font-medium">
+                        {movement.product_name}
+                      </p>
+                      <p className="text-gray-500 text-xs">
+                        {movement.color} / {movement.size}
+                      </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className={`text-sm font-medium ${
-                      movement.quantity_change > 0 ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {movement.quantity_change > 0 ? '+' : ''}{movement.quantity_change}
+                    <p
+                      className={`text-sm font-medium ${
+                        movement.quantity_change > 0
+                          ? 'text-green-600'
+                          : 'text-red-600'
+                      }`}
+                    >
+                      {movement.quantity_change > 0 ? '+' : ''}
+                      {movement.quantity_change}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-gray-500 text-xs">
                       {new Date(movement.created_at).toLocaleDateString()}
                     </p>
                   </div>
@@ -230,7 +294,7 @@ export default function AdminDashboard() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-gray-500 py-8 text-center">
               <p>No recent activity</p>
             </div>
           )}

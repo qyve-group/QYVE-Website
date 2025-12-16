@@ -1,16 +1,28 @@
-import { NextResponse } from 'next/server';
+/* eslint-disable
+  no-console,
+  @typescript-eslint/naming-convention,
+  no-nested-ternary
+*/
+
+import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
-import { createServerClient } from '@supabase/ssr';
+import { NextResponse } from 'next/server';
 
-const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase());
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '')
+  .split(',')
+  .map((e) => e.trim().toLowerCase());
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
-async function verifyAdminAuth(): Promise<{ authorized: boolean; error?: string; userEmail?: string }> {
+async function verifyAdminAuth(): Promise<{
+  authorized: boolean;
+  error?: string;
+  userEmail?: string;
+}> {
   try {
     const cookieStore = cookies();
     const supabase = createServerClient(
@@ -26,17 +38,19 @@ async function verifyAdminAuth(): Promise<{ authorized: boolean; error?: string;
       },
     );
 
-    const { data: { user } } = await supabase.auth.getUser();
-    
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
     if (!user) {
       return { authorized: false, error: 'Unauthorized' };
     }
-    
+
     const userEmail = user.email?.toLowerCase() || '';
     if (ADMIN_EMAILS.length > 0 && !ADMIN_EMAILS.includes(userEmail)) {
       return { authorized: false, error: 'Forbidden - Admin access required' };
     }
-    
+
     return { authorized: true, userEmail };
   } catch (error) {
     console.error('Admin auth verification error:', error);
@@ -65,7 +79,7 @@ export async function POST(request: Request) {
     if (!product_size_id || quantity_change === undefined || !movement_type) {
       return NextResponse.json(
         { error: 'Missing required fields' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -76,18 +90,15 @@ export async function POST(request: Request) {
       .single();
 
     if (fetchError || !currentStock) {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 
     const newStock = currentStock.stock + quantity_change;
-    
+
     if (newStock < 0) {
       return NextResponse.json(
         { error: 'Insufficient stock. Cannot reduce below 0.' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -100,7 +111,7 @@ export async function POST(request: Request) {
       console.error('Error updating stock:', updateError);
       return NextResponse.json(
         { error: 'Failed to update stock' },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -129,6 +140,9 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error('Stock adjust API error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 },
+    );
   }
 }

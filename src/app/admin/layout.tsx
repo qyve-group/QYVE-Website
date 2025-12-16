@@ -19,20 +19,22 @@ export default function AdminLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+    <div className="bg-gray-100 min-h-screen">
+      <nav className="border-b bg-white shadow-sm">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 justify-between">
             <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <span className="text-xl font-bold text-gray-900">QYVE Admin</span>
+              <div className="flex shrink-0 items-center">
+                <span className="text-gray-900 text-xl font-bold">
+                  QYVE Admin
+                </span>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    className={`inline-flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                       pathname === item.href
                         ? 'bg-teal-600 text-white'
                         : 'text-gray-700 hover:bg-teal-50 hover:text-teal-700'
@@ -48,7 +50,7 @@ export default function AdminLayout({
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {children}
       </main>
     </div>
