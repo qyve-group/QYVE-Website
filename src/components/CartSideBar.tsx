@@ -140,7 +140,7 @@ const CartSideBar: React.FC = () => {
           className="fixed inset-0 z-50 overflow-y-auto"
           onClose={handleCloseMenu}
         >
-          <div className="z-max fixed inset-y-0 right-0 w-full max-w-md outline-none focus:outline-none">
+          <div className="z-max fixed right-0 top-0 h-dvh w-full max-w-md pb-[env(safe-area-inset-bottom)] outline-none focus:outline-none">
             {/* Sidebar Animation */}
             <Transition.Child
               as={Fragment}
