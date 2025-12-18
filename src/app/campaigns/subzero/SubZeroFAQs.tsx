@@ -6,27 +6,27 @@ import { useState } from 'react';
 const faqs = [
   {
     id: '1',
-    question: 'When will SubZero be delivered?',
+    question: 'When will Subzero be delivered?',
     answer:
-      'SubZero pre-orders are expected to ship in mid December 2025. All Early Bird customers will receive priority shipping and tracking information via email.',
+      'Each Subzero order is handmade with care, and delivery will take approximately 2 weeks',
   },
   {
     id: '2',
     question: 'What sizes are available?',
     answer:
-      'SubZero is available in EU sizes 38-44. Please refer to our size chart for detailed measurements to ensure the perfect fit.',
+      'Subzero is available in UK 5.5 to UK 10.5. Please refer to our size chart for detailed measurements to ensure the perfect fit.',
   },
   {
     id: '3',
-    question: 'Can I use SubZero for other activities?',
+    question: 'Can I use Subzero for other activities?',
     answer:
       'Certainly, while it is engineered for futsal, players can still use it for other court activites such as badminton, pickleball, etc. The specialized traction pattern is optimized for hard court performance. Using them outdoors may reduce their lifespan and effectiveness.',
   },
   {
     id: '4',
-    question: 'What makes SubZero different from other futsal shoes?',
+    question: 'What makes Subzero different from other futsal shoes?',
     answer:
-      'SubZero features our proprietary SubZero-Weave Tech upper system combining microfibre leather with mesh panels for optimal breathability, Energy Return Foam midsole for shock absorption, and multi-directional Traction Grip outsole for explosive movements.',
+      'Subzero features our proprietary Subzero-Weave Tech upper system combining microfibre leather with mesh panels for optimal breathability, Energy Return Foam midsole for shock absorption, and multi-directional Traction Grip outsole for explosive movements.',
   },
   {
     id: '5',
@@ -36,21 +36,21 @@ const faqs = [
   },
   {
     id: '6',
-    question: 'What is your return policy for SubZero?',
+    question: 'What is your return policy for Subzero?',
     answer:
-      "We offer a 30-day return policy from the delivery date. If you're not satisfied with your SubZero shoes, you can return them for a full refund, provided they're unworn and in original packaging.",
+      "We offer a 30-day return policy from the delivery date. If you're not satisfied with your Subzero shoes, you can return them for a full refund, provided they're unworn and in original packaging.",
   },
   {
     id: '7',
-    question: 'Are SubZero shoes suitable for wide feet?',
+    question: 'Are Subzero shoes suitable for wide feet?',
     answer:
-      'SubZero has a standard to wide fit design. It caters to most wide feet players.',
+      'Subzero has a standard to wide fit design. It caters to most wide feet players.',
   },
   {
     id: '8',
     question: 'What colors are available?',
     answer:
-      'The SubZero Early Bird pre-order is currently available in White variant only. Additional colorways may be released in future collections.',
+      'Subzero is currently available in White variant only. Additional colorways may be released in future collections.',
   },
 ];
 
@@ -71,7 +71,7 @@ const SubZeroFAQs = () => {
             <span className="text-[#4FD1C5]"> QUESTIONS</span>
           </h2>
           <p className="text-gray-700 text-lg">
-            Everything you need to know about SubZero
+            Everything you need to know about Subzero
           </p>
         </div>
 
@@ -116,7 +116,7 @@ const SubZeroFAQs = () => {
         <div className="mt-12 text-center">
           <p className="text-gray-600 mb-4">Still have questions?</p>
           <a
-            href="https://wa.me/601160974239?text=Hi%20QYVE%20team%2C%20I%20have%20questions%20about%20SubZero"
+            href="https://wa.me/601160974239?text=Hi%20QYVE%20team%2C%20I%20have%20questions%20about%20Subzero"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:bg-gray-100 inline-block rounded-full border-2 border-black px-8 py-3 font-semibold text-black transition-all hover:scale-105"
