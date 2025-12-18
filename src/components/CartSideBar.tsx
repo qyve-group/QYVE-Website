@@ -140,7 +140,7 @@ const CartSideBar: React.FC = () => {
           className="fixed inset-0 z-50 overflow-y-auto"
           onClose={handleCloseMenu}
         >
-          <div className="z-max fixed inset-y-0 right-0 w-full max-w-md outline-none focus:outline-none">
+          <div className="z-max fixed right-0 top-0 h-dvh w-full max-w-md pb-[env(safe-area-inset-bottom)] outline-none focus:outline-none">
             {/* Sidebar Animation */}
             <Transition.Child
               as={Fragment}
@@ -153,7 +153,7 @@ const CartSideBar: React.FC = () => {
             >
               <div className="relative z-20 shadow-lg ring-1 ring-black/5">
                 <div className="relative h-screen bg-white">
-                  <div className="h-screen overflow-y-auto p-5">
+                  <div className="h-screen overflow-y-auto p-5 pb-52">
                     {/* Header */}
                     <div className="flex items-center justify-between">
                       <h3 className="text-xl font-semibold">Shopping Cart</h3>
@@ -163,7 +163,7 @@ const CartSideBar: React.FC = () => {
                     </div>
 
                     {/* Cart Items List */}
-                    <div className="divide-y divide-neutral-300">
+                    <div className="flex-1 divide-y divide-neutral-300">
                       {cartItems.length > 0 ? (
                         cartItems.map((item) => renderProduct(item))
                       ) : (
@@ -175,7 +175,7 @@ const CartSideBar: React.FC = () => {
                   </div>
 
                   {/* Footer */}
-                  <div className="absolute bottom-0 left-0 w-full bg-neutral-50 p-5">
+                  <div className="sticky bottom-0 left-0 w-full bg-neutral-50 p-5">
                     <p className="flex justify-between">
                       <span>
                         <span className="font-medium">Subtotal</span>
