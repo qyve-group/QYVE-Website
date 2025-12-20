@@ -30,6 +30,18 @@ type ShippingAddressData = {
   postalCode: string;
 };
 
+// interface ShippingAddress {
+//   name: string;
+//   phone: string;
+//   email: string;
+//   address1: string;
+//   address2?: string;
+//   city: string;
+//   state: string;
+//   postcode: string;
+//   country: string;
+// }
+
 interface CollapsibleCheckoutProps {
   subtotal: number;
   shippingFee: number;
@@ -43,6 +55,7 @@ interface CollapsibleCheckoutProps {
   onContactInfoChange: (data: ContactInfoData) => void;
   onShippingAddressChange: (data: ShippingAddressData) => void;
   cartItems: any[];
+  loadingShippingFee?: boolean;
 }
 
 const CollapsibleCheckout = ({
@@ -58,6 +71,7 @@ const CollapsibleCheckout = ({
   onContactInfoChange,
   onShippingAddressChange,
   cartItems,
+  loadingShippingFee = false,
 }: CollapsibleCheckoutProps) => {
   const { user } = useSelector((state: RootState) => state.auth);
   const userEmail = user?.email;
@@ -683,7 +697,13 @@ const CollapsibleCheckout = ({
               </div>
               <div className="mt-4 flex justify-between pb-4">
                 <span>Estimated Delivery & Handling</span>
-                <span className="font-semibold">RM {shippingFee}</span>
+                <span className="font-semibold">
+                  {loadingShippingFee ? (
+                    <span className="text-gray-500 animate-pulse">Calculating...</span>
+                  ) : (
+                    `RM ${shippingFee}`
+                  )}
+                </span>
               </div>
               <div className="flex justify-between py-4">
                 <span>Discount</span>

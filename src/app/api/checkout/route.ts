@@ -294,7 +294,8 @@ export async function POST(req: Request) {
         order_contact: JSON.stringify(orderContact),
         is_guest_checkout: isGuestCheckout ? 'true' : 'false',
         customer_email: orderContact.email,
-        customer_name: `${orderAddress.fname} ${orderAddress.lname}`,
+        // customer_name: `${orderAddress.fname} ${orderAddress.lname}`,
+        customer_name: {orderAddress.fname},
         order_items: enrichedCartItems
           .map(
             (item: any) =>
