@@ -56,6 +56,7 @@ interface CollapsibleCheckoutProps {
   onShippingAddressChange: (data: ShippingAddressData) => void;
   cartItems: any[];
   loadingShippingFee?: boolean;
+  shippingError?: string | null;
 }
 
 const CollapsibleCheckout = ({
@@ -72,6 +73,7 @@ const CollapsibleCheckout = ({
   onShippingAddressChange,
   cartItems,
   loadingShippingFee = false,
+  shippingError = null,
 }: CollapsibleCheckoutProps) => {
   const { user } = useSelector((state: RootState) => state.auth);
   const userEmail = user?.email;
@@ -700,11 +702,18 @@ const CollapsibleCheckout = ({
                 <span className="font-semibold">
                   {loadingShippingFee ? (
                     <span className="text-gray-500 animate-pulse">Calculating...</span>
+                  ) : shippingError ? (
+                    <span className="text-red-500 text-sm">Invalid address</span>
                   ) : (
                     `RM ${shippingFee}`
                   )}
                 </span>
               </div>
+              {shippingError && (
+                <div className="text-red-500 text-sm pb-2">
+                  {shippingError}
+                </div>
+              )}
               <div className="flex justify-between py-4">
                 <span>Discount</span>
                 <span className="font-semibold">-</span>

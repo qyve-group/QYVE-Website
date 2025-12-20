@@ -102,7 +102,7 @@ const CheckoutPage = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const isCartEmpty = !cartItems || cartItems.length === 0;
   const [shippingFee, setShippingFee] = useState(0);
-  // const [shippingFee, setShippingFee] = useState<number | null>(null);
+  const [shippingError, setShippingError] = useState<string | null>(null);
 
   const [voucher, setVoucher] = useState('');
   const [voucherValidity, setVoucherValidity] = useState('');
@@ -468,10 +468,20 @@ const CheckoutPage = () => {
         throw new Error(`api shipment/rate fetching error: ${response.status}`);
       }
 
-      const cheapestRate = await response.json();
-      console.log('cheapest rate: ', cheapestRate);
-      setShippingFee(Number(cheapestRate));
-    } catch (error) {
+      const result = await response.json();
+      console.log('cheapest rate: ', result);
+      
+      if (result.error) {
+        setShippingError(result.error);
+        setShippingFee(0);
+      } else {
+        setShippingError(null);
+        setShippingFee(Number(result));
+      }
+    } catch (error: any) {
+      console.error('Shipping rate error:', error);
+      setShippingError(error.message || 'Failed to calculate shipping');
+      setShippingFee(0);
     } finally {
       setLoadingShippingFee(false);
     }
@@ -666,6 +676,7 @@ const CheckoutPage = () => {
             onShippingAddressChange={handleShippingInfo}
             cartItems={cartItems}
             loadingShippingFee={loadingShippingFee}
+            shippingError={shippingError}
           />
         ) : (
           <div className="flex flex-col lg:flex-row">
