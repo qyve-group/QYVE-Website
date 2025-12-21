@@ -22,6 +22,10 @@ interface Product {
   colors: string[];
 }
 
+const getImageCover = (slug: string) => {
+  return `/products/${slug}/${slug}_1.webp`;
+};
+
 const ShopProducts = () => {
   // console.log*('Supabase client initialized:', supabase);
 
@@ -82,7 +86,16 @@ const ShopProducts = () => {
       }
 
       try {
-        const { data, error } = await supabase.from('products').select();
+        const { data, error } = await supabase
+          .from('products')
+          .select(
+            'id, name, description, price, stock, category_id, created_at, slug, previous_price, colors',
+          );
+
+        const productsWithImages = data?.map((product) => ({
+          ...product,
+          image_cover: getImageCover(product.slug),
+        }));
 
         if (error) {
           console.error('Error fetching products from Supabase:', error);
@@ -130,7 +143,7 @@ const ShopProducts = () => {
           ];
           setProducts(demoProducts);
         } else {
-          setProducts(data);
+          setProducts(productsWithImages);
         }
       } catch (error) {
         console.error('Network error fetching products:', error);
@@ -182,6 +195,8 @@ const ShopProducts = () => {
 
     fetchProducts();
   }, []);
+
+  console.log('products: ', products);
 
   return (
     <div className="container">

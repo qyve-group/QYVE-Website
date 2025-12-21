@@ -32,8 +32,11 @@ const getProductData = async (productSlug: string) => {
   try {
     const { data: product, error: productError } = await supabase
       .from('products')
+      // .select(
+      //   'id, name, price, previous_price, image_cover, overview, shipment_details, colors, product_shots(images), product_colors(id, color, product_id, image), products_sizes(id, size, stock, product_id, product_color_id)',
+      // )
       .select(
-        'id, name, price, previous_price, image_cover, overview, shipment_details, colors, product_shots(images), product_colors(id, color, product_id, image), products_sizes(id, size, stock, product_id, product_color_id)',
+        'id, name, price, previous_price, overview, shipment_details, colors, product_colors(id, color, product_id, image), products_sizes(id, size, stock, product_id, product_color_id)',
       )
       .eq('slug', productSlug)
       .single();
@@ -129,9 +132,20 @@ const createDemoProduct = (productSlug: string) => {
   return demoProducts[productSlug] || null;
 };
 
+const getShots = (slug: string) => {
+  let shots = [];
+  for (let num = 1; num < 5; num++) {
+    shots.push(`/products/${slug}/${slug}_${num}.webp`);
+    // shots.push(`/products/subzero/subzero_${num}.webp`);
+  }
+  return shots;
+};
+
 const SingleProductPage = async ({ params }: Props) => {
   const selectedProduct = await getProductData(params.productSlug);
   console.log('selected Product: ', selectedProduct);
+
+  const shots = getShots(params.productSlug);
 
   event('view_item', {
     currency: 'MYR',
@@ -176,9 +190,8 @@ const SingleProductPage = async ({ params }: Props) => {
           // sizes={pathOr([], ["sizes"], selectedProduct)}
           products_sizes={pathOr([], ['products_sizes'], selectedProduct)}
           // colors={pathOr([], ['colors'], selectedProduct)}
-          product_shots={selectedProduct?.product_shots?.[0]?.images || []}
-          // product_shots={images:{pathOr([], ['product_shots', 'images'], selectedProduct)}}
-          // product_colors={pathOr([], ['product_colors'], selectedProduct)  as { id: number; color: string; stock: number }
+          // product_shots={selectedProduct?.product_shots?.[0]?.images || []}
+          product_shots={shots}
           product_colors={
             pathOr([], ['product_colors'], selectedProduct) as ProductColor[]
           }

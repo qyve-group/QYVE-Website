@@ -35,10 +35,10 @@ import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 const banners = [
   {
     id: 1,
-    image: '/subzero_product_hero_banner.png',
-    heading: 'QYVE Subzero',
-    title: 'New DROP!',
-    subtitle: 'Time to be cool on the court\n',
+    image: '/subzero_life.jpg',
+    heading: 'Subzero',
+    title: 'Order now',
+    subtitle: 'Built for players who stays cool under pressure. Subzero is Malaysia-made and designed to dominate every futsal match.\n',
     cta: 'Buy Now',
     ctalink: '/products/subzero',
   },
@@ -111,7 +111,7 @@ const ShopHeader = () => {
                 src={banner.image}
                 alt={banner.title}
                 fill
-                className="object-contain object-center"
+                className="object-cover object-center"
               />
 
               {/* Dark Overlay for better text contrast */}
@@ -119,10 +119,10 @@ const ShopHeader = () => {
 
               {/* Text Content */}
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
-                <h4 className="mb-4 text-lg font-semibold text-white md:text-2xl">
+                {/* <h4 className="mb-4 text-lg font-myFontSS text-white md:text-2xl">
                   {banner.title}
-                </h4>
-                <h1 className="text-3xl font-bold leading-tight text-white drop-shadow-md md:text-5xl">
+                </h4> */}
+                <h1 className="text-3xl font-myFontSS leading-tight text-white drop-shadow-md md:text-5xl">
                   {banner.heading}
                 </h1>
                 <p className="mt-6 max-w-2xl text-sm text-white md:text-lg">
