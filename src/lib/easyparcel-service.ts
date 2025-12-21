@@ -91,48 +91,10 @@ export class EasyParcelService {
 
   private rateCache = new Map<string, number>(); // ✅ persistent cache
 
-  private validateMalaysianPostcode(postcode: string, state: string): { valid: boolean; error?: string } {
+  private validateMalaysianPostcode(postcode: string): boolean {
+    // Malaysian postcodes are 5 digits
     const cleanPostcode = postcode.replace(/\s/g, '');
-    
-    // Check basic format: must be 5 digits
-    if (!/^\d{5}$/.test(cleanPostcode)) {
-      return { valid: false, error: 'Please enter a valid 5-digit Malaysian postcode' };
-    }
-
-    const postcodeNum = parseInt(cleanPostcode, 10);
-
-    // Malaysian postcode ranges by state
-    const postcodeRanges: Record<string, [number, number][]> = {
-      'Johor': [[79000, 86900]],
-      'Kedah': [[5000, 9810]],
-      'Kelantan': [[15000, 18500]],
-      'Kuala Lumpur': [[50000, 60000]],
-      'Labuan': [[87000, 87033]],
-      'Melaka': [[75000, 78309]],
-      'Negeri Sembilan': [[70000, 73509]],
-      'Pahang': [[25000, 28800], [39000, 39200], [49000, 49000]],
-      'Penang': [[10000, 14400]],
-      'Perak': [[30000, 36810]],
-      'Perlis': [[1000, 2800]],
-      'Putrajaya': [[62000, 62988]],
-      'Sabah': [[88000, 91309]],
-      'Sarawak': [[93000, 98859]],
-      'Selangor': [[40000, 48300], [63000, 68100]],
-      'Terengganu': [[20000, 24300]],
-    };
-
-    const ranges = postcodeRanges[state];
-    if (!ranges) {
-      return { valid: true }; // Unknown state, allow it
-    }
-
-    const isValidForState = ranges.some(([min, max]) => postcodeNum >= min && postcodeNum <= max);
-    
-    if (!isValidForState) {
-      return { valid: false, error: `Postcode ${cleanPostcode} does not match ${state}. Please check your postcode.` };
-    }
-
-    return { valid: true };
+    return /^\d{5}$/.test(cleanPostcode);
   }
 
   async getShippingRates(
@@ -141,9 +103,8 @@ export class EasyParcelService {
     parcel: ParcelDetails,
   ): Promise<number> {
     // Validate postcodes before making API call
-    const postcodeValidation = this.validateMalaysianPostcode(to.postcode, to.state);
-    if (!postcodeValidation.valid) {
-      throw new Error(postcodeValidation.error || 'Invalid postcode');
+    if (!this.validateMalaysianPostcode(to.postcode)) {
+      throw new Error('Invalid postcode: Please enter a valid 5-digit Malaysian postcode');
     }
 
     const cacheKey = `${from.postcode}-${to.postcode}-${parcel.weight}`;
