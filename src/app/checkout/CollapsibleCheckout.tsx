@@ -447,7 +447,7 @@ const CollapsibleCheckout = ({
                           ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
                       } placeholder:text-gray-400 bg-white`}
-                      placeholder="John"
+                      placeholder="Daniel"
                       onChange={(e) => {
                         setFname(e.target.value);
                         if (hasSubmit) validateField('fname', e.target.value);
@@ -465,7 +465,7 @@ const CollapsibleCheckout = ({
                           ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
                       } placeholder:text-gray-400 bg-white`}
-                      placeholder="Doe"
+                      placeholder="Harith"
                       onChange={(e) => {
                         setLname(e.target.value);
                         if (hasSubmit) validateField('lname', e.target.value);
@@ -504,7 +504,7 @@ const CollapsibleCheckout = ({
                             ? 'border-red-500 bg-red-50'
                             : 'border-gray-300 focus:border-primary'
                         } placeholder:text-gray-400 bg-white`}
-                        placeholder="Jalan Example"
+                        placeholder="Address Line 1"
                         onChange={(e) => {
                           setShippingAddress1(e.target.value);
                           if (hasSubmit)
@@ -525,7 +525,7 @@ const CollapsibleCheckout = ({
                         ? 'border-red-500 bg-red-50'
                         : 'border-gray-300 focus:border-primary'
                     } placeholder:text-gray-400 bg-white`}
-                    placeholder="Apartment, suite, etc."
+                    placeholder="Address Line 2"
                     onChange={(e) => {
                       setShippingAddress2(e.target.value);
                       if (hasSubmit)
