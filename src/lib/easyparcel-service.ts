@@ -91,15 +91,29 @@ export class EasyParcelService {
 
   private rateCache = new Map<string, number>(); // ✅ persistent cache
 
+  private validateMalaysianPostcode(postcode: string): boolean {
+    // Malaysian postcodes are 5 digits
+    const cleanPostcode = postcode.replace(/\s/g, '');
+    return /^\d{5}$/.test(cleanPostcode);
+  }
+
   async getShippingRates(
     from: ShippingAddress,
     to: ShippingAddress,
     parcel: ParcelDetails,
   ): Promise<number> {
+    // Validate postcodes before making API call
+    if (!this.validateMalaysianPostcode(to.postcode)) {
+      throw new Error('Invalid postcode: Please enter a valid 5-digit Malaysian postcode');
+    }
+
     const cacheKey = `${from.postcode}-${to.postcode}-${parcel.weight}`;
+
     if (this.rateCache.has(cacheKey)) {
       return this.rateCache.get(cacheKey)!;
     }
+
+    console.log('rate cache: ', this.rateCache);
 
     try {
       //       console.log('📦 Checking shipping rates with EasyParcel...');
@@ -129,7 +143,7 @@ export class EasyParcelService {
 
       const response = await fetch(
         // 'https://connect.easyparcel.my/?ac=EPRateCheckingBulk',
-                `${EASYPARCEL_CONFIG.baseUrl}?ac=EPRateCheckingBulk
+        `${EASYPARCEL_CONFIG.baseUrl}?ac=EPRateCheckingBulk
         `,
         {
           method: 'POST',
@@ -210,43 +224,46 @@ export class EasyParcelService {
 
       const data = await response.json();
 
-      console.log('EasyParcel API response:', JSON.stringify(data, null, 2));
+      console.log('data: ', data);
 
-      // Check for API-level errors
+      // const rate: any[] = data.result.map((rate: any) => ({
+      //   courier: rate.courier,
+      //   courierId: rate.courier_id,
+      //   service: rate.service_detail,
+      //   price: parseFloat(rate.price),
+      //   deliveryTime: rate.delivery_time,
+      // }))
+
+      // const allowedCouriers = ['DHL', 'Pos Laju', 'J&T Express', 'Ninjavan'];
+      // const allowedCourierId = ['EP-CR0C', 'EP-CR0A', 'EP-CR0DP', 'EP-CR0DU'];
+
+      // const courierRates = data.result.filter((r: any) =>
+      //   allowedCourierId.includes(r.courier_id),
+
+      // );
+
+      // console.log('first courier: ', data.result[0]);
+
+      // const courierRates = data.result[0].rates.filter((r: any) =>
+      //   allowedCourierId.includes(r.courier_id),
+      // );
+
+      const cheapestRate = data.result[0].rates
+        // .filter((r: any) => allowedCourierId.includes(r.courier_id))
+        .reduce((min: any, r: any) => {
+          const price = Number(r.price);
+          return !min || price < Number(min.price) ? r : min;
+        }, null);
+
+      // console.log('Courier rates: ', courierRates);
+      console.log('Cheapest rate ', cheapestRate.price);
+
+      // console.log('rates 2nd array: ', data.result[1].rates);
+
       if (data.error) {
         throw new Error(`EasyParcel API error: ${data.error}`);
       }
 
-      // Check if result exists and has data
-      if (!data.result || !data.result[0]) {
-        throw new Error('Invalid address: No shipping rates available for this location');
-      }
-
-      const result = data.result[0];
-
-      // Check for address validation errors from EasyParcel
-      // EasyParcel returns pgeon_point or status fields to indicate validity
-      if (result.status === 'false' || result.error) {
-        throw new Error(`Invalid address: ${result.error || 'Address could not be validated'}`);
-      }
-
-      // Check if rates are available
-      if (!result.rates || result.rates.length === 0) {
-        throw new Error('Invalid address: No courier services available for this postcode');
-      }
-
-      const cheapestRate = result.rates.reduce((min: any, r: any) => {
-        const price = Number(r.price);
-        return !min || price < Number(min.price) ? r : min;
-      }, null);
-
-      if (!cheapestRate) {
-        throw new Error('Invalid address: Could not calculate shipping rate');
-      }
-
-      console.log('Cheapest rate:', cheapestRate.price);
-
-      // Only cache valid results
       this.rateCache.set(cacheKey, Number(cheapestRate.price));
 
       return cheapestRate.price;

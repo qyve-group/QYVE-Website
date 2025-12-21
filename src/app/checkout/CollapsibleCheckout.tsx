@@ -709,11 +709,11 @@ const CollapsibleCheckout = ({
                   )}
                 </span>
               </div>
-              {shippingError && (
+              {/* {shippingError && (
                 <div className="text-red-500 text-sm pb-2">
                   {shippingError}
                 </div>
-              )}
+              )} */}
               <div className="flex justify-between py-4">
                 <span>Discount</span>
                 <span className="font-semibold">-</span>
