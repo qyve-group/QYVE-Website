@@ -106,9 +106,7 @@ export class EasyParcelService {
   ): Promise<number> {
     // Validate postcodes before making API call
     if (!EasyParcelService.validateMalaysianPostcode(to.postcode)) {
-      throw new Error(
-        'Invalid postcode: Please enter a valid postcode',
-      );
+      throw new Error('Invalid postcode: Please enter a valid postcode');
     }
 
     const cacheKey = `${from.postcode}-${to.postcode}-${parcel.weight}`;

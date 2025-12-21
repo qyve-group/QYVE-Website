@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention @typescript-eslint/no-redeclare */
+/* eslint-disable @typescript-eslint/naming-convention, @typescript-eslint/no-redeclare */
 
 'use client';
 
