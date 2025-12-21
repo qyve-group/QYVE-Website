@@ -35,16 +35,17 @@ import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 const banners = [
   {
     id: 1,
-    image: '/subzero_life.jpg',
+    image: '/products/subzero/subzero_1.webp',
     heading: 'Subzero',
     title: 'Order now',
-    subtitle: 'Built for players who stays cool under pressure. Subzero is Malaysia-made and designed to dominate every futsal match.\n',
+    subtitle:
+      'Built for players who stays cool under pressure. Subzero is Malaysia-made and designed to dominate every futsal match.\n',
     cta: 'Buy Now',
     ctalink: '/products/subzero',
   },
   {
     id: 2,
-    image: '/slides_life.jpg',
+    image: '/products/recovery_slides/recovery_slides_1.webp',
     heading: '⚡ QYVE Recovery Slides',
     title: 'GET YOURS NOW',
     subtitle:
@@ -111,9 +112,6 @@ const ShopHeader = () => {
                 src={banner.image}
                 alt={banner.title}
                 fill
-                priority
-                sizes="100vw"
-                quality={75}
                 className="object-cover object-center"
               />
 
