@@ -1,3 +1,5 @@
+//eslint-disable no-nested-ternary
+
 'use client';
 
 import { useState } from 'react';
@@ -554,11 +556,11 @@ const CollapsibleCheckout = ({
                   <FormItem label="State *">
                     <select
                       value={state}
-                      className={`h-12 px-4 py-3 w-full rounded-lg border-2 transition-colors ${
+                      className={`h-12 w-full rounded-lg border-2 px-4 py-3 transition-colors ${
                         hasSubmit && errors.state
                           ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
-                      } bg-white text-gray-900 focus:outline-none`}
+                      } text-gray-900 bg-white focus:outline-none`}
                       onChange={(e) => {
                         setState(e.target.value);
                         if (hasSubmit) validateField('state', e.target.value);
@@ -716,9 +718,13 @@ const CollapsibleCheckout = ({
                 <span>Estimated Delivery & Handling</span>
                 <span className="font-semibold">
                   {loadingShippingFee ? (
-                    <span className="text-gray-500 animate-pulse">Calculating...</span>
+                    <span className="text-gray-500 animate-pulse">
+                      Calculating...
+                    </span>
                   ) : shippingError ? (
-                    <span className="text-red-500 text-sm">Invalid address</span>
+                    <span className="text-sm text-red-500">
+                      Invalid address
+                    </span>
                   ) : (
                     `RM ${shippingFee}`
                   )}

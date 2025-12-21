@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/naming-convention @typescript-eslint/no-redeclare */
 
 'use client';
 
@@ -21,10 +21,10 @@ import ButtonSecondary from '@/shared/Button/ButtonSecondary';
 import Input from '@/shared/Input/Input';
 import type { CartItem } from '@/store/cartSlice';
 import type { RootState } from '@/store/store';
+
 // import Cliploader from 'react-clip-loader'
 // import ClipLoader from 'react-spinners/ClipLoader';
 // import loading from '../loading'
-
 // import StreamlinedCheckout from './StreamlinedCheckout';
 import CollapsibleCheckout from './CollapsibleCheckout';
 // import InputNumber from '@/shared/InputNumber/InputNumber';
@@ -470,7 +470,7 @@ const CheckoutPage = () => {
 
       const result = await response.json();
       console.log('cheapest rate: ', result);
-      
+
       if (result.error) {
         setShippingError(result.error);
         setShippingFee(0);

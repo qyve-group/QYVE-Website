@@ -70,7 +70,9 @@ const EASYPARCEL_CONFIG: EasyParcelConfig = {
 
 export class EasyParcelService {
   private static instance: EasyParcelService;
+
   private config: EasyParcelConfig;
+
   private constructor() {
     this.config = EASYPARCEL_CONFIG;
     // console.log('EasyParcel API Key:', process.env.EASYPARCEL_API_KEY);
@@ -91,7 +93,7 @@ export class EasyParcelService {
 
   private rateCache = new Map<string, number>(); // ✅ persistent cache
 
-  private validateMalaysianPostcode(postcode: string): boolean {
+  private static validateMalaysianPostcode(postcode: string): boolean {
     // Malaysian postcodes are 5 digits
     const cleanPostcode = postcode.replace(/\s/g, '');
     return /^\d{5}$/.test(cleanPostcode);
@@ -103,8 +105,10 @@ export class EasyParcelService {
     parcel: ParcelDetails,
   ): Promise<number> {
     // Validate postcodes before making API call
-    if (!this.validateMalaysianPostcode(to.postcode)) {
-      throw new Error('Invalid postcode: Please enter a valid 5-digit Malaysian postcode');
+    if (!EasyParcelService.validateMalaysianPostcode(to.postcode)) {
+      throw new Error(
+        'Invalid postcode: Please enter a valid postcode',
+      );
     }
 
     const cacheKey = `${from.postcode}-${to.postcode}-${parcel.weight}`;
