@@ -552,21 +552,36 @@ const CollapsibleCheckout = ({
                   </FormItem>
 
                   <FormItem label="State *">
-                    <Input
+                    <select
                       value={state}
-                      rounded="rounded-lg"
-                      sizeClass="h-12 px-4 py-3"
-                      className={`border-2 transition-colors ${
+                      className={`h-12 px-4 py-3 w-full rounded-lg border-2 transition-colors ${
                         hasSubmit && errors.state
                           ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
-                      } placeholder:text-gray-400 bg-white`}
-                      placeholder="Selangor"
+                      } bg-white text-gray-900 focus:outline-none`}
                       onChange={(e) => {
                         setState(e.target.value);
                         if (hasSubmit) validateField('state', e.target.value);
                       }}
-                    />
+                    >
+                      <option value="">Select State</option>
+                      <option value="Johor">Johor</option>
+                      <option value="Kedah">Kedah</option>
+                      <option value="Kelantan">Kelantan</option>
+                      <option value="Kuala Lumpur">Kuala Lumpur</option>
+                      <option value="Labuan">Labuan</option>
+                      <option value="Melaka">Melaka</option>
+                      <option value="Negeri Sembilan">Negeri Sembilan</option>
+                      <option value="Pahang">Pahang</option>
+                      <option value="Penang">Penang</option>
+                      <option value="Perak">Perak</option>
+                      <option value="Perlis">Perlis</option>
+                      <option value="Putrajaya">Putrajaya</option>
+                      <option value="Sabah">Sabah</option>
+                      <option value="Sarawak">Sarawak</option>
+                      <option value="Selangor">Selangor</option>
+                      <option value="Terengganu">Terengganu</option>
+                    </select>
                   </FormItem>
 
                   <FormItem label="Postal Code *">
