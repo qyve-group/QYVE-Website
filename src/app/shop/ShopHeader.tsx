@@ -111,6 +111,9 @@ const ShopHeader = () => {
                 src={banner.image}
                 alt={banner.title}
                 fill
+                priority
+                sizes="100vw"
+                quality={75}
                 className="object-cover object-center"
               />
 
