@@ -35,12 +35,12 @@ import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 const banners = [
   {
     id: 1,
-    image: '/socks_white_lifestyle.jpg',
-    heading: '🔥 QYVE ProGrip Socks',
+    image: '/subzero_product_hero_banner.png',
+    heading: 'QYVE Subzero',
     title: 'New DROP!',
-    subtitle: 'Stay locked in\nNo slips, just goals.',
+    subtitle: 'Time to be cool on the court\n',
     cta: 'Buy Now',
-    ctalink: '/products/progrip_socks',
+    ctalink: '/products/subzero',
   },
   {
     id: 2,
@@ -111,7 +111,7 @@ const ShopHeader = () => {
                 src={banner.image}
                 alt={banner.title}
                 fill
-                className="object-cover"
+                className="object-contain object-center"
               />
 
               {/* Dark Overlay for better text contrast */}
