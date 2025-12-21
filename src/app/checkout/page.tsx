@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/naming-convention, @typescript-eslint/no-redeclare */
 
 'use client';
 
@@ -22,12 +22,16 @@ import Input from '@/shared/Input/Input';
 import type { CartItem } from '@/store/cartSlice';
 import type { RootState } from '@/store/store';
 
+// import Cliploader from 'react-clip-loader'
+// import ClipLoader from 'react-spinners/ClipLoader';
+// import loading from '../loading'
 // import StreamlinedCheckout from './StreamlinedCheckout';
 import CollapsibleCheckout from './CollapsibleCheckout';
 // import InputNumber from '@/shared/InputNumber/InputNumber';
 import ContactInfo from './ContactInfo';
 // import PaymentMethod from './PaymentMethod';
 import ShippingAddress from './ShippingAddress';
+// import { EasyParcelService } from '@/lib/easyparcel-service';
 
 // import { product } from 'ramda';
 // import { CartItem } from '@/store/cartSlice';
@@ -58,8 +62,21 @@ type ShippingAddressData = {
   postalCode: string;
 };
 
+interface ShippingAddress {
+  name: string;
+  phone: string;
+  email: string;
+  address1: string;
+  address2?: string;
+  city: string;
+  state: string;
+  postcode: string;
+  country: string;
+}
+
 const CheckoutPage = () => {
   const [useCollapsibleCheckout] = useState(true);
+  const [loadingShippingFee, setLoadingShippingFee] = useState(false);
   const [tabActive, setTabActive] = useState<
     'ContactInfo' | 'ShippingAddress' | 'PaymentMethod'
   >('ShippingAddress');
@@ -80,10 +97,13 @@ const CheckoutPage = () => {
   const [contactInfo, setContactInfo] = useState<ContactInfoData | null>(null);
   const [shippingAddress, setShippingAddress] =
     useState<ShippingAddressData | null>(null);
-
+  // const [shippingAddressForRates, setShippingAddressForRates] =
+  //   useState<ShippingAddress | null>(null);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const isCartEmpty = !cartItems || cartItems.length === 0;
   const [shippingFee, setShippingFee] = useState(0);
+  const [shippingError, setShippingError] = useState<string | null>(null);
+
   const [voucher, setVoucher] = useState('');
   const [voucherValidity, setVoucherValidity] = useState('');
   const [clicked, setClicked] = useState(false);
@@ -95,6 +115,8 @@ const CheckoutPage = () => {
   const [discountPrice, setDiscountPrice] = useState(0);
 
   const [discountValue, setDiscountValue] = useState(0);
+
+  // const easyParcel = EasyParcelService.getInstance();
 
   // // Calculate subtotal dynamically
   const subtotal = cartItems.reduce(
@@ -202,50 +224,50 @@ const CheckoutPage = () => {
     setClicked(true);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/shipment/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'checkRates',
-            bulk: [
-              {
-                pick_code: '47400',
-                pick_state: 'Selangor',
-                pick_country: 'MY',
-                send_code: `${shippingAddress?.postalCode}`,
-                send_state: `${shippingAddress?.state}`,
-                // send_code: `53201`,
-                // send_state: `Johor`,
-                send_country: 'MY',
-                weight: '1',
-              },
-            ],
-          }),
-        });
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch('/api/shipment/', {
+  //         method: 'POST',
+  //         headers: { 'Content-Type': 'application/json' },
+  //         body: JSON.stringify({
+  //           action: 'checkRates',
+  //           bulk: [
+  //             {
+  //               pick_code: '47400',
+  //               pick_state: 'Selangor',
+  //               pick_country: 'MY',
+  //               send_code: `${shippingAddress?.postalCode}`,
+  //               send_state: `${shippingAddress?.state}`,
+  //               // send_code: `53201`,
+  //               // send_state: `Johor`,
+  //               send_country: 'MY',
+  //               weight: '1',
+  //             },
+  //           ],
+  //         }),
+  //       });
 
-        console.log('Response status:', response.status);
+  //       console.log('Response status:', response.status);
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
 
-        const data = await response.json();
+  //       const data = await response.json();
 
-        console.log('Checking rate: ', data);
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error('Failed to fetch shipping rates:', error.message);
-        } else {
-          console.error('Unknown error:', error);
-        }
-      }
-    };
+  //       console.log('Checking rate: ', data);
+  //     } catch (error) {
+  //       if (error instanceof Error) {
+  //         console.error('Failed to fetch shipping rates:', error.message);
+  //       } else {
+  //         console.error('Unknown error:', error);
+  //       }
+  //     }
+  //   };
 
-    fetchData();
-  }, [shippingAddress]);
+  //   fetchData();
+  // }, [shippingAddress]);
 
   useEffect(() => {
     // console.log*('Cart updated:', cartItems);
@@ -329,24 +351,182 @@ const CheckoutPage = () => {
     fetchCartId();
   }, [userId]);
 
-  useEffect(() => {
-    if (
-      shippingAddress?.state === 'Sabah' ||
-      shippingAddress?.state === 'Sarawak'
-    ) {
-      setShippingFee(15);
-    } else {
-      setShippingFee(8);
-    }
-  }, [shippingAddress?.state]);
+  // interface ShippingAddress {
+  //   name: string;
+  //   phone: string;
+  //   email: string;
+  //   address1: string;
+  //   address2?: string;
+  //   city: string;
+  //   state: string;
+  //   postcode: string;
+  //   country: string;
+  // }
+
+  // useEffect(() => {
+  //   // const sourceAddress: ShippingAddress = {name: 'QYVE', phone: '0125549155', email: 'support@qyveofficial.com', address1: '5B, Jalan Chempenai', city: 'Bukit Damansara', state: 'WP Kuala Lumpur', postcode: '50490', country: 'Malaysia'};
+
+  //   // const parcelDetails = {weight: 0.3, length: 10, width: 10, height: 10, content: 'sportswear', value: 100}
+
+  //   // EasyParcelService.getShippingRates(sourceAddress, shippingAddress, )
+
+  //   if (
+  //     shippingAddress?.state === 'Sabah' ||
+  //     shippingAddress?.state === 'Sarawak'
+  //   ) {
+  //     setShippingFee(15);
+  //   } else {
+  //     setShippingFee(8);
+  //   }
+  // }, [shippingAddress?.state]);
 
   const handleContactInfo = (data: ContactInfoData) => {
     setContactInfo(data);
     // console.log('Received from contact info component: ', data);
   };
 
-  const handleShippingInfo = (shippingData: ShippingAddressData) => {
+  // type ShippingAddressData = {
+  //   fname: string;
+  //   lname: string;
+  //   shippingAddress1: string;
+  //   shippingAddress2: string;
+  //   no: string;
+  //   city: string;
+  //   state: string;
+  //   postalCode: string;
+  // };
+
+  // interface ShippingAddress {
+  //   name: string;
+  //   phone: string;
+  //   email: string;
+  //   address1: string;
+  //   address2?: string;
+  //   city: string;
+  //   state: string;
+  //   postcode: string;
+  //   country: string;
+  // }
+
+  // useEffect(() => {
+  //   console.log('loadingShippingFee updated:', loadingShippingFee);
+
+  // }, [loadingShippingFee])
+
+  const handleShippingInfo = async (shippingData: ShippingAddressData) => {
+    console.log(
+      'loading shipping fee state before setting to true: ',
+      loadingShippingFee,
+    );
+    console.log('shipping fee: ', shippingFee);
+
     setShippingAddress(shippingData);
+    setLoadingShippingFee(true);
+    console.log(
+      'loading shipping fee state after setting to true: ',
+      loadingShippingFee,
+    );
+
+    // await new Promise((resolve) => setTimeout(resolve, 0));
+    // console.log(
+    //   'loading shipping fee after awaiting to rerender: ',
+    //   loadingShippingFee,
+    // );
+
+    // setShippingAddressForRates({
+    //   name: `${shippingData.fname} ${shippingData.lname}`,
+    //   phone: contactInfo?.phone ?? '',
+    //   email: contactInfo?.email ?? '',
+    //   address1: shippingData.shippingAddress1,
+    //   address2: shippingData.shippingAddress2 ?? '',
+    //   city: shippingData.city,
+    //   state: shippingData.state,
+    //   postcode: shippingData.postalCode ?? '',
+    //   country: 'Malaysia',
+    // });
+    // setTimeout(async () => {
+    try {
+      const response = await fetch('api/shipment/rates', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: `${shippingData.fname} ${shippingData.lname}`,
+          phone: contactInfo?.phone ?? '',
+          email: contactInfo?.email ?? '',
+          address1: shippingData.shippingAddress1,
+          address2: shippingData.shippingAddress2 ?? '',
+          city: shippingData.city,
+          state: shippingData.state,
+          postcode: shippingData.postalCode ?? '',
+          country: 'Malaysia',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`api shipment/rate fetching error: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('cheapest rate: ', result);
+
+      if (result.error) {
+        setShippingError(result.error);
+        setShippingFee(0);
+      } else {
+        setShippingError(null);
+        setShippingFee(Number(result));
+      }
+    } catch (error: any) {
+      console.error('Shipping rate error:', error);
+      setShippingError(error.message || 'Failed to calculate shipping');
+      setShippingFee(0);
+    } finally {
+      setLoadingShippingFee(false);
+    }
+    // }, 50)
+
+    // try {
+    //   const sourceAddress: ShippingAddress = {
+    //     name: 'QYVE',
+    //     phone: '0125549155',
+    //     email: 'support@qyveofficial.com',
+    //     address1: '5B, Jalan Chempenai',
+    //     city: 'Bukit Damansara',
+    //     state: 'WP Kuala Lumpur',
+    //     postcode: '50490',
+    //     country: 'Malaysia',
+    //   };
+    //   const parcelDetails = {
+    //     weight: 0.3,
+    //     length: 10,
+    //     width: 10,
+    //     height: 10,
+    //     content: 'sportswear',
+    //     value: 100,
+    //   };
+
+    // const rates = easyParcel.getShippingRates(
+    //   sourceAddress,
+    //   {
+    //     name: `${shippingData.fname} ${shippingData.lname}`,
+    //     phone: contactInfo?.phone ?? '',
+    //     email: contactInfo?.email ?? '',
+    //     address1: shippingData.shippingAddress1,
+    //     address2: shippingData.shippingAddress2 ?? '',
+    //     city: shippingData.city,
+    //     state: shippingData.state,
+    //     postcode: shippingData.postalCode ?? '',
+    //     country: 'Malaysia',
+    //   },
+    //   parcelDetails,
+    // );
+
+    //   console.log('Shipping rates: ', rates);
+    // } catch (error) {
+    //   console.error('Error fetching shipping rates: ', error);
+    // }
     // console.log('Received from shipping component: ', shippingData);
   };
 
@@ -495,6 +675,8 @@ const CheckoutPage = () => {
             onContactInfoChange={handleContactInfo}
             onShippingAddressChange={handleShippingInfo}
             cartItems={cartItems}
+            loadingShippingFee={loadingShippingFee}
+            shippingError={shippingError}
           />
         ) : (
           <div className="flex flex-col lg:flex-row">
@@ -586,10 +768,27 @@ const CheckoutPage = () => {
                     RM {subtotal.toFixed(2)}
                   </span>
                 </div>
+
                 <div className="mt-4 flex justify-between pb-4">
                   <span>Estimated Delivery & Handling</span>
-                  <span className="font-semibold">RM {shippingFee}</span>
+                  {loadingShippingFee ? (
+                    // <div>
+                    //   <ClipLoader
+                    //     loading={loadingShippingFee}
+                    //     size={20}
+                    //     color="#000"
+                    //   />
+                    //   <span> Calculating delivery fee...</span>
+                    // </div>
+                    <span> Calculating delivery fee...</span>
+                  ) : (
+                    // <div>
+                    //   <span className="font-semibold">RM {shippingFee}</span>
+                    // </div>
+                    <span className="font-semibold">RM {shippingFee}</span>
+                  )}
                 </div>
+
                 <div className="flex justify-between py-4">
                   <span>Discount</span>
                   {clicked && voucherValidity === 'valid' ? (
@@ -605,7 +804,7 @@ const CheckoutPage = () => {
               </div>
               <CheckoutButton
                 cartItems={cartItems}
-                // orderAddress={shippingAddress}
+                /* orderAddress={shippingAddress} */
                 orderAddress={{
                   fname: shippingAddress?.fname || '',
                   lname: shippingAddress?.lname || '',

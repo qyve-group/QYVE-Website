@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+
 'use client';
 
 import { useState } from 'react';
@@ -30,6 +32,18 @@ type ShippingAddressData = {
   postalCode: string;
 };
 
+// interface ShippingAddress {
+//   name: string;
+//   phone: string;
+//   email: string;
+//   address1: string;
+//   address2?: string;
+//   city: string;
+//   state: string;
+//   postcode: string;
+//   country: string;
+// }
+
 interface CollapsibleCheckoutProps {
   subtotal: number;
   shippingFee: number;
@@ -43,6 +57,8 @@ interface CollapsibleCheckoutProps {
   onContactInfoChange: (data: ContactInfoData) => void;
   onShippingAddressChange: (data: ShippingAddressData) => void;
   cartItems: any[];
+  loadingShippingFee?: boolean;
+  shippingError?: string | null;
 }
 
 const CollapsibleCheckout = ({
@@ -58,6 +74,8 @@ const CollapsibleCheckout = ({
   onContactInfoChange,
   onShippingAddressChange,
   cartItems,
+  loadingShippingFee = false,
+  shippingError = null,
 }: CollapsibleCheckoutProps) => {
   const { user } = useSelector((state: RootState) => state.auth);
   const userEmail = user?.email;
@@ -536,21 +554,36 @@ const CollapsibleCheckout = ({
                   </FormItem>
 
                   <FormItem label="State *">
-                    <Input
+                    <select
                       value={state}
-                      rounded="rounded-lg"
-                      sizeClass="h-12 px-4 py-3"
-                      className={`border-2 transition-colors ${
+                      className={`h-12 w-full rounded-lg border-2 px-4 py-3 transition-colors ${
                         hasSubmit && errors.state
                           ? 'border-red-500 bg-red-50'
                           : 'border-gray-300 focus:border-primary'
-                      } placeholder:text-gray-400 bg-white`}
-                      placeholder="Selangor"
+                      } text-gray-900 bg-white focus:outline-none`}
                       onChange={(e) => {
                         setState(e.target.value);
                         if (hasSubmit) validateField('state', e.target.value);
                       }}
-                    />
+                    >
+                      <option value="">Select State</option>
+                      <option value="Johor">Johor</option>
+                      <option value="Kedah">Kedah</option>
+                      <option value="Kelantan">Kelantan</option>
+                      <option value="Kuala Lumpur">Kuala Lumpur</option>
+                      <option value="Labuan">Labuan</option>
+                      <option value="Melaka">Melaka</option>
+                      <option value="Negeri Sembilan">Negeri Sembilan</option>
+                      <option value="Pahang">Pahang</option>
+                      <option value="Penang">Penang</option>
+                      <option value="Perak">Perak</option>
+                      <option value="Perlis">Perlis</option>
+                      <option value="Putrajaya">Putrajaya</option>
+                      <option value="Sabah">Sabah</option>
+                      <option value="Sarawak">Sarawak</option>
+                      <option value="Selangor">Selangor</option>
+                      <option value="Terengganu">Terengganu</option>
+                    </select>
                   </FormItem>
 
                   <FormItem label="Postal Code *">
@@ -683,8 +716,25 @@ const CollapsibleCheckout = ({
               </div>
               <div className="mt-4 flex justify-between pb-4">
                 <span>Estimated Delivery & Handling</span>
-                <span className="font-semibold">RM {shippingFee}</span>
+                <span className="font-semibold">
+                  {loadingShippingFee ? (
+                    <span className="text-gray-500 animate-pulse">
+                      Calculating...
+                    </span>
+                  ) : shippingError ? (
+                    <span className="text-sm text-red-500">
+                      Invalid address
+                    </span>
+                  ) : (
+                    `RM ${shippingFee}`
+                  )}
+                </span>
               </div>
+              {/* {shippingError && (
+                <div className="text-red-500 text-sm pb-2">
+                  {shippingError}
+                </div>
+              )} */}
               <div className="flex justify-between py-4">
                 <span>Discount</span>
                 <span className="font-semibold">-</span>

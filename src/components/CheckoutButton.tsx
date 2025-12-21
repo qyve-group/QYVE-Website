@@ -25,6 +25,18 @@ type ShippingAddressData = {
   postal_code: string;
 };
 
+// interface ShippingAddress {
+//   name: string;
+//   phone: string;
+//   email: string;
+//   address1: string;
+//   address2?: string;
+//   city: string;
+//   state: string;
+//   postcode: string;
+//   country: string;
+// }
+
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
 );
