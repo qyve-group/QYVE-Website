@@ -22,7 +22,7 @@ const features = [
 
 const SubZeroFeatureStrip = () => {
   return (
-    <section className="bg-black py-12 md:py-16">
+    <section className="bg-[#1e293b] py-12 md:py-16">
       <div className="container mx-auto px-4">
         <div className="grid gap-8 md:grid-cols-3">
           {features.map((feature) => (
@@ -30,8 +30,8 @@ const SubZeroFeatureStrip = () => {
               key={feature.title}
               className="flex flex-col items-center text-center"
             >
-              <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-[#4FD1C5]/20">
-                <feature.icon className="size-8 text-[#4FD1C5]" />
+              <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-primary/20">
+                <feature.icon className="size-8 text-primary" />
               </div>
               <h3 className="mb-2 text-lg font-bold text-white">
                 {feature.title}

@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const SubZeroSpotlight = () => {
   return (
-    <section className="relative h-[600px] w-full overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a] md:h-[700px]">
+    <section className="relative h-[600px] w-full overflow-hidden bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#334155] md:h-[700px]">
       <div className="absolute inset-0 hidden md:block">
         <Image
           src="/subzero_hero_landscape.webp"
@@ -28,14 +28,14 @@ const SubZeroSpotlight = () => {
         />
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0a1f3d] via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent" />
 
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(79,209,197,0.3),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(200,245,122,0.2),transparent_50%)]" />
       </div>
 
       <div className="container relative z-10 mx-auto flex h-full flex-col items-center justify-end px-4 pb-12 md:pb-16">
-        <div className="mb-4 inline-block rounded-full bg-[#4FD1C5] px-4 py-1 text-sm font-bold text-black">
+        <div className="mb-4 inline-block rounded-full bg-primary px-4 py-1 text-sm font-bold text-black">
           NEW DROP
         </div>
 

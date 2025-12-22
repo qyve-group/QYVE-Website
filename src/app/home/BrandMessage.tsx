@@ -2,7 +2,7 @@ const BrandMessage = () => {
   return (
     <div className="container flex h-[400px] flex-col items-center justify-center gap-5 bg-black ">
       <div>
-        <h1 className="text-md text-center font-myFontEmOne text-[#4FD1C5] lg:text-4xl">
+        <h1 className="text-md text-center font-myFontEmOne text-primary lg:text-4xl">
           What are we?
         </h1>
       </div>
@@ -10,9 +10,9 @@ const BrandMessage = () => {
       <div>
         <h1 className="text-center font-myFontSSBook text-xl text-white lg:text-4xl">
           An innovative sports brand that blends <br />
-          <span className="font-bold text-[#4FD1C5]">performance</span>,
-          <span className="font-bold text-[#4FD1C5]"> lifestyle</span>, and
-          <span className="font-bold text-[#4FD1C5]"> affordability</span>
+          <span className="font-bold text-primary">performance</span>,
+          <span className="font-bold text-primary"> lifestyle</span>, and
+          <span className="font-bold text-primary"> affordability</span>
         </h1>
       </div>
     </div>
