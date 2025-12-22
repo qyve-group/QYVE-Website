@@ -33,7 +33,7 @@ const features = [
 ];
 
 const SubZeroFeatures = () => {
-  const [openItem, setOpenItem] = useState<string | null>('01');
+  const [openItem, setOpenItem] = useState<string | null>(null);
 
   const toggleItem = (id: string) => {
     setOpenItem(openItem === id ? null : id);
