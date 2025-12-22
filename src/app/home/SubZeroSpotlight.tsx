@@ -49,13 +49,13 @@ const SubZeroSpotlight = () => {
 
         <div className="flex flex-col gap-4 sm:flex-row">
           <Link
-            href="/campaigns/subzero"
+            href="/products/subzero"
             className="rounded-full bg-white px-8 py-3 text-center font-semibold text-black transition-all hover:scale-105 hover:bg-gray-100 md:px-10 md:py-4"
           >
             SHOP NOW
           </Link>
           <Link
-            href="/campaigns/subzero#preorder"
+            href="/products/subzero#preorder"
             className="rounded-full border-2 border-white px-8 py-3 text-center font-semibold text-white transition-all hover:bg-white hover:text-black md:px-10 md:py-4"
           >
             PRE-ORDER

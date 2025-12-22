@@ -2,6 +2,10 @@
 import { pathOr } from 'ramda';
 import React from 'react';
 
+import SubZeroFAQs from '@/app/campaigns/subzero/SubZeroFAQs';
+import SubZeroFeatures from '@/app/campaigns/subzero/SubZeroFeatures';
+import SubZeroSizeChart from '@/app/campaigns/subzero/SubZeroSizeChart';
+import SubZeroTestimonials from '@/app/campaigns/subzero/SubZeroTestimonials';
 import { event } from '@/lib/gtag';
 // import { useEffect, useState } from "react";
 // import { shoes } from "@/data/content";
@@ -127,6 +131,36 @@ const createDemoProduct = (productSlug: string) => {
         { id: 10, size: 'XL', stock: 4, product_id: 6, product_color_id: 3 },
       ],
     },
+    subzero: {
+      id: 100,
+      name: 'QYVE SubZero',
+      price: 218,
+      previous_price: 238,
+      image_cover: '/products/subzero/subzero_1.webp',
+      overview:
+        "The QYVE SubZero isn't just a futsal shoe – it's a system of control. Built with SubZero-Weave Tech upper combining microfibre leather and mesh for ultimate touch and breathability. Energy Return Foam midsole for explosive power. Multi-directional Traction Grip outsole for instant stops and pivots.",
+      shipment_details:
+        'Free shipping within Malaysia. Pre-order now for Early Bird pricing. Estimated delivery: January 2025.',
+      colors: ['white'],
+      product_shots: [{ images: ['/products/subzero/subzero_1.webp'] }],
+      product_colors: [
+        {
+          id: 100,
+          color: 'white',
+          product_id: 100,
+          image: '/products/subzero/subzero_1.webp',
+        },
+      ],
+      products_sizes: [
+        { id: 101, size: '39', stock: 50, product_id: 100, product_color_id: 100 },
+        { id: 102, size: '40', stock: 50, product_id: 100, product_color_id: 100 },
+        { id: 103, size: '41', stock: 50, product_id: 100, product_color_id: 100 },
+        { id: 104, size: '42', stock: 50, product_id: 100, product_color_id: 100 },
+        { id: 105, size: '43', stock: 50, product_id: 100, product_color_id: 100 },
+        { id: 106, size: '44', stock: 50, product_id: 100, product_color_id: 100 },
+        { id: 107, size: '45', stock: 50, product_id: 100, product_color_id: 100 },
+      ],
+    },
   };
 
   return demoProducts[productSlug] || null;
@@ -219,6 +253,15 @@ const SingleProductPage = async ({ params }: Props) => {
           // reviews={pathOr(0, ["reviews"], selectedProduct)}
         />
       </div>
+
+      {params.productSlug === 'subzero' && (
+        <>
+          <SubZeroFeatures />
+          <SubZeroSizeChart />
+          <SubZeroTestimonials />
+          <SubZeroFAQs />
+        </>
+      )}
 
       <div className="mb-28">
         <SectionMoreProducts selectedProductName={selectedProduct?.name} />
