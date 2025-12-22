@@ -1,32 +1,19 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 
 const SubZeroSpotlight = () => {
   return (
     <section className="relative h-[600px] w-full overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a] md:h-[700px]">
-      <div className="absolute inset-0 hidden md:block">
-        <Image
-          src="/subzero_hero_landscape.webp"
-          alt="SubZero Futsal Shoes"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-top"
-        />
-      </div>
-
-      <div className="absolute inset-0 md:hidden">
-        <Image
-          src="/subzero-shoe-portrait.webp"
-          alt="SubZero Futsal Shoes"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-      </div>
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 size-full object-cover"
+      >
+        <source src="/videos/subzero/subzero_motion.mp4" type="video/mp4" />
+      </video>
 
       <div className="absolute inset-0 bg-gradient-to-t from-[#0a1f3d] via-transparent to-transparent" />
 
