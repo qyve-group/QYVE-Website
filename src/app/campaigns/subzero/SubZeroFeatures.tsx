@@ -40,7 +40,7 @@ const SubZeroFeatures = () => {
   };
 
   return (
-    <section className="bg-white py-16 md:py-24">
+    <section className="bg-white py-12 md:py-16">
       <div className="container mx-auto px-4">
         <div className="flex flex-col-reverse gap-12 lg:grid lg:grid-cols-2 lg:gap-16">
           {/* Left - Product Image (appears after text on mobile) */}

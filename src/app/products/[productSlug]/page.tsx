@@ -134,13 +134,13 @@ const createDemoProduct = (productSlug: string) => {
     subzero: {
       id: 100,
       name: 'QYVE SubZero',
-      price: 218,
-      previous_price: 238,
+      price: 238,
+      previous_price: '',
       image_cover: '/products/subzero/subzero_1.webp',
       overview:
-        "The QYVE SubZero isn't just a futsal shoe – it's a system of control. Built with SubZero-Weave Tech upper combining microfibre leather and mesh for ultimate touch and breathability. Energy Return Foam midsole for explosive power. Multi-directional Traction Grip outsole for instant stops and pivots.",
+        "Built for players who stay cool under pressure. Subzero is Malaysia-made and designed to dominate every futsal match.\n\nUpper: Mesh and microfibre\nMidsole: EVA\nOutsole: Non-marking rubber\n\n",
       shipment_details:
-        'Free shipping within Malaysia. Pre-order now for Early Bird pricing. Estimated delivery: January 2025.',
+        'Each Subzero piece is individually handcrafted to order. Please allow up to two weeks for delivery after payment confirmation.\n\n📦 Delivery Time:\n\nStandard delivery: 7-14 days\n\n💰 Estimated Shipping Rates: \nWest Malaysia: RM8\n Sabah & Sarawak: RM15\n\nTracking will be provided once your order is shipped.',
       colors: ['white'],
       product_shots: [{ images: ['/products/subzero/subzero_1.webp'] }],
       product_colors: [
@@ -242,7 +242,7 @@ const SingleProductPage = async ({ params }: Props) => {
         />
       </div>
 
-      <div className="mb-28">
+      <div className={params.productSlug === 'subzero' ? 'mb-8' : 'mb-28'}>
         <SectionProductInfo
           // product_shots={selectedProduct?.product_shots?.[0]?.images || []}
           overview={selectedProduct?.overview || ''}
