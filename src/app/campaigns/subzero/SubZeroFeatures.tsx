@@ -46,7 +46,7 @@ const SubZeroFeatures = () => {
           {/* Left - Product Image (appears after text on mobile) */}
           <div className="bg-gray-200 relative h-full min-h-[500px] overflow-hidden rounded-lg sm:min-h-[600px] lg:min-h-[600px]">
             <Image
-              src="/subzero-breakdown.jpeg"
+              src="/subzero_breakdown.webp"
               alt="SubZero Futsal Shoes Features Breakdown"
               fill
               className="object-contain object-center md:object-cover"
