@@ -9,9 +9,10 @@ const SubZeroHero = () => {
       {/* Background Shoe Image - Mobile: portrait, Desktop: landscape */}
       <div className="absolute inset-0 hidden md:block">
         <Image
-          src="/subzero_hero_landscape.png"
+          src="/subzero_hero_landscape.webp"
           alt="SubZero Futsal Shoes - The Game Redefined"
           fill
+          sizes="100vw"
           className="object-cover object-top"
           priority
         />
@@ -19,9 +20,10 @@ const SubZeroHero = () => {
 
       <div className="absolute inset-0 md:hidden">
         <Image
-          src="/subzero-shoe-portrait.jpeg"
+          src="/subzero-shoe-portrait.webp"
           alt="SubZero Futsal Shoes - The Game Redefined"
           fill
+          sizes="100vw"
           className="object-cover object-center"
           priority
         />
