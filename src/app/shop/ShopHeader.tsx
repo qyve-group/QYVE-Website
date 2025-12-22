@@ -46,7 +46,7 @@ const banners = [
   {
     id: 2,
     image: '/products/recovery_slides/recovery_slides_1.webp',
-    heading: '⚡ QYVE Recovery Slides',
+    heading: 'Recovery Slides',
     title: 'GET YOURS NOW',
     subtitle:
       'Give your feet a break after a futsal session—slip into recovery slides for ultimate comfort and faster recovery',
@@ -113,6 +113,7 @@ const ShopHeader = () => {
                 alt={banner.title}
                 fill
                 className="object-cover object-center"
+                priority
               />
 
               {/* Dark Overlay for better text contrast */}
@@ -120,10 +121,10 @@ const ShopHeader = () => {
 
               {/* Text Content */}
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
-                {/* <h4 className="mb-4 text-lg font-myFontSS text-white md:text-2xl">
-                  {banner.title}
-                </h4> */}
-                <h1 className="text-3xl font-myFontSS leading-tight text-white drop-shadow-md md:text-5xl">
+                <h4 className="mb-4 text-lg font-myFontSS text-white md:text-2xl">
+                  {/* {banner.title} */}
+                </h4>
+                <h1 className="text-3xl font-myFontSS leading-tight text-white drop-shadow-md md:text-6xl">
                   {banner.heading}
                 </h1>
                 <p className="mt-6 max-w-2xl text-sm text-white md:text-lg">
