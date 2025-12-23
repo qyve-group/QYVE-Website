@@ -18,12 +18,15 @@ const SubZeroSpotlight = () => {
             className="object-cover object-center"
           />
           
-          {/* Angled transition overlay - creates diagonal fade */}
+          {/* Mobile: Bottom fade transition */}
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent lg:hidden" />
+          
+          {/* Desktop: Angled transition overlay - creates diagonal fade */}
           <div className="absolute inset-y-0 right-0 hidden w-32 bg-gradient-to-r from-transparent to-white lg:block" />
           <div 
             className="absolute inset-y-0 right-0 hidden w-48 lg:block"
             style={{
-              background: 'linear-gradient(105deg, transparent 30%, white 70%)'
+              background: 'linear-gradient(105deg, transparent 30%, white 80%)'
             }}
           />
         </div>
@@ -34,9 +37,9 @@ const SubZeroSpotlight = () => {
           {/* Subtle green accent line */}
           <div className="mb-6 h-1 w-16 rounded-full bg-primary" />
           
-          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary">
+          {/* <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary">
             Early Bird — RM 218
-          </p>
+          </p> */}
 
           <h2 className="mb-4 font-myFont text-4xl font-bold italic text-black md:text-5xl">
             FREEZE THE<br />
@@ -55,7 +58,7 @@ const SubZeroSpotlight = () => {
           </Link>
 
           <p className="mt-4 text-xs text-gray-400">
-            Limited stock available
+            *Limited stock available
           </p>
         </div>
       </div>
