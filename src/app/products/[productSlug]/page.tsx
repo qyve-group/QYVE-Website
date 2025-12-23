@@ -4,10 +4,7 @@
 import { pathOr } from 'ramda';
 import React from 'react';
 
-import SubZeroFAQs from '@/app/campaigns/subzero/SubZeroFAQs';
-import SubZeroFeatures from '@/app/campaigns/subzero/SubZeroFeatures';
 import SubZeroSizeChart from '@/app/campaigns/subzero/SubZeroSizeChart';
-import SubZeroTestimonials from '@/app/campaigns/subzero/SubZeroTestimonials';
 import { event } from '@/lib/gtag';
 // import { useEffect, useState } from "react";
 // import { shoes } from "@/data/content";
@@ -227,10 +224,11 @@ const SingleProductPage = async ({ params }: Props) => {
   const shots = getShots(params.productSlug);
 
   // Calculate total stock from all sizes
-  const totalStock = selectedProduct?.products_sizes?.reduce(
-    (sum: number, size: { stock: number }) => sum + (size.stock || 0),
-    0,
-  ) || 0;
+  const totalStock =
+    selectedProduct?.products_sizes?.reduce(
+      (sum: number, size: { stock: number }) => sum + (size.stock || 0),
+      0,
+    ) || 0;
 
   const isOutOfStock = totalStock === 0;
 
@@ -251,9 +249,9 @@ const SingleProductPage = async ({ params }: Props) => {
       <div className="container py-20">
         <div className="mx-auto max-w-2xl text-center">
           <div className="mb-8 flex justify-center">
-            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-100">
+            <div className="bg-gray-100 flex size-24 items-center justify-center rounded-full">
               <svg
-                className="h-12 w-12 text-gray-400"
+                className="text-gray-400 size-12"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -268,14 +266,15 @@ const SingleProductPage = async ({ params }: Props) => {
               </svg>
             </div>
           </div>
-          <h1 className="mb-4 text-3xl font-bold text-gray-900">
+          <h1 className="text-gray-900 mb-4 text-3xl font-bold">
             {selectedProduct?.name || 'Product'}
           </h1>
-          <p className="mb-8 text-xl text-gray-600">
+          <p className="text-gray-600 mb-8 text-xl">
             This product is currently out of stock.
           </p>
-          <p className="mb-8 text-gray-500">
-            We&apos;re working on restocking. Please check back later or browse our other products.
+          <p className="text-gray-500 mb-8">
+            We&apos;re working on restocking. Please check back later or browse
+            our other products.
           </p>
           <a
             href="/shop"

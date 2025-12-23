@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+
 'use client';
 
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
@@ -44,7 +46,7 @@ const SubZeroFeatures = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col-reverse gap-8 sm:gap-10 lg:grid lg:grid-cols-2 lg:gap-12 xl:gap-16">
           {/* Left - Product Image */}
-          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-gray-200 sm:aspect-square lg:aspect-auto lg:min-h-[500px] xl:min-h-[600px]">
+          <div className="bg-gray-200 relative aspect-[3/4] w-full overflow-hidden rounded-lg sm:aspect-square lg:aspect-auto lg:min-h-[500px] xl:min-h-[600px]">
             <Image
               src="/subzero_breakdown.webp"
               alt="SubZero Futsal Shoes Features Breakdown"
@@ -62,7 +64,7 @@ const SubZeroFeatures = () => {
               <span className="text-black">PRECISION</span>
             </h2>
 
-            <p className="text-base text-gray-700 sm:text-lg">
+            <p className="text-gray-700 text-base sm:text-lg">
               This isn&apos;t just a futsal shoe – it&apos;s a system of
               control, built with advanced materials to help you freeze the
               chaos and move with precision.
@@ -72,12 +74,12 @@ const SubZeroFeatures = () => {
               {features.map((feature) => (
                 <div
                   key={feature.id}
-                  className="overflow-hidden rounded-lg border border-gray-200"
+                  className="border-gray-200 overflow-hidden rounded-lg border"
                 >
                   <button
                     type="button"
                     onClick={() => toggleItem(feature.id)}
-                    className="flex w-full items-center justify-between bg-white p-4 text-left transition-colors hover:bg-gray-50 sm:p-5 md:p-6"
+                    className="hover:bg-gray-50 flex w-full items-center justify-between bg-white p-4 text-left transition-colors sm:p-5 md:p-6"
                   >
                     <span className="pr-4 text-sm font-semibold sm:text-base md:text-lg">
                       {feature.id} – {feature.title}
@@ -96,11 +98,11 @@ const SubZeroFeatures = () => {
                         : 'max-h-0 opacity-0'
                     }`}
                   >
-                    <div className="space-y-2 bg-gray-50 p-4 pt-0 sm:space-y-3 sm:p-5 sm:pt-0 md:p-6 md:pt-0">
+                    <div className="bg-gray-50 space-y-2 p-4 pt-0 sm:space-y-3 sm:p-5 sm:pt-0 md:p-6 md:pt-0">
                       {feature.content.map((paragraph, idx) => (
                         <p
                           key={idx}
-                          className="text-sm text-gray-700 sm:text-base"
+                          className="text-gray-700 text-sm sm:text-base"
                         >
                           {paragraph}
                         </p>

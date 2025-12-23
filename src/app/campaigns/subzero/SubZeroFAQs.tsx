@@ -70,7 +70,7 @@ const SubZeroFAQs = () => {
             FREQUENTLY ASKED
             <span className="text-[#4FD1C5]"> QUESTIONS</span>
           </h2>
-          <p className="text-base text-gray-700 sm:text-lg">
+          <p className="text-gray-700 text-base sm:text-lg">
             Everything you need to know about Subzero
           </p>
         </div>
@@ -80,12 +80,12 @@ const SubZeroFAQs = () => {
           {faqs.map((faq) => (
             <div
               key={faq.id}
-              className="overflow-hidden rounded-lg border border-gray-200 transition-shadow hover:shadow-md"
+              className="border-gray-200 overflow-hidden rounded-lg border transition-shadow hover:shadow-md"
             >
               <button
                 type="button"
                 onClick={() => toggleFAQ(faq.id)}
-                className="flex w-full items-center justify-between bg-white p-4 text-left transition-colors hover:bg-gray-50 sm:p-5 md:p-6"
+                className="hover:bg-gray-50 flex w-full items-center justify-between bg-white p-4 text-left transition-colors sm:p-5 md:p-6"
               >
                 <span className="pr-4 text-sm font-semibold text-black sm:pr-8 sm:text-base md:text-lg">
                   {faq.question}
@@ -105,7 +105,9 @@ const SubZeroFAQs = () => {
                 }`}
               >
                 <div className="bg-gray-50 px-4 pb-4 sm:px-5 sm:pb-5 md:px-6 md:pb-6">
-                  <p className="text-sm text-gray-700 sm:text-base">{faq.answer}</p>
+                  <p className="text-gray-700 text-sm sm:text-base">
+                    {faq.answer}
+                  </p>
                 </div>
               </div>
             </div>
@@ -114,12 +116,14 @@ const SubZeroFAQs = () => {
 
         {/* Still Have Questions CTA */}
         <div className="mt-10 text-center sm:mt-12">
-          <p className="mb-3 text-sm text-gray-600 sm:mb-4 sm:text-base">Still have questions?</p>
+          <p className="text-gray-600 mb-3 text-sm sm:mb-4 sm:text-base">
+            Still have questions?
+          </p>
           <a
             href="https://wa.me/601160974239?text=Hi%20QYVE%20team%2C%20I%20have%20questions%20about%20Subzero"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block rounded-full border-2 border-black px-6 py-2.5 text-sm font-semibold text-black transition-all hover:scale-105 hover:bg-gray-100 sm:px-8 sm:py-3 sm:text-base"
+            className="hover:bg-gray-100 inline-block rounded-full border-2 border-black px-6 py-2.5 text-sm font-semibold text-black transition-all hover:scale-105 sm:px-8 sm:py-3 sm:text-base"
           >
             Contact Us on WhatsApp
           </a>

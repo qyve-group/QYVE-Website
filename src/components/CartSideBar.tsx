@@ -249,9 +249,7 @@ const CartSideBar: React.FC = () => {
         )}
         {/* Desktop: Text count */}
         {hydrated ? (
-          <span className="hidden text-sm lg:block">
-            {quantityCurr} items
-          </span>
+          <span className="hidden text-sm lg:block">{quantityCurr} items</span>
         ) : (
           <span className="hidden text-sm lg:block">Loading...</span>
         )}

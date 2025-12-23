@@ -18,7 +18,7 @@ const SubZeroSizeChart = () => {
   return (
     <section
       id="subzero_size"
-      className="bg-gradient-to-b from-gray-50 to-white py-12 sm:py-16 md:py-24"
+      className="from-gray-50 bg-gradient-to-b to-white py-12 sm:py-16 md:py-24"
     >
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-4xl">
@@ -31,26 +31,38 @@ const SubZeroSizeChart = () => {
             {sizeData.map((size) => (
               <div
                 key={size.eu}
-                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+                className="border-gray-200 flex items-center justify-between rounded-lg border bg-white p-4 shadow-sm"
               >
                 <div className="text-center">
-                  <div className="text-xs font-medium uppercase text-gray-500">UK</div>
-                  <div className="text-lg font-bold text-gray-900">{size.uk}</div>
+                  <div className="text-gray-500 text-xs font-medium uppercase">
+                    UK
+                  </div>
+                  <div className="text-gray-900 text-lg font-bold">
+                    {size.uk}
+                  </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-xs font-medium uppercase text-gray-500">EU</div>
-                  <div className="text-lg font-semibold text-gray-700">{size.eu}</div>
+                  <div className="text-gray-500 text-xs font-medium uppercase">
+                    EU
+                  </div>
+                  <div className="text-gray-700 text-lg font-semibold">
+                    {size.eu}
+                  </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-xs font-medium uppercase text-gray-500">CM</div>
-                  <div className="text-lg font-semibold text-gray-700">{size.cm}</div>
+                  <div className="text-gray-500 text-xs font-medium uppercase">
+                    CM
+                  </div>
+                  <div className="text-gray-700 text-lg font-semibold">
+                    {size.cm}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Tablet & Desktop: Table Layout */}
-          <div className="hidden overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg sm:block">
+          <div className="border-gray-200 hidden overflow-hidden rounded-lg border bg-white shadow-lg sm:block">
             <table className="w-full">
               <thead>
                 <tr className="bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] text-white">
@@ -65,21 +77,21 @@ const SubZeroSizeChart = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-gray-200 divide-y">
                 {sizeData.map((size, index) => (
                   <tr
                     key={size.eu}
-                    className={`transition-colors hover:bg-gray-50 ${
+                    className={`hover:bg-gray-50 transition-colors ${
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                     }`}
                   >
-                    <td className="whitespace-nowrap px-4 py-3 text-center text-base font-semibold text-gray-900 sm:px-6 sm:py-4 sm:text-lg">
+                    <td className="text-gray-900 whitespace-nowrap px-4 py-3 text-center text-base font-semibold sm:px-6 sm:py-4 sm:text-lg">
                       {size.uk}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-3 text-center text-base text-gray-700 sm:px-6 sm:py-4 sm:text-lg">
+                    <td className="text-gray-700 whitespace-nowrap px-4 py-3 text-center text-base sm:px-6 sm:py-4 sm:text-lg">
                       {size.eu}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-3 text-center text-base text-gray-700 sm:px-6 sm:py-4 sm:text-lg">
+                    <td className="text-gray-700 whitespace-nowrap px-4 py-3 text-center text-base sm:px-6 sm:py-4 sm:text-lg">
                       {size.cm}
                     </td>
                   </tr>

@@ -849,8 +849,7 @@ export const faqsData = {
         },
         {
           question: 'What sizes are available for QYVE Infinitus?',
-          answer:
-            'Unfortunately, we have run out of QYVE Infinitus.',
+          answer: 'Unfortunately, we have run out of QYVE Infinitus.',
         },
         {
           question: 'What are QYVE ProGrip Socks?',

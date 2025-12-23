@@ -1,8 +1,8 @@
 'use client';
 
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Fragment, useState } from 'react';
 
 import SubZeroPreOrderForm from '@/components/SubZeroPreOrderForm';
 
@@ -13,7 +13,7 @@ const SubZeroPreOrder = () => {
   return (
     <section
       id="preorder"
-      className="bg-gradient-to-br from-gray-50 to-white py-12 sm:py-16"
+      className="from-gray-50 bg-gradient-to-br to-white py-12 sm:py-16"
     >
       <div className="container mx-auto px-4">
         <div className="mb-8 text-center sm:mb-10 md:mb-12">
@@ -25,17 +25,21 @@ const SubZeroPreOrder = () => {
 
         {/* Pre-Order Card */}
         <div className="mx-auto max-w-md sm:max-w-lg md:max-w-2xl">
-          <div className="rounded-2xl border-2 border-gray-200 bg-white p-6 shadow-lg transition-all hover:border-blue-500 sm:p-8">
+          <div className="border-gray-200 rounded-2xl border-2 bg-white p-6 shadow-lg transition-all hover:border-blue-500 sm:p-8">
             <div className="mb-5 text-center sm:mb-6">
-              <h3 className="mb-2 text-xl font-bold sm:text-2xl">Subzero Futsal Shoes</h3>
-              <p className="mb-4 text-sm text-gray-600 sm:text-base">
+              <h3 className="mb-2 text-xl font-bold sm:text-2xl">
+                Subzero Futsal Shoes
+              </h3>
+              <p className="text-gray-600 mb-4 text-sm sm:text-base">
                 Get the revolutionary Subzero futsal shoes
               </p>
               <div className="mb-2 flex flex-wrap items-baseline justify-center gap-2 sm:gap-3">
                 <span className="font-myFontSS text-2xl line-through sm:text-3xl md:text-4xl">
                   RM 238
                 </span>
-                <span className="text-2xl font-bold text-[#4FD1C5] sm:text-3xl md:text-4xl">RM 215</span>
+                <span className="text-2xl font-bold text-[#4FD1C5] sm:text-3xl md:text-4xl">
+                  RM 215
+                </span>
               </div>
             </div>
 
@@ -44,7 +48,7 @@ const SubZeroPreOrder = () => {
               onClick={() => {
                 router.push('/products/subzero');
                 // setIsPreOrderOpen(true)
-              }} 
+              }}
               className="w-full rounded-lg bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] py-3 text-base font-semibold text-white transition-all hover:opacity-90 sm:py-4 sm:text-lg"
             >
               Buy Now
