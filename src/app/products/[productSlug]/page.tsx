@@ -226,6 +226,14 @@ const SingleProductPage = async ({ params }: Props) => {
 
   const shots = getShots(params.productSlug);
 
+  // Calculate total stock from all sizes
+  const totalStock = selectedProduct?.products_sizes?.reduce(
+    (sum: number, size: { stock: number }) => sum + (size.stock || 0),
+    0,
+  ) || 0;
+
+  const isOutOfStock = totalStock === 0;
+
   event('view_item', {
     currency: 'MYR',
     value: selectedProduct?.price,
@@ -233,25 +241,52 @@ const SingleProductPage = async ({ params }: Props) => {
       {
         item_id: selectedProduct?.id,
         item_name: selectedProduct?.name,
-        // affiliation: "Google Merchandise Store",
-        // coupon: "SUMMER_FUN",
-        // discount: 2.22,
-        // index: 0,
-        // item_brand: "Google",
-        // item_category: "Apparel",
-        // item_category2: "Adult",
-        // item_category3: "Shirts",
-        // item_category4: "Crew",
-        // item_category5: "Short sleeve",
-        // item_list_id: "related_products",
-        // item_list_name: "Related Products",
-        // item_variant: "green",
-        // location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
-        // price: selectedProduct?.price,
-        // quantity: 3
       },
     ],
   });
+
+  // Show out of stock page
+  if (isOutOfStock) {
+    return (
+      <div className="container py-20">
+        <div className="mx-auto max-w-2xl text-center">
+          <div className="mb-8 flex justify-center">
+            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-100">
+              <svg
+                className="h-12 w-12 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M20 12H4M12 20V4"
+                  transform="rotate(45 12 12)"
+                />
+              </svg>
+            </div>
+          </div>
+          <h1 className="mb-4 text-3xl font-bold text-gray-900">
+            {selectedProduct?.name || 'Product'}
+          </h1>
+          <p className="mb-8 text-xl text-gray-600">
+            This product is currently out of stock.
+          </p>
+          <p className="mb-8 text-gray-500">
+            We&apos;re working on restocking. Please check back later or browse our other products.
+          </p>
+          <a
+            href="/shop"
+            className="inline-block rounded-full bg-primary px-8 py-3 font-semibold text-white transition hover:bg-primary/90"
+          >
+            Browse Other Products
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container">
