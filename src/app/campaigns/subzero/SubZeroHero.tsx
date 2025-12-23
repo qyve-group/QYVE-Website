@@ -24,7 +24,7 @@ const SubZeroHero = () => {
           alt="SubZero Futsal Shoes - The Game Redefined"
           fill
           sizes="100vw"
-          className="object-cover object-top"
+          className="object-contain object-top sm:object-cover"
           priority
         />
       </div>
