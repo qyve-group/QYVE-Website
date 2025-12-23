@@ -11,92 +11,41 @@ const SubZeroPreOrder = () => {
   return (
     <section
       id="preorder"
-      className="from-gray-50 bg-gradient-to-br to-white py-16"
+      className="bg-gradient-to-br from-gray-50 to-white py-12 sm:py-16"
     >
       <div className="container mx-auto px-4">
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 text-4xl font-bold italic">
+        <div className="mb-8 text-center sm:mb-10 md:mb-12">
+          <h2 className="mb-3 text-3xl font-bold italic sm:mb-4 sm:text-4xl md:text-5xl">
             <span className="text-black">SECURE YOUR</span>{' '}
             <span className="text-[#4FD1C5]">SUBZERO</span>
           </h2>
-          {/* <p className="text-gray-600 mx-auto max-w-2xl text-lg">
-            Limited pre-order of up to 50 pairs ONLY. Be among the first to
-            experience the future of futsal performance.
-          </p> */}
         </div>
 
         {/* Pre-Order Card */}
-        <div className="mx-auto max-w-2xl">
-          <div className="border-gray-200 rounded-2xl border-2 bg-white p-8 shadow-lg transition-all hover:border-blue-500">
-            <div className="mb-6 text-center">
-              {/* <div className="mb-3 inline-block rounded-full bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] px-4 py-1 text-sm font-bold text-white">
-                EARLY BIRD - RM 20 OFF
-              </div> */}
-              {/* <div className="text-5xl mb-4">👟</div> */}
-              <h3 className="mb-2 text-2xl font-bold">Subzero Futsal Shoes</h3>
-              <p className="text-gray-600 mb-4">
+        <div className="mx-auto max-w-md sm:max-w-lg md:max-w-2xl">
+          <div className="rounded-2xl border-2 border-gray-200 bg-white p-6 shadow-lg transition-all hover:border-blue-500 sm:p-8">
+            <div className="mb-5 text-center sm:mb-6">
+              <h3 className="mb-2 text-xl font-bold sm:text-2xl">Subzero Futsal Shoes</h3>
+              <p className="mb-4 text-sm text-gray-600 sm:text-base">
                 Get the revolutionary Subzero futsal shoes
               </p>
-              <div className="mb-2 flex items-baseline justify-center gap-3">
-                <span className="font-myFontSS text-4xl text-[#4FD1C5]">
+              <div className="mb-2 flex flex-wrap items-baseline justify-center gap-2 sm:gap-3">
+                <span className="font-myFontSS text-2xl line-through sm:text-3xl md:text-4xl">
                   RM 238
                 </span>
-                {/* <span className="text-gray-400 text-2xl line-through">
-                  RM 238
-                </span> */}
-                {/* <span className="text-4xl font-bold text-blue-600">RM 218</span> */}
+                <span className="text-2xl font-bold text-[#4FD1C5] sm:text-3xl md:text-4xl">RM 215</span>
               </div>
-              {/* <p className="mb-1 text-sm font-semibold text-green-600">
-                Save RM 20!
-              </p> */}
-              {/* <p className="text-sm text-gray-500">30% deposit required (RM 64.26)</p> */}
             </div>
-
-            {/* <ul className="mb-8 space-y-3">
-              <li className="text-gray-700 flex items-center gap-2 mx-auto">
-                <span className="text-green-600">✓</span>
-                SubZero-Weave Tech upper
-              </li>
-              <li className="text-gray-700 flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                Energy return foam midsole
-              </li>
-              <li className="text-gray-700 flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                Multi-directional traction grip
-              </li>
-              <li className="text-gray-700 flex items-center gap-2">
-                <span className="text-green-600">✓</span>
-                Sizes 38-44 EU
-              </li>
-            </ul> */}
 
             <button
               type="button"
               onClick={() => setIsPreOrderOpen(true)}
-              className="w-full rounded-lg bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] py-4 text-lg font-semibold text-white transition-all hover:opacity-90"
+              className="w-full rounded-lg bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] py-3 text-base font-semibold text-white transition-all hover:opacity-90 sm:py-4 sm:text-lg"
             >
-              Pre-Order Now
+              Buy Now
             </button>
           </div>
         </div>
-
-        {/* <div className="mt-12 space-y-4 text-center">
-          <div className="text-gray-600 inline-flex items-center gap-8 text-sm">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">🚚</span>
-              <span>Within 5 days delivery after 12/12</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">🔒</span>
-              <span>Secure payment</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">✨</span>
-              <span>Limited slots</span>
-            </div>
-          </div>
-        </div> */}
       </div>
 
       {/* Pre-Order Modal */}
@@ -119,7 +68,7 @@ const SubZeroPreOrder = () => {
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4">
+            <div className="flex min-h-full items-center justify-center p-3 sm:p-4">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -129,7 +78,7 @@ const SubZeroPreOrder = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-4xl overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-4xl overflow-hidden rounded-2xl bg-white p-5 text-left align-middle shadow-xl transition-all sm:p-6 md:p-8">
                   <SubZeroPreOrderForm
                     productName="SubZero Futsal Shoes (Early Bird)"
                     defaultPrice={238}

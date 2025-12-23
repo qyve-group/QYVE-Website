@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const SubZeroHero = () => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a] md:min-h-[900px]">
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a]">
       {/* Background Shoe Image - Mobile: portrait, Desktop: landscape */}
       <div className="absolute inset-0 hidden md:block">
         <Image
@@ -29,34 +29,26 @@ const SubZeroHero = () => {
         />
       </div>
 
-      {/* Gradient Overlay - Minimal on mobile for clear image, stronger on desktop */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0a1f3d] via-transparent to-transparent md:bg-gradient-to-t md:from-[#0a1f3d]/90 md:via-transparent md:to-transparent" />
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0a1f3d] via-transparent to-transparent md:from-[#0a1f3d]/90" />
 
       {/* Background Pattern/Texture */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(79,209,197,0.3),transparent_50%)]" />
       </div>
 
-      {/* Content - Bottom center on both mobile and desktop */}
-      <div className="container relative z-10 mx-auto flex h-[900px] items-end justify-center px-4 pb-12 md:h-[900px] md:pb-16">
-        <div className="flex flex-col items-center space-y-6 text-center md:space-y-8">
+      {/* Content - Responsive height using aspect ratio and min-height */}
+      <div className="container relative z-10 mx-auto flex min-h-[80vh] items-end justify-center px-4 pb-8 sm:min-h-[85vh] sm:pb-12 md:min-h-[90vh] md:pb-16 lg:min-h-[700px] xl:min-h-[800px]">
+        <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:space-y-8">
           <h1 className="font-bold italic leading-none">
-            {/* <span className="md:text-7xl lg:text-8xl block text-5xl text-white">
-              SUBZERO
-            </span> */}
-            {/* <span className="mt-2 block text-2xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
-              THE GAME,
-            </span>
-            <span className="block text-2xl text-[#4FD1C5] md:text-4xl lg:text-5xl">
-              REDEFINED
-            </span> */}
+            {/* Content removed per design */}
           </h1>
 
           <Link
-            href="#preorder"
-            className="text-gray-900 hover:bg-gray-100 inline-block rounded-full bg-white px-10 py-3 text-base font-semibold transition-all hover:scale-105 md:px-12 md:py-4 md:text-lg"
+            href="/products/subzero"
+            className="inline-block rounded-full bg-white px-8 py-2.5 text-sm font-semibold text-gray-900 transition-all hover:scale-105 hover:bg-gray-100 sm:px-10 sm:py-3 sm:text-base md:px-12 md:py-4 md:text-lg"
           >
-            PREORDER
+            Buy now
           </Link>
         </div>
       </div>

@@ -18,44 +18,68 @@ const SubZeroSizeChart = () => {
   return (
     <section
       id="subzero_size"
-      className="from-gray-50 bg-gradient-to-b to-white py-16 md:py-24"
+      className="bg-gradient-to-b from-gray-50 to-white py-12 sm:py-16 md:py-24"
     >
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-4xl">
-          <h2 className="mb-12 text-center text-4xl font-bold italic md:text-5xl">
+          <h2 className="mb-8 text-center text-3xl font-bold italic sm:mb-10 sm:text-4xl md:mb-12 md:text-5xl">
             Size Chart
           </h2>
 
-          <div className="border-gray-200 overflow-x-auto rounded-lg border bg-white shadow-lg">
+          {/* Mobile: Card Layout */}
+          <div className="grid gap-2 sm:hidden">
+            {sizeData.map((size) => (
+              <div
+                key={size.eu}
+                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+              >
+                <div className="text-center">
+                  <div className="text-xs font-medium uppercase text-gray-500">UK</div>
+                  <div className="text-lg font-bold text-gray-900">{size.uk}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs font-medium uppercase text-gray-500">EU</div>
+                  <div className="text-lg font-semibold text-gray-700">{size.eu}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs font-medium uppercase text-gray-500">CM</div>
+                  <div className="text-lg font-semibold text-gray-700">{size.cm}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Tablet & Desktop: Table Layout */}
+          <div className="hidden overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg sm:block">
             <table className="w-full">
               <thead>
                 <tr className="bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] text-white">
-                  <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
+                  <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider sm:px-6 sm:py-4 sm:text-sm">
                     UK Size
                   </th>
-                  <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
+                  <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider sm:px-6 sm:py-4 sm:text-sm">
                     EU Size
                   </th>
-                  <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
+                  <th className="px-4 py-3 text-center text-xs font-bold uppercase tracking-wider sm:px-6 sm:py-4 sm:text-sm">
                     CM Length
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-gray-200 divide-y">
+              <tbody className="divide-y divide-gray-200">
                 {sizeData.map((size, index) => (
                   <tr
                     key={size.eu}
-                    className={`hover:bg-gray-50 transition-colors ${
+                    className={`transition-colors hover:bg-gray-50 ${
                       index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                     }`}
                   >
-                    <td className="text-gray-900 whitespace-nowrap px-6 py-4 text-center text-lg font-semibold">
+                    <td className="whitespace-nowrap px-4 py-3 text-center text-base font-semibold text-gray-900 sm:px-6 sm:py-4 sm:text-lg">
                       {size.uk}
                     </td>
-                    <td className="text-gray-700 whitespace-nowrap px-6 py-4 text-center text-lg">
+                    <td className="whitespace-nowrap px-4 py-3 text-center text-base text-gray-700 sm:px-6 sm:py-4 sm:text-lg">
                       {size.eu}
                     </td>
-                    <td className="text-gray-700 whitespace-nowrap px-6 py-4 text-center text-lg">
+                    <td className="whitespace-nowrap px-4 py-3 text-center text-base text-gray-700 sm:px-6 sm:py-4 sm:text-lg">
                       {size.cm}
                     </td>
                   </tr>
@@ -63,36 +87,6 @@ const SubZeroSizeChart = () => {
               </tbody>
             </table>
           </div>
-
-          {/* <div className="mt-8 rounded-lg border border-blue-200 bg-blue-50 p-6">
-            <h3 className="mb-3 text-lg font-bold text-blue-900">
-              📏 How to Measure Your Foot
-            </h3>
-            <ul className="space-y-2 text-sm text-blue-800">
-              <li className="flex items-start">
-                <span className="mr-2 font-bold">1.</span>
-                <span>
-                  Stand on a piece of paper with your heel against a wall
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-2 font-bold">2.</span>
-                <span>Mark the longest point of your foot on the paper</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-2 font-bold">3.</span>
-                <span>
-                  Measure the distance from the wall to the mark in millimeters
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-2 font-bold">4.</span>
-                <span>
-                  Find your size in the chart above based on your measurement
-                </span>
-              </li>
-            </ul>
-          </div> */}
         </div>
       </div>
     </section>
