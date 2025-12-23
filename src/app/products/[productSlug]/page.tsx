@@ -133,78 +133,78 @@ const createDemoProduct = (productSlug: string) => {
         { id: 10, size: 'XL', stock: 4, product_id: 6, product_color_id: 3 },
       ],
     },
-    subzero: {
-      id: 100,
-      name: 'Subzero',
-      price: 215,
-      previous_price: '238',
-      image_cover: '/products/subzero/subzero_1.webp',
-      overview:
-        'Built for players who stay cool under pressure. Subzero is Malaysia-made and designed to dominate every futsal match.\n\nUpper: Mesh and microfibre\nMidsole: EVA\nOutsole: Non-marking rubber\n\n',
-      shipment_details:
-        'Each Subzero piece is individually handcrafted to order. Please allow up to two weeks for delivery after payment confirmation.\n\n📦 Delivery Time:\n\nStandard delivery: 7-14 days\n\n💰 Estimated Shipping Rates: \nWest Malaysia: RM8\n Sabah & Sarawak: RM15\n\nTracking will be provided once your order is shipped.',
-      colors: ['white'],
-      product_shots: [{ images: ['/products/subzero/subzero_1.webp'] }],
-      product_colors: [
-        {
-          id: 100,
-          color: 'white',
-          product_id: 100,
-          image: '/products/subzero/subzero_1.webp',
-        },
-      ],
-      products_sizes: [
-        {
-          id: 101,
-          size: '39',
-          stock: 50,
-          product_id: 100,
-          product_color_id: 100,
-        },
-        {
-          id: 102,
-          size: '40',
-          stock: 50,
-          product_id: 100,
-          product_color_id: 100,
-        },
-        {
-          id: 103,
-          size: '41',
-          stock: 50,
-          product_id: 100,
-          product_color_id: 100,
-        },
-        {
-          id: 104,
-          size: '42',
-          stock: 50,
-          product_id: 100,
-          product_color_id: 100,
-        },
-        {
-          id: 105,
-          size: '43',
-          stock: 50,
-          product_id: 100,
-          product_color_id: 100,
-        },
-        {
-          id: 106,
-          size: '44',
-          stock: 50,
-          product_id: 100,
-          product_color_id: 100,
-        },
-        {
-          id: 107,
-          size: '45',
-          stock: 50,
-          product_id: 100,
-          product_color_id: 100,
-        },
-      ],
-    },
+    // subzero: {
+    //   id: 100,
+    //   name: 'Subzero',
+    //   price: 215,
+    //   previous_price: '238',
+    //   image_cover: '/products/subzero/subzero_1.webp',
+    //   overview:
+    //     'Built for players who stay cool under pressure. Subzero is Malaysia-made and designed to dominate every futsal match.\n\nUpper: Mesh and microfibre\nMidsole: EVA\nOutsole: Non-marking rubber\n\n',
+    //   shipment_details:
+    //     'Each Subzero piece is individually handcrafted to order. Please allow up to two weeks for delivery after payment confirmation.\n\n📦 Delivery Time:\n\nStandard delivery: 7-14 days\n\n💰 Estimated Shipping Rates: \nWest Malaysia: RM8\n Sabah & Sarawak: RM15\n\nTracking will be provided once your order is shipped.',
+    //   colors: ['white'],
+    //   product_shots: [{ images: ['/products/subzero/subzero_1.webp'] }],
+    //   product_colors: [
+    //     {
+    //       id: 100,
+    //       color: 'white',
+    //       product_id: 100,
+    //       image: '/products/subzero/subzero_1.webp',
+    //     },
+    //   ],
+    //   products_sizes: [
+    //     {
+    //       id: 101,
+    //       size: '39',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //     {
+    //       id: 102,
+    //       size: '40',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //     {
+    //       id: 103,
+    //       size: '41',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //     {
+    //       id: 104,
+    //       size: '42',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //     {
+    //       id: 105,
+    //       size: '43',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //     {
+    //       id: 106,
+    //       size: '44',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //     {
+    //       id: 107,
+    //       size: '45',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //   ],
+    // },
   };
 
   return demoProducts[productSlug] || null;

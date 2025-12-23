@@ -49,7 +49,7 @@ const ProductCard: FC<ProductCardProps> = ({
         )}
 
         <div className="absolute bottom-0 right-0 z-20 flex gap-3 px-2 py-1">
-          {product.colors.length > 1 ? (
+          {product.colors && product.colors.length > 1 ? (
             <div className="flex gap-2 text-2xl">
               {product.colors.map((color, index) => (
                 <FaCircle

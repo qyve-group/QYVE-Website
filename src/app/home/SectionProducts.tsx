@@ -94,7 +94,7 @@ const SectionProducts = () => {
           .select(
             'id, name, description, price, stock, category_id, created_at, slug, previous_price, colors',
           )
-          .in('id', [7, 9, 6]);
+          .in('id', [11, 9, 6]);
 
         const productsWithImages = data?.map((product) => ({
           ...product,
