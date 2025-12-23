@@ -58,18 +58,18 @@ const SubZeroSpotlight = () => {
       {/* Mobile: Stacked with transition */}
       <div className="lg:hidden">
         {/* Top - Blue Hero Banner with Shoe */}
-        <div className="relative h-[350px] w-full">
+        <div className="relative aspect-[16/9] w-full">
           <Image
             src="/subzero_hero_landscape.webp"
             alt="SubZero Futsal Shoes"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center"
+            className="object-contain object-center"
           />
           
           {/* Mobile: Bottom fade transition */}
-          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent" />
         </div>
 
         {/* Bottom - Clean White with Green Accent */}
