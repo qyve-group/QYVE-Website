@@ -31,6 +31,9 @@ const SectionProducts = () => {
   // const router = useRouter();
 
   const [products, setProducts] = useState<Product[]>();
+  const getImageCover = (slug: string) => {
+    return `/products/${slug}/${slug}_1.webp`;
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -88,15 +91,22 @@ const SectionProducts = () => {
       try {
         const { data, error } = await supabase
           .from('products')
-          .select('*')
-          .in('id', [7, 9, 6]);
+          .select(
+            'id, name, description, price, stock, category_id, created_at, slug, previous_price, colors',
+          )
+          .in('id', [11, 7, 6]);
+
+        const productsWithImages = data?.map((product) => ({
+          ...product,
+          image_cover: getImageCover(product.slug),
+        }));
 
         if (error) {
           console.error('Error fetching products: ', error);
           // Fallback to demo products on error
           setProducts([]);
         } else {
-          setProducts(data);
+          setProducts(productsWithImages);
         }
       } catch (err) {
         console.error('Failed to connect to Supabase:', err);

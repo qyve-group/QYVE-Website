@@ -62,21 +62,21 @@ const SubZeroFAQs = () => {
   };
 
   return (
-    <section className="bg-white py-16 md:py-24">
+    <section className="bg-white py-12 sm:py-16 md:py-24">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 text-4xl font-bold italic text-black md:text-5xl">
+        <div className="mb-8 text-center sm:mb-10 md:mb-12">
+          <h2 className="mb-3 text-3xl font-bold italic text-black sm:mb-4 sm:text-4xl md:text-5xl">
             FREQUENTLY ASKED
             <span className="text-[#4FD1C5]"> QUESTIONS</span>
           </h2>
-          <p className="text-gray-700 text-lg">
+          <p className="text-gray-700 text-base sm:text-lg">
             Everything you need to know about Subzero
           </p>
         </div>
 
         {/* FAQs List */}
-        <div className="mx-auto max-w-3xl space-y-4">
+        <div className="mx-auto max-w-3xl space-y-3 sm:space-y-4">
           {faqs.map((faq) => (
             <div
               key={faq.id}
@@ -85,27 +85,29 @@ const SubZeroFAQs = () => {
               <button
                 type="button"
                 onClick={() => toggleFAQ(faq.id)}
-                className="hover:bg-gray-50 flex w-full items-center justify-between bg-white p-6 text-left transition-colors"
+                className="hover:bg-gray-50 flex w-full items-center justify-between bg-white p-4 text-left transition-colors sm:p-5 md:p-6"
               >
-                <span className="pr-8 text-lg font-semibold text-black">
+                <span className="pr-4 text-sm font-semibold text-black sm:pr-8 sm:text-base md:text-lg">
                   {faq.question}
                 </span>
                 <ChevronDownIcon
-                  className={`size-6 shrink-0 text-[#4FD1C5] transition-transform ${
+                  className={`size-5 shrink-0 text-[#4FD1C5] transition-transform sm:size-6 ${
                     openId === faq.id ? 'rotate-180' : ''
                   }`}
                 />
               </button>
 
               <div
-                className={`transition-all ${
+                className={`transition-all duration-300 ${
                   openId === faq.id
                     ? 'max-h-96 opacity-100'
                     : 'max-h-0 opacity-0'
                 }`}
               >
-                <div className="bg-gray-50 px-6 pb-6">
-                  <p className="text-gray-700">{faq.answer}</p>
+                <div className="bg-gray-50 px-4 pb-4 sm:px-5 sm:pb-5 md:px-6 md:pb-6">
+                  <p className="text-gray-700 text-sm sm:text-base">
+                    {faq.answer}
+                  </p>
                 </div>
               </div>
             </div>
@@ -113,13 +115,15 @@ const SubZeroFAQs = () => {
         </div>
 
         {/* Still Have Questions CTA */}
-        <div className="mt-12 text-center">
-          <p className="text-gray-600 mb-4">Still have questions?</p>
+        <div className="mt-10 text-center sm:mt-12">
+          <p className="text-gray-600 mb-3 text-sm sm:mb-4 sm:text-base">
+            Still have questions?
+          </p>
           <a
             href="https://wa.me/601160974239?text=Hi%20QYVE%20team%2C%20I%20have%20questions%20about%20Subzero"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:bg-gray-100 inline-block rounded-full border-2 border-black px-8 py-3 font-semibold text-black transition-all hover:scale-105"
+            className="hover:bg-gray-100 inline-block rounded-full border-2 border-black px-6 py-2.5 text-sm font-semibold text-black transition-all hover:scale-105 sm:px-8 sm:py-3 sm:text-base"
           >
             Contact Us on WhatsApp
           </a>

@@ -1,21 +1,22 @@
 import React from 'react';
 
 import BrandMessage from './BrandMessage';
-import MainBanner from './MainBanner';
-// import SectionBestDeals from "./SectionBestDeals";
-// import SectionBrands from "./SectionBrands";
-// import SectionHeader from './SectionHeader';
 import SectionProducts from './SectionProducts';
+// import SubZeroFeatureStrip from './SubZeroFeatureStrip';
+import SubZeroSpotlight from './SubZeroSpotlight';
 import Values from './Values';
 
 const page = () => {
   return (
     <div>
-      <MainBanner />
+      <SubZeroSpotlight />
+
+      {/* <SubZeroFeatureStrip /> */}
 
       <div className="mb-10">
         <SectionProducts />
       </div>
+
       <div>
         <BrandMessage />
       </div>
@@ -23,18 +24,6 @@ const page = () => {
       <div>
         <Values />
       </div>
-
-      {/* <div className="my-7">
-        <SectionHeader />
-      </div> */}
-
-      {/* <div className="mb-32">
-        <SectionBestDeals />
-      </div> */}
-
-      {/* <div className="mb-32">
-        <SectionBrands />
-      </div> */}
     </div>
   );
 };

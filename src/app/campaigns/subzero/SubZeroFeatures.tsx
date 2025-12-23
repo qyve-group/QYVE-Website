@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+
 'use client';
 
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
@@ -33,42 +35,42 @@ const features = [
 ];
 
 const SubZeroFeatures = () => {
-  const [openItem, setOpenItem] = useState<string | null>('01');
+  const [openItem, setOpenItem] = useState<string | null>(null);
 
   const toggleItem = (id: string) => {
     setOpenItem(openItem === id ? null : id);
   };
 
   return (
-    <section className="bg-white py-16 md:py-24">
+    <section className="bg-white py-10 sm:py-12 md:py-16">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col-reverse gap-12 lg:grid lg:grid-cols-2 lg:gap-16">
-          {/* Left - Product Image (appears after text on mobile) */}
-          <div className="bg-gray-200 relative h-full min-h-[500px] overflow-hidden rounded-lg sm:min-h-[600px] lg:min-h-[600px]">
+        <div className="flex flex-col-reverse gap-8 sm:gap-10 lg:grid lg:grid-cols-2 lg:gap-12 xl:gap-16">
+          {/* Left - Product Image */}
+          <div className="bg-gray-200 relative aspect-[3/4] w-full overflow-hidden rounded-lg sm:aspect-square lg:aspect-auto lg:min-h-[500px] xl:min-h-[600px]">
             <Image
-              src="/subzero-breakdown.jpeg"
+              src="/subzero_breakdown.webp"
               alt="SubZero Futsal Shoes Features Breakdown"
               fill
-              className="object-contain object-center md:object-cover"
+              className="object-contain object-center sm:object-cover"
               priority
             />
           </div>
 
-          {/* Right - Features (appears first on mobile) */}
-          <div className="space-y-8">
-            <h2 className="text-4xl font-bold italic md:text-5xl">
+          {/* Right - Features */}
+          <div className="space-y-6 sm:space-y-8">
+            <h2 className="text-3xl font-bold italic sm:text-4xl md:text-5xl">
               <span className="block text-black">ENGINEERED FOR</span>
               <span className="block text-[#4FD1C5]">COLD</span>{' '}
               <span className="text-black">PRECISION</span>
             </h2>
 
-            <p className="text-gray-700 text-lg">
+            <p className="text-gray-700 text-base sm:text-lg">
               This isn&apos;t just a futsal shoe – it&apos;s a system of
               control, built with advanced materials to help you freeze the
               chaos and move with precision.
             </p>
 
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {features.map((feature) => (
                 <div
                   key={feature.id}
@@ -77,29 +79,31 @@ const SubZeroFeatures = () => {
                   <button
                     type="button"
                     onClick={() => toggleItem(feature.id)}
-                    className="hover:bg-gray-50 flex w-full items-center justify-between bg-white p-6 text-left transition-colors"
+                    className="hover:bg-gray-50 flex w-full items-center justify-between bg-white p-4 text-left transition-colors sm:p-5 md:p-6"
                   >
-                    <span className="text-lg font-semibold">
+                    <span className="pr-4 text-sm font-semibold sm:text-base md:text-lg">
                       {feature.id} – {feature.title}
                     </span>
                     <ChevronDownIcon
-                      className={`size-6 transition-transform ${
+                      className={`size-5 shrink-0 transition-transform sm:size-6 ${
                         openItem === feature.id ? 'rotate-180' : ''
                       }`}
                     />
                   </button>
 
                   <div
-                    className={`transition-all ${
+                    className={`transition-all duration-300 ${
                       openItem === feature.id
-                        ? 'max-h-96 opacity-100'
+                        ? 'max-h-[500px] opacity-100'
                         : 'max-h-0 opacity-0'
                     }`}
                   >
-                    <div className="bg-gray-50 space-y-3 p-6 pt-0">
+                    <div className="bg-gray-50 space-y-2 p-4 pt-0 sm:space-y-3 sm:p-5 sm:pt-0 md:p-6 md:pt-0">
                       {feature.content.map((paragraph, idx) => (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <p key={idx} className="text-gray-700">
+                        <p
+                          key={idx}
+                          className="text-gray-700 text-sm sm:text-base"
+                        >
                           {paragraph}
                         </p>
                       ))}

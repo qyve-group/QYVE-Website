@@ -35,17 +35,18 @@ import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 const banners = [
   {
     id: 1,
-    image: '/socks_white_lifestyle.jpg',
-    heading: '🔥 QYVE ProGrip Socks',
-    title: 'New DROP!',
-    subtitle: 'Stay locked in\nNo slips, just goals.',
+    image: '/products/subzero/subzero_1.webp',
+    heading: 'Subzero',
+    title: 'Order now',
+    subtitle:
+      'Built for players who stays cool under pressure. Subzero is Malaysia-made and designed to dominate every futsal match.\n',
     cta: 'Buy Now',
-    ctalink: '/products/progrip_socks',
+    ctalink: '/products/subzero',
   },
   {
     id: 2,
-    image: '/slides_life.jpg',
-    heading: '⚡ QYVE Recovery Slides',
+    image: '/products/recovery_slides/recovery_slides_1.webp',
+    heading: 'Recovery Slides',
     title: 'GET YOURS NOW',
     subtitle:
       'Give your feet a break after a futsal session—slip into recovery slides for ultimate comfort and faster recovery',
@@ -111,7 +112,8 @@ const ShopHeader = () => {
                 src={banner.image}
                 alt={banner.title}
                 fill
-                className="object-cover"
+                className="object-cover object-center"
+                priority
               />
 
               {/* Dark Overlay for better text contrast */}
@@ -119,10 +121,10 @@ const ShopHeader = () => {
 
               {/* Text Content */}
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
-                <h4 className="mb-4 text-lg font-semibold text-white md:text-2xl">
-                  {banner.title}
+                <h4 className="mb-4 font-myFontSS text-lg text-white md:text-2xl">
+                  {/* {banner.title} */}
                 </h4>
-                <h1 className="text-3xl font-bold leading-tight text-white drop-shadow-md md:text-5xl">
+                <h1 className="font-myFont text-3xl leading-tight text-white drop-shadow-md md:text-6xl">
                   {banner.heading}
                 </h1>
                 <p className="mt-6 max-w-2xl text-sm text-white md:text-lg">

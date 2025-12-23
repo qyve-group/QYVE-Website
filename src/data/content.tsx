@@ -849,8 +849,7 @@ export const faqsData = {
         },
         {
           question: 'What sizes are available for QYVE Infinitus?',
-          answer:
-            'Unfortunately, we have it available in Size EUR 40 and 41 and sold out from size EUR 42 to EUR 44 due to demand. However, we are working hard towards designing our next generation futsal shoe which will be available in many sizes. ',
+          answer: 'Unfortunately, we have run out of QYVE Infinitus.',
         },
         {
           question: 'What are QYVE ProGrip Socks?',

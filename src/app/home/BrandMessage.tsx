@@ -10,9 +10,9 @@ const BrandMessage = () => {
       <div>
         <h1 className="text-center font-myFontSSBook text-xl text-white lg:text-4xl">
           An innovative sports brand that blends <br />
-          <span className="font-bold ">performance</span>,
-          <span className="font-bold"> lifestyle</span>, and
-          <span className="font-bold"> affordability</span>
+          <span className="font-bold text-primary">performance</span>,
+          <span className="font-bold text-primary"> lifestyle</span>, and
+          <span className="font-bold text-primary"> affordability</span>
         </h1>
       </div>
     </div>

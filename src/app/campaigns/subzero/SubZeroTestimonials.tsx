@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+
 'use client';
 
 const testimonials = [
@@ -29,32 +31,31 @@ const testimonials = [
 
 const SubZeroTestimonials = () => {
   return (
-    <section className="bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a] py-16 md:py-24">
+    <section className="bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a] py-12 sm:py-16 md:py-24">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 text-4xl font-bold italic text-white md:text-5xl">
+        <div className="mb-8 text-center sm:mb-10 md:mb-12">
+          <h2 className="mb-3 text-3xl font-bold italic text-white sm:mb-4 sm:text-4xl md:text-5xl">
             WHAT PLAYERS SAY
           </h2>
-          <p className="text-lg text-[#4FD1C5] md:text-xl">
+          <p className="text-base text-[#4FD1C5] sm:text-lg md:text-xl">
             Real feedback from real players
           </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid gap-8 md:grid-cols-3">
+        {/* Testimonials Grid - Stack on mobile, 3 columns on desktop */}
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
-              className="group relative overflow-hidden rounded-lg bg-white/10 p-6 backdrop-blur-sm transition-all hover:bg-white/20 hover:shadow-xl"
+              className="group relative overflow-hidden rounded-lg bg-white/10 p-5 backdrop-blur-sm transition-all hover:bg-white/20 hover:shadow-xl sm:p-6"
             >
               {/* Rating Stars */}
-              <div className="mb-4 flex gap-1">
+              <div className="mb-3 flex gap-1 sm:mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <svg
-                    // eslint-disable-next-line react/no-array-index-key
                     key={i}
-                    className="size-5 text-[#4FD1C5]"
+                    className="size-4 text-[#4FD1C5] sm:size-5"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -64,23 +65,22 @@ const SubZeroTestimonials = () => {
               </div>
 
               {/* Quote */}
-              <blockquote className="mb-6 text-white">
+              <blockquote className="mb-4 text-sm text-white sm:mb-6 sm:text-base">
                 &quot;{testimonial.quote}&quot;
               </blockquote>
 
               {/* Author */}
-              <div className="flex items-center gap-4">
-                <div className="relative size-12 overflow-hidden rounded-full bg-white/20">
-                  {/* Placeholder for user image */}
-                  <div className="flex size-full items-center justify-center bg-gradient-to-br from-[#4FD1C5] to-[#0a1f3d] text-xl font-bold text-white">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="relative size-10 overflow-hidden rounded-full bg-white/20 sm:size-12">
+                  <div className="flex size-full items-center justify-center bg-gradient-to-br from-[#4FD1C5] to-[#0a1f3d] text-lg font-bold text-white sm:text-xl">
                     {testimonial.name.charAt(0)}
                   </div>
                 </div>
                 <div>
-                  <div className="font-semibold text-white">
+                  <div className="text-sm font-semibold text-white sm:text-base">
                     {testimonial.name}
                   </div>
-                  <div className="text-sm text-[#4FD1C5]">
+                  <div className="text-xs text-[#4FD1C5] sm:text-sm">
                     {testimonial.role}
                   </div>
                 </div>

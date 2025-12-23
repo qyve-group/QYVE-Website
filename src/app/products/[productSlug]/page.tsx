@@ -1,7 +1,10 @@
 // "use client";
+/* eslint-disable no-plusplus */
+
 import { pathOr } from 'ramda';
 import React from 'react';
 
+import SubZeroSizeChart from '@/app/campaigns/subzero/SubZeroSizeChart';
 import { event } from '@/lib/gtag';
 // import { useEffect, useState } from "react";
 // import { shoes } from "@/data/content";
@@ -32,8 +35,11 @@ const getProductData = async (productSlug: string) => {
   try {
     const { data: product, error: productError } = await supabase
       .from('products')
+      // .select(
+      //   'id, name, price, previous_price, image_cover, overview, shipment_details, colors, product_shots(images), product_colors(id, color, product_id, image), products_sizes(id, size, stock, product_id, product_color_id)',
+      // )
       .select(
-        'id, name, price, previous_price, image_cover, overview, shipment_details, colors, product_shots(images), product_colors(id, color, product_id, image), products_sizes(id, size, stock, product_id, product_color_id)',
+        'id, name, price, previous_price, overview, shipment_details, colors, product_colors(id, color, product_id, image), products_sizes(id, size, stock, product_id, product_color_id)',
       )
       .eq('slug', productSlug)
       .single();
@@ -124,14 +130,107 @@ const createDemoProduct = (productSlug: string) => {
         { id: 10, size: 'XL', stock: 4, product_id: 6, product_color_id: 3 },
       ],
     },
+    // subzero: {
+    //   id: 100,
+    //   name: 'Subzero',
+    //   price: 215,
+    //   previous_price: '238',
+    //   image_cover: '/products/subzero/subzero_1.webp',
+    //   overview:
+    //     'Built for players who stay cool under pressure. Subzero is Malaysia-made and designed to dominate every futsal match.\n\nUpper: Mesh and microfibre\nMidsole: EVA\nOutsole: Non-marking rubber\n\n',
+    //   shipment_details:
+    //     'Each Subzero piece is individually handcrafted to order. Please allow up to two weeks for delivery after payment confirmation.\n\n📦 Delivery Time:\n\nStandard delivery: 7-14 days\n\n💰 Estimated Shipping Rates: \nWest Malaysia: RM8\n Sabah & Sarawak: RM15\n\nTracking will be provided once your order is shipped.',
+    //   colors: ['white'],
+    //   product_shots: [{ images: ['/products/subzero/subzero_1.webp'] }],
+    //   product_colors: [
+    //     {
+    //       id: 100,
+    //       color: 'white',
+    //       product_id: 100,
+    //       image: '/products/subzero/subzero_1.webp',
+    //     },
+    //   ],
+    //   products_sizes: [
+    //     {
+    //       id: 101,
+    //       size: '39',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //     {
+    //       id: 102,
+    //       size: '40',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //     {
+    //       id: 103,
+    //       size: '41',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //     {
+    //       id: 104,
+    //       size: '42',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //     {
+    //       id: 105,
+    //       size: '43',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //     {
+    //       id: 106,
+    //       size: '44',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //     {
+    //       id: 107,
+    //       size: '45',
+    //       stock: 50,
+    //       product_id: 100,
+    //       product_color_id: 100,
+    //     },
+    //   ],
+    // },
   };
 
   return demoProducts[productSlug] || null;
 };
 
+const getShots = (slug: string) => {
+  const shots = [];
+
+  for (let num = 1; num < 5; num++) {
+    shots.push(`/products/${slug}/${slug}_${num}.webp`);
+    // shots.push(`/products/subzero/subzero_${num}.webp`);
+  }
+  return shots;
+};
+
 const SingleProductPage = async ({ params }: Props) => {
   const selectedProduct = await getProductData(params.productSlug);
   console.log('selected Product: ', selectedProduct);
+
+  const shots = getShots(params.productSlug);
+
+  // Calculate total stock from all sizes
+  const totalStock =
+    selectedProduct?.products_sizes?.reduce(
+      (sum: number, size: { stock: number }) => sum + (size.stock || 0),
+      0,
+    ) || 0;
+
+  const isOutOfStock = totalStock === 0;
 
   event('view_item', {
     currency: 'MYR',
@@ -140,25 +239,53 @@ const SingleProductPage = async ({ params }: Props) => {
       {
         item_id: selectedProduct?.id,
         item_name: selectedProduct?.name,
-        // affiliation: "Google Merchandise Store",
-        // coupon: "SUMMER_FUN",
-        // discount: 2.22,
-        // index: 0,
-        // item_brand: "Google",
-        // item_category: "Apparel",
-        // item_category2: "Adult",
-        // item_category3: "Shirts",
-        // item_category4: "Crew",
-        // item_category5: "Short sleeve",
-        // item_list_id: "related_products",
-        // item_list_name: "Related Products",
-        // item_variant: "green",
-        // location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
-        // price: selectedProduct?.price,
-        // quantity: 3
       },
     ],
   });
+
+  // Show out of stock page
+  if (isOutOfStock) {
+    return (
+      <div className="container py-20">
+        <div className="mx-auto max-w-2xl text-center">
+          <div className="mb-8 flex justify-center">
+            <div className="bg-gray-100 flex size-24 items-center justify-center rounded-full">
+              <svg
+                className="text-gray-400 size-12"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M20 12H4M12 20V4"
+                  transform="rotate(45 12 12)"
+                />
+              </svg>
+            </div>
+          </div>
+          <h1 className="text-gray-900 mb-4 text-3xl font-bold">
+            {selectedProduct?.name || 'Product'}
+          </h1>
+          <p className="text-gray-600 mb-8 text-xl">
+            This product is currently out of stock.
+          </p>
+          <p className="text-gray-500 mb-8">
+            We&apos;re working on restocking. Please check back later or browse
+            our other products.
+          </p>
+          <a
+            href="/shop"
+            className="inline-block rounded-full bg-primary px-8 py-3 font-semibold text-white transition hover:bg-primary/90"
+          >
+            Browse Other Products
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container">
@@ -176,9 +303,8 @@ const SingleProductPage = async ({ params }: Props) => {
           // sizes={pathOr([], ["sizes"], selectedProduct)}
           products_sizes={pathOr([], ['products_sizes'], selectedProduct)}
           // colors={pathOr([], ['colors'], selectedProduct)}
-          product_shots={selectedProduct?.product_shots?.[0]?.images || []}
-          // product_shots={images:{pathOr([], ['product_shots', 'images'], selectedProduct)}}
-          // product_colors={pathOr([], ['product_colors'], selectedProduct)  as { id: number; color: string; stock: number }
+          // product_shots={selectedProduct?.product_shots?.[0]?.images || []}
+          product_shots={shots}
           product_colors={
             pathOr([], ['product_colors'], selectedProduct) as ProductColor[]
           }
@@ -195,7 +321,7 @@ const SingleProductPage = async ({ params }: Props) => {
         />
       </div>
 
-      <div className="mb-28">
+      <div className={params.productSlug === 'subzero' ? 'mb-8' : 'mb-28'}>
         <SectionProductInfo
           // product_shots={selectedProduct?.product_shots?.[0]?.images || []}
           overview={selectedProduct?.overview || ''}
@@ -206,6 +332,15 @@ const SingleProductPage = async ({ params }: Props) => {
           // reviews={pathOr(0, ["reviews"], selectedProduct)}
         />
       </div>
+
+      {params.productSlug === 'subzero' && (
+        <>
+          {/* <SubZeroFeatures /> */}
+          <SubZeroSizeChart />
+          {/* <SubZeroTestimonials />
+          <SubZeroFAQs /> */}
+        </>
+      )}
 
       <div className="mb-28">
         <SectionMoreProducts selectedProductName={selectedProduct?.name} />
