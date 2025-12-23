@@ -2,11 +2,13 @@
 
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import SubZeroPreOrderForm from '@/components/SubZeroPreOrderForm';
 
 const SubZeroPreOrder = () => {
   const [isPreOrderOpen, setIsPreOrderOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <section
@@ -39,7 +41,10 @@ const SubZeroPreOrder = () => {
 
             <button
               type="button"
-              onClick={() => setIsPreOrderOpen(true)}
+              onClick={() => {
+                router.push('/products/subzero');
+                // setIsPreOrderOpen(true)
+              }} 
               className="w-full rounded-lg bg-gradient-to-r from-[#0d3d5c] to-[#1a5a7a] py-3 text-base font-semibold text-white transition-all hover:opacity-90 sm:py-4 sm:text-lg"
             >
               Buy Now

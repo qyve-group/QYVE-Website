@@ -336,10 +336,10 @@ const SingleProductPage = async ({ params }: Props) => {
 
       {params.productSlug === 'subzero' && (
         <>
-          <SubZeroFeatures />
+          {/* <SubZeroFeatures /> */}
           <SubZeroSizeChart />
-          <SubZeroTestimonials />
-          <SubZeroFAQs />
+          {/* <SubZeroTestimonials />
+          <SubZeroFAQs /> */}
         </>
       )}
 
