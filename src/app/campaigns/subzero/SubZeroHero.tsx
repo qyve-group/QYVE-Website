@@ -6,8 +6,8 @@ import Link from 'next/link';
 const SubZeroHero = () => {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a]">
-      {/* Background Shoe Image - Mobile: portrait, Desktop: landscape */}
-      <div className="absolute inset-0 hidden md:block">
+      {/* Background Shoe Image - Portrait until ~1033px, then landscape */}
+      <div className="absolute inset-0 hidden lg:block">
         <Image
           src="/subzero_hero_landscape.webp"
           alt="SubZero Futsal Shoes - The Game Redefined"
@@ -18,7 +18,7 @@ const SubZeroHero = () => {
         />
       </div>
 
-      <div className="absolute inset-0 md:hidden">
+      <div className="absolute inset-0 lg:hidden">
         <Image
           src="/subzero-shoe-portrait.webp"
           alt="SubZero Futsal Shoes - The Game Redefined"
