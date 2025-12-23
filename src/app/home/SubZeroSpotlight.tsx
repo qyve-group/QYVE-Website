@@ -1,84 +1,104 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 
 const SubZeroSpotlight = () => {
   return (
-    <section className="relative h-[600px] w-full overflow-hidden bg-[#0f172a] md:h-[700px]">
-      {/* Background gradient layers */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]" />
-      
-      {/* Radial glow - center spotlight effect */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_40%,rgba(200,245,122,0.15),transparent_60%)]" />
-      
-      {/* Secondary glow - bottom accent */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_100%,rgba(200,245,122,0.1),transparent_50%)]" />
-      
-      {/* Geometric accent lines */}
-      <div className="absolute left-0 top-1/4 h-px w-1/3 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-      <div className="absolute right-0 top-1/3 h-px w-1/4 bg-gradient-to-l from-transparent via-primary/20 to-transparent" />
-      <div className="absolute bottom-1/4 left-1/4 h-px w-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-      
-      {/* Subtle grid pattern overlay */}
-      <div 
-        className="absolute inset-0 opacity-[0.03]" 
-        style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px'
-        }} 
-      />
-      
-      {/* Corner accent shapes */}
-      <div className="absolute -left-20 -top-20 size-80 rounded-full bg-primary/5 blur-3xl" />
-      <div className="absolute -bottom-32 -right-32 size-96 rounded-full bg-primary/5 blur-3xl" />
-      
-      {/* Floating geometric elements */}
-      <div className="absolute left-[10%] top-[20%] size-2 rotate-45 bg-primary/40" />
-      <div className="absolute right-[15%] top-[30%] size-3 rotate-12 border border-primary/30" />
-      <div className="absolute bottom-[35%] left-[20%] size-1.5 rounded-full bg-white/20" />
-      <div className="absolute bottom-[45%] right-[25%] size-2 rotate-45 border border-white/20" />
-      
-      {/* === SHOE IMAGE PLACEHOLDER === */}
-      {/* Add your transparent shoe image here */}
-      {/* Example:
-      <div className="absolute inset-0 flex items-center justify-center">
-        <Image 
-          src="/your-shoe-transparent.png" 
-          alt="SubZero Shoe" 
-          width={600} 
-          height={400} 
-          className="object-contain drop-shadow-2xl" 
-        />
-      </div>
-      */}
-
-      {/* Content overlay */}
-      <div className="container relative z-10 mx-auto flex h-full flex-col items-center justify-end px-4 pb-12 md:pb-16">
-        <div className="mb-4 inline-block rounded-full bg-primary px-4 py-1 text-sm font-bold text-black">
-          NEW DROP
+    <section className="relative w-full overflow-hidden">
+      <div className="flex flex-col lg:flex-row">
+        {/* Left Side - Blue Hero Banner with Shoe */}
+        <div className="relative h-[400px] w-full bg-gradient-to-br from-[#0a2540] via-[#0d4a6b] to-[#1a7a9a] lg:h-[600px] lg:w-1/2">
+          <Image
+            src="/subzero_hero_landscape.webp"
+            alt="SubZero Futsal Shoes"
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover object-center"
+          />
         </div>
 
-        <h1 className="mb-4 text-center font-myFont text-4xl font-bold italic text-white md:text-6xl lg:text-7xl">
-          SUBZERO
-        </h1>
+        {/* Right Side - White/Green Product Info */}
+        <div className="flex h-auto w-full flex-col justify-center bg-white px-8 py-12 lg:h-[600px] lg:w-1/2 lg:px-16">
+          <div className="mb-4 inline-block w-fit rounded-full bg-primary px-4 py-1 text-sm font-bold text-black">
+            NEW DROP
+          </div>
 
-        <p className="mb-6 max-w-md text-center text-lg text-white/90 md:text-xl">
-          Engineered for cold precision. Time to freeze the competition.
-        </p>
+          <h1 className="mb-2 font-myFont text-4xl font-bold italic text-black md:text-5xl lg:text-6xl">
+            SUBZERO
+          </h1>
 
-        <div className="flex flex-col gap-4 sm:flex-row">
-          <Link
-            href="/products/subzero"
-            className="rounded-full bg-primary px-8 py-3 text-center font-semibold text-black transition-all hover:scale-105 hover:bg-primary/80 md:px-10 md:py-4"
-          >
-            SHOP NOW
-          </Link>
-          <Link
-            href="/products/subzero#preorder"
-            className="rounded-full border-2 border-white px-8 py-3 text-center font-semibold text-white transition-all hover:bg-white hover:text-black md:px-10 md:py-4"
-          >
-            PRE-ORDER
-          </Link>
+          <p className="mb-2 text-lg font-semibold text-primary">
+            COLD PRECISION
+          </p>
+
+          <p className="mb-6 max-w-md text-gray-600">
+            Engineered for cold precision. The SubZero futsal shoe features SubZero-Weave Tech upper, Energy Return Foam midsole, and multi-directional Traction Grip outsole.
+          </p>
+
+          {/* Price */}
+          <div className="mb-6 flex items-baseline gap-3">
+            <span className="text-3xl font-bold text-black">RM 218</span>
+            <span className="text-lg text-gray-400 line-through">RM 238</span>
+            <span className="rounded bg-primary/20 px-2 py-1 text-sm font-semibold text-primary">
+              SAVE RM 20
+            </span>
+          </div>
+
+          {/* Size Selection */}
+          <div className="mb-6">
+            <p className="mb-2 text-sm font-semibold text-gray-700">SELECT SIZE</p>
+            <div className="flex flex-wrap gap-2">
+              {['39', '40', '41', '42', '43', '44', '45'].map((size) => (
+                <button
+                  key={size}
+                  type="button"
+                  className="flex size-12 items-center justify-center rounded-lg border-2 border-gray-200 font-semibold text-gray-700 transition-all hover:border-primary hover:bg-primary/10"
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/products/subzero"
+              className="rounded-full bg-primary px-8 py-3 text-center font-semibold text-black transition-all hover:scale-105 hover:bg-primary/80"
+            >
+              ADD TO CART
+            </Link>
+            <Link
+              href="/products/subzero"
+              className="rounded-full border-2 border-black px-8 py-3 text-center font-semibold text-black transition-all hover:bg-black hover:text-white"
+            >
+              VIEW DETAILS
+            </Link>
+          </div>
+
+          {/* Trust badges */}
+          <div className="mt-6 flex flex-wrap gap-4 text-xs text-gray-500">
+            <span className="flex items-center gap-1">
+              <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              Free Shipping
+            </span>
+            <span className="flex items-center gap-1">
+              <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              Early Bird Price
+            </span>
+            <span className="flex items-center gap-1">
+              <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              Made in Malaysia
+            </span>
+          </div>
         </div>
       </div>
     </section>
