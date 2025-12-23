@@ -7,7 +7,7 @@ const SubZeroHero = () => {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0d3d5c] to-[#1a5a7a]">
       {/* Background Shoe Image - Portrait until ~1033px, then landscape */}
-      <div className="absolute inset-0 hidden lg:block">
+      <div className="absolute inset-0 hidden min-[1010px]:block">
         <Image
           src="/subzero_hero_landscape.webp"
           alt="SubZero Futsal Shoes - The Game Redefined"
@@ -24,7 +24,7 @@ const SubZeroHero = () => {
           alt="SubZero Futsal Shoes - The Game Redefined"
           fill
           sizes="100vw"
-          className="object-cover object-center"
+          className="object-cover object-top"
           priority
         />
       </div>
