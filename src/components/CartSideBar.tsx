@@ -238,14 +238,18 @@ const CartSideBar: React.FC = () => {
       <button
         type="button"
         onClick={handleOpenMenu}
-        className="focus-visible:ring/75 mx-5 flex items-center gap-1 rounded-full bg-neutral-100 p-2 text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        className="focus-visible:ring/75 relative mx-5 flex items-center gap-1 rounded-full bg-neutral-100 p-2 text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
       >
         <FaCartShopping className="text-2xl" />
-        {/* <span className="hidden text-sm lg:block">{cartItems.length} items</span> */}
-        {/* Prevent hydration mismatch */}
+        {/* Mobile: Badge count */}
+        {hydrated && quantityCurr > 0 && (
+          <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white lg:hidden">
+            {quantityCurr}
+          </span>
+        )}
+        {/* Desktop: Text count */}
         {hydrated ? (
           <span className="hidden text-sm lg:block">
-            {/* {cartItems.length} items */}
             {quantityCurr} items
           </span>
         ) : (
