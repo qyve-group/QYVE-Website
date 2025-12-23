@@ -39,7 +39,7 @@ const Heading: React.FC<HeadingProps> = ({
         <h2
           style={{ lineHeight: '1.2em' }}
           className={`${
-            isMain ? 'lineHeight text-lg ' : 'text-2xl'
+            isMain ? 'lineHeight font-myFont text-4xl font-bold' : 'text-2xl'
           }  font-medium`}
           {...args}
         >

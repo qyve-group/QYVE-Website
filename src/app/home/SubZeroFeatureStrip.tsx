@@ -1,6 +1,10 @@
 'use client';
 
-import { BoltIcon, ShieldCheckIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import {
+  BoltIcon,
+  ShieldCheckIcon,
+  SparklesIcon,
+} from '@heroicons/react/24/outline';
 
 const features = [
   {

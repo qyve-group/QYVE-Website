@@ -9,7 +9,7 @@ const SubZeroSpotlight = () => {
       {/* Desktop: Side by side with equal height */}
       <div className="hidden lg:flex lg:h-[500px]">
         {/* Left Side - Blue Hero Banner with Shoe */}
-        <div className="relative w-[60%]">
+        <div className="relative w-3/5">
           <Image
             src="/subzero_hero_landscape.webp"
             alt="SubZero Futsal Shoes"
@@ -18,27 +18,28 @@ const SubZeroSpotlight = () => {
             sizes="60vw"
             className="object-cover object-center"
           />
-          
+
           {/* Desktop: Angled transition overlay */}
           <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-r from-transparent to-white" />
-          <div 
+          <div
             className="absolute inset-y-0 right-0 w-48"
             style={{
-              background: 'linear-gradient(105deg, transparent 30%, white 80%)'
+              background: 'linear-gradient(105deg, transparent 30%, white 80%)',
             }}
           />
         </div>
 
         {/* Right Side - Clean White with Green Accent */}
-        <div className="flex w-[40%] flex-col items-start justify-center bg-white px-12">
+        <div className="flex w-2/5 flex-col items-start justify-center bg-white px-12">
           <div className="mb-6 h-1 w-16 rounded-full bg-primary" />
 
           <h2 className="mb-4 font-myFont text-5xl font-bold italic text-black">
-            FREEZE THE<br />
+            FREEZE THE
+            <br />
             <span className="text-primary">COURT</span>
           </h2>
 
-          <p className="mb-8 max-w-sm text-gray-500">
+          <p className="text-gray-500 mb-8 max-w-sm">
             Precision engineered for those who dominate.
           </p>
 
@@ -49,9 +50,7 @@ const SubZeroSpotlight = () => {
             SHOP SUBZERO
           </Link>
 
-          <p className="mt-4 text-xs text-gray-400">
-            *Limited stock available
-          </p>
+          {/* <p className="mt-4 text-xs text-gray-400">*Limited stock available</p> */}
         </div>
       </div>
 
@@ -67,7 +66,7 @@ const SubZeroSpotlight = () => {
             sizes="100vw"
             className="object-contain object-center"
           />
-          
+
           {/* Mobile: Bottom fade transition */}
           <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent" />
         </div>
@@ -80,7 +79,7 @@ const SubZeroSpotlight = () => {
             FREEZE THE <span className="text-primary">COURT</span>
           </h2>
 
-          <p className="mb-6 max-w-sm text-gray-500">
+          <p className="text-gray-500 mb-6 max-w-sm">
             Precision engineered for those who dominate.
           </p>
 
@@ -91,9 +90,9 @@ const SubZeroSpotlight = () => {
             SHOP SUBZERO
           </Link>
 
-          <p className="mt-3 text-xs text-gray-400">
+          {/* <p className="mt-3 text-xs text-gray-400">
             *Limited stock available
-          </p>
+          </p> */}
         </div>
       </div>
     </section>

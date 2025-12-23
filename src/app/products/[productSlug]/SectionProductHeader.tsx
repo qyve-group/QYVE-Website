@@ -224,7 +224,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       </div>
 
       <div className="basis-[45%]">
-        <Heading className="mb-0" isMain>
+        <Heading className="bold mb-0 font-myFont italic" isMain>
           {name}
           {/* {id} */}
         </Heading>
@@ -513,9 +513,14 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
         <div className="mb-5 flex items-end justify-between">
           <p className="text-xl">Available sizes</p>
-          <p className="flex items-center gap-1 text-sm text-neutral-500">
-            Size guide <LuInfo />
-          </p>
+          {slug === 'subzero' && (
+            <a
+              href="#subzero_size"
+              className="flex items-center gap-1 text-sm text-neutral-500"
+            >
+              Size guide <LuInfo />
+            </a>
+          )}
         </div>
         <div className="grid grid-cols-3 gap-3">
           {/* {products_sizes.map((product) => (

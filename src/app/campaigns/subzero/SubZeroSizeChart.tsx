@@ -16,7 +16,10 @@ const SubZeroSizeChart = () => {
   ];
 
   return (
-    <section className="from-gray-50 bg-gradient-to-b to-white py-16 md:py-24">
+    <section
+      id="subzero_size"
+      className="from-gray-50 bg-gradient-to-b to-white py-16 md:py-24"
+    >
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-4xl">
           <h2 className="mb-12 text-center text-4xl font-bold italic md:text-5xl">

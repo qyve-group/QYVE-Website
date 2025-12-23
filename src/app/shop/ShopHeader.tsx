@@ -121,10 +121,10 @@ const ShopHeader = () => {
 
               {/* Text Content */}
               <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
-                <h4 className="mb-4 text-lg font-myFontSS text-white md:text-2xl">
+                <h4 className="mb-4 font-myFontSS text-lg text-white md:text-2xl">
                   {/* {banner.title} */}
                 </h4>
-                <h1 className="text-3xl font-myFontSS leading-tight text-white drop-shadow-md md:text-6xl">
+                <h1 className="font-myFont text-3xl leading-tight text-white drop-shadow-md md:text-6xl">
                   {banner.heading}
                 </h1>
                 <p className="mt-6 max-w-2xl text-sm text-white md:text-lg">
