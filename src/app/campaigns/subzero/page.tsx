@@ -32,23 +32,35 @@ async function getSubZeroProduct() {
 
 const SubZeroPage = async () => {
   const product = await getSubZeroProduct();
-  const price = product.price;
+  const { price } = product;
   const previousPrice = product.previous_price;
   const savings = previousPrice - price;
 
   return (
     <div className="pb-20 lg:pb-0">
       {/* SubZero Landing Page Sections */}
-      <SubZeroHero price={price} previousPrice={previousPrice} savings={savings} />
+      <SubZeroHero
+        price={price}
+        previousPrice={previousPrice}
+        savings={savings}
+      />
       <SubZeroTrustBadges />
       <SubZeroFeatures />
-      <SubZeroPreOrder />
+      <SubZeroPreOrder
+        price={price}
+        previousPrice={previousPrice}
+        savings={savings}
+      />
       <SubZeroSizeChart />
       <SubZeroTestimonials />
       <SubZeroFAQs />
 
       {/* Sticky CTA for Mobile */}
-      <SubZeroStickyCTA price={price} previousPrice={previousPrice} />
+      <SubZeroStickyCTA
+        price={price}
+        previousPrice={previousPrice}
+        savings={savings}
+      />
     </div>
   );
 };

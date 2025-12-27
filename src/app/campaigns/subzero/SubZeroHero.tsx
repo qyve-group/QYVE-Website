@@ -26,7 +26,7 @@ const SubZeroHero = ({ price, previousPrice, savings }: SubZeroHeroProps) => {
       <div className="relative min-[1010px]:hidden">
         <div className="relative aspect-[3/4] w-full">
           <Image
-            src="/subzero-shoe-portrait.webp"
+            src="/subzero_hero_portrait.webp"
             alt="SubZero Futsal Shoes - The Game Redefined"
             fill
             sizes="100vw"
@@ -51,37 +51,57 @@ const SubZeroHero = ({ price, previousPrice, savings }: SubZeroHeroProps) => {
         <div className="container mx-auto flex items-end justify-center px-4">
           <div className="flex w-full flex-col items-center space-y-3 text-center sm:space-y-4">
             {/* Early Bird Badge - More Prominent */}
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#4FD1C5] px-4 py-2 shadow-lg">
+            {/* <div className="inline-flex items-center gap-2 rounded-full bg-[#4FD1C5] px-4 py-2 shadow-lg">
               <span className="relative flex size-2">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#0a1f3d] opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-[#0a1f3d]" />
               </span>
-              <span className="text-sm font-bold text-[#0a1f3d] sm:text-base">EARLY BIRD PRICE</span>
-            </div>
+              <span className="text-sm font-bold text-[#0a1f3d] sm:text-base">Promotion</span>
+            </div> */}
 
             {/* Malaysia's First Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 backdrop-blur-sm">
+            {/* <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 backdrop-blur-sm">
               <span className="text-lg">🇲🇾</span>
-              <span className="text-xs font-semibold text-white drop-shadow-md sm:text-sm">Malaysia&apos;s First Local Futsal Shoe</span>
-            </div>
+              <span className="text-xs font-semibold text-white drop-shadow-md sm:text-sm">
+                Malaysia&apos;s First Local Futsal Shoe
+              </span>
+            </div> */}
 
             {/* Headline */}
-            <h1 className="text-2xl font-bold italic text-white drop-shadow-lg sm:text-3xl md:text-4xl">
-              Engineered for Malaysian Courts
+            <h1 className="bg-black/30 text-2xl font-bold italic text-white drop-shadow-lg sm:text-3xl md:text-4xl">
+              🇲🇾 Malaysia&apos;s First Local Futsal Shoe{' '}
             </h1>
 
             {/* Price Section */}
             <div className="flex items-center gap-3 rounded-lg bg-black/30 px-4 py-2 backdrop-blur-sm">
-              <span className="text-2xl font-bold text-white sm:text-3xl">RM {price}</span>
-              <span className="text-lg text-white/60 line-through sm:text-xl">RM {previousPrice}</span>
-              <span className="rounded-full bg-[#4FD1C5] px-3 py-1 text-xs font-bold text-[#0a1f3d] sm:text-sm">
-                SAVE RM {savings}
-              </span>
+              {savings === 0 ? (
+                <span className="text-2xl font-bold text-white sm:text-3xl">
+                  RM {price}
+                </span>
+              ) : (
+                <>
+                  <span className="text-2xl font-bold text-white sm:text-3xl">
+                    RM {price}
+                  </span>
+                  <span className="text-lg text-white/60 line-through sm:text-xl">
+                    RM {previousPrice}
+                  </span>
+                  <span className="rounded-full bg-[#4FD1C5] px-3 py-1 text-xs font-bold text-[#0a1f3d] sm:text-sm">
+                    SAVE RM {savings}
+                  </span>
+                </>
+              )}
             </div>
 
             {/* Urgency Indicator */}
             <div className="flex items-center gap-2 text-sm font-medium text-white drop-shadow-md">
-              <span>Limited Time Only</span>
+              {savings === 0 ? (
+                <span className="text-sm font-medium text-white drop-shadow-md">
+                  Limited Stock Available
+                </span>
+              ) : (
+                <span>Limited Time Only</span>
+              )}
             </div>
 
             {/* CTA Buttons */}
@@ -102,7 +122,8 @@ const SubZeroHero = ({ price, previousPrice, savings }: SubZeroHeroProps) => {
 
             {/* Shipping Info */}
             <p className="rounded-full bg-black/30 px-4 py-1.5 text-xs text-white/90 backdrop-blur-sm sm:text-sm">
-              Shipping: RM 8 (Semenanjung) • RM 15 (Sabah/Sarawak) • Delivers in 2 weeks
+              Estimated Shipping: RM 8 (Semenanjung) RM 15 (Sabah/Sarawak) •
+              Delivers within 2 weeks
             </p>
           </div>
         </div>
