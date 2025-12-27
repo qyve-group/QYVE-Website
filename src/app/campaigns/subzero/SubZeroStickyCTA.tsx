@@ -3,7 +3,12 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-const SubZeroStickyCTA = () => {
+interface SubZeroStickyCTAProps {
+  price: number;
+  previousPrice: number;
+}
+
+const SubZeroStickyCTA = ({ price, previousPrice }: SubZeroStickyCTAProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -25,8 +30,8 @@ const SubZeroStickyCTA = () => {
           <div className="flex flex-col">
             <span className="text-xs text-[#4FD1C5]">Early Bird Price</span>
             <div className="flex items-center gap-2">
-              <span className="text-lg font-bold text-white">RM 218</span>
-              <span className="text-sm text-white/60 line-through">RM 238</span>
+              <span className="text-lg font-bold text-white">RM {price}</span>
+              <span className="text-sm text-white/60 line-through">RM {previousPrice}</span>
             </div>
           </div>
           <Link
@@ -46,7 +51,7 @@ const SubZeroStickyCTA = () => {
           <span>•</span>
           <span>Ships in 2 weeks</span>
           <span>•</span>
-          <span>Free Returns</span>
+          <span>Easy Returns</span>
         </div>
       </div>
     </div>
