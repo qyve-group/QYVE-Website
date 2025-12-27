@@ -88,6 +88,8 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
 
   // console.log('slug -sectionproductheader: ', slug);
 
+  const savings = previous_price - price;
+
   // Set default color ID and image once when product changes
   useEffect(() => {
     if (products_sizes.length > 0 && selectedColorId === null) {
@@ -139,14 +141,13 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       value: price,
       items: [
         {
-          item_id: selectedProductSizeId,
-          item_name: `${selectedColor}`,
+          item_id: slug,
+          item_variant_id: selectedProductSizeId,
+          item_name: name,
+          item_variant_name: `${selectedColor}`,
           price,
           quantity: 1,
           item_variant: selectedSize,
-          // item_brand: 'YourBrandName', // optional but recommended
-          // item_category: 'Shoes', // or your product category
-          image_url: selectedImage, // optional for reports
         },
       ],
     });
@@ -157,16 +158,13 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         name: `${selectedColor}-${custom}`,
         price,
         product_size: selectedSize,
-        // image: shots[0], // Assuming first image is the main product image
         quantity: 1,
         image: selectedImage,
       }),
     );
-    // console.log*('Adding to Cart:', id, selectedSize);
   };
 
   const handleBuyNow = () => {
-    // Allow guest users to buy now - no authentication required
     if (!selectedSize) {
       alert('Please select a size before adding to cart!');
       return;
@@ -177,8 +175,10 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       value: price,
       items: [
         {
-          item_id: selectedProductSizeId,
-          item_name: `${selectedColor}`,
+          item_id: slug,
+          item_variant_id: selectedProductSizeId,
+          item_name: name,
+          item_variant_name: `${selectedColor}`,
           price,
           quantity: 1,
           item_variant: selectedSize,
@@ -257,8 +257,16 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         </div> */}
 
         <div className="mb-5 space-y-1">
-          <p className="text-neutral-500 line-through">RM{previous_price}</p>
-          <h1 className="text-3xl font-medium">RM{price}</h1>
+          {savings === 0 ? (
+            <h1 className="text-3xl font-medium">RM{price}</h1>
+          ) : (
+            <>
+              <p className="text-neutral-500 line-through">
+                RM{previous_price}
+              </p>
+              <h1 className="text-3xl font-medium">RM{price}</h1>
+            </>
+          )}
         </div>
 
         <div className="flex flex-col">

@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 
 const SubZeroSizeChart = () => {
   const sizeData = [
@@ -15,6 +17,9 @@ const SubZeroSizeChart = () => {
     { uk: '10.5', eu: '45.5', cm: '29.5' },
   ];
 
+  const [isOpen, setIsOpen] = useState(false);
+  // const [selectedSize, setSelectedSize] = useState(null);
+
   return (
     <section
       id="subzero_size"
@@ -27,7 +32,59 @@ const SubZeroSizeChart = () => {
           </h2>
 
           {/* Mobile: Card Layout */}
-          <div className="grid gap-2 sm:hidden">
+          <div className="w-full sm:hidden">
+            {/* Collapsible Header */}
+            <button
+              type="button"
+              onClick={() => setIsOpen(!isOpen)}
+              className="border-gray-200 flex w-full items-center justify-between rounded-lg border bg-white p-4 shadow-sm"
+            >
+              <span>Sizes</span>
+              <span
+                className={`transition-transform duration-200${isOpen ? 'rotate-180' : 'rotate-0'}`}
+              >
+                ▼
+              </span>
+            </button>
+
+            {/* Collapsible Content */}
+            {isOpen && (
+              <div className="mt-2 grid gap-2">
+                {sizeData.map((size) => (
+                  <div
+                    key={size.eu}
+                    className="border-gray-200 flex items-center justify-between rounded-lg border bg-white p-4 shadow-sm"
+                  >
+                    <div className="text-center">
+                      <div className="text-gray-500 text-xs font-medium uppercase">
+                        UK
+                      </div>
+                      <div className="text-gray-900 text-lg font-bold">
+                        {size.uk}
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-gray-500 text-xs font-medium uppercase">
+                        EU
+                      </div>
+                      <div className="text-gray-700 text-lg font-semibold">
+                        {size.eu}
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-gray-500 text-xs font-medium uppercase">
+                        CM
+                      </div>
+                      <div className="text-gray-700 text-lg font-semibold">
+                        {size.cm}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          {/* <div className="grid gap-2 sm:hidden">
             {sizeData.map((size) => (
               <div
                 key={size.eu}
@@ -59,7 +116,7 @@ const SubZeroSizeChart = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* Tablet & Desktop: Table Layout */}
           <div className="border-gray-200 hidden overflow-hidden rounded-lg border bg-white shadow-lg sm:block">

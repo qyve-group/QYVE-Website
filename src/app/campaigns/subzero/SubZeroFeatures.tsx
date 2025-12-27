@@ -42,7 +42,10 @@ const SubZeroFeatures = () => {
   };
 
   return (
-    <section className="bg-white py-10 sm:py-12 md:py-16">
+    <section
+      id="features"
+      className="scroll-mt-20 bg-white py-10 sm:py-12 md:py-16"
+    >
       <div className="container mx-auto px-4">
         <div className="flex flex-col-reverse gap-8 sm:gap-10 lg:grid lg:grid-cols-2 lg:gap-12 xl:gap-16">
           {/* Left - Product Image */}

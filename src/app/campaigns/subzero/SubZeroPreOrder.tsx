@@ -6,7 +6,13 @@ import { Fragment, useState } from 'react';
 
 import SubZeroPreOrderForm from '@/components/SubZeroPreOrderForm';
 
-const SubZeroPreOrder = () => {
+interface SubZeroProps {
+  price: number;
+  previousPrice: number;
+  savings: number;
+}
+
+const SubZeroPreOrder = ({ price, previousPrice, savings }: SubZeroProps) => {
   const [isPreOrderOpen, setIsPreOrderOpen] = useState(false);
   const router = useRouter();
 
@@ -34,12 +40,20 @@ const SubZeroPreOrder = () => {
                 Get the revolutionary Subzero futsal shoes
               </p>
               <div className="mb-2 flex flex-wrap items-baseline justify-center gap-2 sm:gap-3">
-                <span className="font-myFontSS text-2xl line-through sm:text-3xl md:text-4xl">
-                  RM 238
-                </span>
-                <span className="text-2xl font-bold text-[#4FD1C5] sm:text-3xl md:text-4xl">
-                  RM 215
-                </span>
+                {savings === 0 ? (
+                  <span className="text-2xl font-bold text-[#4FD1C5] sm:text-3xl md:text-4xl">
+                    RM {price}
+                  </span>
+                ) : (
+                  <>
+                    <span className="font-myFontSS text-2xl line-through sm:text-3xl md:text-4xl">
+                      RM {previousPrice}
+                    </span>
+                    <span className="text-2xl font-bold text-[#4FD1C5] sm:text-3xl md:text-4xl">
+                      RM {price}
+                    </span>
+                  </>
+                )}
               </div>
             </div>
 
