@@ -7,25 +7,31 @@ const testimonials = [
     id: 1,
     name: 'Ciyo',
     role: 'Keeper, Pahang Rangers',
+    location: 'Kuantan, Pahang',
     quote:
-      'Walaupun saya keeper, shooting rasa sedap dan ringan. Senang nak split.',
+      'Walaupun saya keeper, shooting rasa sedap dan ringan. Senang nak split. Grip dia memang power untuk court yang dusty.',
     rating: 5,
+    highlight: 'Great for keepers',
   },
   {
     id: 2,
     name: 'Emir',
     role: 'Casual Player',
+    location: 'Shah Alam, Selangor',
     quote:
-      'Honestly, toe-poking feels great and this shoe is surpisingly lighter than it looks',
+      'Honestly, toe-poking feels great and this shoe is surprisingly lighter than it looks. Been using it 3x a week for a month now.',
     rating: 5,
+    highlight: 'Lightweight & durable',
   },
   {
     id: 3,
     name: 'Coach Faiq',
-    role: 'Nottingham University Futsal Head Coach ',
+    role: 'Nottingham University Futsal Head Coach',
+    location: 'Semenyih, Selangor',
     quote:
-      'Serious tak expect untuk kasut ni rasa macam brand-brand kat luar sana.',
+      'Serious tak expect untuk kasut ni rasa macam brand-brand kat luar sana. Recommended for serious players.',
     rating: 5,
+    highlight: 'Pro-level quality',
   },
 ];
 
@@ -50,6 +56,13 @@ const SubZeroTestimonials = () => {
               key={testimonial.id}
               className="group relative overflow-hidden rounded-lg bg-white/10 p-5 backdrop-blur-sm transition-all hover:bg-white/20 hover:shadow-xl sm:p-6"
             >
+              {/* Highlight Badge */}
+              <div className="mb-3">
+                <span className="inline-block rounded-full bg-[#4FD1C5]/20 px-3 py-1 text-xs font-semibold text-[#4FD1C5]">
+                  {testimonial.highlight}
+                </span>
+              </div>
+
               {/* Rating Stars */}
               <div className="mb-3 flex gap-1 sm:mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
@@ -82,6 +95,9 @@ const SubZeroTestimonials = () => {
                   </div>
                   <div className="text-xs text-[#4FD1C5] sm:text-sm">
                     {testimonial.role}
+                  </div>
+                  <div className="text-xs text-white/60">
+                    {testimonial.location}
                   </div>
                 </div>
               </div>

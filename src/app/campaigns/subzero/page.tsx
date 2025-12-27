@@ -2,30 +2,29 @@
 
 import React from 'react';
 
-// import NewsletterSignup from './NewsletterSignup';
-// import ProudlyMalaysian from './ProudlyMalaysian';
-// import SubZeroCTA from './SubZeroCTA';
 import SubZeroFAQs from './SubZeroFAQs';
 import SubZeroFeatures from './SubZeroFeatures';
 import SubZeroHero from './SubZeroHero';
 import SubZeroPreOrder from './SubZeroPreOrder';
 import SubZeroSizeChart from './SubZeroSizeChart';
+import SubZeroStickyCTA from './SubZeroStickyCTA';
 import SubZeroTestimonials from './SubZeroTestimonials';
+import SubZeroTrustBadges from './SubZeroTrustBadges';
 
 const SubZeroPage = () => {
   return (
-    <div>
+    <div className="pb-20 lg:pb-0">
       {/* SubZero Landing Page Sections */}
       <SubZeroHero />
+      <SubZeroTrustBadges />
       <SubZeroFeatures />
       <SubZeroPreOrder />
       <SubZeroSizeChart />
       <SubZeroTestimonials />
       <SubZeroFAQs />
 
-      {/* <SubZeroCTA /> */}
-      {/* <ProudlyMalaysian /> */}
-      {/* <NewsletterSignup /> */}
+      {/* Sticky CTA for Mobile */}
+      <SubZeroStickyCTA />
     </div>
   );
 };
