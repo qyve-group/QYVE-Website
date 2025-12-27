@@ -139,14 +139,13 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       value: price,
       items: [
         {
-          item_id: selectedProductSizeId,
-          item_name: `${selectedColor}`,
+          item_id: slug,
+          item_variant_id: selectedProductSizeId,
+          item_name: name,
+          item_variant_name: `${selectedColor}`,
           price,
           quantity: 1,
           item_variant: selectedSize,
-          // item_brand: 'YourBrandName', // optional but recommended
-          // item_category: 'Shoes', // or your product category
-          image_url: selectedImage, // optional for reports
         },
       ],
     });
@@ -157,16 +156,13 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
         name: `${selectedColor}-${custom}`,
         price,
         product_size: selectedSize,
-        // image: shots[0], // Assuming first image is the main product image
         quantity: 1,
         image: selectedImage,
       }),
     );
-    // console.log*('Adding to Cart:', id, selectedSize);
   };
 
   const handleBuyNow = () => {
-    // Allow guest users to buy now - no authentication required
     if (!selectedSize) {
       alert('Please select a size before adding to cart!');
       return;
@@ -177,8 +173,10 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
       value: price,
       items: [
         {
-          item_id: selectedProductSizeId,
-          item_name: `${selectedColor}`,
+          item_id: slug,
+          item_variant_id: selectedProductSizeId,
+          item_name: name,
+          item_variant_name: `${selectedColor}`,
           price,
           quantity: 1,
           item_variant: selectedSize,
