@@ -204,7 +204,7 @@ const CartSideBar: React.FC = () => {
                       <ButtonSecondary
                         href="/cart"
                         onClick={handleCloseMenu}
-                        className="w-full flex-1 border-2 border-primary text-primary"
+                        className="w-full flex-1 border-2 text-primary bg-black"
                       >
                         View cart
                       </ButtonSecondary>

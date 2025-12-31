@@ -106,6 +106,7 @@ const CheckoutPage = () => {
 
   const [voucher, setVoucher] = useState('');
   const [voucherValidity, setVoucherValidity] = useState('');
+  const [voucherChecking, setVoucherChecking] = useState(false);
   const [clicked, setClicked] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [, setVoucherValue] = useState(0);
@@ -158,70 +159,101 @@ const CheckoutPage = () => {
   const handleVoucher = async () => {
     setVoucherValidity(''); // reset previous validity
     setVoucherValue(0);
+    setVoucherChecking(true);
     setDiscountPercentage(0);
     setDiscountPrice(0);
     setDiscountValue(0);
     // setDiscountType('');
     setClicked(false);
     console.log(`userid: ${userId} || voucher: ${voucher}`);
-    const res = await fetch('/api/check-voucher', {
-      method: 'POST',
-      body: JSON.stringify({
-        userId,
-        code: voucher,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
 
-    if (!res.ok) {
-      console.error('Error calling check-voucher', res.status);
-    } else {
-      const result = await res.json();
+    try {
+      const res = await fetch('/api/check-voucher', {
+        method: 'POST',
+        body: JSON.stringify({
+          userId,
+          code: voucher,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-      console.log('result: ', result.status);
+      if (!res.ok) {
+        console.error('Error calling check-voucher', res.status);
+      } else {
+        const result = await res.json();
 
-      if (result.status === 'used') {
-        setVoucherValidity(result.status);
-      } else if (result.status === 'valid') {
-        setVoucherValidity(result.status);
-        setVoucherValue(result.value);
-        // setDiscountType(result.discountType);
-        console.log('result value: ', result.value);
-        console.log('discount_type: ', result.discount_type);
+        console.log('result: ', result.status);
 
-        if (result.discount_type === 'percentage') {
-          const discPercentage = result.value / 100;
-          setDiscountPercentage(result.value / 100);
+        if (result.status === 'used') {
+          setVoucherValidity(result.status);
+        } else if (result.status === 'valid') {
+          setVoucherValidity(result.status);
+          setVoucherValue(result.value);
+          // setDiscountType(result.discountType);
+          console.log('result: ', result);
+          console.log('result value: ', result.value);
+          console.log('discount_type: ', result.discount_type);
+          console.log('type discount_type: ', typeof result.discount_type);
 
-          setTotal(
-            subtotal + shippingFee - subtotal * discPercentage - discountPrice,
-          );
-          setDiscountValue(subtotal * discPercentage - discountPrice);
-          console.log('discount percentage ', discPercentage);
-          console.log(
-            'total: ',
-            subtotal + shippingFee - subtotal * discPercentage - discountPrice,
-          );
-          console.log(
-            'discount value: ',
-            subtotal * discPercentage - discountPrice,
-          );
-        } else if (result.discountType === 'price') {
-          setDiscountPrice(result.value);
-          const discPrice = result.value;
+          if (result.discount_type === 'percentage') {
+            console.log('percentage');
+            const discPercentage = result.value / 100;
+            setDiscountPercentage(result.value / 100);
 
-          setTotal(
-            subtotal + shippingFee - subtotal * discountPercentage - discPrice,
-          );
-          setDiscountValue(subtotal * discountPercentage - discPrice);
+            setTotal(
+              subtotal +
+                shippingFee -
+                subtotal * discPercentage -
+                discountPrice,
+            );
+            setDiscountValue(subtotal * discPercentage - discountPrice);
+            console.log('discount percentage ', discPercentage);
+            console.log(
+              'total: ',
+              subtotal +
+                shippingFee -
+                subtotal * discPercentage -
+                discountPrice,
+            );
+            console.log(
+              'discount value: ',
+              subtotal * discPercentage - discountPrice,
+            );
+          } else if (result.discount_type === 'price') {
+            console.log('price');
+            setDiscountPrice(result.value);
+            const discPrice = result.value;
+
+            setTotal(
+              subtotal +
+                shippingFee -
+                subtotal * discountPercentage -
+                discPrice,
+            );
+            setDiscountValue(subtotal * discountPercentage - discPrice);
+          } else if (result.discount_type === 'free_shipping') {
+            setDiscountPrice(shippingFee);
+            const discPrice = shippingFee;
+
+            setTotal(subtotal + shippingFee - discPrice);
+
+            setDiscountValue(discPrice);
+            console.log('free shipping: ', discPrice);
+          }
+          console.log('its reaching here');
+          console.log('total after discount: ', total);
+        } else if (result.error) {
+          console.error('Error: ', result.error);
         }
-      } else if (result.error) {
-        console.error('Error: ', result.error);
       }
+    } catch (error) {
+      console.error('Voucher API error: ', error);
+    } finally {
+      setClicked(true);
+      setVoucherChecking(false);
     }
-    setClicked(true);
   };
 
   // useEffect(() => {
@@ -670,6 +702,7 @@ const CheckoutPage = () => {
             voucherValidity={voucherValidity}
             onVoucherChange={setVoucher}
             onVoucherApply={handleVoucher}
+            voucherChecking={voucherChecking}
             contactInfo={contactInfo}
             shippingAddress={shippingAddress}
             onContactInfoChange={handleContactInfo}
@@ -677,6 +710,8 @@ const CheckoutPage = () => {
             cartItems={cartItems}
             loadingShippingFee={loadingShippingFee}
             shippingError={shippingError}
+            discountValue={discountValue}
+            clicked={clicked}
           />
         ) : (
           <div className="flex flex-col lg:flex-row">
@@ -718,8 +753,14 @@ const CheckoutPage = () => {
                     />
                     <button
                       type="button"
-                      className="ml-3 flex w-24 items-center justify-center rounded-2xl border border-neutral-300 bg-gray px-4 text-sm font-medium transition-colors hover:bg-neutral-100"
+                      className={`ml-3 flex w-24 items-center justify-center rounded-2xl border border-neutral-300 px-4 text-sm font-medium transition-colors
+                      ${
+                        voucherChecking || !voucher.trim()
+                          ? 'cursor-not-allowed bg-neutral-200 text-neutral-400'
+                          : 'bg-gray hover:bg-neutral-100'
+                      }`}
                       onClick={handleVoucher}
+                      disabled={voucherChecking || !voucher.trim()}
                     >
                       Apply
                     </button>
