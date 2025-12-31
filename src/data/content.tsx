@@ -41,6 +41,7 @@ import yellowLow from '@/images/yellowLow.webp';
 import type { BlogType } from './types';
 
 export const topNavLinks: NavItemType[] = [
+  { id: 'eehome', name: 'Home', href: '/home' },
   {
     id: 'eeshop',
     name: 'Shop',
@@ -89,6 +90,7 @@ export const NavLinks: NavItemType[] = [
   //   name: 'Home',
   //   href: '/home',
   // },
+  { id: 'eehome', name: 'Home', href: '/home' },
   {
     id: 'eeshop',
     name: 'Shop',

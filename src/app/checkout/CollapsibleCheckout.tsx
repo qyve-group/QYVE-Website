@@ -61,7 +61,7 @@ interface CollapsibleCheckoutProps {
   loadingShippingFee?: boolean;
   shippingError?: string | null;
   discountValue: number;
-  clicked?: boolean
+  clicked?: boolean;
 }
 
 const CollapsibleCheckout = ({
@@ -711,27 +711,21 @@ const CollapsibleCheckout = ({
                   {(() => {
                     if (voucherValidity === 'used') {
                       return (
-                        <div className="text-red-300">
-                          Voucher already used
-                        </div>
+                        <div className="text-red-300">Voucher already used</div>
                       );
                     }
 
                     if (voucherValidity === 'valid') {
                       return (
-                        <div className="text-green-600">
-                          Voucher applied
-                        </div>
+                        <div className="text-green-600">Voucher applied</div>
                       );
                     }
 
-                    return (
-                      <div className="text-red-300">Invalid voucher</div>
-                    );
+                    return <div className="text-red-300">Invalid voucher</div>;
                   })()}
                 </div>
               )}
-              
+
               {/* {voucherValidity && (
                 <div className="mt-1 text-sm">
                   <span

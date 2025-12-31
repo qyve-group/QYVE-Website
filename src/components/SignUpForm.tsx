@@ -15,7 +15,7 @@ const SignUpForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // const submitForm = async () => {
   //   try {
@@ -47,9 +47,9 @@ const SignUpForm = () => {
         alert(
           'This email is already registered. Please log in or use a different email.',
         );
-      } else if (error.code === 'weak_password'){
+      } else if (error.code === 'weak_password') {
         // alert('Password should be at least 6 characters');
-        setError('weak_password');
+        setErrorMessage('weak_password');
       } else {
         console.error('Error code:', error.code);
         alert('An error occurred during registration. Please try again.');
@@ -99,7 +99,11 @@ const SignUpForm = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </FormItem>
-              {error === 'weak_password' && (<div className='text-red-300'>Password does not meet requirement standard.</div>)}
+              {errorMessage === 'weak_password' && (
+                <div className="text-red-300">
+                  Password does not meet requirement standard.
+                </div>
+              )}
               <ButtonPrimary
                 onClick={submitForm}
                 className="font-myFont italic hover:bg-black hover:text-primary"

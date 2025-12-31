@@ -53,11 +53,11 @@ const SubZeroStickyCTA = ({
             href="/products/subzero"
             className="rounded-full bg-[#4FD1C5] px-6 py-2.5 text-sm font-bold text-[#0a1f3d] transition-all hover:scale-105 hover:bg-white"
             onClick={() => {
-              if (typeof window !== 'undefined' && window.gtag){
-                window.gtag('event', 'sticky_buy_now_click',{
+              if (typeof window !== 'undefined' && window.gtag) {
+                window.gtag('event', 'sticky_buy_now_click', {
                   page: 'campaigns_subzero',
                   cta_type: 'sticky',
-                  destination: '/products/subzero'
+                  destination: '/products/subzero',
                 });
               }
             }}
