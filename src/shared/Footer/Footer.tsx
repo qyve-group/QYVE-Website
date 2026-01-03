@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import { SocialIcon } from 'react-social-icons';
 
-// import FooterBanner from './FooterBanner';
+import FooterBanner from './FooterBanner';
 
 const Footer: React.FC = () => {
   const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER!;
@@ -11,9 +11,9 @@ const Footer: React.FC = () => {
 
   return (
     <div>
-      {/* <div className="container mb-10">
+      <div className="container mb-10">
         <FooterBanner />
-      </div> */}
+      </div>
 
       <div className="bg-black text-white">
         <div className="container py-16">
@@ -27,7 +27,7 @@ const Footer: React.FC = () => {
                 Malaysia&apos;s First Local Futsal Shoe Brand
               </h3>
               <p className="text-white/70">
-                {/* Designed by Malaysian players. Assembled in Malaysia.  */}
+                Designed by Malaysian players. Assembled in Malaysia. 
                 Built to empower the local futsal scene and showcase Malaysian talent to the world.
               </p>
               <div className="flex items-center gap-4">
@@ -62,13 +62,13 @@ const Footer: React.FC = () => {
                 <h4 className="font-bold text-primary">Shop</h4>
                 <div className="flex flex-col space-y-3 text-sm text-white/70">
                   <Link href="/products/subzero" className="transition-colors hover:text-white">
-                    Subzero Futsal Shoes
+                    SubZero Futsal Shoes
                   </Link>
                   <Link href="/shop" className="transition-colors hover:text-white">
                     All Products
                   </Link>
                   <Link href="/campaigns/subzero" className="transition-colors hover:text-white">
-                    Subzero Campaign
+                    SubZero Campaign
                   </Link>
                 </div>
               </div>
@@ -95,25 +95,25 @@ const Footer: React.FC = () => {
               <h4 className="font-bold text-primary">Our Promise</h4>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
-                  {/* <span className="text-xl">🏭</span> */}
+                  <span className="text-xl">🏭</span>
                   <div>
-                    <p className="font-medium text-white">Empowering Malaysians</p>
-                    <p className="text-sm text-white/60">Built to uplift local players, makers, and the futsal community</p>
+                    <p className="font-medium text-white">100% Local Production</p>
+                    <p className="text-sm text-white/60">Designed & assembled in Malaysia</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  {/* <span className="text-xl">⚽</span> */}
+                  <span className="text-xl">⚽</span>
                   <div>
-                    <p className="font-medium text-white">Raising the Standard</p>
-                    <p className="text-sm text-white/60">Built to elevate the level of futsal in Malaysia</p>
+                    <p className="font-medium text-white">Player-Designed</p>
+                    <p className="text-sm text-white/60">Made by players who understand the game</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  {/* <span className="text-xl">🤝</span> */}
-                  {/* <div>
+                  <span className="text-xl">🤝</span>
+                  <div>
                     <p className="font-medium text-white">Community First</p>
                     <p className="text-sm text-white/60">Supporting Malaysian futsal talent</p>
-                  </div> */}
+                  </div>
                 </div>
               </div>
             </div>

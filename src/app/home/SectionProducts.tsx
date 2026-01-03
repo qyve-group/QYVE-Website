@@ -129,7 +129,7 @@ const SectionProducts = () => {
       <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
         {products && products.length > 0 ? (
           products
-            .slice(0, 2)
+            .slice(0, 3)
             .map((product) => (
               <ProductCard
                 key={product.name}

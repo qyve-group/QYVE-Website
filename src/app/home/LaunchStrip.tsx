@@ -13,7 +13,7 @@ const LaunchStrip = () => {
               <span className="relative inline-flex size-2 rounded-full bg-primary" />
             </span>
             <span className="text-sm font-medium text-white">
-              <span className="font-bold text-primary">NOW LAUNCHING:</span> Subzero — Malaysia&apos;s First Local Futsal Shoe
+              <span className="font-bold text-primary">NOW LAUNCHING:</span> SubZero — Malaysia&apos;s First Local Futsal Shoe
             </span>
           </div>
           <Link

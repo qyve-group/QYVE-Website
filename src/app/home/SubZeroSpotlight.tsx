@@ -49,11 +49,11 @@ const SubZeroSpotlight = () => {
 
           {/* Early Bird Pricing */}
           <div className="mb-6 flex items-center gap-3">
-            {/* <span className="text-2xl font-bold text-black">RM 218</span> */}
-            {/* <span className="text-lg text-gray-400">RM 238</span> */}
-            {/* <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-black">
+            <span className="text-2xl font-bold text-black">RM 218</span>
+            <span className="text-lg text-gray-400 line-through">RM 238</span>
+            <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-black">
               EARLY BIRD
-            </span> */}
+            </span>
           </div>
 
           <Link
@@ -100,11 +100,11 @@ const SubZeroSpotlight = () => {
 
           {/* Early Bird Pricing */}
           <div className="mb-6 flex items-center gap-3">
-            {/* <span className="text-xl font-bold text-black">RM 218</span> */}
-            {/* <span className="text-base text-gray-400">RM 238</span> */}
-            {/* <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-black">
+            <span className="text-xl font-bold text-black">RM 218</span>
+            <span className="text-base text-gray-400 line-through">RM 238</span>
+            <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-black">
               EARLY BIRD
-            </span> */}
+            </span>
           </div>
 
           <Link
