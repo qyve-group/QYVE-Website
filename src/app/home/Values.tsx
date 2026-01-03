@@ -1,14 +1,20 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { FaCheckCircle } from "react-icons/fa";
+
 
 const Values = () => {
   return (
-    <section className="bg-white py-16">
+    <section className="relative bg-white pb-24 pt-16">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-primary">
+          {/* <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-wider text-primary">
             Our Mission
-          </span>
+          </span> */}
+          {/* <div className="inline-flex items-center gap-2 rounded-full bg-black px-4 py-2">
+            <span className="text-xl">🇲🇾</span>
+            <span className="text-sm font-semibold text-primary">Our Mission</span>
+          </div> */}
           <h2 className="mb-4 text-3xl font-bold text-black md:text-4xl">
             Empowering Malaysian Futsal
           </h2>
@@ -20,31 +26,32 @@ const Values = () => {
 
         <div className="grid gap-8 md:grid-cols-3">
           <div className="group rounded-2xl border border-gray-100 bg-gray-50 p-8 transition-all hover:border-primary/30 hover:shadow-lg">
-            <div className="mb-6 flex size-16 items-center justify-center rounded-full bg-primary/10 text-3xl transition-all group-hover:bg-primary/20">
+            {/* <div className="mb-6 flex size-16 items-center justify-center rounded-full bg-primary/10 text-3xl transition-all group-hover:bg-primary/20">
               🎯
-            </div>
+            </div> */}
             <h3 className="mb-3 text-xl font-bold text-black">Recognize Local Talent</h3>
             <p className="mb-4 text-gray-600">
               Malaysian players have skills and futsal IQ that rival the best in Asia. 
-              We see it every week on courts across the country — it&apos;s time the world sees it too.
+              We see it every week on courts across the country. It&apos;s time the world sees it too.
             </p>
             <ul className="space-y-2 text-sm text-gray-500">
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span> Spotlight local athletes
+                 <FaCheckCircle className='text-black bg-primary rounded-full '/>Spotlight local athletes 
+
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span> Share Malaysian futsal stories
+                 <FaCheckCircle className='text-black bg-primary rounded-full '/> Share Malaysian futsal stories
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span> Build a community of players
+                 <FaCheckCircle className='text-black bg-primary rounded-full '/> Build a community of players
               </li>
             </ul>
           </div>
 
           <div className="group rounded-2xl border border-gray-100 bg-gray-50 p-8 transition-all hover:border-primary/30 hover:shadow-lg">
-            <div className="mb-6 flex size-16 items-center justify-center rounded-full bg-primary/10 text-3xl transition-all group-hover:bg-primary/20">
+            {/* <div className="mb-6 flex size-16 items-center justify-center rounded-full bg-primary/10 text-3xl transition-all group-hover:bg-primary/20">
               🏭
-            </div>
+            </div> */}
             <h3 className="mb-3 text-xl font-bold text-black">Made in Malaysia</h3>
             <p className="mb-4 text-gray-600">
               Designed by Malaysians who play the game. Assembled right here in Malaysia. 
@@ -52,21 +59,21 @@ const Values = () => {
             </p>
             <ul className="space-y-2 text-sm text-gray-500">
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span> Designed by local players
+                 <FaCheckCircle className='text-black bg-primary rounded-full '/>Designed by local players
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span> Assembled in Malaysia
+                 <FaCheckCircle className='text-black bg-primary rounded-full '/>Assembled in Malaysia
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span> Quality without import markup
+                 <FaCheckCircle className='text-black bg-primary rounded-full '/>Quality without import markup
               </li>
             </ul>
           </div>
 
           <div className="group rounded-2xl border border-gray-100 bg-gray-50 p-8 transition-all hover:border-primary/30 hover:shadow-lg">
-            <div className="mb-6 flex size-16 items-center justify-center rounded-full bg-primary/10 text-3xl transition-all group-hover:bg-primary/20">
+            {/* <div className="mb-6 flex size-16 items-center justify-center rounded-full bg-primary/10 text-3xl transition-all group-hover:bg-primary/20">
               🚀
-            </div>
+            </div> */}
             <h3 className="mb-3 text-xl font-bold text-black">Elevate the Scene</h3>
             <p className="mb-4 text-gray-600">
               We&apos;re not just selling shoes — we&apos;re building a movement. 
@@ -74,13 +81,13 @@ const Values = () => {
             </p>
             <ul className="space-y-2 text-sm text-gray-500">
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span> Support local tournaments
+                 <FaCheckCircle className='text-black bg-primary rounded-full '/>Support local tournaments
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span> Partner with futsal communities
+                 <FaCheckCircle className='text-black bg-primary rounded-full '/>Partner with futsal communities
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span> Grow the game together
+                 <FaCheckCircle className='text-black bg-primary rounded-full '/>Grow the game together
               </li>
             </ul>
           </div>
@@ -118,6 +125,9 @@ const Values = () => {
           </div>
         </div>
       </div>
+
+      {/* Gradient transition to footer */}
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-white to-black" />
     </section>
   );
 };
