@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 import ProductCard from '@/components/ProductCard';
 import { productsSection } from '@/data/content';
 import { supabase } from '@/libs/supabaseClient';
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
 import Heading from '@/shared/Heading/Heading';
 // import { useRouter } from 'next/navigation';
 
@@ -151,7 +150,13 @@ const SectionProducts = () => {
       </div>
 
       <div className="mt-8 flex items-center justify-center">
-        <Link href="/shop">
+        <Link
+          href="/shop"
+          className="inline-block rounded-full bg-primary px-8 py-3 font-bold text-black transition-all hover:scale-105 hover:bg-white"
+        >
+          Explore more
+        </Link>
+        {/* <Link href="/shop">
           <ButtonPrimary
             type="button"
             // onClick={() => {
@@ -160,7 +165,7 @@ const SectionProducts = () => {
           >
             Explore more
           </ButtonPrimary>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

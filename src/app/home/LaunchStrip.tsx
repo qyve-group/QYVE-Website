@@ -13,7 +13,8 @@ const LaunchStrip = () => {
               <span className="relative inline-flex size-2 rounded-full bg-primary" />
             </span>
             <span className="text-sm font-medium text-white">
-              <span className="font-bold text-primary">NOW LAUNCHING:</span> SubZero — Malaysia&apos;s First Local Futsal Shoe
+              <span className="font-bold text-primary">NOW LAUNCHING:</span>{' '}
+              Subzero - Malaysia&apos;s First Local Futsal Shoe
             </span>
           </div>
           <Link
@@ -21,8 +22,18 @@ const LaunchStrip = () => {
             className="flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-black transition-all hover:bg-white"
           >
             <span>Learn More</span>
-            <svg className="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg
+              className="size-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </Link>
         </div>

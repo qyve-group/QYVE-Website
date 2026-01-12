@@ -25,6 +25,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Voucher not found' }, { status: 404 });
   }
 
+  if (voucher.for_public === true) {
+    return NextResponse.json(
+      {
+        status: 'valid',
+        value: voucher.value,
+        discount_type: voucher.discount_type,
+        free_shipping: voucher.free_shipping,
+      },
+      { status: 200 },
+    );
+  }
+
   if (voucher.free_shipping === true) {
     return NextResponse.json(
       {

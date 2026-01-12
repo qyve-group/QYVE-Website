@@ -200,6 +200,7 @@ const CollapsibleCheckout = ({
 
     // Proceed with checkout - call the actual Stripe API
     console.log('Checkout ready! Calling Stripe...');
+    console.log('voucher: ', voucher);
 
     try {
       const res = await fetch('/api/checkout', {
@@ -706,7 +707,7 @@ const CollapsibleCheckout = ({
                   Apply
                 </button>
               </div>
-              {clicked && (
+              {clicked && voucherValidity !== 'idle' && (
                 <div>
                   {(() => {
                     if (voucherValidity === 'used') {
@@ -757,8 +758,12 @@ const CollapsibleCheckout = ({
                     <span className="text-sm text-red-500">
                       Invalid address
                     </span>
+                  ) : shippingFee === null ? (
+                    <span className="text-gray-500">-</span>
+                  ) : shippingFee === 0 ? (
+                    <span>Free delivery</span>
                   ) : (
-                    `RM ${shippingFee}`
+                    <span>RM {shippingFee}</span>
                   )}
                 </span>
               </div>
@@ -769,7 +774,7 @@ const CollapsibleCheckout = ({
               )} */}
               <div className="flex justify-between py-4">
                 <span>Discount</span>
-                <span className="font-semibold">- RM {discountValue}</span>
+                <span className="font-semibold">RM {discountValue}</span>
               </div>
               <div className="flex justify-between pt-4 text-base font-semibold">
                 <span>Total</span>
@@ -777,7 +782,11 @@ const CollapsibleCheckout = ({
               </div>
             </div>
 
-            <ButtonPrimary className="mt-8 w-full" onClick={handleCheckout}>
+            <ButtonPrimary
+              className="mt-8 w-full"
+              onClick={handleCheckout}
+              loadingShippingFee={loadingShippingFee}
+            >
               Confirm order
             </ButtonPrimary>
 

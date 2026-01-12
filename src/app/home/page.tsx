@@ -1,8 +1,8 @@
 import React from 'react';
 
-import BrandMessage from './BrandMessage';
+// import BrandMessage from './BrandMessage';
 import LaunchStrip from './LaunchStrip';
-import ProudlyMalaysian from './ProudlyMalaysian';
+// import ProudlyMalaysian from './ProudlyMalaysian';
 import SectionProducts from './SectionProducts';
 import SubZeroSpotlight from './SubZeroSpotlight';
 import Values from './Values';
@@ -18,11 +18,11 @@ const page = () => {
         <SectionProducts />
       </div>
 
-      <ProudlyMalaysian />
+      {/* <ProudlyMalaysian /> */}
 
-      <div>
+      {/* <div>
         <BrandMessage />
-      </div>
+      </div> */}
 
       <div>
         <Values />

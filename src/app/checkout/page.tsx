@@ -101,7 +101,7 @@ const CheckoutPage = () => {
   //   useState<ShippingAddress | null>(null);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const isCartEmpty = !cartItems || cartItems.length === 0;
-  const [shippingFee, setShippingFee] = useState(0);
+  const [shippingFee, setShippingFee] = useState(null);
   const [shippingError, setShippingError] = useState<string | null>(null);
 
   const [voucher, setVoucher] = useState('');
@@ -136,27 +136,18 @@ const CheckoutPage = () => {
   }, [cartItems, shippingFee]);
 
   console.log('initial total: ', total);
-  // // const estimatedTaxes = subtotal * 0.1; // Example 10% tax
-  // // const total = subtotal + estimatedTaxes;
-  // const [total, setTotal] = useState(subtotal);
-  // setTotal(
-  //   subtotal +
-  //     shippingFee +
-  //     subtotal * (discountPercentage / 100) +
-  //     discountPrice,
-  // );
 
-  // useEffect(() => {
-  //   setTotal(
-  //     subtotal +
-  //       shippingFee -
-  //       subtotal * (discountPercentage / 100) -
-  //       discountPrice,
-  //   );
-  //   setDiscountValue(subtotal * (discountPercentage / 100) + discountPrice);
-  // }, [subtotal, shippingFee, discountPercentage, discountPrice]);
+  const resetVoucher = () => {
+    setVoucher('');
+    setVoucherValidity('idle');
+    setDiscountValue(0);
+    setDiscountPercentage(0);
+    setDiscountPrice(0);
+  };
 
   const handleVoucher = async () => {
+    console.log('voucher: ', voucher);
+
     setVoucherValidity(''); // reset previous validity
     setVoucherValue(0);
     setVoucherChecking(true);
@@ -200,47 +191,69 @@ const CheckoutPage = () => {
           if (result.discount_type === 'percentage') {
             console.log('percentage');
             const discPercentage = result.value / 100;
-            setDiscountPercentage(result.value / 100);
+            setDiscountPercentage(discPercentage);
 
-            setTotal(
-              subtotal +
-                shippingFee -
-                subtotal * discPercentage -
-                discountPrice,
-            );
-            setDiscountValue(subtotal * discPercentage - discountPrice);
-            console.log('discount percentage ', discPercentage);
-            console.log(
-              'total: ',
-              subtotal +
-                shippingFee -
-                subtotal * discPercentage -
-                discountPrice,
-            );
-            console.log(
-              'discount value: ',
-              subtotal * discPercentage - discountPrice,
-            );
+            if (result.free_shipping === true) {
+              // const freeShippingDiscount = shippingFee;
+              // const newShippingFee = 0;
+
+              // const newTotal = subtotal - subtotal * discPercentage;
+
+              // setShippingFee(newShippingFee);
+              setShippingFee(0);
+              // setDiscountPrice(freeShippingDiscount);
+              setDiscountPrice(0);
+              // setDiscountValue(freeShippingDiscount);
+              // setTotal(newTotal);
+
+              // console.log('Final total:', newTotal);
+            }
+            // else {
+            //   setTotal(
+            //     subtotal +
+            //       shippingFee -
+            //       subtotal * discPercentage -
+            //       discountPrice,
+            //   );
+            // }
+
+            // setDiscountValue(subtotal * discPercentage - discountPrice);
+            // setDiscountValue(subtotal * discPercentage);
+
+            // console.log('discount percentage ', discPercentage);
+            // console.log(
+            //   'total: ',
+            //   subtotal +
+            //     shippingFee -
+            //     subtotal * discPercentage -
+            //     discountPrice,
+            // );
+            // console.log(
+            //   'discount value: ',
+            //   subtotal * discPercentage - discountPrice,
+            // );
           } else if (result.discount_type === 'price') {
             console.log('price');
             setDiscountPrice(result.value);
-            const discPrice = result.value;
+            setDiscountPercentage(0);
+            // const discPrice = result.value;
 
-            setTotal(
-              subtotal +
-                shippingFee -
-                subtotal * discountPercentage -
-                discPrice,
-            );
-            setDiscountValue(subtotal * discountPercentage - discPrice);
+            // setTotal(
+            //   subtotal +
+            //     shippingFee -
+            //     subtotal * discountPercentage -
+            //     discPrice,
+            // );
+            // setDiscountValue(subtotal * discountPercentage - discPrice);
           } else if (result.discount_type === 'free_shipping') {
-            setDiscountPrice(shippingFee);
-            const discPrice = shippingFee;
+            setDiscountPrice(0);
+            // const discPrice = shippingFee;
+            setShippingFee(0);
+            setDiscountPercentage(0);
+            // setTotal(subtotal + shippingFee - discPrice);
 
-            setTotal(subtotal + shippingFee - discPrice);
-
-            setDiscountValue(discPrice);
-            console.log('free shipping: ', discPrice);
+            // setDiscountValue(discPrice);
+            // console.log('free shipping: ', discPrice);
           }
           console.log('its reaching here');
           console.log('total after discount: ', total);
@@ -256,50 +269,21 @@ const CheckoutPage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch('/api/shipment/', {
-  //         method: 'POST',
-  //         headers: { 'Content-Type': 'application/json' },
-  //         body: JSON.stringify({
-  //           action: 'checkRates',
-  //           bulk: [
-  //             {
-  //               pick_code: '47400',
-  //               pick_state: 'Selangor',
-  //               pick_country: 'MY',
-  //               send_code: `${shippingAddress?.postalCode}`,
-  //               send_state: `${shippingAddress?.state}`,
-  //               // send_code: `53201`,
-  //               // send_state: `Johor`,
-  //               send_country: 'MY',
-  //               weight: '1',
-  //             },
-  //           ],
-  //         }),
-  //       });
+  useEffect(() => {
+    const percentageDiscount =
+      discountPercentage > 0 ? subtotal * discountPercentage : 0;
 
-  //       console.log('Response status:', response.status);
+    setDiscountValue(percentageDiscount);
 
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! status: ${response.status}`);
-  //       }
+    console.log('percentage discount: ', percentageDiscount);
+    console.log('discount price: ', discountPrice);
+    console.log('shipping fee: ', shippingFee);
+    console.log('subtotal: ', subtotal);
 
-  //       const data = await response.json();
+    // const total = subtotal + shippingFee - percentageDiscount - discountPrice;
 
-  //       console.log('Checking rate: ', data);
-  //     } catch (error) {
-  //       if (error instanceof Error) {
-  //         console.error('Failed to fetch shipping rates:', error.message);
-  //       } else {
-  //         console.error('Unknown error:', error);
-  //       }
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [shippingAddress]);
+    setTotal(total);
+  }, [subtotal, shippingFee, discountPercentage, discountPrice]);
 
   useEffect(() => {
     // console.log*('Cart updated:', cartItems);
@@ -383,67 +367,10 @@ const CheckoutPage = () => {
     fetchCartId();
   }, [userId]);
 
-  // interface ShippingAddress {
-  //   name: string;
-  //   phone: string;
-  //   email: string;
-  //   address1: string;
-  //   address2?: string;
-  //   city: string;
-  //   state: string;
-  //   postcode: string;
-  //   country: string;
-  // }
-
-  // useEffect(() => {
-  //   // const sourceAddress: ShippingAddress = {name: 'QYVE', phone: '0125549155', email: 'support@qyveofficial.com', address1: '5B, Jalan Chempenai', city: 'Bukit Damansara', state: 'WP Kuala Lumpur', postcode: '50490', country: 'Malaysia'};
-
-  //   // const parcelDetails = {weight: 0.3, length: 10, width: 10, height: 10, content: 'sportswear', value: 100}
-
-  //   // EasyParcelService.getShippingRates(sourceAddress, shippingAddress, )
-
-  //   if (
-  //     shippingAddress?.state === 'Sabah' ||
-  //     shippingAddress?.state === 'Sarawak'
-  //   ) {
-  //     setShippingFee(15);
-  //   } else {
-  //     setShippingFee(8);
-  //   }
-  // }, [shippingAddress?.state]);
-
   const handleContactInfo = (data: ContactInfoData) => {
     setContactInfo(data);
     // console.log('Received from contact info component: ', data);
   };
-
-  // type ShippingAddressData = {
-  //   fname: string;
-  //   lname: string;
-  //   shippingAddress1: string;
-  //   shippingAddress2: string;
-  //   no: string;
-  //   city: string;
-  //   state: string;
-  //   postalCode: string;
-  // };
-
-  // interface ShippingAddress {
-  //   name: string;
-  //   phone: string;
-  //   email: string;
-  //   address1: string;
-  //   address2?: string;
-  //   city: string;
-  //   state: string;
-  //   postcode: string;
-  //   country: string;
-  // }
-
-  // useEffect(() => {
-  //   console.log('loadingShippingFee updated:', loadingShippingFee);
-
-  // }, [loadingShippingFee])
 
   const handleShippingInfo = async (shippingData: ShippingAddressData) => {
     console.log(
@@ -459,24 +386,6 @@ const CheckoutPage = () => {
       loadingShippingFee,
     );
 
-    // await new Promise((resolve) => setTimeout(resolve, 0));
-    // console.log(
-    //   'loading shipping fee after awaiting to rerender: ',
-    //   loadingShippingFee,
-    // );
-
-    // setShippingAddressForRates({
-    //   name: `${shippingData.fname} ${shippingData.lname}`,
-    //   phone: contactInfo?.phone ?? '',
-    //   email: contactInfo?.email ?? '',
-    //   address1: shippingData.shippingAddress1,
-    //   address2: shippingData.shippingAddress2 ?? '',
-    //   city: shippingData.city,
-    //   state: shippingData.state,
-    //   postcode: shippingData.postalCode ?? '',
-    //   country: 'Malaysia',
-    // });
-    // setTimeout(async () => {
     try {
       const response = await fetch('api/shipment/rates', {
         method: 'POST',
@@ -516,50 +425,8 @@ const CheckoutPage = () => {
       setShippingFee(0);
     } finally {
       setLoadingShippingFee(false);
+      resetVoucher();
     }
-    // }, 50)
-
-    // try {
-    //   const sourceAddress: ShippingAddress = {
-    //     name: 'QYVE',
-    //     phone: '0125549155',
-    //     email: 'support@qyveofficial.com',
-    //     address1: '5B, Jalan Chempenai',
-    //     city: 'Bukit Damansara',
-    //     state: 'WP Kuala Lumpur',
-    //     postcode: '50490',
-    //     country: 'Malaysia',
-    //   };
-    //   const parcelDetails = {
-    //     weight: 0.3,
-    //     length: 10,
-    //     width: 10,
-    //     height: 10,
-    //     content: 'sportswear',
-    //     value: 100,
-    //   };
-
-    // const rates = easyParcel.getShippingRates(
-    //   sourceAddress,
-    //   {
-    //     name: `${shippingData.fname} ${shippingData.lname}`,
-    //     phone: contactInfo?.phone ?? '',
-    //     email: contactInfo?.email ?? '',
-    //     address1: shippingData.shippingAddress1,
-    //     address2: shippingData.shippingAddress2 ?? '',
-    //     city: shippingData.city,
-    //     state: shippingData.state,
-    //     postcode: shippingData.postalCode ?? '',
-    //     country: 'Malaysia',
-    //   },
-    //   parcelDetails,
-    // );
-
-    //   console.log('Shipping rates: ', rates);
-    // } catch (error) {
-    //   console.error('Error fetching shipping rates: ', error);
-    // }
-    // console.log('Received from shipping component: ', shippingData);
   };
 
   const renderProduct = (item: CartItem) => {
@@ -765,7 +632,7 @@ const CheckoutPage = () => {
                       Apply
                     </button>
                   </div>
-                  {clicked && (
+                  {clicked && voucherValidity !== 'idle' && (
                     <div>
                       {(() => {
                         if (voucherValidity === 'used') {
@@ -862,6 +729,7 @@ const CheckoutPage = () => {
                 }}
                 discountCode={voucher}
                 shippingPrice={shippingFee}
+                loadingShippingFee={loadingShippingFee}
               />
               {/* <ButtonPrimary className="mt-8 w-full">Confirm order</ButtonPrimary> */}
             </div>

@@ -216,6 +216,7 @@ const ShippingAddress: FC<Props> = ({
                 value={city}
                 onChange={(e) => {
                   setCity(e.target.value);
+                  resetVoucher();
                 }}
               />
             </FormItem>

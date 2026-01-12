@@ -5,14 +5,17 @@ const ProudlyMalaysian = () => {
         <div className="mb-10 text-center">
           <div className="mb-4 inline-flex items-center gap-3 rounded-full bg-white/10 px-6 py-3">
             <span className="text-3xl">🇲🇾</span>
-            <span className="text-lg font-bold text-primary">PROUDLY MALAYSIAN</span>
+            <span className="text-lg font-bold text-primary">
+              PROUDLY MALAYSIAN
+            </span>
           </div>
           <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">
             Built by Malaysians, for Malaysians
           </h2>
           <p className="mx-auto max-w-2xl text-white/70">
-            QYVE is Malaysia&apos;s first homegrown futsal shoe brand. We understand local courts, 
-            local weather, and the Malaysian style of play.
+            QYVE is Malaysia&apos;s first homegrown futsal shoe brand. We
+            understand local courts, local weather, and the Malaysian style of
+            play.
           </p>
         </div>
 
@@ -52,7 +55,8 @@ const ProudlyMalaysian = () => {
 
         <div className="mt-10 text-center">
           <p className="text-sm text-white/50">
-            Supporting local means supporting Malaysian athletes, jobs, and innovation
+            Supporting local means supporting Malaysian athletes, jobs, and
+            innovation
           </p>
         </div>
       </div>
