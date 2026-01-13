@@ -16,6 +16,7 @@ export interface ButtonProps {
   href?: Route;
   onClick?: () => void;
   children?: React.ReactNode;
+  loadingShippingFee?: boolean;
 }
 
 const Button: FC<ButtonProps> = ({
@@ -28,9 +29,13 @@ const Button: FC<ButtonProps> = ({
   children,
   type,
   loading,
+  loadingShippingFee,
   onClick = () => {},
 }) => {
   const CLASSES = `relative h-auto inline-flex items-center justify-center rounded-full transition-colors ${fontSize} ${sizeClass} ${translate} ${className}`;
+
+  console.log('loadingshippingfee: ', loadingShippingFee);
+  console.log('loading: ', loading);
 
   const renderLoading = () => {
     return (
@@ -67,14 +72,21 @@ const Button: FC<ButtonProps> = ({
 
   return (
     <button
-      disabled={disabled || loading}
+      disabled={disabled || loading || loadingShippingFee}
       className={`${CLASSES}`}
       onClick={onClick}
       /* eslint-disable-next-line react/button-has-type */
       type={type}
     >
-      {loading && renderLoading()}
+      {/* {loading && renderLoading()}
       {children || `This is Button`}
+ */}
+      {loading && renderLoading()}
+
+      {/* Show text based on loadingShippingFee */}
+      {loadingShippingFee
+        ? 'Checking shipping fee...'
+        : children || 'This is Button'}
     </button>
   );
 };

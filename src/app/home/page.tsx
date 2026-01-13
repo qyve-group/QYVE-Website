@@ -1,25 +1,28 @@
 import React from 'react';
 
-import BrandMessage from './BrandMessage';
+// import BrandMessage from './BrandMessage';
+import LaunchStrip from './LaunchStrip';
+// import ProudlyMalaysian from './ProudlyMalaysian';
 import SectionProducts from './SectionProducts';
-// import SubZeroFeatureStrip from './SubZeroFeatureStrip';
 import SubZeroSpotlight from './SubZeroSpotlight';
 import Values from './Values';
 
 const page = () => {
   return (
     <div>
-      <SubZeroSpotlight />
+      <LaunchStrip />
 
-      {/* <SubZeroFeatureStrip /> */}
+      <SubZeroSpotlight />
 
       <div className="mb-10">
         <SectionProducts />
       </div>
 
-      <div>
+      {/* <ProudlyMalaysian /> */}
+
+      {/* <div>
         <BrandMessage />
-      </div>
+      </div> */}
 
       <div>
         <Values />

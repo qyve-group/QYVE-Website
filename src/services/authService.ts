@@ -3,6 +3,8 @@ import { setUser } from '@/store/authSlice';
 import { store } from '@/store/store';
 
 export const submitSignUp = async (email: string, password: string) => {
+  // console.log('email in authservice: ', email);
+  // console.log('password in authservice: ', password);
   const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error) {

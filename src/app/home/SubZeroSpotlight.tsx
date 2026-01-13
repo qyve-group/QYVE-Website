@@ -31,7 +31,13 @@ const SubZeroSpotlight = () => {
 
         {/* Right Side - Clean White with Green Accent */}
         <div className="flex w-2/5 flex-col items-start justify-center bg-white px-12">
-          <div className="mb-6 h-1 w-16 rounded-full bg-primary" />
+          {/* Malaysia's First Badge */}
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#0a1f3d] px-4 py-2">
+            <span className="text-lg">🇲🇾</span>
+            <span className="text-xs font-bold text-white">
+              MALAYSIA&apos;S FIRST LOCAL FUTSAL SHOE
+            </span>
+          </div>
 
           <h2 className="mb-4 font-myFont text-5xl font-bold italic text-black">
             FREEZE THE
@@ -39,9 +45,19 @@ const SubZeroSpotlight = () => {
             <span className="text-primary">COURT</span>
           </h2>
 
-          <p className="text-gray-500 mb-8 max-w-sm">
-            Precision engineered for those who dominate.
+          <p className="text-gray-500 mb-4 max-w-sm">
+            Precision engineered for Malaysian courts. Built by players, for
+            players.
           </p>
+
+          {/* Early Bird Pricing */}
+          {/* <div className="mb-6 flex items-center gap-3">
+            <span className="text-2xl font-bold text-black">RM 218</span>
+            <span className="text-lg text-gray-400 line-through">RM 238</span>
+            <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-black">
+              EARLY BIRD
+            </span>
+          </div> */}
 
           <Link
             href="/products/subzero"
@@ -49,8 +65,6 @@ const SubZeroSpotlight = () => {
           >
             SHOP SUBZERO
           </Link>
-
-          {/* <p className="mt-4 text-xs text-gray-400">*Limited stock available</p> */}
         </div>
       </div>
 
@@ -73,15 +87,30 @@ const SubZeroSpotlight = () => {
 
         {/* Bottom - Clean White with Green Accent */}
         <div className="flex flex-col items-center justify-center bg-white px-8 py-10 text-center">
-          <div className="mb-4 h-1 w-16 rounded-full bg-primary" />
+          {/* Malaysia's First Badge */}
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#0a1f3d] px-4 py-2">
+            <span className="text-lg">🇲🇾</span>
+            <span className="text-xs font-bold text-white">
+              MALAYSIA&apos;S FIRST LOCAL FUTSAL SHOE
+            </span>
+          </div>
 
           <h2 className="mb-3 font-myFont text-3xl font-bold italic text-black sm:text-4xl">
-            FREEZE THE <span className="text-primary">COURT</span>
+            FREEZE THE <span className="font-bold text-primary">COURT</span>
           </h2>
 
-          <p className="text-gray-500 mb-6 max-w-sm">
-            Precision engineered for those who dominate.
-          </p>
+          {/* <p className="mb-4 max-w-sm text-gray-500">
+            Precision engineered for Malaysian courts.
+          </p> */}
+
+          {/* Early Bird Pricing */}
+          {/* <div className="mb-6 flex items-center gap-3">
+            <span className="text-xl font-bold text-black">RM 218</span>
+            <span className="text-base text-gray-400 line-through">RM 238</span>
+            <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-black">
+              EARLY BIRD
+            </span>
+          </div> */}
 
           <Link
             href="/products/subzero"
@@ -89,10 +118,6 @@ const SubZeroSpotlight = () => {
           >
             SHOP SUBZERO
           </Link>
-
-          {/* <p className="mt-3 text-xs text-gray-400">
-            *Limited stock available
-          </p> */}
         </div>
       </div>
     </section>

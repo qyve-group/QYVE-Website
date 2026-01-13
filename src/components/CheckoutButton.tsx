@@ -47,12 +47,14 @@ export default function CheckoutButton({
   orderContact,
   shippingPrice,
   discountCode,
+  loadingShippingFee,
 }: {
   cartItems: CartItem[];
   orderAddress: ShippingAddressData;
   orderContact: ContactInfoData;
   shippingPrice: number;
   discountCode: string;
+  loadingShippingFee?: boolean;
 }) {
   const userId = useSelector((state: RootState) => state.auth.user?.id);
   const router = useRouter();
@@ -165,7 +167,7 @@ export default function CheckoutButton({
       <ButtonPrimary
         className="mt-8 w-full"
         onClick={handleCheckout}
-        disabled={loading}
+        loadingShippingFee={loadingShippingFee}
       >
         {loading ? 'Processing...' : 'Pay Now'}
       </ButtonPrimary>

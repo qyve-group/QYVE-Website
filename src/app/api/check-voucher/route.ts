@@ -25,6 +25,30 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Voucher not found' }, { status: 404 });
   }
 
+  if (voucher.for_public === true) {
+    return NextResponse.json(
+      {
+        status: 'valid',
+        value: voucher.value,
+        discount_type: voucher.discount_type,
+        free_shipping: voucher.free_shipping,
+      },
+      { status: 200 },
+    );
+  }
+
+  if (voucher.free_shipping === true) {
+    return NextResponse.json(
+      {
+        status: 'valid',
+        value: voucher.value,
+        discount_type: voucher.discount_type,
+        free_shipping: voucher.free_shipping === true,
+      },
+      { status: 200 },
+    );
+  }
+
   // Step 2: Check if the user has already used this voucher
   const { data: userVoucherData, error: userVoucherError } = await supabase
     .from('user_vouchers')
@@ -53,14 +77,6 @@ export async function POST(req: Request) {
     },
     { status: 200 },
   );
-
-  //   } catch (error) {
-  //     console.error('Error in check-voucher POST handler:', error);
-  //     return NextResponse.json(
-  //       { error: 'Internal Server Error' },
-  //       { status: 500 },
-  //     );
-  //   }
 }
 
 // export async function GET() {

@@ -204,7 +204,7 @@ const CartSideBar: React.FC = () => {
                       <ButtonSecondary
                         href="/cart"
                         onClick={handleCloseMenu}
-                        className="w-full flex-1 border-2 border-primary text-primary"
+                        className="w-full flex-1 border-2 bg-black text-primary"
                       >
                         View cart
                       </ButtonSecondary>
@@ -243,7 +243,7 @@ const CartSideBar: React.FC = () => {
         <FaCartShopping className="text-2xl" />
         {/* Mobile: Badge count */}
         {hydrated && quantityCurr > 0 && (
-          <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white lg:hidden">
+          <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full border-2 border-black bg-neutral-100 text-xs font-bold text-black lg:hidden">
             {quantityCurr}
           </span>
         )}

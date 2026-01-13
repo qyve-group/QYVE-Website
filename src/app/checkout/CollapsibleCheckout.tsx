@@ -52,6 +52,7 @@ interface CollapsibleCheckoutProps {
   voucherValidity: string;
   onVoucherChange: (voucher: string) => void;
   onVoucherApply: () => void;
+  voucherChecking?: boolean;
   contactInfo: ContactInfoData | null;
   shippingAddress: ShippingAddressData | null;
   onContactInfoChange: (data: ContactInfoData) => void;
@@ -59,6 +60,8 @@ interface CollapsibleCheckoutProps {
   cartItems: any[];
   loadingShippingFee?: boolean;
   shippingError?: string | null;
+  discountValue: number;
+  clicked?: boolean;
 }
 
 const CollapsibleCheckout = ({
@@ -69,6 +72,7 @@ const CollapsibleCheckout = ({
   voucherValidity,
   onVoucherChange,
   onVoucherApply,
+  voucherChecking,
   contactInfo,
   shippingAddress,
   onContactInfoChange,
@@ -76,6 +80,8 @@ const CollapsibleCheckout = ({
   cartItems,
   loadingShippingFee = false,
   shippingError = null,
+  discountValue,
+  clicked,
 }: CollapsibleCheckoutProps) => {
   const { user } = useSelector((state: RootState) => state.auth);
   const userEmail = user?.email;
@@ -92,6 +98,7 @@ const CollapsibleCheckout = ({
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [postalCode, setPcode] = useState('');
+  // const [voucherChecking, setVoucherChecking] = useState(false);
 
   // UI states
   const [activeSection, setActiveSection] = useState<
@@ -193,6 +200,7 @@ const CollapsibleCheckout = ({
 
     // Proceed with checkout - call the actual Stripe API
     console.log('Checkout ready! Calling Stripe...');
+    console.log('voucher: ', voucher);
 
     try {
       const res = await fetch('/api/checkout', {
@@ -688,13 +696,38 @@ const CollapsibleCheckout = ({
                 />
                 <button
                   type="button"
-                  className="ml-3 flex w-24 items-center justify-center rounded-2xl border border-neutral-300 bg-gray px-4 text-sm font-medium transition-colors hover:bg-neutral-100"
+                  className={`ml-3 flex w-24 items-center justify-center rounded-2xl border border-neutral-300 px-4 text-sm font-medium transition-colors
+                  ${
+                    voucherChecking || !voucher.trim()
+                      ? 'cursor-not-allowed bg-neutral-200 text-neutral-400'
+                      : 'bg-gray hover:bg-neutral-100'
+                  }`}
                   onClick={onVoucherApply}
                 >
                   Apply
                 </button>
               </div>
-              {voucherValidity && (
+              {clicked && voucherValidity !== 'idle' && (
+                <div>
+                  {(() => {
+                    if (voucherValidity === 'used') {
+                      return (
+                        <div className="text-red-300">Voucher already used</div>
+                      );
+                    }
+
+                    if (voucherValidity === 'valid') {
+                      return (
+                        <div className="text-green-600">Voucher applied</div>
+                      );
+                    }
+
+                    return <div className="text-red-300">Invalid voucher</div>;
+                  })()}
+                </div>
+              )}
+
+              {/* {voucherValidity && (
                 <div className="mt-1 text-sm">
                   <span
                     className={
@@ -706,7 +739,7 @@ const CollapsibleCheckout = ({
                     {voucherValidity}
                   </span>
                 </div>
-              )}
+              )} */}
             </div>
 
             <div className="mt-4 divide-y divide-neutral-300">
@@ -725,8 +758,12 @@ const CollapsibleCheckout = ({
                     <span className="text-sm text-red-500">
                       Invalid address
                     </span>
+                  ) : shippingFee === null ? (
+                    <span className="text-gray-500">-</span>
+                  ) : shippingFee === 0 ? (
+                    <span>Free delivery</span>
                   ) : (
-                    `RM ${shippingFee}`
+                    <span>RM {shippingFee}</span>
                   )}
                 </span>
               </div>
@@ -737,7 +774,7 @@ const CollapsibleCheckout = ({
               )} */}
               <div className="flex justify-between py-4">
                 <span>Discount</span>
-                <span className="font-semibold">-</span>
+                <span className="font-semibold">RM {discountValue}</span>
               </div>
               <div className="flex justify-between pt-4 text-base font-semibold">
                 <span>Total</span>
@@ -745,7 +782,11 @@ const CollapsibleCheckout = ({
               </div>
             </div>
 
-            <ButtonPrimary className="mt-8 w-full" onClick={handleCheckout}>
+            <ButtonPrimary
+              className="mt-8 w-full"
+              onClick={handleCheckout}
+              loadingShippingFee={loadingShippingFee}
+            >
               Confirm order
             </ButtonPrimary>
 
