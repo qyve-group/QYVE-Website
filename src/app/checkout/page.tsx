@@ -101,7 +101,7 @@ const CheckoutPage = () => {
   //   useState<ShippingAddress | null>(null);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const isCartEmpty = !cartItems || cartItems.length === 0;
-  const [shippingFee, setShippingFee] = useState(null);
+  const [shippingFee, setShippingFee] = useState(0);
   const [shippingError, setShippingError] = useState<string | null>(null);
 
   const [voucher, setVoucher] = useState('');
@@ -280,9 +280,10 @@ const CheckoutPage = () => {
     console.log('shipping fee: ', shippingFee);
     console.log('subtotal: ', subtotal);
 
-    // const total = subtotal + shippingFee - percentageDiscount - discountPrice;
+    const newTotal =
+      subtotal + shippingFee - percentageDiscount - discountPrice;
 
-    setTotal(total);
+    setTotal(newTotal);
   }, [subtotal, shippingFee, discountPercentage, discountPrice]);
 
   useEffect(() => {
