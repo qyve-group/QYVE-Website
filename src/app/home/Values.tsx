@@ -19,7 +19,7 @@ const Values = () => {
           </p> */}
         </div>
 
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-2">
           <div className="border-gray-100 bg-gray-50 group rounded-2xl border p-8 transition-all hover:border-primary/30 hover:shadow-lg">
             {/* <div className="mb-6 flex size-16 items-center justify-center rounded-full bg-primary/10 text-3xl transition-all group-hover:bg-primary/20">
               🎯
